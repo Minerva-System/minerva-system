@@ -1,0 +1,6 @@
+[book]
+authors = ["Lucas S. Vieira"]
+language = "pt-br"
+multilingual = false
+src = "src"
+title = "Minerva -- Especificação do Sistema"

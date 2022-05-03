@@ -1,0 +1,12 @@
+[workspace]
+members = [
+	"minerva-rpc",
+	"minerva-data",
+	"minerva-store",
+	"minerva-user",
+	"minerva-session",
+	"minerva-product",
+	"minerva-stock",
+	"minerva-rest",
+]
+
