@@ -12,7 +12,7 @@ pub struct User {
     pub pwhash: Vec<u8>,
 }
 
-#[derive(Insertable)]
+#[derive(Insertable, Default)]
 #[table_name = "user"]
 pub struct InsertableUser {
     pub login: String,
