@@ -3,6 +3,9 @@ name = "minerva-product"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+minerva-rpc = {path = "../minerva-rpc"}
+minerva-data = {path = "../minerva-data"}
+tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync"]}
+dotenv = "0.15.0"
+tonic = "0.7"

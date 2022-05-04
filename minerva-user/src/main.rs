@@ -23,8 +23,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .add_service(UsersServer::new(service::UsersService::default()))
         .serve(addr);
 
-    println!("USERS Service is ready to accept connections.");
+    println!("USERS is ready to accept connections.");
     server.await?;
-    println!("USERS service shut down.");
+    println!("USERS shut down.");
     Ok(())
 }

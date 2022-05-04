@@ -604,6 +604,13 @@ dependencies = [
 [[package]]
 name = "minerva-product"
 version = "0.1.0"
+dependencies = [
+ "dotenv",
+ "minerva-data",
+ "minerva-rpc",
+ "tokio",
+ "tonic",
+]
 
 [[package]]
 name = "minerva-rest"
