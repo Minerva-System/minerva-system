@@ -76,7 +76,7 @@ impl Users for UsersService {
         &self,
         req: Request<messages::User>,
     ) -> Result<Response<messages::User>, Status> {
-        let login = get_login(req.metadata());
+        let _login = get_login(req.metadata());
         unimplemented!();
     }
 
@@ -84,7 +84,7 @@ impl Users for UsersService {
         &self,
         req: Request<messages::User>,
     ) -> Result<Response<messages::User>, Status> {
-        let login = get_login(req.metadata());
+        let _login = get_login(req.metadata());
         unimplemented!();
     }
 }

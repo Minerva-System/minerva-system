@@ -31,7 +31,7 @@ impl From<messages::User> for User {
             pwhash: message
                 .password
                 .map(|pw| encryption::generate_hash(&pw))
-                .expect("Cannot generate hashed password from message"),
+                .unwrap_or(vec![]),
         }
     }
 }
@@ -57,7 +57,7 @@ impl From<messages::User> for InsertableUser {
             pwhash: message
                 .password
                 .map(|pw| encryption::generate_hash(&pw))
-                .expect("Cannot generate hashed password from message"),
+                .unwrap(),
         }
     }
 }
