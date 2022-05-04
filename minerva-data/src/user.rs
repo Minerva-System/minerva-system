@@ -36,6 +36,18 @@ impl From<messages::User> for User {
     }
 }
 
+impl Into<messages::User> for User {
+    fn into(self) -> messages::User {
+        messages::User {
+            id: Some(self.id),
+            login: self.login.clone(),
+            name: self.name.clone(),
+            email: self.email.clone(),
+            password: None,
+        }
+    }
+}
+
 impl From<messages::User> for InsertableUser {
     fn from(message: messages::User) -> Self {
         Self {
@@ -50,6 +62,12 @@ impl From<messages::User> for InsertableUser {
     }
 }
 
-pub fn msg_get_list(message: messages::UserList) -> Vec<User> {
+pub fn message_to_vec(message: messages::UserList) -> Vec<User> {
     message.users.iter().map(|u| u.clone().into()).collect()
+}
+
+pub fn vec_to_message(v: Vec<User>) -> messages::UserList {
+    messages::UserList {
+        users: v.iter().map(|u| u.clone().into()).collect(),
+    }
 }

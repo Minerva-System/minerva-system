@@ -9,7 +9,7 @@ pub type DBPool = Pool<DieselConnectionManager<PgConnection>>;
 
 pub fn make_single_connection() -> PgConnection {
     let url = env::var("DATABASE_URL")
-        .map_err(|e| panic!("Error reading database URL: {}", e))
+        .map_err(|e| panic!("Error reading DATABASE_URL: {}", e))
         .unwrap();
 
     PgConnection::establish(&url)
@@ -19,7 +19,7 @@ pub fn make_single_connection() -> PgConnection {
 
 pub async fn make_connection_pool(max_connections: u32) -> DBPool {
     let url = env::var("DATABASE_URL")
-        .map_err(|e| panic!("Error reading database URL: {}", e))
+        .map_err(|e| panic!("Error reading DATABASE_URL: {}", e))
         .unwrap();
 
     let manager = DieselConnectionManager::<PgConnection>::new(&url);

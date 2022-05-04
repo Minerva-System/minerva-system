@@ -653,6 +653,9 @@ version = "0.1.0"
 name = "minerva-user"
 version = "0.1.0"
 dependencies = [
+ "bb8",
+ "bb8-diesel",
+ "diesel",
  "dotenv",
  "minerva-data",
  "minerva-rpc",
