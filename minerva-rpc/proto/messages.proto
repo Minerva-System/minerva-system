@@ -16,7 +16,7 @@ message User {
   optional string password = 5;
 }
 
-message UserMessage {
+message UserWrite {
   string requiredBy = 1;
   User user = 2;
 }
@@ -32,7 +32,7 @@ message Product {
   string price = 4;
 }
 
-message ProductMessage {
+message ProductWrite {
   string requiredBy = 1;
   Product product = 2;
 }

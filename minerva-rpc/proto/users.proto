@@ -6,6 +6,6 @@ package User;
 service Users {
   rpc index(Messages.Empty) returns (Messages.UserList) {}
   rpc show(Messages.EntityIndex) returns (Messages.User) {}
-  rpc store(Messages.UserMessage) returns (Messages.User) {}
-  rpc update(Messages.UserMessage) returns (Messages.User) {}
+  rpc store(Messages.UserWrite) returns (Messages.User) {}
+  rpc update(Messages.UserWrite) returns (Messages.User) {}
 }

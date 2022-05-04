@@ -6,7 +6,7 @@ package Product;
 service Products {
   rpc index(Messages.Empty) returns (Messages.ProductList) {}
   rpc show(Messages.EntityIndex) returns (Messages.Product) {}
-  rpc store(Messages.ProductMessage) returns (Messages.Product) {}
-  rpc update(Messages.ProductMessage) returns (Messages.Product) {}
+  rpc store(Messages.ProductWrite) returns (Messages.Product) {}
+  rpc update(Messages.ProductWrite) returns (Messages.Product) {}
 }
 
