@@ -1,0 +1,12 @@
+syntax = "proto3";
+import "messages.proto";
+import "google/protobuf/empty.proto";
+
+package User;
+
+service Users {
+  rpc index(google.protobuf.Empty) returns (Messages.UserList) {}
+  rpc show(Messages.EntityIndex) returns (Messages.User) {}
+  rpc store(Messages.UserWrite) returns (Messages.User) {}
+  rpc update(Messages.UserWrite) returns (Messages.User) {}
+}

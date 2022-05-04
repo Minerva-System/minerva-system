@@ -1,8 +1,11 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
-    }
+pub mod messages {
+    tonic::include_proto!("messages");
+}
+
+pub mod users {
+    tonic::include_proto!("user");
+}
+
+pub mod products {
+    tonic::include_proto!("product");
 }

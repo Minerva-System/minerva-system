@@ -1,0 +1,7 @@
+CREATE TABLE PRODUCT (
+	ID           SERIAL        PRIMARY KEY,
+	DESCRIPTION  VARCHAR       NOT NULL,
+	UNIT         CHAR(2)       NOT NULL     DEFAULT 'UN',
+	PRICE        NUMERIC(13,4) NOT NULL     DEFAULT 0.0000 -- Preço de venda
+)
+

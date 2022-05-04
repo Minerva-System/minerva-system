@@ -3,6 +3,19 @@ name = "minerva-data"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+minerva-rpc = {path = "../minerva-rpc"}
+diesel = {version = "1.4.8", features = ["postgres", "extras", "numeric", "chrono"]}
+dotenv = "0.15.0"
+bigdecimal = {version = "0.1.2", features = ["serde"]}
+serde = "1.0"
+serde_derive = "1.0"
+serde_json = "1.0"
+serde_repr = "0.1"
+num-traits = "0.2"
+num-derive = "0.3"
+diesel-enum = "0.0.5"
+bb8 = "0.7.1"
+bb8-diesel = "0.2.1"
+diesel_migrations = "1.4.0"
+sodiumoxide = ">= 0.2.7"
