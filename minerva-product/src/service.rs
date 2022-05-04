@@ -20,14 +20,14 @@ impl Products for ProductsService {
 
     async fn store(
         &self,
-        req: Request<messages::ProductWrite>,
+        req: Request<messages::Product>,
     ) -> Result<Response<messages::Product>, Status> {
         unimplemented!();
     }
 
     async fn update(
         &self,
-        req: Request<messages::ProductWrite>,
+        req: Request<messages::Product>,
     ) -> Result<Response<messages::Product>, Status> {
         unimplemented!();
     }
