@@ -71,6 +71,9 @@ Os módulos planejados para o sistema são:
 - [ ] `minerva-runonce`: Serviço **avulso** para configuração do ambiente, de
   forma assíncrona. Responsável pela execução de migrações do banco de dados
   e outras operações de configuração inicial.
+- [ ] `minerva-report`: Servidor gRPC para geração de relatórios. Deve receber
+  dados com formatação esperada de um relatório, e então deverá gerar um
+  arquivo PDF e retorná-lo inteiramente como resposta.
 
 ## Portas
 
