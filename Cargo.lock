@@ -589,7 +589,6 @@ dependencies = [
  "bigdecimal",
  "diesel",
  "diesel-enum",
- "diesel_migrations",
  "dotenv",
  "minerva-rpc",
  "num-derive",
@@ -625,6 +624,17 @@ dependencies = [
  "tokio-stream",
  "tonic",
  "tonic-build",
+]
+
+[[package]]
+name = "minerva-runonce"
+version = "0.1.0"
+dependencies = [
+ "diesel",
+ "diesel_migrations",
+ "dotenv",
+ "minerva-data",
+ "tokio",
 ]
 
 [[package]]

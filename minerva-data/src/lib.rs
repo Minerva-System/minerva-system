@@ -5,6 +5,7 @@ extern crate num_derive;
 #[macro_use]
 extern crate serde_derive;
 
+pub mod db;
 pub mod encryption;
 pub mod schema;
 pub mod user;
