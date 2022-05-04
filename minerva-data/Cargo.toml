@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+minerva-rpc = {path = "../minerva-rpc"}
 diesel = {version = "1.4.8", features = ["postgres", "extras", "numeric", "chrono"]}
 dotenv = "0.15.0"
 bigdecimal = {version = "0.1.2", features = ["serde"]}

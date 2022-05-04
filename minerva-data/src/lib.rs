@@ -1,8 +1,9 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
-    }
-}
+#[macro_use]
+extern crate diesel;
+#[macro_use]
+extern crate num_derive;
+#[macro_use]
+extern crate serde_derive;
+
+pub mod schema;
+pub mod user;

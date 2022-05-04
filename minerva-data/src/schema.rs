@@ -1,20 +1,10 @@
 table! {
-    USER (id) {
-        id -> Int4,
-        login -> Varchar,
-        name -> Varchar,
-        email -> Nullable<Varchar>,
-        pwhash -> Bytea,
-    }
-}
-
-table! {
     address (id) {
         id -> Int4,
         client_id -> Int4,
         #[sql_name = "type"]
         type_ -> Int2,
-        address -> Varchar,
+        location -> Varchar,
         number -> Varchar,
         complement -> Nullable<Varchar>,
         district -> Varchar,
@@ -75,14 +65,16 @@ table! {
     }
 }
 
+table! {
+    user (id) {
+        id -> Int4,
+        login -> Varchar,
+        name -> Varchar,
+        email -> Nullable<Varchar>,
+        pwhash -> Bytea,
+    }
+}
+
 joinable!(address -> client (client_id));
 
-allow_tables_to_appear_in_same_query!(
-    USER,
-    address,
-    client,
-    product,
-    stock,
-    stock_mov,
-    syslog,
-);
+allow_tables_to_appear_in_same_query!(address, client, product, stock, stock_mov, syslog, user,);
