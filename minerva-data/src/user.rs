@@ -24,7 +24,7 @@ pub struct InsertableUser {
 impl From<messages::User> for User {
     fn from(message: messages::User) -> Self {
         Self {
-            id: message.id.unwrap_or(0),
+            id: message.id.expect("Cannot retrieve ID for user"),
             login: message.login.clone(),
             name: message.name.clone(),
             email: message.email.clone(),
@@ -36,9 +36,8 @@ impl From<messages::User> for User {
     }
 }
 
-impl From<messages::UserWrite> for InsertableUser {
-    fn from(message: messages::UserWrite) -> Self {
-        let message = message.user.unwrap();
+impl From<messages::User> for InsertableUser {
+    fn from(message: messages::User) -> Self {
         Self {
             login: message.login.clone(),
             name: message.name.clone(),
@@ -49,10 +48,6 @@ impl From<messages::UserWrite> for InsertableUser {
                 .expect("Cannot generate hashed password from message"),
         }
     }
-}
-
-pub fn msg_get_write_data(message: messages::UserWrite) -> (String, InsertableUser) {
-    (message.required_by.clone(), message.into())
 }
 
 pub fn msg_get_list(message: messages::UserList) -> Vec<User> {

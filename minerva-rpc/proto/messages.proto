@@ -14,11 +14,6 @@ message User {
   optional string password = 5;
 }
 
-message UserWrite {
-  string requiredBy = 1;
-  User user = 2;
-}
-
 message UserList {
   repeated User users = 1;
 }
@@ -28,11 +23,6 @@ message Product {
   string description = 2;
   string unit = 3;
   string price = 4;
-}
-
-message ProductWrite {
-  string requiredBy = 1;
-  Product product = 2;
 }
 
 message ProductList {
