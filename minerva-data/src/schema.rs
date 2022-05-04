@@ -77,4 +77,12 @@ table! {
 
 joinable!(address -> client (client_id));
 
-allow_tables_to_appear_in_same_query!(address, client, product, stock, stock_mov, syslog, user,);
+allow_tables_to_appear_in_same_query!(
+    address,
+    client,
+    product,
+    stock,
+    stock_mov,
+    syslog,
+    user,
+);

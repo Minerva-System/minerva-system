@@ -8,5 +8,6 @@ members = [
 	"minerva-product",
 	"minerva-stock",
 	"minerva-rest",
+	"minerva-runonce",
 ]
 

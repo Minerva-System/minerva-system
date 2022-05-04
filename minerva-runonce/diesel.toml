@@ -1,0 +1,2 @@
+[print_schema]
+file = "../minerva-data/src/schema.rs"
