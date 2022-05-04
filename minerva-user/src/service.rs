@@ -24,8 +24,6 @@ fn get_login(map: &MetadataMap) -> String {
 #[tonic::async_trait]
 impl Users for UsersService {
     async fn index(&self, _req: Request<()>) -> Result<Response<messages::UserList>, Status> {
-        // let login = get_login(req.metadata());
-
         let users = {
             use diesel::prelude::*;
             use minerva_data::schema::user::dsl::*;
@@ -50,7 +48,6 @@ impl Users for UsersService {
         &self,
         req: Request<messages::EntityIndex>,
     ) -> Result<Response<messages::User>, Status> {
-        // let login = get_login(req.metadata());
         let user_id = req.get_ref().index;
         let user = {
             use diesel::prelude::*;

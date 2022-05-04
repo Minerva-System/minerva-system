@@ -2,7 +2,7 @@ use crate::encryption;
 use crate::schema::user;
 use minerva_rpc::messages;
 
-#[derive(Queryable, Serialize, Clone)]
+#[derive(Queryable, Serialize, Clone, Debug)]
 pub struct User {
     pub id: i32,
     pub login: String,
@@ -12,7 +12,7 @@ pub struct User {
     pub pwhash: Vec<u8>,
 }
 
-#[derive(Insertable, Default)]
+#[derive(Insertable, Default, Debug)]
 #[table_name = "user"]
 pub struct InsertableUser {
     pub login: String,

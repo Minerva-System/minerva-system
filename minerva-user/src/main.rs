@@ -11,6 +11,9 @@ use tonic::transport::Server;
 
 mod service;
 
+#[cfg(test)]
+mod tests;
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Minerva System: USERS service");

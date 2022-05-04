@@ -6,9 +6,10 @@ edition = "2021"
 [dependencies]
 minerva-rpc = {path = "../minerva-rpc"}
 minerva-data = {path = "../minerva-data"}
-tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync"]}
+tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync", "net"]}
 dotenv = "0.15.0"
 tonic = "0.7"
 diesel = { version = "1.4.4", features = ["postgres"] }
 bb8 = "0.7.1"
 bb8-diesel = "0.2.1"
+futures-util = "0.3"
