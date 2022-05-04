@@ -85,7 +85,7 @@ async fn integration_test_store() {
             id: None,
             login: "fulano".to_string(),
             name: "Fulano de Tal".to_string(),
-            email: Some("fulano@exemplo.com".to_string()),
+            email: None,
             password: Some("minhasenha123".to_string()),
         })
         .await
@@ -95,7 +95,6 @@ async fn integration_test_store() {
     println!("STORE: {:#?}", stored_user);
     assert_eq!(stored_user.login, "fulano");
     assert_eq!(stored_user.name, "Fulano de Tal");
-    assert_eq!(stored_user.email.unwrap(), "fulano@exemplo.com");
     assert_eq!(stored_user.pwhash, Vec::<u8>::new());
 
     tx.send(()).unwrap();

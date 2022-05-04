@@ -77,7 +77,25 @@ impl Users for UsersService {
         req: Request<messages::User>,
     ) -> Result<Response<messages::User>, Status> {
         let _login = get_login(req.metadata());
-        unimplemented!();
+        let result = {
+            use diesel::prelude::*;
+            use minerva_data::schema::user;
+
+            let connection = self
+                .pool
+                .get()
+                .await
+                .map_err(|_| Status::internal("Database access error"))?;
+
+            let insertable: InsertableUser = req.into_inner().into();
+            diesel::insert_into(user::table)
+                .values(&insertable)
+                .get_result::<User>(&*connection)
+        }
+        .map(|u| Response::new(u.into()))
+        .map_err(|e| Status::failed_precondition(format!("Unable to register user: {}", e)));
+
+        result
     }
 
     async fn update(
