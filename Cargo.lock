@@ -615,7 +615,6 @@ version = "0.1.0"
 dependencies = [
  "dotenv",
  "prost",
- "tokio",
  "tokio-stream",
  "tonic",
  "tonic-build",
@@ -636,6 +635,13 @@ version = "0.1.0"
 [[package]]
 name = "minerva-user"
 version = "0.1.0"
+dependencies = [
+ "dotenv",
+ "minerva-data",
+ "minerva-rpc",
+ "tokio",
+ "tonic",
+]
 
 [[package]]
 name = "mio"

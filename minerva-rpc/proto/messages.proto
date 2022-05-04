@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package Messages;
 
-message Empty {}
-
 message EntityIndex {
   int32 index = 1;
 }
