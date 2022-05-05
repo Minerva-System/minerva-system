@@ -1,7 +1,5 @@
-#[macro_use]
-extern crate diesel;
-#[macro_use]
 extern crate bb8_diesel;
+extern crate diesel;
 
 use dotenv::dotenv;
 use minerva_data::{db, encryption};
@@ -9,6 +7,7 @@ use minerva_rpc::users::users_server::UsersServer;
 use std::env;
 use tonic::transport::Server;
 
+mod controller;
 mod service;
 
 #[cfg(test)]

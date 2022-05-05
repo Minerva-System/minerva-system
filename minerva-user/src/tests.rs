@@ -159,3 +159,37 @@ async fn integration_test_store_update_show() {
     tx.send(()).unwrap();
     handle.await.unwrap();
 }
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 1)]
+async fn integration_test_store_delete() {
+    let (handle, endpoint, tx) = make_test_server(10014).await;
+    let mut client = UsersClient::connect(endpoint).await.unwrap();
+
+    // Create a single user
+    let response = client
+        .store(messages::User {
+            id: None,
+            login: "beltrano".to_string(),
+            name: "Beltrano de Tal".to_string(),
+            email: Some("beltrano@exemplo.com".to_string()),
+            password: Some("maisumasenha789".to_string()),
+        })
+        .await
+        .unwrap();
+
+    let stored_user: model::User = response.into_inner().into();
+    assert_eq!(stored_user.login, "beltrano");
+    assert_eq!(stored_user.name, "Beltrano de Tal");
+    assert_eq!(stored_user.email.unwrap(), "beltrano@exemplo.com");
+    assert_eq!(stored_user.pwhash, Vec::<u8>::new());
+
+    // Remove that user
+    let index = stored_user.id;
+    let response = client
+        .delete(messages::EntityIndex { index })
+        .await
+        .unwrap();
+
+    tx.send(()).unwrap();
+    handle.await.unwrap();
+}

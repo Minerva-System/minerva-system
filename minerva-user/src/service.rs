@@ -1,8 +1,6 @@
+use crate::controller;
 use minerva_data::db::DBPool;
-use minerva_data::{
-    encryption,
-    user::{InsertableUser, User},
-};
+use minerva_data::user::{InsertableUser, User};
 use minerva_rpc::messages;
 use minerva_rpc::users::users_server::Users;
 use tonic::metadata::{MetadataMap, MetadataValue};
@@ -24,51 +22,39 @@ fn get_login(map: &MetadataMap) -> String {
 #[tonic::async_trait]
 impl Users for UsersService {
     async fn index(&self, _req: Request<()>) -> Result<Response<messages::UserList>, Status> {
-        let users = {
-            use diesel::prelude::*;
-            use minerva_data::schema::user::dsl::*;
-
+        let result = {
             let connection = self
                 .pool
                 .get()
                 .await
-                .map_err(|_| Status::internal("Database access error"))?;
+                .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            user.order(id)
-                .limit(100)
-                .offset(0)
-                .load::<User>(&*connection)
-                .map_err(|_| Status::internal("Cannot recover users"))?
+            controller::get_list(0, &*connection)
+                .map_err(|e| Status::internal(format!("Cannot recover user list: {}", e)))?
         };
 
-        Ok(Response::new(minerva_data::user::vec_to_message(users)))
+        Ok(Response::new(minerva_data::user::vec_to_message(result)))
     }
 
     async fn show(
         &self,
         req: Request<messages::EntityIndex>,
     ) -> Result<Response<messages::User>, Status> {
-        let user_id = req.get_ref().index;
-        let user = {
-            use diesel::prelude::*;
-            use minerva_data::schema::user::dsl::*;
-
+        let result = {
             let connection = self
                 .pool
                 .get()
                 .await
-                .map_err(|_| Status::internal("Database access error"))?;
+                .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            user.filter(id.eq(user_id))
-                .first::<User>(&*connection)
-                .optional()
-                .map_err(|_| Status::internal("Cannot recover user"))?
+            controller::get_user(req.get_ref().index, &*connection)
+                .map_err(|e| Status::internal(format!("Cannot recover user: {}", e)))?
         };
 
-        if let Some(usr) = user {
-            Ok(Response::new(usr.into()))
+        if let Some(user) = result {
+            Ok(Response::new(user.into()))
         } else {
-            Err(Status::not_found(format!("User ID {} not found.", user_id)))
+            Err(Status::not_found("User not found."))
         }
     }
 
@@ -78,24 +64,20 @@ impl Users for UsersService {
     ) -> Result<Response<messages::User>, Status> {
         let _login = get_login(req.metadata());
         let result = {
-            use diesel::prelude::*;
-            use minerva_data::schema::user;
+            let data = req.into_inner().into();
 
             let connection = self
                 .pool
                 .get()
                 .await
-                .map_err(|_| Status::internal("Database access error"))?;
+                .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            let insertable: InsertableUser = req.into_inner().into();
-            diesel::insert_into(user::table)
-                .values(&insertable)
-                .get_result::<User>(&*connection)
-        }
-        .map(|u| Response::new(u.into()))
-        .map_err(|e| Status::failed_precondition(format!("Unable to register user: {}", e)));
+            controller::add_user(data, &*connection)
+        };
 
         result
+            .map(|u| Response::new(u.into()))
+            .map_err(|e| Status::failed_precondition(format!("Unable to register user: {}", e)))
     }
 
     async fn update(
@@ -103,6 +85,37 @@ impl Users for UsersService {
         req: Request<messages::User>,
     ) -> Result<Response<messages::User>, Status> {
         let _login = get_login(req.metadata());
-        unimplemented!();
+        let result = {
+            let data = req.into_inner().into();
+
+            let connection = self
+                .pool
+                .get()
+                .await
+                .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
+
+            controller::update_user(data, &*connection)
+        };
+
+        result
+            .map(|u| Response::new(u.into()))
+            .map_err(|e| Status::failed_precondition(format!("Unable to register user: {}", e)))
+    }
+
+    async fn delete(&self, req: Request<messages::EntityIndex>) -> Result<Response<()>, Status> {
+        let _login = get_login(req.metadata());
+        let result = {
+            let connection = self
+                .pool
+                .get()
+                .await
+                .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
+
+            controller::delete_user(req.get_ref().index, &*connection)
+        };
+
+        result
+            .map(|_| Response::new(()))
+            .map_err(|e| Status::internal(format!("Cannot recover user: {}", e)))
     }
 }

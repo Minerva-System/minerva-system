@@ -9,5 +9,6 @@ service Products {
   rpc show(Messages.EntityIndex) returns (Messages.Product) {}
   rpc store(Messages.Product) returns (Messages.Product) {}
   rpc update(Messages.Product) returns (Messages.Product) {}
+  rpc delete(Messages.EntityIndex) returns (google.protobuf.Empty) {}
 }
 
