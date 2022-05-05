@@ -55,12 +55,12 @@ pub fn create_admin_user() {
 
             diesel::insert_into(syslog::table)
                 .values(&NewLog {
-                    service: "USERS".to_string(),
-                    requestor: "RUNONCE".to_string(),
+                    service: "RUNONCE".to_string(),
+                    requestor: "runonce".to_string(),
                     entity: "user".to_string(),
                     operation: 0,
                     datetime: chrono::offset::Utc::now(),
-                    description: Some(format!("Add user ID {} (Administrator)", result.id)),
+                    description: Some(format!("Add administrator ID {}", result.id)),
                 })
                 .execute(&connection)?;
 

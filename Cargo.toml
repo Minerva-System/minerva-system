@@ -9,5 +9,6 @@ members = [
 	"minerva-stock",
 	"minerva-rest",
 	"minerva-runonce",
+        "minerva-report",
 ]
 

@@ -8,23 +8,23 @@ mod service;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("Minerva System: PRODUCTS service");
+    println!("Minerva System: PRODUCT service");
     println!("Copyright (c) 2022 Lucas S. Vieira");
     println!();
 
     dotenv().ok();
-    let port = env::var("PRODUCTS_SERVICE_PORT").expect("Unable to read PRODUCTS_SERVICE_PORT");
+    let port = env::var("PRODUCT_SERVICE_PORT").expect("Unable to read PRODUCT_SERVICE_PORT");
     let addr = format!("0.0.0.0:{}", port).parse()?;
     encryption::init_hasher();
 
-    println!("Starting PRODUCTS on {}...", addr);
+    println!("Starting PRODUCT on {}...", addr);
 
     let server = Server::builder()
         .add_service(ProductsServer::new(service::ProductsService::default()))
         .serve(addr);
 
-    println!("PRODUCTS is ready to accept connections.");
+    println!("PRODUCT is ready to accept connections.");
     server.await?;
-    println!("PRODUCTS shut down.");
+    println!("PRODUCT shut down.");
     Ok(())
 }

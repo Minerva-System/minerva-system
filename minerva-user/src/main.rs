@@ -15,7 +15,7 @@ mod tests;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("Minerva System: USERS service");
+    println!("Minerva System: USER service");
     println!("Copyright (c) 2022 Lucas S. Vieira");
     println!();
     dotenv().ok();
@@ -23,18 +23,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Creating database connection pool...");
     let pool = db::make_connection_pool(15).await;
 
-    let port = env::var("USERS_SERVICE_PORT").expect("Unable to read USERS_SERVICE_PORT");
+    let port = env::var("USER_SERVICE_PORT").expect("Unable to read USER_SERVICE_PORT");
     let addr = format!("0.0.0.0:{}", port).parse()?;
     encryption::init_hasher();
 
-    println!("Starting USERS on {}...", addr);
+    println!("Starting USER on {}...", addr);
 
     let server = Server::builder()
         .add_service(UsersServer::new(service::UsersService { pool }))
         .serve(addr);
 
-    println!("USERS is ready to accept connections.");
+    println!("USER is ready to accept connections.");
     server.await?;
-    println!("USERS shut down.");
+    println!("USER shut down.");
     Ok(())
 }

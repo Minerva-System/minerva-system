@@ -629,6 +629,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "minerva-report"
+version = "0.1.0"
+
+[[package]]
 name = "minerva-rest"
 version = "0.1.0"
 

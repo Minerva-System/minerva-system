@@ -40,7 +40,7 @@ pub fn add_user(
 
             diesel::insert_into(syslog::table)
                 .values(&NewLog {
-                    service: "USERS".to_string(),
+                    service: "USER".to_string(),
                     requestor,
                     entity: "user".to_string(),
                     operation: 0,
@@ -97,7 +97,7 @@ pub fn update_user(
 
             diesel::insert_into(syslog::table)
                 .values(&NewLog {
-                    service: "USERS".to_string(),
+                    service: "USER".to_string(),
                     requestor,
                     entity: "user".to_string(),
                     operation: 1,
@@ -128,7 +128,7 @@ pub fn delete_user(
 
             diesel::insert_into(syslog::table)
                 .values(&NewLog {
-                    service: "USERS".to_string(),
+                    service: "USER".to_string(),
                     requestor,
                     entity: "user".to_string(),
                     operation: 2,

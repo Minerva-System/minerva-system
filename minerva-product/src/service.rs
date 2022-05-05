@@ -31,4 +31,8 @@ impl Products for ProductsService {
     ) -> Result<Response<messages::Product>, Status> {
         unimplemented!();
     }
+
+    async fn delete(&self, req: Request<messages::EntityIndex>) -> Result<Response<()>, Status> {
+        unimplemented!();
+    }
 }
