@@ -8,7 +8,7 @@ const USER_PAGE_SIZE: i64 = 20;
 
 pub fn get_list(page: i64, connection: &DBConnection) -> Result<Vec<model::User>, Error> {
     use minerva_data::schema::user::dsl::*;
-    let offset = (page * USER_PAGE_SIZE) + 1;
+    let offset = page * USER_PAGE_SIZE;
     user.order(id)
         .limit(USER_PAGE_SIZE)
         .offset(offset)

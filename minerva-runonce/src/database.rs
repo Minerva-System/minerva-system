@@ -1,6 +1,7 @@
 use minerva_data::db;
 use minerva_data::{
     encryption,
+    syslog::NewLog,
     user::{InsertableUser, User},
 };
 use std::env;
@@ -16,6 +17,7 @@ pub fn run_migrations() {
 
 pub fn create_admin_user() {
     use diesel::prelude::*;
+    use minerva_data::schema::syslog;
     use minerva_data::schema::user::{self, dsl::*};
 
     println!("Creating user for Administrator...");
@@ -43,9 +45,27 @@ pub fn create_admin_user() {
         pwhash: encryption::generate_hash(&pw),
     };
 
-    diesel::insert_into(user::table)
-        .values(&admin_data)
-        .get_result::<User>(&connection)
+    connection
+        .build_transaction()
+        .read_write()
+        .run::<(), diesel::result::Error, _>(|| {
+            let result = diesel::insert_into(user::table)
+                .values(&admin_data)
+                .get_result::<User>(&connection)?;
+
+            diesel::insert_into(syslog::table)
+                .values(&NewLog {
+                    service: "USERS".to_string(),
+                    requestor: "RUNONCE".to_string(),
+                    entity: "user".to_string(),
+                    operation: 0,
+                    datetime: chrono::offset::Utc::now(),
+                    description: Some(format!("Add user ID {} (Administrator)", result.id)),
+                })
+                .execute(&connection)?;
+
+            Ok(())
+        })
         .map_err(|e| panic!("Error registering user \"admin\": {}", e))
         .unwrap();
 }
