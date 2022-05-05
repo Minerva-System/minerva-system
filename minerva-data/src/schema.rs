@@ -58,7 +58,8 @@ table! {
     syslog (id) {
         id -> Int4,
         service -> Varchar,
-        USER -> Varchar,
+        requestor -> Varchar,
+        entity -> Varchar,
         operation -> Int2,
         datetime -> Timestamptz,
         description -> Nullable<Varchar>,
@@ -77,4 +78,12 @@ table! {
 
 joinable!(address -> client (client_id));
 
-allow_tables_to_appear_in_same_query!(address, client, product, stock, stock_mov, syslog, user,);
+allow_tables_to_appear_in_same_query!(
+    address,
+    client,
+    product,
+    stock,
+    stock_mov,
+    syslog,
+    user,
+);

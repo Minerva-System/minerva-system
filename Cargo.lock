@@ -177,6 +177,8 @@ dependencies = [
  "libc",
  "num-integer",
  "num-traits",
+ "rustc-serialize",
+ "serde",
  "time",
  "winapi",
 ]
@@ -599,6 +601,7 @@ dependencies = [
  "bb8",
  "bb8-diesel",
  "bigdecimal",
+ "chrono",
  "diesel",
  "diesel-enum",
  "dotenv",
@@ -616,6 +619,8 @@ dependencies = [
 name = "minerva-product"
 version = "0.1.0"
 dependencies = [
+ "chrono",
+ "diesel",
  "dotenv",
  "minerva-data",
  "minerva-rpc",
@@ -642,6 +647,7 @@ dependencies = [
 name = "minerva-runonce"
 version = "0.1.0"
 dependencies = [
+ "chrono",
  "diesel",
  "diesel_migrations",
  "dotenv",
@@ -656,10 +662,18 @@ version = "0.1.0"
 [[package]]
 name = "minerva-stock"
 version = "0.1.0"
+dependencies = [
+ "chrono",
+ "diesel",
+]
 
 [[package]]
 name = "minerva-store"
 version = "0.1.0"
+dependencies = [
+ "chrono",
+ "diesel",
+]
 
 [[package]]
 name = "minerva-user"
@@ -667,6 +681,7 @@ version = "0.1.0"
 dependencies = [
  "bb8",
  "bb8-diesel",
+ "chrono",
  "diesel",
  "dotenv",
  "futures-util",
@@ -1044,6 +1059,12 @@ checksum = "3acd125665422973a33ac9d3dd2df85edad0f4ae9b00dafb1a05e43a9f5ef8e7"
 dependencies = [
  "winapi",
 ]
+
+[[package]]
+name = "rustc-serialize"
+version = "0.3.24"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dcf128d1287d2ea9d80910b5f1120d0b8eede3fbf1abe91c40d39ea7d51e6fda"
 
 [[package]]
 name = "ryu"

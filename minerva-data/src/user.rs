@@ -21,6 +21,21 @@ pub struct InsertableUser {
     pub pwhash: Vec<u8>,
 }
 
+impl PartialEq for User {
+    fn eq(&self, other: &Self) -> bool {
+        (self.id == other.id)
+            && (self.login == other.login)
+            && (self.name == other.name)
+            && (self.email == other.email)
+    }
+}
+
+impl PartialEq for InsertableUser {
+    fn eq(&self, other: &Self) -> bool {
+        (self.login == other.login) && (self.name == other.name) && (self.email == other.email)
+    }
+}
+
 impl From<messages::User> for User {
     fn from(message: messages::User) -> Self {
         Self {

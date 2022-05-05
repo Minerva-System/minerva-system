@@ -61,7 +61,7 @@ impl Users for UsersService {
         &self,
         req: Request<messages::User>,
     ) -> Result<Response<messages::User>, Status> {
-        let _login = get_login(req.metadata());
+        let requestor = get_login(req.metadata());
         let result = {
             let data = req.into_inner().into();
 
@@ -71,7 +71,7 @@ impl Users for UsersService {
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            repository::add_user(data, &*connection)
+            repository::add_user(data, requestor, &*connection)
         };
 
         result
@@ -83,7 +83,7 @@ impl Users for UsersService {
         &self,
         req: Request<messages::User>,
     ) -> Result<Response<messages::User>, Status> {
-        let _login = get_login(req.metadata());
+        let requestor = get_login(req.metadata());
         let result = {
             let data = req.into_inner().into();
 
@@ -93,7 +93,7 @@ impl Users for UsersService {
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            repository::update_user(data, &*connection)
+            repository::update_user(data, requestor, &*connection)
         };
 
         result
@@ -102,7 +102,7 @@ impl Users for UsersService {
     }
 
     async fn delete(&self, req: Request<messages::EntityIndex>) -> Result<Response<()>, Status> {
-        let _login = get_login(req.metadata());
+        let requestor = get_login(req.metadata());
         let result = {
             let connection = self
                 .pool
@@ -110,7 +110,7 @@ impl Users for UsersService {
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            repository::delete_user(req.get_ref().index, &*connection)
+            repository::delete_user(req.get_ref().index, requestor, &*connection)
         };
 
         result
