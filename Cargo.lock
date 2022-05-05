@@ -631,10 +631,22 @@ dependencies = [
 [[package]]
 name = "minerva-report"
 version = "0.1.0"
+dependencies = [
+ "dotenv",
+ "minerva-data",
+ "minerva-rpc",
+ "tokio",
+]
 
 [[package]]
 name = "minerva-rest"
 version = "0.1.0"
+dependencies = [
+ "dotenv",
+ "minerva-data",
+ "minerva-rpc",
+ "tokio",
+]
 
 [[package]]
 name = "minerva-rpc"
@@ -662,6 +674,12 @@ dependencies = [
 [[package]]
 name = "minerva-session"
 version = "0.1.0"
+dependencies = [
+ "dotenv",
+ "minerva-data",
+ "minerva-rpc",
+ "tokio",
+]
 
 [[package]]
 name = "minerva-stock"
@@ -669,6 +687,10 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "diesel",
+ "dotenv",
+ "minerva-data",
+ "minerva-rpc",
+ "tokio",
 ]
 
 [[package]]

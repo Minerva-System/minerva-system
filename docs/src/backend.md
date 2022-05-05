@@ -59,7 +59,7 @@ Os módulos planejados para o sistema são:
 - [x] `minerva-user`: Servidor gRPC para CRUD de usuários. Deve ser capaz de
   manipular as regras de negócios relacionadas a clientes.
 - [ ] `minerva-session`: Servidor gRPC para gerência de sessão de usuário.
-- [x] `minerva-product`: Servidor gRPC para CRUD de produtos. Deve ser capaz
+- [ ] `minerva-product`: Servidor gRPC para CRUD de produtos. Deve ser capaz
   de manipular as regras de negócios relacionadas a produtos, mas que não
   envolvam controle de estoque.
 - [ ] `minerva-stock`: Servidor gRPC para CRUD de estoque de produtos. Deve
@@ -68,7 +68,7 @@ Os módulos planejados para o sistema são:
 - [ ] `minerva-rest`: Servidor REST para comunicação com os demais módulos
   executáveis. Possui rotas que apontam para serviços específicos, e é por
   definição um cliente gRPC de todos os servidores gRPC.
-- [ ] `minerva-runonce`: Serviço **avulso** para configuração do ambiente, de
+- [x] `minerva-runonce`: Serviço **avulso** para configuração do ambiente, de
   forma assíncrona. Responsável pela execução de migrações do banco de dados
   e outras operações de configuração inicial.
 - [ ] `minerva-report`: Servidor gRPC para geração de relatórios. Deve receber
@@ -83,3 +83,14 @@ Cada porta deve também ser configurável através de variáveis de ambiente.
 
 A tabela a seguir discrimina as variáveis de ambiente e as portas padrão
 de acordo com o serviço em questão.
+
+| Serviço | Variável               | Porta |
+|---------|------------------------|-------|
+| USER    | `USER_SERVICE_PORT`    | 9010  |
+| SESSION | `SESSION_SERVICE_PORT` | 9011  |
+| PRODUCT | `PRODUCT_SERVICE_PORT` | 9012  |
+| STOCK   | `STOCK_SERVICE_PORT`   | 9013  |
+| REPORT  | `REPORT_SERVICE_PORT`  | 9014  |
+| REST    | `REST_SERVICE_PORT`    | 9000  |
+
+
