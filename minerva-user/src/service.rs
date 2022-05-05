@@ -1,6 +1,5 @@
-use crate::controller;
+use crate::repository;
 use minerva_data::db::DBPool;
-use minerva_data::user::{InsertableUser, User};
 use minerva_rpc::messages;
 use minerva_rpc::users::users_server::Users;
 use tonic::metadata::{MetadataMap, MetadataValue};
@@ -29,7 +28,7 @@ impl Users for UsersService {
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            controller::get_list(0, &*connection)
+            repository::get_list(0, &*connection)
                 .map_err(|e| Status::internal(format!("Cannot recover user list: {}", e)))?
         };
 
@@ -47,7 +46,7 @@ impl Users for UsersService {
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            controller::get_user(req.get_ref().index, &*connection)
+            repository::get_user(req.get_ref().index, &*connection)
                 .map_err(|e| Status::internal(format!("Cannot recover user: {}", e)))?
         };
 
@@ -72,7 +71,7 @@ impl Users for UsersService {
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            controller::add_user(data, &*connection)
+            repository::add_user(data, &*connection)
         };
 
         result
@@ -94,7 +93,7 @@ impl Users for UsersService {
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            controller::update_user(data, &*connection)
+            repository::update_user(data, &*connection)
         };
 
         result
@@ -111,7 +110,7 @@ impl Users for UsersService {
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            controller::delete_user(req.get_ref().index, &*connection)
+            repository::delete_user(req.get_ref().index, &*connection)
         };
 
         result

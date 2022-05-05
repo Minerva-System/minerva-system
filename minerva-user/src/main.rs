@@ -7,7 +7,7 @@ use minerva_rpc::users::users_server::UsersServer;
 use std::env;
 use tonic::transport::Server;
 
-mod controller;
+mod repository;
 mod service;
 
 #[cfg(test)]
