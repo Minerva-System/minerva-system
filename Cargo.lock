@@ -613,6 +613,7 @@ dependencies = [
  "serde_json",
  "serde_repr",
  "sodiumoxide",
+ "tokio",
  "toml",
 ]
 

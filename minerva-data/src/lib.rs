@@ -7,6 +7,7 @@ extern crate serde_derive;
 pub mod db;
 pub mod encryption;
 pub mod file;
+pub mod log;
 pub mod schema;
 pub mod syslog;
 pub mod tenancy;

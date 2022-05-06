@@ -1,5 +1,7 @@
 use crate::repository;
+use minerva_data as lib_data;
 use minerva_data::db::DBPool;
+use minerva_rpc as lib_rpc;
 use minerva_rpc::users::users_server::Users;
 use minerva_rpc::{messages, metadata};
 use std::collections::HashMap;
@@ -16,9 +18,15 @@ impl Users for UsersService {
         let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
             Status::failed_precondition("Missing tenant on request metadata"),
         )?;
-        let _requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
+        let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
             Status::failed_precondition("Missing requestor on request metadata"),
         )?;
+        lib_data::log::print(
+            lib_rpc::get_address(&req),
+            requestor.clone(),
+            tenant.clone(),
+            "USER::INDEX",
+        );
 
         let result = {
             let connection = self
@@ -43,9 +51,16 @@ impl Users for UsersService {
         let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
             Status::failed_precondition("Missing tenant on request metadata"),
         )?;
-        let _requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
+        let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
             Status::failed_precondition("Missing requestor on request metadata"),
         )?;
+        lib_data::log::print(
+            lib_rpc::get_address(&req),
+            requestor.clone(),
+            tenant.clone(),
+            "USER::SHOW",
+        );
+
         let result = {
             let connection = self
                 .pools
@@ -76,6 +91,13 @@ impl Users for UsersService {
         let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
             Status::failed_precondition("Missing requestor on request metadata"),
         )?;
+        lib_data::log::print(
+            lib_rpc::get_address(&req),
+            requestor.clone(),
+            tenant.clone(),
+            "USER::STORE",
+        );
+
         let result = {
             let data = req.into_inner().into();
 
@@ -105,6 +127,13 @@ impl Users for UsersService {
         let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
             Status::failed_precondition("Missing requestor on request metadata"),
         )?;
+        lib_data::log::print(
+            lib_rpc::get_address(&req),
+            requestor.clone(),
+            tenant.clone(),
+            "USER::UPDATE",
+        );
+
         let result = {
             let data = req.into_inner().into();
 
@@ -131,6 +160,13 @@ impl Users for UsersService {
         let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
             Status::failed_precondition("Missing requestor on request metadata"),
         )?;
+        lib_data::log::print(
+            lib_rpc::get_address(&req),
+            requestor.clone(),
+            tenant.clone(),
+            "USER::DELETE",
+        );
+
         let result = {
             let connection = self
                 .pools
