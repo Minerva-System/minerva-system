@@ -51,8 +51,6 @@ impl From<messages::User> for User {
     }
 }
 
-// Test: Convert message to user
-
 impl Into<messages::User> for User {
     fn into(self) -> messages::User {
         messages::User {
@@ -64,10 +62,6 @@ impl Into<messages::User> for User {
         }
     }
 }
-
-// Test: Convert user to message
-
-// Test: Back-and-forth conversions for message and user
 
 impl From<messages::User> for NewUser {
     fn from(message: messages::User) -> Self {
@@ -83,13 +77,9 @@ impl From<messages::User> for NewUser {
     }
 }
 
-// Test: Convert message to insertable user
-
 pub fn message_to_vec(message: messages::UserList) -> Vec<User> {
     message.users.iter().map(|u| u.clone().into()).collect()
 }
-
-// Test: Conversions from user list message to users
 
 pub fn vec_to_message(v: Vec<User>) -> messages::UserList {
     messages::UserList {
@@ -97,4 +87,32 @@ pub fn vec_to_message(v: Vec<User>) -> messages::UserList {
     }
 }
 
-// Test: Conversions from users to user list message
+#[test]
+fn convert_message_to_user() {
+    todo!();
+}
+
+#[test]
+fn convert_user_to_message() {
+    todo!();
+}
+
+#[test]
+fn message_user_conversions() {
+    todo!();
+}
+
+#[test]
+fn convert_message_to_newuser() {
+    todo!();
+}
+
+#[test]
+fn convert_userlist_message_to_user_vec() {
+    todo!();
+}
+
+#[test]
+fn convert_user_vec_to_userlist_message() {
+    todo!();
+}
