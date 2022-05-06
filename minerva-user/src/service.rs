@@ -1,33 +1,29 @@
 use crate::repository;
 use minerva_data::db::DBPool;
-use minerva_rpc::messages;
 use minerva_rpc::users::users_server::Users;
+use minerva_rpc::{messages, metadata};
 use std::collections::HashMap;
-use tonic::metadata::{MetadataMap, MetadataValue};
 use tonic::{Request, Response, Status};
-
-const TENANT: &str = "minerva";
 
 #[derive(Clone)]
 pub struct UsersService {
     pub pools: HashMap<String, DBPool>,
 }
 
-fn get_login(map: &MetadataMap) -> String {
-    map.get("login")
-        .unwrap_or(&MetadataValue::from_str("unknown").unwrap())
-        .to_str()
-        .unwrap()
-        .to_string()
-}
-
 #[tonic::async_trait]
 impl Users for UsersService {
-    async fn index(&self, _req: Request<()>) -> Result<Response<messages::UserList>, Status> {
+    async fn index(&self, req: Request<()>) -> Result<Response<messages::UserList>, Status> {
+        let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
+            Status::failed_precondition("Missing tenant on request metadata"),
+        )?;
+        let _requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
+            Status::failed_precondition("Missing requestor on request metadata"),
+        )?;
+
         let result = {
             let connection = self
                 .pools
-                .get(TENANT)
+                .get(&tenant)
                 .expect("Unable to find tenant")
                 .get()
                 .await
@@ -44,10 +40,16 @@ impl Users for UsersService {
         &self,
         req: Request<messages::EntityIndex>,
     ) -> Result<Response<messages::User>, Status> {
+        let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
+            Status::failed_precondition("Missing tenant on request metadata"),
+        )?;
+        let _requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
+            Status::failed_precondition("Missing requestor on request metadata"),
+        )?;
         let result = {
             let connection = self
                 .pools
-                .get(TENANT)
+                .get(&tenant)
                 .expect("Unable to find tenant")
                 .get()
                 .await
@@ -68,13 +70,18 @@ impl Users for UsersService {
         &self,
         req: Request<messages::User>,
     ) -> Result<Response<messages::User>, Status> {
-        let requestor = get_login(req.metadata());
+        let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
+            Status::failed_precondition("Missing tenant on request metadata"),
+        )?;
+        let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
+            Status::failed_precondition("Missing requestor on request metadata"),
+        )?;
         let result = {
             let data = req.into_inner().into();
 
             let connection = self
                 .pools
-                .get(TENANT)
+                .get(&tenant)
                 .expect("Unable to find tenant")
                 .get()
                 .await
@@ -92,13 +99,18 @@ impl Users for UsersService {
         &self,
         req: Request<messages::User>,
     ) -> Result<Response<messages::User>, Status> {
-        let requestor = get_login(req.metadata());
+        let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
+            Status::failed_precondition("Missing tenant on request metadata"),
+        )?;
+        let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
+            Status::failed_precondition("Missing requestor on request metadata"),
+        )?;
         let result = {
             let data = req.into_inner().into();
 
             let connection = self
                 .pools
-                .get(TENANT)
+                .get(&tenant)
                 .expect("Unable to find tenant")
                 .get()
                 .await
@@ -113,11 +125,16 @@ impl Users for UsersService {
     }
 
     async fn delete(&self, req: Request<messages::EntityIndex>) -> Result<Response<()>, Status> {
-        let requestor = get_login(req.metadata());
+        let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
+            Status::failed_precondition("Missing tenant on request metadata"),
+        )?;
+        let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
+            Status::failed_precondition("Missing requestor on request metadata"),
+        )?;
         let result = {
             let connection = self
                 .pools
-                .get(TENANT)
+                .get(&tenant)
                 .expect("Unable to find tenant")
                 .get()
                 .await

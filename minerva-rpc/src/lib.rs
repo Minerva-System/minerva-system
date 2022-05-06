@@ -34,9 +34,13 @@ pub mod products {
 }
 
 pub mod metadata {
-    use tonic::metadata::MetadataValue;
+    use tonic::metadata::{MetadataMap, MetadataValue};
     use tonic::service::Interceptor;
     use tonic::{Request, Status};
+
+    pub fn get_value(map: &MetadataMap, key: &str) -> Option<String> {
+        map.get(key).map(|v| v.to_str().unwrap_or("unknown").into())
+    }
 
     pub fn push_metadata(
         request: &mut Request<()>,
