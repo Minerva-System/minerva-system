@@ -4,6 +4,7 @@ extern crate diesel;
 use dotenv::dotenv;
 use minerva_data::{db, encryption};
 use minerva_rpc::users::users_server::UsersServer;
+use std::collections::HashMap;
 use std::env;
 use tonic::transport::Server;
 
@@ -20,8 +21,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!();
     dotenv().ok();
 
-    println!("Creating database connection pool...");
-    let pool = db::make_connection_pool(15).await;
+    println!("Creating database connection pools...");
+
+    let mut pools = HashMap::new();
+
+    for tenant in minerva_data::tenancy::get_tenants("tenancy.toml") {
+        pools.insert(
+            tenant.database.clone(),
+            db::make_connection_pool(&tenant.database, 15).await,
+        );
+    }
 
     let port = env::var("USER_SERVICE_PORT").expect("Unable to read USER_SERVICE_PORT");
     let addr = format!("0.0.0.0:{}", port).parse()?;
@@ -30,7 +39,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Starting USER on {}...", addr);
 
     let server = Server::builder()
-        .add_service(UsersServer::new(service::UsersService { pool }))
+        .add_service(UsersServer::new(service::UsersService { pools }))
         .serve(addr);
 
     println!("USER is ready to accept connections.");

@@ -6,6 +6,7 @@ use minerva_data::user as model;
 use minerva_rpc::messages;
 use minerva_rpc::users::users_client::UsersClient;
 use minerva_rpc::users::users_server::UsersServer;
+use std::collections::HashMap;
 use std::str::FromStr;
 use std::time::Duration;
 use tokio::sync::oneshot;
@@ -21,7 +22,11 @@ async fn make_test_server(port: u32) -> (JoinHandle<()>, Endpoint, oneshot::Send
     let endpoint = Endpoint::from_str(&format!("http://127.0.0.1:{}", port)).unwrap();
 
     // Create database connection pool with a single connection
-    let pool = db::make_connection_pool(1).await;
+    let mut pools = HashMap::new();
+    pools.insert(
+        "minerva".into(),
+        db::make_connection_pool("minerva", 1).await,
+    );
 
     // Create single-time channel for shutdown signal passing
     let (tx, rx) = oneshot::channel();
@@ -29,7 +34,7 @@ async fn make_test_server(port: u32) -> (JoinHandle<()>, Endpoint, oneshot::Send
     // Spawn server on a concurrent task
     let handle = tokio::spawn(async move {
         Server::builder()
-            .add_service(UsersServer::new(service::UsersService { pool }))
+            .add_service(UsersServer::new(service::UsersService { pools }))
             .serve_with_shutdown(address, rx.map(drop))
             .await
             .unwrap();

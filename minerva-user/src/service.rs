@@ -2,12 +2,15 @@ use crate::repository;
 use minerva_data::db::DBPool;
 use minerva_rpc::messages;
 use minerva_rpc::users::users_server::Users;
+use std::collections::HashMap;
 use tonic::metadata::{MetadataMap, MetadataValue};
 use tonic::{Request, Response, Status};
 
+const TENANT: &str = "minerva";
+
 #[derive(Clone)]
 pub struct UsersService {
-    pub pool: DBPool,
+    pub pools: HashMap<String, DBPool>,
 }
 
 fn get_login(map: &MetadataMap) -> String {
@@ -23,7 +26,9 @@ impl Users for UsersService {
     async fn index(&self, _req: Request<()>) -> Result<Response<messages::UserList>, Status> {
         let result = {
             let connection = self
-                .pool
+                .pools
+                .get(TENANT)
+                .expect("Unable to find tenant")
                 .get()
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
@@ -41,7 +46,9 @@ impl Users for UsersService {
     ) -> Result<Response<messages::User>, Status> {
         let result = {
             let connection = self
-                .pool
+                .pools
+                .get(TENANT)
+                .expect("Unable to find tenant")
                 .get()
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
@@ -66,7 +73,9 @@ impl Users for UsersService {
             let data = req.into_inner().into();
 
             let connection = self
-                .pool
+                .pools
+                .get(TENANT)
+                .expect("Unable to find tenant")
                 .get()
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
@@ -88,7 +97,9 @@ impl Users for UsersService {
             let data = req.into_inner().into();
 
             let connection = self
-                .pool
+                .pools
+                .get(TENANT)
+                .expect("Unable to find tenant")
                 .get()
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
@@ -105,7 +116,9 @@ impl Users for UsersService {
         let requestor = get_login(req.metadata());
         let result = {
             let connection = self
-                .pool
+                .pools
+                .get(TENANT)
+                .expect("Unable to find tenant")
                 .get()
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;

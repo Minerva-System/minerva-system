@@ -1,7 +1,7 @@
 use serde_derive::Deserialize;
 use std::collections::HashMap;
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 pub struct Tenant {
     pub name: String,
     pub database: String,
