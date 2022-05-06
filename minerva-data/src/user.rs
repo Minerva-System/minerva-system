@@ -14,7 +14,7 @@ pub struct User {
 
 #[derive(Insertable, Default, Debug)]
 #[table_name = "user"]
-pub struct InsertableUser {
+pub struct NewUser {
     pub login: String,
     pub name: String,
     pub email: Option<String>,
@@ -30,7 +30,7 @@ impl PartialEq for User {
     }
 }
 
-impl PartialEq for InsertableUser {
+impl PartialEq for NewUser {
     fn eq(&self, other: &Self) -> bool {
         (self.login == other.login) && (self.name == other.name) && (self.email == other.email)
     }
@@ -51,6 +51,8 @@ impl From<messages::User> for User {
     }
 }
 
+// Test: Convert message to user
+
 impl Into<messages::User> for User {
     fn into(self) -> messages::User {
         messages::User {
@@ -63,7 +65,11 @@ impl Into<messages::User> for User {
     }
 }
 
-impl From<messages::User> for InsertableUser {
+// Test: Convert user to message
+
+// Test: Back-and-forth conversions for message and user
+
+impl From<messages::User> for NewUser {
     fn from(message: messages::User) -> Self {
         Self {
             login: message.login.clone(),
@@ -77,12 +83,18 @@ impl From<messages::User> for InsertableUser {
     }
 }
 
+// Test: Convert message to insertable user
+
 pub fn message_to_vec(message: messages::UserList) -> Vec<User> {
     message.users.iter().map(|u| u.clone().into()).collect()
 }
+
+// Test: Conversions from user list message to users
 
 pub fn vec_to_message(v: Vec<User>) -> messages::UserList {
     messages::UserList {
         users: v.iter().map(|u| u.clone().into()).collect(),
     }
 }
+
+// Test: Conversions from users to user list message

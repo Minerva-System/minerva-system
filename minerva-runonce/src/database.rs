@@ -2,7 +2,7 @@ use minerva_data::db;
 use minerva_data::{
     encryption,
     syslog::NewLog,
-    user::{InsertableUser, User},
+    user::{NewUser, User},
 };
 use std::env;
 
@@ -38,7 +38,7 @@ pub fn create_admin_user() {
 
     let pw = env::var("ADMIN_PASSWORD").unwrap_or(String::from("admin"));
 
-    let admin_data = InsertableUser {
+    let admin_data = NewUser {
         login: "admin".to_string(),
         name: "Administrator".to_string(),
         email: None,

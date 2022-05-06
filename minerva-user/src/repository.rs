@@ -23,7 +23,7 @@ pub fn get_user(user_id: i32, connection: &DBConnection) -> Result<Option<model:
 }
 
 pub fn add_user(
-    data: model::InsertableUser,
+    data: model::NewUser,
     requestor: String,
     connection: &DBConnection,
 ) -> Result<model::User, Error> {
