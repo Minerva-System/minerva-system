@@ -4,22 +4,29 @@ use futures_util::FutureExt;
 use minerva_data::db;
 use minerva_data::user as model;
 use minerva_rpc::messages;
+use minerva_rpc::metadata::ClientInterceptor;
 use minerva_rpc::users::users_client::UsersClient;
 use minerva_rpc::users::users_server::UsersServer;
 use std::collections::HashMap;
-use std::str::FromStr;
 use std::time::Duration;
 use tokio::sync::oneshot;
 use tokio::task::JoinHandle;
-use tonic::transport::{Endpoint, Server};
+use tonic::codegen::InterceptedService;
+use tonic::transport::{Channel, Server};
 use tonic::Request;
 
-async fn make_test_server(port: u32) -> (JoinHandle<()>, Endpoint, oneshot::Sender<()>) {
+async fn make_test_server(
+    port: u32,
+) -> (
+    JoinHandle<()>,
+    UsersClient<InterceptedService<Channel, ClientInterceptor>>,
+    oneshot::Sender<()>,
+) {
     dotenv().ok();
 
     // Generate server address and client endpoint
     let address = format!("0.0.0.0:{}", port).parse().unwrap();
-    let endpoint = Endpoint::from_str(&format!("http://127.0.0.1:{}", port)).unwrap();
+    let endpoint = format!("http://127.0.0.1:{}", port);
 
     // Create database connection pool with a single connection
     let mut pools = HashMap::new();
@@ -41,13 +48,15 @@ async fn make_test_server(port: u32) -> (JoinHandle<()>, Endpoint, oneshot::Send
     });
 
     tokio::time::sleep(Duration::from_millis(100)).await;
-    (handle, endpoint, tx)
+
+    let client = minerva_rpc::users::make_client(endpoint, "minerva".into(), "tests".into()).await;
+
+    (handle, client, tx)
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
 async fn integration_test_index() {
-    let (handle, endpoint, tx) = make_test_server(10010).await;
-    let mut client = UsersClient::connect(endpoint).await.unwrap();
+    let (handle, mut client, tx) = make_test_server(10010).await;
 
     // Request list of all users, then print on success
     let response = client.index(Request::new(())).await.unwrap();
@@ -63,8 +72,7 @@ async fn integration_test_index() {
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
 async fn integration_test_show() {
-    let (handle, endpoint, tx) = make_test_server(10011).await;
-    let mut client = UsersClient::connect(endpoint).await.unwrap();
+    let (handle, mut client, tx) = make_test_server(10011).await;
 
     // Request a single invalid user, then print on success
     let index = 0;
@@ -81,8 +89,7 @@ async fn integration_test_show() {
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
 async fn integration_test_store() {
-    let (handle, endpoint, tx) = make_test_server(10012).await;
-    let mut client = UsersClient::connect(endpoint).await.unwrap();
+    let (handle, mut client, tx) = make_test_server(10012).await;
 
     // Create a single user
     let response = client
@@ -115,8 +122,7 @@ async fn integration_test_store() {
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
 async fn integration_test_store_update_show() {
-    let (handle, endpoint, tx) = make_test_server(10013).await;
-    let mut client = UsersClient::connect(endpoint).await.unwrap();
+    let (handle, mut client, tx) = make_test_server(10013).await;
 
     // Create a single user
     let response = client
