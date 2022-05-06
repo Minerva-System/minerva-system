@@ -89,30 +89,96 @@ pub fn vec_to_message(v: Vec<User>) -> messages::UserList {
 
 #[test]
 fn convert_message_to_user() {
-    todo!();
+    let user = User {
+        id: 0,
+        login: "teste".into(),
+        name: "Fulano da Silva".into(),
+        email: Some("fulano@exemplo.com".into()),
+        pwhash: encryption::generate_hash("senha"),
+    };
+
+    let msg = messages::User {
+        id: Some(0),
+        login: "teste".into(),
+        name: "Fulano da Silva".into(),
+        email: Some("fulano@exemplo.com".into()),
+        password: Some("senha".into()),
+    };
+
+    let msg_user: User = msg.into();
+
+    assert_eq!(user, msg_user);
+    assert!(encryption::check_hash("senha", &user.pwhash));
+    assert!(encryption::check_hash("senha", &msg_user.pwhash));
 }
 
 #[test]
 fn convert_user_to_message() {
-    todo!();
+    let msg = messages::User {
+        id: Some(0),
+        login: "ciclano".into(),
+        name: "Ciclano da Silva".into(),
+        email: Some("ciclano@exemplo.com".into()),
+        password: Some("senha123".into()),
+    };
+
+    let expected = User {
+        id: 0,
+        login: "ciclano".into(),
+        name: "Ciclano da Silva".into(),
+        email: Some("ciclano@exemplo.com".into()),
+        pwhash: encryption::generate_hash("senha123"),
+    };
+
+    let expected_msg: messages::User = expected.clone().into();
+
+    assert_eq!(msg.id, expected_msg.id);
+    assert_eq!(msg.login, expected_msg.login);
+    assert_eq!(msg.name, expected_msg.name);
+    assert_eq!(msg.email, expected_msg.email);
+    assert!(encryption::check_hash("senha123", &expected.pwhash));
+    assert!(expected_msg.password.is_none());
 }
 
 #[test]
 fn message_user_conversions() {
+    // Convert stuff back-and-forth and add assertions based on that.
+    // Remember the rule of never converting a password hash back to a message
     todo!();
 }
 
 #[test]
 fn convert_message_to_newuser() {
-    todo!();
+    let newuser = NewUser {
+        login: "teste".into(),
+        name: "Fulano da Silva".into(),
+        email: Some("fulano@exemplo.com".into()),
+        pwhash: encryption::generate_hash("senha"),
+    };
+
+    let msg = messages::User {
+        id: Some(0),
+        login: "teste".into(),
+        name: "Fulano da Silva".into(),
+        email: Some("fulano@exemplo.com".into()),
+        password: Some("senha".into()),
+    };
+
+    let msg_user: NewUser = msg.into();
+
+    assert_eq!(newuser, msg_user);
+    assert!(encryption::check_hash("senha", &newuser.pwhash));
+    assert!(encryption::check_hash("senha", &msg_user.pwhash));
 }
 
 #[test]
 fn convert_userlist_message_to_user_vec() {
+    // Same as before, but converting a list of user messages to a vec of users
     todo!();
 }
 
 #[test]
 fn convert_user_vec_to_userlist_message() {
+    // Same as before, but converting a vec of users to a list of user messages
     todo!();
 }
