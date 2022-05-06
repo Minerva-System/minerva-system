@@ -35,6 +35,60 @@ Esses componentes possuem análogos programados, mas não são todos os módulos
 da aplicação, que também constituem-se de bibliotecas que podem ser utilizadas
 e referenciadas entre si.
 
+```dot process
+graph {
+	rankdir="TB";
+	compound=true;
+	node[style=filled; fillcolor=white];
+	
+	frontend[label="FRONT-END", shape=note, color=darkorange, fontcolor=darkorange];
+	
+	subgraph cluster_db {
+		rankdir="LR";
+		label = "BANCO DE DADOS";
+		color=darkmagenta;
+		fontcolor=darkmagenta;
+		db1[label="", shape=cylinder, color=darkmagenta];
+	}
+
+	subgraph cluster_backend {
+		label = "BACK-END";
+		fontcolor=darkred;
+		rankdir="LR";
+		color=darkred;
+		
+		rest[label="REST", shape=box3d];
+		
+		user[label="USER", shape=box3d];
+		session[label="SESSION", shape=box3d];
+		product[label="PRODUCT", shape=box3d];
+		stock[label="STOCK", shape=box3d];
+		runonce[label="RUNONCE", shape=box3d];
+		report[label="REPORT", shape=box3d];
+		
+		{rank="same"; rest; report;}
+		{rank="same"; user; session; product; stock; runonce;}
+		
+		rest -- user[label="gRPC", color=blue, fontcolor=blue];
+		rest -- session[label="gRPC", color=blue, fontcolor=blue];
+		rest -- product[label="gRPC", color=blue, fontcolor=blue];
+		rest -- stock[label="gRPC", color=blue, fontcolor=blue];
+		
+		user -- session[label="gRPC", color=blue, fontcolor=blue];
+		product -- stock[label="gRPC", color=blue, fontcolor=blue];
+		rest -- report[label="gRPC", color=blue, fontcolor=blue];
+		
+		user -- db1 [lhead=cluster_db, label="DB\n(Pool)", color=darkmagenta, fontcolor=darkmagenta];
+		session -- db1 [lhead=cluster_db, label="DB\n(Pool)", color=darkmagenta, fontcolor=darkmagenta];
+		product -- db1 [lhead=cluster_db, label="DB\n(Pool)", color=darkmagenta, fontcolor=darkmagenta];
+		stock -- db1 [lhead=cluster_db, label="DB\n(Pool)", color=darkmagenta, fontcolor=darkmagenta];
+		runonce -- db1 [lhead=cluster_db, label="DB\n(Avulsa)", color=darkmagenta, fontcolor=darkmagenta];
+	}
+
+	frontend -- rest[label="REST", color=green, fontcolor=green];
+}
+```
+
 ## Bibliotecas
 
 As bibliotecas planejadas para o sistema são:
