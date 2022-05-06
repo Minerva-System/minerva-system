@@ -6,33 +6,39 @@ use minerva_data::{
 };
 use std::env;
 
-pub fn run_migrations() {
-    let connection = db::make_single_connection();
-    println!("Running pending database migrations...");
+pub fn create_database(tenant: &str) {
+    db::create_database(tenant)
+        .map_err(|e| panic!("{}: Error while creating database: {}", tenant, e))
+        .unwrap();
+}
+
+pub fn run_migrations(tenant: &str) {
+    let connection = db::make_single_connection(tenant);
+    println!("{}: Running pending database migrations...", tenant);
     diesel_migrations::run_pending_migrations(&connection)
-        .map_err(|e| panic!("Error while running database migrations: {}", e))
+        .map_err(|e| panic!("{}: Error while running database migrations: {}", tenant, e))
         .unwrap();
     println!("Migrations ran successfully.");
 }
 
-pub fn create_admin_user() {
+pub fn create_admin_user(tenant: &str) {
     use diesel::prelude::*;
     use minerva_data::schema::syslog;
     use minerva_data::schema::user::{self, dsl::*};
 
-    println!("Creating user for Administrator...");
+    println!("{}: Creating user for Administrator...", tenant);
 
-    let connection = db::make_single_connection();
+    let connection = db::make_single_connection(tenant);
 
     if user
         .filter(login.eq("admin"))
         .first::<User>(&connection)
         .optional()
-        .map_err(|e| panic!("Error fetching \"admin\" user: {}", e))
+        .map_err(|e| panic!("{}: Error fetching \"admin\" user: {}", tenant, e))
         .unwrap()
         .is_some()
     {
-        println!("Administrator is already registered.");
+        println!("{}: Administrator is already registered.", tenant);
         return;
     }
 
@@ -66,6 +72,6 @@ pub fn create_admin_user() {
 
             Ok(())
         })
-        .map_err(|e| panic!("Error registering user \"admin\": {}", e))
+        .map_err(|e| panic!("{}: Error registering user \"admin\": {}", tenant, e))
         .unwrap();
 }

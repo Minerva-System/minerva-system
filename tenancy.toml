@@ -1,0 +1,12 @@
+# Bancos de dados para o multi-tenancy
+[[tenants]]
+name = "Minerva System"
+database = "minerva"
+
+[[tenants]]
+name = "Test Database"
+database = "teste"
+
+[[tenants]]
+name = "Comercial Fulano S/A"
+database = "comercial-fulano"

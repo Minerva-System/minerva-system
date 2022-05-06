@@ -12,12 +12,17 @@ Os tenants devem ser gerenciados através do arquivo `tenancy.toml`.
 A seguir, um exemplo do conteúdo em potencial deste arquivo.
 
 ```toml
-# Bancos de dados para o multi-tenancy
-databases = [
-	"minerva",
-	"teste",
-	"comercial-fulano",
-]
+[[tenants]]
+name = "Minerva System"
+database = "minerva"
+
+[[tenants]]
+name = "Test Database"
+database = "teste"
+
+[[tenants]]
+name = "Comercial Fulano S/A"
+database = "comercial-fulano"
 ```
 
 ## Criação do banco de dados
@@ -31,8 +36,7 @@ Caso um novo tenant seja adicionado ao sistema, o serviço `RUNONCE`
 deverá ser forçadamente executado para que o sistema fique apto a
 utilizar o banco de dados para aquele tenant.
 
-O sistema `RUNONCE` deverá, para cada banco listado na variável
-`databases`:
+O sistema `RUNONCE` deverá, para cada tenant listado em `tenancy.toml`:
 
 1. Tentar conectar-se ao banco em questão. Se isso não for possível,
    deverá criá-lo;

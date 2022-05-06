@@ -2,25 +2,31 @@ use bb8::Pool;
 use bb8_diesel::DieselConnection;
 use bb8_diesel::DieselConnectionManager;
 use diesel::{Connection, PgConnection};
-use std::env;
+
+mod create;
 
 pub type DBConnection = DieselConnection<PgConnection>;
 pub type DBPool = Pool<DieselConnectionManager<PgConnection>>;
 
-pub fn make_single_connection() -> PgConnection {
-    let url = env::var("DATABASE_URL")
-        .map_err(|e| panic!("Error reading DATABASE_URL: {}", e))
-        .unwrap();
+pub use create::create_database;
 
+pub fn build_database_string(tenant: &str) -> String {
+    format!("postgres://postgres:postgres@localhost/{}", tenant)
+}
+
+pub fn try_make_single_connection(tenant: &str) -> Result<PgConnection, diesel::ConnectionError> {
+    let url = build_database_string(tenant);
     PgConnection::establish(&url)
+}
+
+pub fn make_single_connection(tenant: &str) -> PgConnection {
+    try_make_single_connection(tenant)
         .map_err(|e| panic!("Error establishing database connection: {}", e))
         .unwrap()
 }
 
-pub async fn make_connection_pool(max_connections: u32) -> DBPool {
-    let url = env::var("DATABASE_URL")
-        .map_err(|e| panic!("Error reading DATABASE_URL: {}", e))
-        .unwrap();
+pub async fn make_connection_pool(tenant: &str, max_connections: u32) -> DBPool {
+    let url = build_database_string(tenant);
 
     let manager = DieselConnectionManager::<PgConnection>::new(&url);
 
