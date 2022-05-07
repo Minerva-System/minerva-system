@@ -54,7 +54,7 @@ async fn make_test_server(
     (handle, client, tx)
 }
 
-#[tokio::test(flavor = "multi_thread", worker_threads = 1)]
+#[tokio::test(flavor = "multi_thread", worker_threads = 3)]
 async fn integration_test_index() {
     let (handle, mut client, tx) = make_test_server(10010).await;
 
@@ -70,7 +70,7 @@ async fn integration_test_index() {
     handle.await.unwrap();
 }
 
-#[tokio::test(flavor = "multi_thread", worker_threads = 1)]
+#[tokio::test(flavor = "multi_thread", worker_threads = 3)]
 async fn integration_test_show() {
     let (handle, mut client, tx) = make_test_server(10011).await;
 
@@ -87,7 +87,7 @@ async fn integration_test_show() {
     handle.await.unwrap();
 }
 
-#[tokio::test(flavor = "multi_thread", worker_threads = 1)]
+#[tokio::test(flavor = "multi_thread", worker_threads = 3)]
 async fn integration_test_store() {
     let (handle, mut client, tx) = make_test_server(10012).await;
 
@@ -120,7 +120,7 @@ async fn integration_test_store() {
     handle.await.unwrap();
 }
 
-#[tokio::test(flavor = "multi_thread", worker_threads = 1)]
+#[tokio::test(flavor = "multi_thread", worker_threads = 3)]
 async fn integration_test_store_update_show() {
     let (handle, mut client, tx) = make_test_server(10013).await;
 
