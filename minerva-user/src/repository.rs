@@ -1,7 +1,7 @@
 use diesel::prelude::*;
 use diesel::result::Error;
 use minerva_data::db::DBConnection;
-use minerva_data::syslog::NewLog;
+use minerva_data::syslog::{NewLog, OpType};
 use minerva_data::user as model;
 
 const USER_PAGE_SIZE: i64 = 20;
@@ -43,7 +43,7 @@ pub fn add_user(
                     service: "USER".to_string(),
                     requestor,
                     entity: "user".to_string(),
-                    operation: 0,
+                    operation: OpType::Insert,
                     datetime: chrono::offset::Utc::now(),
                     description: Some(format!("Add user ID {}", result.id)),
                 })
@@ -100,7 +100,7 @@ pub fn update_user(
                     service: "USER".to_string(),
                     requestor,
                     entity: "user".to_string(),
-                    operation: 1,
+                    operation: OpType::Update,
                     datetime: chrono::offset::Utc::now(),
                     description: Some(format!("Update user ID {}", result.id)),
                 })
@@ -131,7 +131,7 @@ pub fn delete_user(
                     service: "USER".to_string(),
                     requestor,
                     entity: "user".to_string(),
-                    operation: 2,
+                    operation: OpType::Delete,
                     datetime: chrono::offset::Utc::now(),
                     description: Some(format!("Delete user ID {}", user_id)),
                 })

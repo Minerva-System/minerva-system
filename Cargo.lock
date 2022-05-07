@@ -595,6 +595,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2a60c7ce501c71e03a9c9c0d35b861413ae925bd979cc7a4e30d060069aaac8d"
 
 [[package]]
+name = "minerva-cache"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "diesel",
+]
+
+[[package]]
 name = "minerva-data"
 version = "0.1.0"
 dependencies = [
@@ -693,14 +701,6 @@ dependencies = [
  "minerva-data",
  "minerva-rpc",
  "tokio",
-]
-
-[[package]]
-name = "minerva-store"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "diesel",
 ]
 
 [[package]]

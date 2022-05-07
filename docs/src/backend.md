@@ -103,8 +103,9 @@ As bibliotecas planejadas para o sistema são:
   importado em todos os módulos, exceto na comunicação REST. Os DTOs também
   devem implementar traits e utilitários para conversão das mensagens
   implementadas em `minerva-rpc` para os DTOs desta biblioteca.
-- [ ] `minerva-store`: Implementação de utilitários de comunicação com
-  datastore (Redis). Deve ser importado principalmente no módulo de login.
+- [ ] `minerva-cache`: Implementação de utilitários de comunicação com
+  cache, message brokers e armazenamento temporário _in-memory_ (Redis).
+  Deve ser importado principalmente no módulo de sessão.
 
 ## Módulos
 

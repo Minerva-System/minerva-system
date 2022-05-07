@@ -2,7 +2,7 @@
 members = [
 	"minerva-rpc",
 	"minerva-data",
-	"minerva-store",
+	"minerva-cache",
 	"minerva-user",
 	"minerva-session",
 	"minerva-product",
