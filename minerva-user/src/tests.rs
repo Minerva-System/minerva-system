@@ -59,7 +59,11 @@ async fn integration_test_index() {
     let (handle, mut client, tx) = make_test_server(10010).await;
 
     // Request list of all users, then print on success
-    let response = client.index(Request::new(())).await.unwrap();
+    let index = Some(0);
+    let response = client
+        .index(Request::new(minerva_rpc::messages::PageIndex { index }))
+        .await
+        .unwrap();
     println!(
         "INDEX: {:#?}",
         minerva_data::user::message_to_vec(response.into_inner())

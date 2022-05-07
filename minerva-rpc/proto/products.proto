@@ -5,7 +5,7 @@ import "google/protobuf/empty.proto";
 package Product;
 
 service Products {
-  rpc index(google.protobuf.Empty) returns (Messages.ProductList) {}
+  rpc index(Messages.PageIndex) returns (Messages.ProductList) {}
   rpc show(Messages.EntityIndex) returns (Messages.Product) {}
   rpc store(Messages.Product) returns (Messages.Product) {}
   rpc update(Messages.Product) returns (Messages.Product) {}

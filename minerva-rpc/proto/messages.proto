@@ -6,6 +6,10 @@ message EntityIndex {
   int32 index = 1;
 }
 
+message PageIndex {
+  optional int64 index = 1;
+}
+
 message User {
   optional int32 id = 1;
   string login = 2;

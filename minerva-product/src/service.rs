@@ -10,19 +10,26 @@ pub struct ProductsService;
 
 #[tonic::async_trait]
 impl Products for ProductsService {
-    async fn index(&self, req: Request<()>) -> Result<Response<messages::ProductList>, Status> {
+    async fn index(
+        &self,
+        req: Request<messages::PageIndex>,
+    ) -> Result<Response<messages::ProductList>, Status> {
         let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
             Status::failed_precondition("Missing tenant on request metadata"),
         )?;
+
         let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
             Status::failed_precondition("Missing requestor on request metadata"),
         )?;
+
         lib_data::log::print(
             lib_rpc::get_address(&req),
             requestor.clone(),
             tenant.clone(),
             "PRODUCT::INDEX",
         );
+
+        let _page = req.into_inner().index.unwrap_or(0);
 
         unimplemented!();
     }

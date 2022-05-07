@@ -14,19 +14,25 @@ pub struct UsersService {
 
 #[tonic::async_trait]
 impl Users for UsersService {
-    async fn index(&self, req: Request<()>) -> Result<Response<messages::UserList>, Status> {
+    async fn index(
+        &self,
+        req: Request<messages::PageIndex>,
+    ) -> Result<Response<messages::UserList>, Status> {
         let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
             Status::failed_precondition("Missing tenant on request metadata"),
         )?;
         let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
             Status::failed_precondition("Missing requestor on request metadata"),
         )?;
+
         lib_data::log::print(
             lib_rpc::get_address(&req),
             requestor.clone(),
             tenant.clone(),
             "USER::INDEX",
         );
+
+        let page = req.into_inner().index.unwrap_or(0);
 
         let result = {
             let connection = self
@@ -37,7 +43,7 @@ impl Users for UsersService {
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            repository::get_list(0, &*connection)
+            repository::get_list(page, &*connection)
                 .map_err(|e| Status::internal(format!("Cannot recover user list: {}", e)))?
         };
 
