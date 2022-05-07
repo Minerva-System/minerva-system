@@ -1,17 +1,24 @@
+//! This module wraps all functions related to operations that should be run
+//! once on the database, when the entire system starts.
+
 use minerva_data::db;
 use minerva_data::{
     encryption,
-    syslog::NewLog,
+    syslog::{NewLog, OpType},
     user::{NewUser, User},
 };
 use std::env;
 
+/// Create a database for a specific tenant, if it doesn't exist.
+/// Panics if unable to create database.
 pub fn create_database(tenant: &str) {
     db::create_database(tenant)
         .map_err(|e| panic!("{}: Error while creating database: {}", tenant, e))
         .unwrap();
 }
 
+/// Run pending database migrations for a specific tenant.
+/// Panics if unable to run any migrations, if they weren't run already.
 pub fn run_migrations(tenant: &str) {
     let connection = db::make_single_connection(tenant);
     println!("{}: Running pending database migrations...", tenant);
@@ -21,6 +28,11 @@ pub fn run_migrations(tenant: &str) {
     println!("Migrations ran successfully.");
 }
 
+/// Create an Administrator user (login "admin") for a specific tenant, if it
+/// doesn't exist already.
+///
+/// The default administrator password can be configured through the environment
+/// variable `ADMIN_PASSWORD`. Otherwise, defaults to "admin".
 pub fn create_admin_user(tenant: &str) {
     use diesel::prelude::*;
     use minerva_data::schema::syslog;
@@ -64,7 +76,7 @@ pub fn create_admin_user(tenant: &str) {
                     service: "RUNONCE".to_string(),
                     requestor: "runonce".to_string(),
                     entity: "user".to_string(),
-                    operation: 0,
+                    operation: OpType::Insert,
                     datetime: chrono::offset::Utc::now(),
                     description: Some(format!("Add administrator ID {}", result.id)),
                 })

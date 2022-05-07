@@ -2,12 +2,23 @@ syntax = "proto3";
 import "messages.proto";
 import "google/protobuf/empty.proto";
 
+// This Protocol Buffer describes the service for dealing with users.
+
 package User;
 
 service Users {
+  // List all users, given a page index.
   rpc index(Messages.PageIndex) returns (Messages.UserList) {}
+
+  // Show a specific user, given its index.
   rpc show(Messages.EntityIndex) returns (Messages.User) {}
+
+  // Include a new user and return it.
   rpc store(Messages.User) returns (Messages.User) {}
+
+  // Update a user and return it.
   rpc update(Messages.User) returns (Messages.User) {}
+
+  // Delete a user.
   rpc delete(Messages.EntityIndex) returns (google.protobuf.Empty) {}
 }

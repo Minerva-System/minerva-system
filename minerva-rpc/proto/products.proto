@@ -2,13 +2,24 @@ syntax = "proto3";
 import "messages.proto";
 import "google/protobuf/empty.proto";
 
+// This Protocol Buffer describes the service for dealing with products.
+
 package Product;
 
 service Products {
+  // List all products, given a page index.
   rpc index(Messages.PageIndex) returns (Messages.ProductList) {}
+
+  // Show a specific product, given its index.
   rpc show(Messages.EntityIndex) returns (Messages.Product) {}
+
+  // Include a new product and return it.
   rpc store(Messages.Product) returns (Messages.Product) {}
+
+  // Update a product and return it.
   rpc update(Messages.Product) returns (Messages.Product) {}
+
+  // Delete a product.
   rpc delete(Messages.EntityIndex) returns (google.protobuf.Empty) {}
 }
 

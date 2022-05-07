@@ -1,8 +1,8 @@
 //! This is a library for working with anything related to actual data on
 //! the project. This includes:
 //!
-//! - Models for any defined entities;
-//! - Conversions from gRPC messages to actual entity models;
+//! - Data Transfer Objects (DTOs) for any defined entities;
+//! - Conversions from gRPC messages to actual entity DTOs;
 //! - Loading and reading project configuration such as multi-tenant config;
 //! - Logging to screen (non-audit logging).
 

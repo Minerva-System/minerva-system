@@ -1,13 +1,19 @@
+//! This module wraps the repository which handles the user DTOs.
+
 use diesel::prelude::*;
 use diesel::result::Error;
 use minerva_data::db::DBConnection;
 use minerva_data::syslog::{NewLog, OpType};
 use minerva_data::user as model;
 
+/// Default page size of a user list.
 const USER_PAGE_SIZE: i64 = 20;
 
+/// Grabs a list of users, paged. Expects a page number. If none or a negative
+/// value is provided, returns page 0.
 pub fn get_list(page: i64, connection: &DBConnection) -> Result<Vec<model::User>, Error> {
     use minerva_data::schema::user::dsl::*;
+    let page = if page < 0 { 0 } else { page };
     let offset = page * USER_PAGE_SIZE;
     user.order(id)
         .limit(USER_PAGE_SIZE)
@@ -15,6 +21,7 @@ pub fn get_list(page: i64, connection: &DBConnection) -> Result<Vec<model::User>
         .load::<model::User>(connection)
 }
 
+/// Grabs a specific user, given its ID on the database.
 pub fn get_user(user_id: i32, connection: &DBConnection) -> Result<Option<model::User>, Error> {
     use minerva_data::schema::user::dsl::*;
     user.filter(id.eq(user_id))
@@ -22,6 +29,7 @@ pub fn get_user(user_id: i32, connection: &DBConnection) -> Result<Option<model:
         .optional()
 }
 
+/// Creates a new user, for a given requestor, which shall also be a user.
 pub fn add_user(
     data: model::NewUser,
     requestor: String,
@@ -53,6 +61,7 @@ pub fn add_user(
         })
 }
 
+/// Updates the data for a user, for a given requestor, which shall also be a user.
 pub fn update_user(
     data: model::User,
     requestor: String,
@@ -110,6 +119,7 @@ pub fn update_user(
         })
 }
 
+/// Deletes a user, for a given requestor, which shall also be a user.
 pub fn delete_user(
     user_id: i32,
     requestor: String,

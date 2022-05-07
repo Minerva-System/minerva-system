@@ -7,8 +7,10 @@ use minerva_rpc::{messages, metadata};
 use std::collections::HashMap;
 use tonic::{Request, Response, Status};
 
+/// Represents a gRPC service for users.
 #[derive(Clone)]
 pub struct UsersService {
+    /// Holds database connection pools for all tenants.
     pub pools: HashMap<String, DBPool>,
 }
 

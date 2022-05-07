@@ -1,23 +1,38 @@
+//! This module contains Data Transfer Objects for the `user` table, which
+//! represents the registered users for this tenancy.
+
 use crate::encryption;
 use crate::schema::user;
 use minerva_rpc::messages;
 
+/// DTO representing a single entry on the `user` table.
 #[derive(Queryable, Serialize, Clone, Debug)]
 pub struct User {
+    /// ID of the entry on the table.
     pub id: i32,
+    /// Username of the user for this entry.
     pub login: String,
+    /// Full name of the user for this entry.
     pub name: String,
+    /// Optional e-mail of the user for this entry.
     pub email: Option<String>,
+    /// Hash of the password of the user for this entry.
     #[serde(skip_serializing)]
     pub pwhash: Vec<u8>,
 }
 
+/// DTO representing a new entry on the `user` table.
 #[derive(Insertable, Default, Debug)]
 #[table_name = "user"]
 pub struct NewUser {
+    /// Username of the user being created.
     pub login: String,
+    /// Full name of the user being created.
     pub name: String,
+    /// Optional e-mail of the user being created.
+    /// Shouldn't clash with any other e-mail on the table.
     pub email: Option<String>,
+    /// Hash of the password of the user being created.
     pub pwhash: Vec<u8>,
 }
 
@@ -77,10 +92,14 @@ impl From<messages::User> for NewUser {
     }
 }
 
+/// Converts a `UserList` message into a `Vec` of `User` DTOs so that it
+/// can be sent back as a REST response.
 pub fn message_to_vec(message: messages::UserList) -> Vec<User> {
     message.users.iter().map(|u| u.clone().into()).collect()
 }
 
+/// Converts a `Vec` of `User` DTOs to a `UserList` so that it can be
+/// sent back as a gRPC response.
 pub fn vec_to_message(v: Vec<User>) -> messages::UserList {
     messages::UserList {
         users: v.iter().map(|u| u.clone().into()).collect(),
