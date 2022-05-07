@@ -1,8 +1,8 @@
 use crate::service;
 use dotenv::dotenv;
 use futures_util::FutureExt;
-use minerva_data::db;
 use minerva_data::user as model;
+use minerva_data::{db, encryption};
 use minerva_rpc::messages;
 use minerva_rpc::metadata::ClientInterceptor;
 use minerva_rpc::users::users_client::UsersClient;
@@ -22,6 +22,7 @@ async fn make_test_server(
     UsersClient<InterceptedService<Channel, ClientInterceptor>>,
     oneshot::Sender<()>,
 ) {
+    encryption::init_hasher();
     dotenv().ok();
 
     // Generate server address and client endpoint

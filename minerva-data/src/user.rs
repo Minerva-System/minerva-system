@@ -94,6 +94,8 @@ mod unit_tests {
 
     #[test]
     fn convert_message_to_user() {
+        encryption::init_hasher();
+
         let user = User {
             id: 0,
             login: "teste".into(),
@@ -119,6 +121,8 @@ mod unit_tests {
 
     #[test]
     fn convert_user_to_message() {
+        encryption::init_hasher();
+
         let msg = messages::User {
             id: Some(0),
             login: "ciclano".into(),
@@ -147,6 +151,8 @@ mod unit_tests {
 
     #[test]
     fn convert_message_to_newuser() {
+        encryption::init_hasher();
+
         let newuser = NewUser {
             login: "teste".into(),
             name: "Fulano da Silva".into(),
@@ -171,6 +177,8 @@ mod unit_tests {
 
     #[test]
     fn convert_userlist_message_to_user_vec() {
+        encryption::init_hasher();
+
         let mut msg = messages::UserList {
             users: vec![
                 messages::User {
@@ -241,6 +249,8 @@ mod unit_tests {
 
     #[test]
     fn convert_user_vec_to_userlist_message() {
+        encryption::init_hasher();
+
         let users: Vec<User> = vec![
             User {
                 id: 1,
