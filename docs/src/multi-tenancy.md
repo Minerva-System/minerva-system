@@ -15,14 +15,17 @@ A seguir, um exemplo do conteúdo em potencial deste arquivo.
 [[tenants]]
 name = "Minerva System"
 database = "minerva"
+connections = 5
 
 [[tenants]]
 name = "Test Database"
 database = "teste"
+connections = 5
 
 [[tenants]]
 name = "Comercial Fulano S/A"
 database = "comercial-fulano"
+connections = 5
 ```
 
 ## Criação do banco de dados

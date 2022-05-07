@@ -24,11 +24,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Creating database connection pools...");
 
     let mut pools = HashMap::new();
-
     for tenant in minerva_data::tenancy::get_tenants("tenancy.toml") {
         pools.insert(
             tenant.database.clone(),
-            db::make_connection_pool(&tenant.database, 15).await,
+            db::make_connection_pool(&tenant.database, tenant.connections).await,
+        );
+        println!(
+            "Added pool for tenant {} ({} connections).",
+            tenant.name, tenant.connections
         );
     }
 

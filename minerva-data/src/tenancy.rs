@@ -5,6 +5,7 @@ use std::collections::HashMap;
 pub struct Tenant {
     pub name: String,
     pub database: String,
+    pub connections: u32,
 }
 
 pub fn get_tenants(filename: &str) -> Vec<Tenant> {
