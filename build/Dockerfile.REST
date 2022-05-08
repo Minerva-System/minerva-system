@@ -38,17 +38,19 @@ RUN groupadd $APP_USER \
     && mkdir -p ${APP}
 
 COPY ./tenancy.toml ${APP}/tenancy.toml
+COPY ./minerva-rest/Rocket.toml ${APP}/Rocket.toml
 COPY --from=builder /project/minerva/target/release/minerva-rest ${APP}/minerva-rest
 RUN chown -R $APP_USER:$APP_USER ${APP}
 
 USER $APP_USER
 WORKDIR ${APP}
 
-ENV ROCKET_PORT=9000
 ENV USER_SERVICE_PORT=9010
 ENV SESSION_SERVICE_PORT=9011
 ENV PRODUCT_SERVICE_PORT=9012
 ENV STOCK_SERVICE_PORT=9013
 ENV REPORT_SERVICE_PORT=9014
+ENV ROCKET_KEEP_ALIVE=0
+ENV ROCKET_ENV=production
 
 CMD ["./minerva-rest"]
