@@ -8,6 +8,7 @@ use minerva_rpc::metadata::ClientInterceptor;
 use minerva_rpc::users::users_client::UsersClient;
 use minerva_rpc::users::users_server::UsersServer;
 use std::collections::HashMap;
+use std::env;
 use std::time::Duration;
 use tokio::sync::oneshot;
 use tokio::task::JoinHandle;
