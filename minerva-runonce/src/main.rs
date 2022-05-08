@@ -16,10 +16,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!();
 
     dotenv().ok();
+    
+    let dbserver = env::var("DATABASE_SERVICE_SERVER").expect("Unable to read DATABASE_SERVICE_SERVER");
+    println!("Await for database on spinlock...");
+    database::database_spinlock(&dbserver);
 
     println!("Running database preparation...");
-
-    let dbserver = env::var("DATABASE_SERVICE_SERVER").expect("Unable to read DATABASE_SERVICE_SERVER");
 
     for tenant in minerva_data::tenancy::get_tenants("tenancy.toml") {
         println!("Running configuration for tenant \"{}\"...", tenant.name);

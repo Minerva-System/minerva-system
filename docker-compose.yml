@@ -34,8 +34,8 @@ services:
   # Database
   postgresql:
     environment:
-      - POSTGRESQL_USER=postgres
-      - POSTGRESQL_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     image: postgres:14
 
   # pgAdmin 4

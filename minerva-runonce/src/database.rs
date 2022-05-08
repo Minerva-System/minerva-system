@@ -9,6 +9,17 @@ use minerva_data::{
 };
 use std::env;
 
+/// Awaits for database availability on a spinlock.
+pub fn database_spinlock(server: &str) {
+    let mut lock = true;
+    while lock {
+	let conn = db::try_make_single_connection("postgres", server);
+	if conn.is_ok() {
+	    lock = false;
+	}
+    }
+}
+
 /// Create a database for a specific tenant, if it doesn't exist.
 /// Panics if unable to create database.
 pub fn create_database(tenant: &str, server: &str) {
