@@ -58,7 +58,8 @@ table! {
     syslog (id) {
         id -> Int4,
         service -> Varchar,
-        USER -> Varchar,
+        requestor -> Varchar,
+        entity -> Varchar,
         operation -> Int2,
         datetime -> Timestamptz,
         description -> Nullable<Varchar>,

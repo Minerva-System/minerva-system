@@ -1,0 +1,60 @@
+FROM rust:latest AS builder
+
+WORKDIR /
+RUN apt update && apt install -y cmake
+RUN mkdir /project
+RUN cd project && cargo new --bin minerva
+
+WORKDIR /project
+ADD ./minerva-cache/ /project/minerva-cache/
+ADD ./minerva-data/ /project/minerva-data/
+ADD ./minerva-rpc/ /project/minerva-rpc/
+COPY Cargo.lock /project/minerva/Cargo.lock
+COPY ./minerva-rest/Cargo.toml /project/minerva/Cargo.toml
+
+WORKDIR /project/minerva
+RUN cargo build --release
+
+# Ater cache, specific stuff
+RUN rm -r src/ && rm -r ./target/release/deps/minerva*
+ADD ./minerva-rest /project/minerva
+RUN rm .env
+RUN cargo build --release
+
+
+FROM debian:bullseye-slim
+ARG APP=/usr/src/app
+RUN apt update \
+    && apt install -y ca-certificates tzdata libpq5 \
+    && rm -rf /var/lib/apt/lists/*
+
+EXPOSE 9000
+
+ENV TZ=Etc/UTC \
+    APP_USER=appuser
+
+RUN groupadd $APP_USER \
+    && useradd -g $APP_USER $APP_USER \
+    && mkdir -p ${APP}
+
+COPY ./tenancy.toml ${APP}/tenancy.toml
+COPY ./minerva-rest/Rocket.toml ${APP}/Rocket.toml
+COPY --from=builder /project/minerva/target/release/minerva-rest ${APP}/minerva-rest
+RUN chown -R $APP_USER:$APP_USER ${APP}
+
+USER $APP_USER
+WORKDIR ${APP}
+
+ENV USER_SERVICE_PORT=9010
+ENV SESSION_SERVICE_PORT=9011
+ENV PRODUCT_SERVICE_PORT=9012
+ENV STOCK_SERVICE_PORT=9013
+ENV REPORT_SERVICE_PORT=9014
+
+ENV USER_SERVICE_SERVER=users
+ENV DATABASE_SERVICE_SERVER=postgresql
+
+ENV ROCKET_KEEP_ALIVE=0
+ENV ROCKET_ENV=production
+
+CMD ["./minerva-rest"]

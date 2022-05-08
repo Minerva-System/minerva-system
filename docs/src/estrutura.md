@@ -26,3 +26,38 @@ Para tanto, deve-se pensar em três grandes serviços:
 - Banco de Dados (PostgreSQL 14, que pode ser utilizado em um contêiner Docker para
   intuitos de debug apenas).
 
+Adicionalmente, será possível manter uma maleabilidade que permita a confecção de outros
+tipos de Front-Ends que se comuniquem diretamente com o Back-End da aplicação, como
+por exemplo, através de programas nativos para Desktop e Mobile.
+
+```dot process
+digraph {
+	frontend[label="Front-End (Web)", shape=note];
+	backend[label="Back-End", shape=box3d];
+	db[label="BD", shape=cylinder];
+	desktop[label="Front-End (Desktop)", shape=box];
+	mobile[label="Front-End (Mobile)", shape=box];
+
+	subgraph {
+		rankdir="LR";
+		desktop -> backend [style=dotted, shape=none];
+		mobile -> backend [style=dotted, shape=none];
+	}
+
+	rankdir="LR";
+    frontend -> backend;
+	backend -> frontend;
+	backend -> db;
+	db -> backend;
+	
+	subgraph cluster_webservice {
+		label="Serviço Web";
+		frontend;
+		subgraph cluster_internal {
+			label="Interno";
+		    backend;
+			db;
+		}
+	}
+}
+```

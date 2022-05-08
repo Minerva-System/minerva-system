@@ -1,11 +1,22 @@
 syntax = "proto3";
 
+// This Protocol Buffer describes the messages that can be used on all services.
+
 package Messages;
 
+// A message containing the index of an expected entity.
 message EntityIndex {
   int32 index = 1;
 }
 
+// A message containing the index of a page for a list of entities.
+// By not informing the page, it should default to 0.
+message PageIndex {
+  optional int64 index = 1;
+}
+
+// A message describing a user that can be sent back and forth.
+// This message represents users for inclusion, updating and retrieval.
 message User {
   optional int32 id = 1;
   string login = 2;
@@ -14,15 +25,13 @@ message User {
   optional string password = 5;
 }
 
-message UserWrite {
-  string requiredBy = 1;
-  User user = 2;
-}
-
+// A message containing a list of users.
 message UserList {
   repeated User users = 1;
 }
 
+// A message describing a product that can be sent back and forth.
+// This message represents products for inclusion, updating and retrieval.
 message Product {
   optional int32 id = 1;
   string description = 2;
@@ -30,11 +39,7 @@ message Product {
   string price = 4;
 }
 
-message ProductWrite {
-  string requiredBy = 1;
-  Product product = 2;
-}
-
+// A message containing a list of products.
 message ProductList {
   repeated Product products = 1;
 }

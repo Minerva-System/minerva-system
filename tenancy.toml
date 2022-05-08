@@ -1,0 +1,15 @@
+# Bancos de dados para o multi-tenancy
+[[tenants]]
+name = "Minerva System"
+database = "minerva"
+connections = 5
+
+[[tenants]]
+name = "Test Database"
+database = "teste"
+connections = 5
+
+[[tenants]]
+name = "Comercial Fulano S/A"
+database = "comercial-fulano"
+connections = 5

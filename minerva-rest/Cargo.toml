@@ -3,6 +3,11 @@ name = "minerva-rest"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+minerva-rpc = {path = "../minerva-rpc"}
+minerva-data = {path = "../minerva-data"}
+dotenv = "0.15.0"
+rocket = { version = "0.5.0-rc.1", features = ["json"] }
+tonic = "0.7"
+serde = "1.0"
+serde_json = "1.0"
