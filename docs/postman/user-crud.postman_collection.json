@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "f264b414-9d14-4f7f-971c-7861828df881",
+		"name": "Minerva System: User CRUD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();",
+							"pm.globals.set(\"user_id\", response.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"login\": \"ciclano\",\n    \"name\": \"Ciclano da Silva\",\n    \"email\": null,\n    \"password\": \"senha456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{endpoint}}/{{tenant}}/users/",
+					"protocol": "http",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"{{tenant}}",
+						"users",
+						""
+					]
+				},
+				"description": "This request allows creating a new user, given the following information:\n\n- `login`: User login which shall be used to identify the user on the service.\n- `name`: Full name of the user.\n- `email` (optional): User e-mail. Cannot coincide with any other user e-mail that was already registered.\n- `password`: Password text in verbatim. Will not be echoed, and only its hash will be stored securely."
+			},
+			"response": []
+		},
+		{
+			"name": "List users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{endpoint}}/{{tenant}}/users/?page=0",
+					"protocol": "http",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"{{tenant}}",
+						"users",
+						""
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						}
+					]
+				},
+				"description": "This request gives back a list of all users.\n\nThe request is necessarily paged to avoid server overload. This means that only one page at a time will be returned as a response.\n\nTo adjust which page you need, change the `page` query parameter. Minimum value is `0`. If this query parameter is not provided, the `page` will be `0` by default.\n\nFor security reasons, **password hashes are never returned**."
+			},
+			"response": []
+		},
+		{
+			"name": "Show user by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{endpoint}}/{{tenant}}/users/{{user_id}}",
+					"protocol": "http",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"{{tenant}}",
+						"users",
+						"{{user_id}}"
+					]
+				},
+				"description": "This request gives back the information on a single user, which should be represented by the index of that user on the endpoint URL.\n\nThe minimum user index is `1`, and there is no guarantee that these indices are sequential, since a user can be removed.\n\nFor security reasons, **a user's password hash is never returned**."
+			},
+			"response": []
+		},
+		{
+			"name": "Update user",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"login\": \"ciclano\",\n    \"name\": \"Ciclano de Tal\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{endpoint}}/{{tenant}}/users/{{user_id}}",
+					"protocol": "http",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"{{tenant}}",
+						"users",
+						"{{user_id}}"
+					]
+				},
+				"description": "This request allows for updating an user.\n\nAs it is suggested, the user **must** exist on the database, and should be identified by its user ID.\n\nThe user can be updated given the following information:\n\n- `login`: User login which shall be used to identify the user on the service. **Must be provided**, regardless of whether it will be changed or not.\n- `name`: Full name of the user. **Must be provided**, regardless of whether it will be changed or not.\n- `email` (optional): User e-mail. Cannot coincide with any other user e-mail that was already registered. *If not provided*, the e-mail *will not be updated*.\n- `password` (optional): Password text in verbatim. Will not be echoed, and only its hash will be stored securely. *If not provided*, or *if provided as empty text*, the password *will not be updated*."
+			},
+			"response": []
+		},
+		{
+			"name": "Remove user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{endpoint}}/{{tenant}}/users/{{user_id}}",
+					"protocol": "http",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"{{tenant}}",
+						"users",
+						"{{user_id}}"
+					]
+				},
+				"description": "Deletes a user.\n\nNo body should be provided with the request, and the user will be identified by its ID, present on the request endpoint.\n\nAs it is suggested, the user with said ID **must** exist on the database."
+			},
+			"response": []
+		}
+	]
+}

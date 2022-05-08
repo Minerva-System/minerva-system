@@ -75,6 +75,11 @@ docker compose up -d --no-deps --build runonce
 For more information on how the services are deployed, see the `docker-compose.yml`
 file.
 
+### Running some requests
+
+There are some exported collections for Postman under `docs/postman/`. One would
+want to import and use them to a new workspace on that platform.
+
 ## Documentation
 
 For detailed documentation, please refer to the `docs/` folder. In there, most
