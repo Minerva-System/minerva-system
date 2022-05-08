@@ -45,8 +45,8 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=admin
       - GUNICORN_ACCESS_LOGFILE=/dev/null
     build:
-      dockerfile: ../build/Dockerfile.PGADMIN
-      context: build/pgadmin
+      dockerfile: Dockerfile.PGADMIN
+      context: build
     ports:
       - "8484:80"
 

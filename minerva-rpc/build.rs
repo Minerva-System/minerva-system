@@ -1,8 +1,8 @@
 fn main() {
     let files = [
-        "proto/messages.proto",
-        "proto/users.proto",
-        "proto/products.proto",
+        "./proto/messages.proto",
+        "./proto/users.proto",
+        "./proto/products.proto",
     ];
 
     for file in files {

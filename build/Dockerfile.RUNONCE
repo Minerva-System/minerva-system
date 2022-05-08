@@ -6,9 +6,9 @@ RUN mkdir -p /project/minerva-cache /project/minerva-data /project/minerva-rpc
 RUN cd project && cargo new --bin minerva
 
 WORKDIR /project
-ADD ./minerva-cache/* /project/minerva-cache/
-ADD ./minerva-data/* /project/minerva-data/
-ADD ./minerva-rpc/* /project/minerva-rpc/
+ADD ./minerva-cache/ /project/minerva-cache/
+ADD ./minerva-data/ /project/minerva-data/
+ADD ./minerva-rpc/ /project/minerva-rpc/
 COPY Cargo.lock /project/minerva/Cargo.lock
 COPY ./minerva-runonce/Cargo.toml /project/minerva/Cargo.toml
 
@@ -17,7 +17,8 @@ RUN cargo build --release
 
 # Ater cache, specific stuff
 RUN rm -r src/ && rm -r ./target/release/deps/minerva*
-ADD ./minerva-runonce ./
+ADD ./minerva-runonce /project/minerva/
+RUN rm .env tenancy.toml
 RUN cargo build --release
 
 
@@ -35,6 +36,7 @@ RUN groupadd $APP_USER \
     && mkdir -p ${APP}
 
 COPY ./tenancy.toml ${APP}/tenancy.toml
+COPY --from=builder /project/minerva/migrations ${APP}/migrations
 COPY --from=builder /project/minerva/target/release/minerva-runonce ${APP}/minerva-runonce
 RUN chown -R $APP_USER:$APP_USER ${APP}
 
