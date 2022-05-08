@@ -1,0 +1,14 @@
+{
+    "Servers": {
+	"1": {
+	    "Name": "minerva",
+	    "Group": "Servers",
+	    "Host": "postgresql",
+	    "Port": 5432,
+	    "MaintenanceDB": "postgres",
+	    "Username": "postgres",
+	    "Password": "postgres",
+	    "SSLMode": "prefer"
+	}
+    }
+}

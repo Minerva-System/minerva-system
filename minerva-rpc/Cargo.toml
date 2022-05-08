@@ -3,6 +3,9 @@ name = "minerva-rpc"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+path = "src/lib.rs"
+
 [dependencies]
 tonic = "0.7"
 tokio-stream = {version = "0.1", features = ["net"]}

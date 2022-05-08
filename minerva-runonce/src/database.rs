@@ -11,16 +11,16 @@ use std::env;
 
 /// Create a database for a specific tenant, if it doesn't exist.
 /// Panics if unable to create database.
-pub fn create_database(tenant: &str) {
-    db::create_database(tenant)
+pub fn create_database(tenant: &str, server: &str) {
+    db::create_database(tenant, server)
         .map_err(|e| panic!("{}: Error while creating database: {}", tenant, e))
         .unwrap();
 }
 
 /// Run pending database migrations for a specific tenant.
 /// Panics if unable to run any migrations, if they weren't run already.
-pub fn run_migrations(tenant: &str) {
-    let connection = db::make_single_connection(tenant);
+pub fn run_migrations(tenant: &str, server: &str) {
+    let connection = db::make_single_connection(tenant, server);
     println!("{}: Running pending database migrations...", tenant);
     diesel_migrations::run_pending_migrations(&connection)
         .map_err(|e| panic!("{}: Error while running database migrations: {}", tenant, e))
@@ -33,14 +33,14 @@ pub fn run_migrations(tenant: &str) {
 ///
 /// The default administrator password can be configured through the environment
 /// variable `ADMIN_PASSWORD`. Otherwise, defaults to "admin".
-pub fn create_admin_user(tenant: &str) {
+pub fn create_admin_user(tenant: &str, server: &str) {
     use diesel::prelude::*;
     use minerva_data::schema::syslog;
     use minerva_data::schema::user::{self, dsl::*};
 
     println!("{}: Creating user for Administrator...", tenant);
 
-    let connection = db::make_single_connection(tenant);
+    let connection = db::make_single_connection(tenant, server);
 
     if user
         .filter(login.eq("admin"))

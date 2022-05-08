@@ -15,8 +15,9 @@ pub fn routes() -> Vec<Route> {
 }
 
 fn get_endpoint() -> String {
-    let port = env::var("USER_SERVICE_PORT").expect("Unable to read USER_SERVICE_PORT");
-    format!("http://localhost:{}", port)
+    let port = env::var("USER_SERVICE_SERVER").expect("Unable to read USER_SERVICE_SERVER");
+    let srv = env::var("USER_SERVICE_PORT").expect("Unable to read USER_SERVICE_PORT");
+    format!("http://{}:{}", srv, port)
 }
 
 /// # Request example

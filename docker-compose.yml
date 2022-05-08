@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+  # REST service
+  rest:
+    environment:
+      - USER_SERVICE_SERVER=users
+    build:
+      dockerfile: build/Dockerfile.REST
+      context: .
+    ports:
+      - "9000:9000"
+    depends_on:
+      - "users"
+  
+  # RUNONCE service
+  runonce:
+    environment:
+      - DATABASE_SERVICE_SERVER=postgresql
+    build:
+      dockerfile: build/Dockerfile.RUNONCE
+      context: .
+    depends_on:
+      - "postgresql"
+  
+  # USERS service
+  users:
+    environment:
+      - DATABASE_SERVICE_SERVER=postgresql
+    build:
+      dockerfile: build/Dockerfile.USER
+      context: .
+
+  # Database
+  postgresql:
+    environment:
+      - POSTGRESQL_USER=postgres
+      - POSTGRESQL_PASSWORD=postgres
+    image: postgres:14
+
+  # pgAdmin 4
+  pgadmin:
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - GUNICORN_ACCESS_LOGFILE=/dev/null
+    build:
+      dockerfile: ../build/Dockerfile.PGADMIN
+      context: build/pgadmin
+    ports:
+      - "8484:80"
+
