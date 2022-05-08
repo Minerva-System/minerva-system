@@ -33,14 +33,47 @@ though there are no guarantees that those strategies are necessarily correct.
 
 ## Dependencies
 
+If you plan on running it over Docker Compose:
+
 - Docker;
-- Docker Compose;
-- Rust (stable channel, version 2021, preferably using `rustc` 1.60.0 or up).
+- Docker Compose.
+
+If you plan on helping on development:
+
+- Rust (`rustc` 1.60.0 or newer, supporting Rust Edition 2021);
+- `libpq5` or higher (to connect to PostgreSQL 14);
+- Docker (to run services that are not necessarily a direct part of the Minerva System).
 
 For documentation:
 
 - `mdbook`;
 - `mdbook-graphviz`.
+
+## Quickstart with Docker Compose
+
+You can quickstart the service by using Docker Compose. This will build all
+the services with their respective containers while keeping a cache of their
+needed packages for future builds (unless you change `Cargo.lock` or their
+`Cargo.toml`, but there is no absolute need to rebuild a project which you
+haven't messed up with on the first place).
+
+If this is your first time running the Minerva System, simply `cd` to the
+folder and run:
+
+```bash
+docker compose up
+```
+
+If the service is already running, and you wish to rebuild and deploy a
+specific service (e.g. the `RUNONCE` service, if you added a new tenant in
+`tenancy.toml`), simply run something like:
+
+```bash
+docker compose up -d --no-deps --build runonce
+```
+
+For more information on how the services are deployed, see the `docker-compose.yml`
+file.
 
 ## Documentation
 
