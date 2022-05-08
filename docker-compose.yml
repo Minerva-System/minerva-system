@@ -30,6 +30,9 @@ services:
     build:
       dockerfile: build/Dockerfile.USER
       context: .
+    depends_on:
+      runonce:
+        condition: service_completed_successfully
 
   # Database
   postgresql:
