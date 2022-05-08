@@ -45,14 +45,14 @@ impl Response {
     }
 
     pub fn respond_empty(response: Result<tonic::Response<()>, Status>) -> Self {
-	match response {
-	    Ok(_) => Response::Ok("{}".into()),
-	    Err(status) => Self::convert(status),
-	}
+        match response {
+            Ok(_) => Response::Ok("{}".into()),
+            Err(status) => Self::convert(status),
+        }
     }
 
     fn convert(status: Status) -> Self {
-	let message = json!({ "message": status.message() }).to_string();
+        let message = json!({ "message": status.message() }).to_string();
         match status.code() {
             Code::Aborted => Self::NoResponse(message),
             Code::AlreadyExists => Self::Conflict(message),

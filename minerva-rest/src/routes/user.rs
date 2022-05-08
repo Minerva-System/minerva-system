@@ -5,6 +5,7 @@ use response::Response;
 use rocket::serde::json::Json;
 use rocket::Route;
 use std::env;
+use std::net::SocketAddr;
 use tonic::Request;
 
 // TODO: Change this! This should come from authentication.
@@ -14,9 +15,14 @@ pub fn routes() -> Vec<Route> {
     routes![index, show, store, update, delete]
 }
 
+fn get_ip() -> SocketAddr {
+    use std::net::{IpAddr, Ipv4Addr};
+    SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), 9000)
+}
+
 fn get_endpoint() -> String {
-    let port = env::var("USER_SERVICE_SERVER").expect("Unable to read USER_SERVICE_SERVER");
-    let srv = env::var("USER_SERVICE_PORT").expect("Unable to read USER_SERVICE_PORT");
+    let port = env::var("USER_SERVICE_PORT").expect("Unable to read USER_SERVICE_PORT");
+    let srv = env::var("USER_SERVICE_SERVER").expect("Unable to read USER_SERVICE_SERVER");
     format!("http://{}:{}", srv, port)
 }
 
@@ -29,6 +35,12 @@ fn get_endpoint() -> String {
 #[get("/<tenant>/users?<page>")]
 async fn index(tenant: String, page: Option<i64>) -> Response {
     let endpoint = get_endpoint();
+    data::log::print(
+        get_ip(),
+        REQUESTOR.to_string(),
+        tenant.clone(),
+        &format!("INDEX: Connecting to {}...", endpoint),
+    );
     let mut client = rpc::users::make_client(endpoint, tenant, REQUESTOR.into()).await;
     let response = client
         .index(Request::new(rpc::messages::PageIndex { index: page }))
@@ -45,6 +57,12 @@ async fn index(tenant: String, page: Option<i64>) -> Response {
 #[get("/<tenant>/users/<id>")]
 async fn show(tenant: String, id: i32) -> Response {
     let endpoint = get_endpoint();
+    data::log::print(
+        get_ip(),
+        REQUESTOR.to_string(),
+        tenant.clone(),
+        &format!("SHOW: Connecting to {}...", endpoint),
+    );
     let mut client = rpc::users::make_client(endpoint, tenant, REQUESTOR.into()).await;
     let index = id;
     let response: Result<data::user::User, tonic::Status> = client
@@ -63,6 +81,12 @@ async fn show(tenant: String, id: i32) -> Response {
 #[post("/<tenant>/users", data = "<body>")]
 async fn store(tenant: String, body: Json<data::user::RecvUser>) -> Response {
     let endpoint = get_endpoint();
+    data::log::print(
+        get_ip(),
+        REQUESTOR.to_string(),
+        tenant.clone(),
+        &format!("STORE: Connecting to {}...", endpoint),
+    );
     let mut client = rpc::users::make_client(endpoint, tenant, REQUESTOR.into()).await;
     let message = body.0.into();
     let response: Result<data::user::User, tonic::Status> = client
@@ -84,6 +108,12 @@ async fn store(tenant: String, body: Json<data::user::RecvUser>) -> Response {
 #[put("/<tenant>/users/<id>", data = "<body>")]
 async fn update(tenant: String, id: i32, body: Json<data::user::RecvUser>) -> Response {
     let endpoint = get_endpoint();
+    data::log::print(
+        get_ip(),
+        REQUESTOR.to_string(),
+        tenant.clone(),
+        &format!("UPDATE: Connecting to {}...", endpoint),
+    );
     let mut client = rpc::users::make_client(endpoint, tenant, REQUESTOR.into()).await;
     let mut message: rpc::messages::User = body.0.into();
     message.id = Some(id);
@@ -102,9 +132,15 @@ async fn update(tenant: String, id: i32, body: Json<data::user::RecvUser>) -> Re
 #[delete("/<tenant>/users/<index>")]
 async fn delete(tenant: String, index: i32) -> Response {
     let endpoint = get_endpoint();
+    data::log::print(
+        get_ip(),
+        REQUESTOR.to_string(),
+        tenant.clone(),
+        &format!("DELETE: Connecting to {}...", endpoint),
+    );
     let mut client = rpc::users::make_client(endpoint, tenant, REQUESTOR.into()).await;
-    let response = client.delete(Request::new(
-	rpc::messages::EntityIndex { index }
-    )).await;
+    let response = client
+        .delete(Request::new(rpc::messages::EntityIndex { index }))
+        .await;
     Response::respond_empty(response)
 }
