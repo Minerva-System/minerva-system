@@ -45,10 +45,13 @@ graph {
 	
 	subgraph cluster_db {
 		rankdir="LR";
-		label = "BANCO DE DADOS";
+		label = "BANCO DE DADOS\n(multi-inquilino)";
 		color=darkmagenta;
 		fontcolor=darkmagenta;
-		db1[label="", shape=cylinder, color=darkmagenta];
+		db2[label="inq3", shape=cylinder, color=darkmagenta, fontcolor=darkmagenta];
+        db1[label="inq2", shape=cylinder, color=darkmagenta, fontcolor=darkmagenta];
+		db3[label="inq1", shape=cylinder, color=darkmagenta, fontcolor=darkmagenta];
+		{rank=same; db3; db1; db2;}
 	}
 
 	subgraph cluster_backend {
@@ -82,7 +85,7 @@ graph {
 		session -- db1 [lhead=cluster_db, label="DB\n(Pool)", color=darkmagenta, fontcolor=darkmagenta];
 		product -- db1 [lhead=cluster_db, label="DB\n(Pool)", color=darkmagenta, fontcolor=darkmagenta];
 		stock -- db1 [lhead=cluster_db, label="DB\n(Pool)", color=darkmagenta, fontcolor=darkmagenta];
-		runonce -- db1 [lhead=cluster_db, label="DB\n(Avulsa)", color=darkmagenta, fontcolor=darkmagenta];
+		runonce -- db1 [lhead=cluster_db, label="DB\n(Avulsa)", color=magenta, fontcolor=magenta];
 	}
 
 	frontend -- rest[label="REST", color=green, fontcolor=green];
@@ -120,7 +123,7 @@ Os módulos planejados para o sistema são:
 - [ ] `minerva-stock`: Servidor gRPC para CRUD de estoque de produtos. Deve
   ser capaz de manipular as regras de negócios relacionadas a estoque, mas
   que não envolvam manipulação de produtos.
-- [ ] `minerva-rest`: Servidor REST para comunicação com os demais módulos
+- [x] `minerva-rest`: Servidor REST para comunicação com os demais módulos
   executáveis. Possui rotas que apontam para serviços específicos, e é por
   definição um cliente gRPC de todos os servidores gRPC.
 - [x] `minerva-runonce`: Serviço **avulso** para configuração do ambiente, de
@@ -139,7 +142,7 @@ Cada porta deve também ser configurável através de variáveis de ambiente.
 A tabela a seguir discrimina as variáveis de ambiente e as portas padrão
 de acordo com o serviço em questão.
 
-| Serviço | Variável               | Porta |
+| Serviço | Variável               | Valor |
 |---------|------------------------|-------|
 | USER    | `USER_SERVICE_PORT`    | 9010  |
 | SESSION | `SESSION_SERVICE_PORT` | 9011  |
@@ -148,4 +151,38 @@ de acordo com o serviço em questão.
 | REPORT  | `REPORT_SERVICE_PORT`  | 9014  |
 | REST    | `ROCKET_PORT`          | 9000  |
 
+
+No caso do serviço REST, verifique o arquivo `Rocket.toml` para avaliar
+a configuração em desenvolvimento e em produção do mesmo.
+
+## Gateways
+
+Os serviços também podem operar em máquinas diferentes, dependendo de sua
+rota.
+
+Normalmente, quando todos os serviços são executados manualmente na mesma
+máquina, operamos com uma rota `localhost`. Nesse caso, a variável de
+ambiente de cada serviço é definida como esse valor.
+
+Todavia, num ambiente de orquestração de contêineres (como Docker Compose
+ou Kubernetes), cada serviço estará operando de forma separada, e poderá
+comunicar-se com os outros serviços por intermédio de uma rede interna
+ao qual apenas os serviços têm acesso de forma explícita. Assim, as
+variáveis de ambiente que determinam o nome do servidor devem ser definidas
+manualmente, de acordo com a forma como o deploy de cada serviço foi
+realizado.
+
+A seguir, temos uma tabela relacionando variáveis de ambiente com seus
+devidos valores, que serão resolvidos através do DNS da rede interna criada
+pelo orquestrador de contêineres.
+
+No caso do serviço REST, verifique o arquivo `Rocket.toml` para avaliar
+a configuração em desenvolvimento e em produção do mesmo.
+
+| Serviço        | Variável                  | Valor em Produção |
+|----------------|---------------------------|-------------------|
+| USER           | `USER_SERVICE_SERVER`     | `users`           |
+| Banco de Dados | `DATABASE_SERVICE_SERVER` | `postgresql`      |
+| REST           | nenhuma                   | `rest`            |
+| RUNONCE        | nenhuma                   | `runonce`         |
 
