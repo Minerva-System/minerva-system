@@ -4,12 +4,15 @@ use diesel::result::QueryResult;
 use diesel::Connection;
 use diesel::RunQueryDsl;
 
+/// A Diesel statement for creating a database.
 #[derive(Debug, Clone)]
 pub struct CreateDatabaseStmt {
     dbname: String,
 }
 
 impl CreateDatabaseStmt {
+    /// Creates a new `CREATE DATABASE` statement. Requires the
+    /// name of the database to be created.
     pub fn new(dbname: &str) -> Self {
         Self {
             dbname: dbname.into(),
@@ -32,6 +35,10 @@ impl QueryId for CreateDatabaseStmt {
     const HAS_STATIC_QUERY_ID: bool = false;
 }
 
+/// Runs a database creation query, if said database does not exist.
+/// The database in question shall have the same name of a tenant.
+/// This function also expects the endpoint to a database server
+/// (e.g. `localhost:5432`).
 pub fn create_database(tenant: &str, server: &str) -> Result<(), String> {
     use crate::db;
     if db::try_make_single_connection(tenant, server).is_err() {

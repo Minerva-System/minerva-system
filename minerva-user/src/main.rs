@@ -23,7 +23,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("Creating database connection pools...");
 
-    let dbserver = env::var("DATABASE_SERVICE_SERVER").expect("Unable to read DATABASE_SERVICE_SERVER");
+    let dbserver =
+        env::var("DATABASE_SERVICE_SERVER").expect("Unable to read DATABASE_SERVICE_SERVER");
 
     let mut pools = HashMap::new();
     for tenant in minerva_data::tenancy::get_tenants("tenancy.toml") {

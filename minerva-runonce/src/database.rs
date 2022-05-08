@@ -13,10 +13,10 @@ use std::env;
 pub fn database_spinlock(server: &str) {
     let mut lock = true;
     while lock {
-	let conn = db::try_make_single_connection("postgres", server);
-	if conn.is_ok() {
-	    lock = false;
-	}
+        let conn = db::try_make_single_connection("postgres", server);
+        if conn.is_ok() {
+            lock = false;
+        }
     }
 }
 

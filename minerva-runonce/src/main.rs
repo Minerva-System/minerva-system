@@ -16,8 +16,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!();
 
     dotenv().ok();
-    
-    let dbserver = env::var("DATABASE_SERVICE_SERVER").expect("Unable to read DATABASE_SERVICE_SERVER");
+
+    let dbserver =
+        env::var("DATABASE_SERVICE_SERVER").expect("Unable to read DATABASE_SERVICE_SERVER");
     println!("Await for database on spinlock...");
     database::database_spinlock(&dbserver);
 

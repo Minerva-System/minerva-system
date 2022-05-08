@@ -28,12 +28,14 @@ async fn make_test_server(
     // Generate server address and client endpoint
     let address = format!("0.0.0.0:{}", port).parse().unwrap();
     let endpoint = format!("http://127.0.0.1:{}", port);
+    let dbserver =
+        env::var("DATABASE_SERVICE_SERVER").expect("Unable to read DATABASE_SERVICE_SERVER");
 
     // Create database connection pool with a single connection
     let mut pools = HashMap::new();
     pools.insert(
         "minerva".into(),
-        db::make_connection_pool("minerva", 1).await,
+        db::make_connection_pool("minerva", &dbserver, 1).await,
     );
 
     // Create single-time channel for shutdown signal passing
