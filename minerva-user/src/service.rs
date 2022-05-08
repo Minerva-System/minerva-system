@@ -23,6 +23,7 @@ impl Users for UsersService {
         let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
             Status::failed_precondition("Missing tenant on request metadata"),
         )?;
+
         let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
             Status::failed_precondition("Missing requestor on request metadata"),
         )?;
@@ -59,9 +60,11 @@ impl Users for UsersService {
         let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
             Status::failed_precondition("Missing tenant on request metadata"),
         )?;
+
         let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
             Status::failed_precondition("Missing requestor on request metadata"),
         )?;
+
         lib_data::log::print(
             lib_rpc::get_address(&req),
             requestor.clone(),
@@ -96,9 +99,11 @@ impl Users for UsersService {
         let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
             Status::failed_precondition("Missing tenant on request metadata"),
         )?;
+
         let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
             Status::failed_precondition("Missing requestor on request metadata"),
         )?;
+
         lib_data::log::print(
             lib_rpc::get_address(&req),
             requestor.clone(),
@@ -132,9 +137,11 @@ impl Users for UsersService {
         let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
             Status::failed_precondition("Missing tenant on request metadata"),
         )?;
+
         let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
             Status::failed_precondition("Missing requestor on request metadata"),
         )?;
+
         lib_data::log::print(
             lib_rpc::get_address(&req),
             requestor.clone(),
@@ -165,9 +172,11 @@ impl Users for UsersService {
         let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
             Status::failed_precondition("Missing tenant on request metadata"),
         )?;
+
         let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
             Status::failed_precondition("Missing requestor on request metadata"),
         )?;
+
         lib_data::log::print(
             lib_rpc::get_address(&req),
             requestor.clone(),

@@ -6,5 +6,8 @@ edition = "2021"
 [dependencies]
 minerva-rpc = {path = "../minerva-rpc"}
 minerva-data = {path = "../minerva-data"}
-tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync"]}
 dotenv = "0.15.0"
+rocket = { version = "0.5.0-rc.1", features = ["json"] }
+tonic = "0.7"
+serde = "1.0"
+serde_json = "1.0"

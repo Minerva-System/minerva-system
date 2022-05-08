@@ -146,6 +146,6 @@ de acordo com o serviço em questão.
 | PRODUCT | `PRODUCT_SERVICE_PORT` | 9012  |
 | STOCK   | `STOCK_SERVICE_PORT`   | 9013  |
 | REPORT  | `REPORT_SERVICE_PORT`  | 9014  |
-| REST    | `REST_SERVICE_PORT`    | 9000  |
+| REST    | `ROCKET_PORT`          | 9000  |
 
 

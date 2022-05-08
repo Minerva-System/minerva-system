@@ -1,14 +1,17 @@
-use dotenv::dotenv;
-use std::env;
+#[macro_use]
+extern crate rocket;
 
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+use dotenv::dotenv;
+
+mod routes;
+
+#[launch]
+fn launch() -> rocket::Rocket<rocket::Build> {
     println!("Minerva System: REST service");
     println!("Copyright (c) 2022 Lucas S. Vieira");
     println!();
 
     dotenv().ok();
-    let _port = env::var("REST_SERVICE_PORT").expect("Unable to read REST_SERVICE_PORT");
 
-    Ok(())
+    rocket::build().mount("/", routes::user::routes())
 }

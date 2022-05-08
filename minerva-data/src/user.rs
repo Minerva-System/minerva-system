@@ -21,6 +21,21 @@ pub struct User {
     pub pwhash: Vec<u8>,
 }
 
+/// DTO representing user data received through a REST request.
+#[derive(Serialize, Deserialize, Default)]
+pub struct RecvUser {
+    /// Username of the user being emplaced.
+    pub login: String,
+    /// Full name of the user being emplaced.
+    pub name: String,
+    /// Optional e-mail of the user being emplaced.
+    /// Shouldn't clash with any other e-mail on the table.
+    pub email: Option<String>,
+    /// Password of the user being emplaced.
+    /// If updating a user, using `None` will prevent updating the password.
+    pub password: Option<String>,
+}
+
 /// DTO representing a new entry on the `user` table.
 #[derive(Insertable, Default, Debug)]
 #[table_name = "user"]
@@ -74,6 +89,27 @@ impl Into<messages::User> for User {
             name: self.name.clone(),
             email: self.email.clone(),
             password: None,
+        }
+    }
+}
+
+impl Into<messages::User> for RecvUser {
+    fn into(self) -> messages::User {
+        messages::User {
+            id: None,
+            login: self.login.trim().to_string(),
+            name: self.name.trim().to_string(),
+            email: self.email.map(|e| e.trim().to_string()),
+            password: if let Some(pw) = self.password {
+                let pw = pw.trim().to_string();
+                if pw.is_empty() {
+                    None
+                } else {
+                    Some(pw.clone())
+                }
+            } else {
+                None
+            },
         }
     }
 }
@@ -192,6 +228,62 @@ mod unit_tests {
         assert_eq!(newuser, msg_user);
         assert!(encryption::check_hash("senha", &newuser.pwhash));
         assert!(encryption::check_hash("senha", &msg_user.pwhash));
+    }
+
+    #[test]
+    fn convert_recvuser_to_message() {
+        // Insert case
+        let expected = messages::User {
+            id: None,
+            login: "ciclano".into(),
+            name: "Ciclano da Silva".into(),
+            email: Some("ciclano@exemplo.com".into()),
+            password: Some("senha123".into()),
+        };
+
+        let user = RecvUser {
+            login: "ciclano".into(),
+            name: "Ciclano da Silva".into(),
+            email: Some("ciclano@exemplo.com".into()),
+            password: Some("senha123".into()),
+        };
+
+        let msg: messages::User = user.into();
+        assert_eq!(expected, msg);
+
+        // Update case -- No password
+        let expected = messages::User {
+            id: Some(2),
+            login: "ciclano".into(),
+            name: "Ciclano da Silva".into(),
+            email: Some("ciclano@exemplo.com".into()),
+            password: None,
+        };
+
+        let user = RecvUser {
+            login: "ciclano".into(),
+            name: "Ciclano da Silva".into(),
+            email: Some("ciclano@exemplo.com".into()),
+            password: None,
+        };
+
+        let mut msg: messages::User = user.into();
+        msg.id = Some(2);
+        assert_eq!(expected, msg);
+
+        // Any case: Trim strings
+        let user = RecvUser {
+            login: "    ciclano      ".into(),
+            name: "      Ciclano da Silva    ".into(),
+            email: Some("  ciclano@exemplo.com    ".into()),
+            password: Some("    senha123          ".into()),
+        };
+        let msg: messages::User = user.into();
+
+        assert_eq!(msg.login, "ciclano");
+        assert_eq!(msg.name, "Ciclano da Silva");
+        assert_eq!(msg.email.unwrap(), "ciclano@exemplo.com");
+        assert_eq!(msg.password.unwrap(), "senha123");
     }
 
     #[test]
