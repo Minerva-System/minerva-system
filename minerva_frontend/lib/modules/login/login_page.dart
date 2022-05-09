@@ -1,4 +1,5 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:get/get.dart';
 import 'package:minerva_frontend/core/ui/widgets/textfield.dart';
 import 'package:minerva_frontend/core/ui/widgets/card.dart';
 import 'package:minerva_frontend/core/ui/widgets/background.dart';
@@ -57,6 +58,8 @@ class _LoginPageState extends MinervaState<LoginPage, LoginController> {
                   if (formValid) {
                     _passwordEC.clear();
                   }
+                  var tenant = "/" + (Get.parameters['tenant'] ?? 'minerva');
+                  Get.toNamed("$tenant/main");
                 },
                 child: const Icon(
                   Icons.arrow_forward,
