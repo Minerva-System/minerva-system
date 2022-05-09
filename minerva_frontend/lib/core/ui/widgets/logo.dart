@@ -14,7 +14,6 @@ class MinervaLogo extends StatelessWidget {
           depth: -10,
           color: Color(0xFFDEE1ED),
         ),
-        padding: const EdgeInsets.all(15.0),
         child: Image.asset('assets/images/logo.png'),
       ),
     );

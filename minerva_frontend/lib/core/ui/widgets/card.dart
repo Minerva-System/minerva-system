@@ -23,7 +23,7 @@ class MinervaCard extends StatelessWidget {
         color: const Color(0xFFDFE0E7),
       ),
       padding: padding,
-      child: child,
+      child: Align(alignment: Alignment.center, child: child),
     );
   }
 }

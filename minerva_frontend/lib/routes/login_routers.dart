@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:minerva_frontend/modules/login/login_page.dart';
 
@@ -6,8 +7,8 @@ class LoginRouters {
 
   static final routers = <GetPage>[
     GetPage(
-      name: '/',
+      name: '/:tenant/',
       page: () => const LoginPage(),
-    )
+    ),
   ];
 }

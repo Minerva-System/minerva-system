@@ -1,9 +1,9 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:minerva_frontend/core/ui/widgets/minerva_textfield.dart';
-import 'package:minerva_frontend/core/ui/widgets/minerva_card.dart';
-import 'package:minerva_frontend/core/ui/widgets/minerva_background.dart';
-import 'package:minerva_frontend/core/ui/widgets/minerva_roundbutton.dart';
-import 'package:minerva_frontend/core/ui/widgets/minerva_logo.dart';
+import 'package:minerva_frontend/core/ui/widgets/textfield.dart';
+import 'package:minerva_frontend/core/ui/widgets/card.dart';
+import 'package:minerva_frontend/core/ui/widgets/background.dart';
+import 'package:minerva_frontend/core/ui/widgets/roundbutton.dart';
+import 'package:minerva_frontend/core/ui/widgets/logo.dart';
 import 'package:validatorless/validatorless.dart';
 import 'package:minerva_frontend/modules/login/login_controller.dart';
 import 'package:minerva_frontend/core/ui/minerva_state.dart';
