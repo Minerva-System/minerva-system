@@ -12,6 +12,7 @@ dependencies:
   validatorless: ^1.2.1
   intl: ^0.17.0
   flutter_neumorphic: ^3.0.3
+  fluttericon: ^2.0.0
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

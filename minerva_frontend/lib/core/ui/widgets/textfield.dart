@@ -6,6 +6,7 @@ class MinervaTextField extends StatelessWidget {
   final bool obscureText;
   final FormFieldValidator<String>? validator;
   final ValueChanged<String>? onChange;
+  final EdgeInsets? padding;
 
   const MinervaTextField({
     Key? key,
@@ -14,6 +15,7 @@ class MinervaTextField extends StatelessWidget {
     this.validator,
     this.onChange,
     this.obscureText = false,
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -21,8 +23,7 @@ class MinervaTextField extends StatelessWidget {
     return Material(
       color: const Color(0x00FFFFFF),
       child: Container(
-        // TODO: Remove?
-        padding: const EdgeInsets.only(bottom: 25.0),
+        padding: padding,
         child: Neumorphic(
           // TODO: Export this style.
           style: NeumorphicStyle(
@@ -32,8 +33,9 @@ class MinervaTextField extends StatelessWidget {
             intensity: 1.5,
             color: const Color(0xFFDEE1ED),
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+          child: Padding(  
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
             child: TextFormField(
               validator: validator,
               obscureText: obscureText,
@@ -42,7 +44,14 @@ class MinervaTextField extends StatelessWidget {
               decoration: InputDecoration(
                 isDense: true,
                 labelText: label,
-                labelStyle: const TextStyle(color: Color(0xFF9A9A9A)),
+                labelStyle: const TextStyle(
+                  color: Color(0xFF9A9A9A),
+                  backgroundColor: Colors.transparent,
+                ),
+                errorStyle: const TextStyle(
+                  color: Colors.redAccent,
+                  backgroundColor: Colors.transparent,
+                ),
                 filled: false,
                 border: InputBorder.none,
               ),

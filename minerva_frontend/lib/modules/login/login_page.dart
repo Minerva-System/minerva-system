@@ -8,6 +8,7 @@ import 'package:minerva_frontend/core/ui/widgets/logo.dart';
 import 'package:validatorless/validatorless.dart';
 import 'package:minerva_frontend/modules/login/login_controller.dart';
 import 'package:minerva_frontend/core/ui/minerva_state.dart';
+import 'package:fluttericon/mfg_labs_icons.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -29,17 +30,24 @@ class _LoginPageState extends MinervaState<LoginPage, LoginController> {
   @override
   Widget build(BuildContext context) {
     return MinervaBackground(
-      child: MinervaCard(
-        child: Center(
+        child: MinervaCard(
+        child: Container(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const MinervaLogo(),
+              const MinervaLogo(
+                padding: EdgeInsets.only(bottom: 20.0),
+              ),
               Form(
+                key: _formKey,
                 child: Column(children: <Widget>[
-                  const MinervaTextField(label: "Login"),
+                  const MinervaTextField(
+                    label: "Login",
+                    padding: EdgeInsets.only(bottom: 20.0),
+                  ),
                   MinervaTextField(
+                    padding: const EdgeInsets.only(bottom: 20.0),
                     label: "Senha",
                     obscureText: true,
                     controller: _passwordEC,
@@ -52,18 +60,18 @@ class _LoginPageState extends MinervaState<LoginPage, LoginController> {
                 ]),
               ),
               MinervaRoundButton(
+                padding: const EdgeInsets.all(20),
                 onPressed: () {
-                  // TODO: This is not working...
                   final formValid = _formKey.currentState?.validate() ?? false;
                   if (formValid) {
-                    _passwordEC.clear();
+                    // TODO: Perform actual login
+                    var tenant = "/" + (Get.parameters['tenant'] ?? 'minerva');
+                    Get.toNamed("$tenant/main");
                   }
-                  var tenant = "/" + (Get.parameters['tenant'] ?? 'minerva');
-                  Get.toNamed("$tenant/main");
                 },
                 child: const Icon(
-                  Icons.arrow_forward,
-                  size: 50,
+                  MfgLabs.right,
+                  size: 30,
                 ),
               ),
             ],
