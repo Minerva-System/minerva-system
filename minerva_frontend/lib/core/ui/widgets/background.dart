@@ -4,6 +4,7 @@ class MinervaBackground extends StatelessWidget {
   final Widget? child;
   final EdgeInsets padding;
   final Color backgroundColor;
+  final Alignment alignment;
 
   const MinervaBackground({
     Key? key,
@@ -11,6 +12,7 @@ class MinervaBackground extends StatelessWidget {
     this.padding =
         const EdgeInsets.symmetric(vertical: 90.0, horizontal: 100.0),
     this.backgroundColor = const Color(0xFFDADEEF),
+    this.alignment = Alignment.center,
   }) : super(key: key);
 
   @override
@@ -28,7 +30,8 @@ class MinervaBackground extends StatelessWidget {
           maxHeight = constraints.maxHeight;
         }
 
-        return Center(
+        return Align(
+          alignment: alignment,
           child: ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: maxWidth,

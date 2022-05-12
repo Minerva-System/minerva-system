@@ -45,6 +45,7 @@ class MinervaTextField extends StatelessWidget {
                 isDense: true,
                 labelText: label,
                 labelStyle: const TextStyle(
+                  fontFamily: 'nunitosans',
                   color: Color(0xFF9A9A9A),
                   backgroundColor: Colors.transparent,
                 ),
