@@ -1,6 +1,18 @@
 version: "3"
 
 services:
+  # Front-End service
+  frontend:
+    environment:
+      - NGINX_PORT=80
+    build:
+      dockerfile: build/Dockerfile.FRONTEND
+      context: .
+    ports:
+      - "8080:80"
+    depends_on:
+      - "rest"
+  
   # REST service
   rest:
     environment:
@@ -41,7 +53,7 @@ services:
       - POSTGRES_PASSWORD=postgres
     image: postgres:14
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ../minerva-postgresql:/var/lib/postgresql/data
 
   # pgAdmin 4
   pgadmin:
