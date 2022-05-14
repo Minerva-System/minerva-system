@@ -13,55 +13,57 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: const Spacer(flex: 2),
-        leading: const MinervaLogo(scale: 1),
-        leadingWidth: 100,
-        title: Text(
-          "Início",
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            fontFamily: 'nunitosans',
-            color: const Color(0xFF2B2B2B),
-            fontSize: 40,
+    return Container(
+      child: Scaffold(
+        appBar: AppBar(
+          flexibleSpace: const Spacer(flex: 2),
+          leading: const MinervaLogo(scale: 1),
+          leadingWidth: 100,
+          title: Text(
+            "Início",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontFamily: 'nunitosans',
+              color: const Color(0xFF2B2B2B),
+              fontSize: 40,
+            ),
           ),
+          elevation: 0,
+          backgroundColor: const Color(0xFFE5E5E5),
         ),
-        elevation: 0,
-        backgroundColor: const Color(0xFFE5E5E5),
-      ),
-      body: MinervaBackground(
-        alignment: Alignment.topLeft,
-        backgroundColor: const Color(0xFFE5E5E5),
-        child: Container(
-          padding: const EdgeInsets.only(left: 10, top: 10),
-          child: CollapsibleSidebar(
-            isCollapsed: true,
-            onHoverPointer: SystemMouseCursors.contextMenu,
-            backgroundColor: const Color(0xFFE5E5E5),
-            selectedIconBox: const Color(0xFFE5E5E5),
-            unselectedTextColor: const Color(0xFF9A9A9A),
-            selectedTextColor: const Color(0xFF2B2B2B),
-            selectedIconColor: const Color(0xFF990048),
-            unselectedIconColor:  const Color(0xFF2B2B2B),
-            textStyle: TextStyle(fontFamily: 'nunitosans'),
-            sidebarBoxShadow: [
-              BoxShadow(
-                color: Colors.black38,
-                blurRadius: 10,
-                spreadRadius: 0.01,
-                offset: const Offset(3, 3),
-              ),
-            ],
-            items: [
-              CollapsibleItem(
-                text: 'Teste',
-                icon: MfgLabs.user,
-                onPressed: () => {},
-                isSelected: true,
-              ),
-            ],
-            body: Neumorphic(),
+        body: MinervaBackground(
+          alignment: Alignment.topLeft,
+          backgroundColor: const Color(0xFFE5E5E5),
+          child: Container(
+            padding: const EdgeInsets.only(left: 10, top: 10),
+            child: CollapsibleSidebar(
+              isCollapsed: true,
+              onHoverPointer: SystemMouseCursors.contextMenu,
+              backgroundColor: const Color(0xFFE5E5E5),
+              selectedIconBox: const Color(0xFFE5E5E5),
+              unselectedTextColor: const Color(0xFF9A9A9A),
+              selectedTextColor: const Color(0xFF2B2B2B),
+              selectedIconColor: const Color(0xFF990048),
+              unselectedIconColor: const Color(0xFF2B2B2B),
+              textStyle: TextStyle(fontFamily: 'nunitosans'),
+              sidebarBoxShadow: [
+                BoxShadow(
+                  color: Colors.black38,
+                  blurRadius: 10,
+                  spreadRadius: 0.01,
+                  offset: const Offset(3, 3),
+                ),
+              ],
+              items: [
+                CollapsibleItem(
+                  text: 'Teste',
+                  icon: MfgLabs.user,
+                  onPressed: () => {},
+                  isSelected: true,
+                ),
+              ],
+              body: Neumorphic(),
+            ),
           ),
         ),
       ),
