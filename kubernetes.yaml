@@ -1,5 +1,29 @@
 apiVersion: v1
 items:
+  ### SERVICES AND JOBS ###
+  
+  # FrontEnd service
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: frontend
+      name: frontend
+    spec:
+      type: LoadBalancer
+      ports:
+        - name: "80"
+          port: 80
+          targetPort: 80
+      selector:
+        io.kompose.service: frontend
+    status:
+      loadBalancer: {}
+      
   # pgAdmin4 service
   - apiVersion: v1
     kind: Service
@@ -27,7 +51,7 @@ items:
     kind: Service
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
@@ -48,7 +72,7 @@ items:
     kind: Service
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
@@ -70,7 +94,7 @@ items:
     kind: Job
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
@@ -82,6 +106,10 @@ items:
           containers:
           - name: runonce
             image: minerva_runonce
+            imagePullPolicy: Never
+            env:
+            - name: DATABASE_SERVICE_SERVER
+              value: postgresql
           restartPolicy: Never
       backoffLimit: 4
 
@@ -90,7 +118,7 @@ items:
     kind: Service
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
@@ -101,14 +129,59 @@ items:
         - name: "9010"
           port: 9010
           targetPort: 9010
+      selector:
+        io.kompose.service: users
     status:
       loadBalancer: {}
 
+
+  ### DEPLOYMENTS ###
+      
+  # FrontEnd deployment
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: frontend
+      name: frontend
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          io.kompose.service: frontend
+      strategy: {}
+      template:
+        metadata:
+          annotations:
+            kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
+            kompose.version: 1.26.0 (40646f47)
+          creationTimestamp: null
+          labels:
+            io.kompose.service: frontend
+        spec:
+          containers:
+            - env:
+                - name: NGINX_PORT
+                  value: "80"
+              image: minerva_frontend
+              imagePullPolicy: Never
+              name: frontend
+              ports:
+                - containerPort: 80
+              resources: {}
+          restartPolicy: Always
+    status: {}
+
+  # pgAdmin4 deployment
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
@@ -123,7 +196,7 @@ items:
       template:
         metadata:
           annotations:
-            kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
+            kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
             kompose.version: 1.26.0 (40646f47)
           creationTimestamp: null
           labels:
@@ -145,11 +218,13 @@ items:
               resources: {}
           restartPolicy: Always
     status: {}
+
+  # PostgreSQL database deployment
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
@@ -165,7 +240,7 @@ items:
       template:
         metadata:
           annotations:
-            kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
+            kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
             kompose.version: 1.26.0 (40646f47)
           creationTimestamp: null
           labels:
@@ -191,6 +266,8 @@ items:
               persistentVolumeClaim:
                 claimName: postgresql-claim0
     status: {}
+
+  # PostgreSQL database persistence claim
   - apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
@@ -205,11 +282,13 @@ items:
         requests:
           storage: 100Mi
     status: {}
+
+  # REST deployment
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
@@ -224,7 +303,7 @@ items:
       template:
         metadata:
           annotations:
-            kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
+            kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
             kompose.version: 1.26.0 (40646f47)
           creationTimestamp: null
           labels:
@@ -242,48 +321,52 @@ items:
               resources: {}
           restartPolicy: Always
     status: {}
+
+  # RUNONCE deployment
+  # - apiVersion: apps/v1
+  #   kind: Deployment
+  #   metadata:
+  #     annotations:
+  #       kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
+  #       kompose.version: 1.26.0 (40646f47)
+  #     creationTimestamp: null
+  #     labels:
+  #       io.kompose.service: runonce
+  #     name: runonce
+  #   spec:
+  #     replicas: 1
+  #     selector:
+  #       matchLabels:
+  #         io.kompose.service: runonce
+  #     strategy: {}
+  #     template:
+  #       metadata:
+  #         annotations:
+  #           kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
+  #           kompose.version: 1.26.0 (40646f47)
+  #         creationTimestamp: null
+  #         labels:
+  #           io.kompose.service: runonce
+  #       spec:
+  #         containers:
+  #           - env:
+  #               - name: DATABASE_SERVICE_SERVER
+  #                 value: postgresql
+  #             image: minerva_runonce
+  #             imagePullPolicy: Never
+  #             name: runonce
+  #             ports:
+  #               - containerPort: 80
+  #             resources: {}
+  #         restartPolicy: Always
+  #   status: {}
+
+  # USERS deployment
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
       annotations:
-        kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
-        kompose.version: 1.26.0 (40646f47)
-      creationTimestamp: null
-      labels:
-        io.kompose.service: runonce
-      name: runonce
-    spec:
-      replicas: 1
-      selector:
-        matchLabels:
-          io.kompose.service: runonce
-      strategy: {}
-      template:
-        metadata:
-          annotations:
-            kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
-            kompose.version: 1.26.0 (40646f47)
-          creationTimestamp: null
-          labels:
-            io.kompose.service: runonce
-        spec:
-          containers:
-            - env:
-                - name: DATABASE_SERVICE_SERVER
-                  value: postgresql
-              image: minerva_runonce
-              imagePullPolicy: Never
-              name: runonce
-              ports:
-                - containerPort: 80
-              resources: {}
-          restartPolicy: Always
-    status: {}
-  - apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      annotations:
-        kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
         kompose.version: 1.26.0 (40646f47)
       creationTimestamp: null
       labels:
@@ -298,7 +381,7 @@ items:
       template:
         metadata:
           annotations:
-            kompose.cmd: kompose convert -f docker-compose.yml -o k8s-manifest.yaml
+            kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
             kompose.version: 1.26.0 (40646f47)
           creationTimestamp: null
           labels:
