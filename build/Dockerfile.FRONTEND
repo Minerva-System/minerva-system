@@ -21,6 +21,7 @@ RUN flutter precache
 RUN mkdir /app
 ADD ./minerva_frontend/ /app
 WORKDIR /app
+RUN flutter pub get
 RUN flutter build web
 
 

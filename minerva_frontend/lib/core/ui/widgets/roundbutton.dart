@@ -20,7 +20,6 @@ class MinervaRoundButton extends StatelessWidget {
       // TODO: offload?
       margin: margin,
       onPressed: onPressed,
-      child: child,
       padding: padding,
       style: const NeumorphicStyle(
         shape: NeumorphicShape.concave,
@@ -29,6 +28,7 @@ class MinervaRoundButton extends StatelessWidget {
         intensity: 0.6,
         color: Color(0xFFDFE0E6),
       ),
+      child: child,
     );
   }
 }

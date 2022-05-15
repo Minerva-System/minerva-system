@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:fluttericon/mfg_labs_icons.dart';
 import 'package:minerva_frontend/core/ui/widgets/background.dart';
-import 'package:minerva_frontend/core/ui/widgets/card.dart';
 import 'package:minerva_frontend/core/ui/widgets/logo.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
 
@@ -19,12 +17,12 @@ class MainPage extends StatelessWidget {
           flexibleSpace: const Spacer(flex: 2),
           leading: const MinervaLogo(scale: 1),
           leadingWidth: 100,
-          title: Text(
+          title: const Text(
             "Início",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontFamily: 'nunitosans',
-              color: const Color(0xFF2B2B2B),
+              color: Color(0xFF2B2B2B),
               fontSize: 40,
             ),
           ),
@@ -45,13 +43,13 @@ class MainPage extends StatelessWidget {
               selectedTextColor: const Color(0xFF2B2B2B),
               selectedIconColor: const Color(0xFF990048),
               unselectedIconColor: const Color(0xFF2B2B2B),
-              textStyle: TextStyle(fontFamily: 'nunitosans'),
-              sidebarBoxShadow: [
+              textStyle: const TextStyle(fontFamily: 'nunitosans'),
+              sidebarBoxShadow: const [
                 BoxShadow(
                   color: Colors.black38,
                   blurRadius: 10,
                   spreadRadius: 0.01,
-                  offset: const Offset(3, 3),
+                  offset: Offset(3, 3),
                 ),
               ],
               items: [
