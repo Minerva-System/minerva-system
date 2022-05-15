@@ -1,0 +1,224 @@
+<!DOCTYPE HTML>
+<html lang="pt-br" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Estrutura geral do projeto - Sistema Minerva</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="estrutura.html" class="active"><strong aria-hidden="true">2.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">2.1.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="multi-tenancy.html"><strong aria-hidden="true">3.</strong> Multi-Tenancy</a></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">4.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">4.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="deploy-compose.html"><strong aria-hidden="true">4.2.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-minikube.html"><strong aria-hidden="true">4.3.</strong> Deploy via Kubernetes</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Sistema Minerva</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="estrutura-geral-do-projeto"><a class="header" href="#estrutura-geral-do-projeto">Estrutura geral do projeto</a></h1>
+<p>O projeto Minerva é uma aplicação pensada com finalidade de estudo, mas que
+não deixa de ser um sistema real e com um público alvo. Sendo assim, trata-se
+de um sistema gerencial pensado para pequenos negócios, <em>sem finalidade comercial</em>.</p>
+<p>O projeto envolve um licenciamento de Software Livre, e busca implementar uma
+estrutura de microsserviços. Em outras palavras, o sistema opera através da modificação
+de uma única base de dados, mas possui modulos separados para modificação de partes
+específicas.</p>
+<p>Minerva também utiliza uma dicotomia front-end/back-end, de forma que a aplicação
+constitui-se de uma interface gráfica web, acessível via navegador, e uma intraestrutura
+constituída de um ponto de entrada que se comunica com os serviços específicos que
+a interface gráfica requisitar.</p>
+<h2 id="serviços"><a class="header" href="#serviços">Serviços</a></h2>
+<p>Como supracitado, Minerva constitui-se de microsserviços, especialmente em seu back-end.
+Para tanto, deve-se pensar em três grandes serviços:</p>
+<ul>
+<li>Front-End (aplicação web envolvendo interface gráfica, feita em alguma tecnologia
+para tal, como Flutter);</li>
+<li>Back-End (aplicação com ponto de entrada REST, constituída de microsserviços, com
+comunicação interna via gRPC);</li>
+<li>Banco de Dados (PostgreSQL 14, que pode ser utilizado em um contêiner Docker para
+intuitos de debug apenas).</li>
+</ul>
+<p>Adicionalmente, será possível manter uma maleabilidade que permita a confecção de outros
+tipos de Front-Ends que se comuniquem diretamente com o Back-End da aplicação, como
+por exemplo, através de programas nativos para Desktop e Mobile.</p>
+<div><!-- Generated by graphviz version 2.43.0 (0)
+ --><!-- Title: %3 Pages: 1 --><svg width="407pt" height="228pt"
+ viewBox="0.00 0.00 407.00 228.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 224)"><title>%3</title><polygon fill="white" stroke="transparent" points="-4,4 -4,-224 403,-224 403,4 -4,4"/><g id="clust2" class="cluster"><title>cluster_webservice</title><polygon fill="none" stroke="black" points="8,-98 8,-212 391,-212 391,-98 8,-98"/><text text-anchor="middle" x="199.5" y="-196.8" font-family="Times,serif" font-size="14.00">Serviço Web</text></g><g id="clust3" class="cluster"><title>cluster_internal</title><polygon fill="none" stroke="black" points="193,-106 193,-181 383,-181 383,-106 193,-106"/><text text-anchor="middle" x="288" y="-165.8" font-family="Times,serif" font-size="14.00">Interno</text></g><!-- frontend --><g id="node1" class="node"><title>frontend</title><polygon fill="none" stroke="black" points="145,-150 16,-150 16,-114 151,-114 151,-144 145,-150"/><polyline fill="none" stroke="black" points="145,-150 145,-144 "/><polyline fill="none" stroke="black" points="151,-144 145,-144 "/><text text-anchor="middle" x="83.5" y="-128.3" font-family="Times,serif" font-size="14.00">Front&#45;End (Web)</text></g><!-- backend --><g id="node2" class="node"><title>backend</title><polygon fill="none" stroke="black" points="285,-150 205,-150 201,-146 201,-114 281,-114 285,-118 285,-150"/><polyline fill="none" stroke="black" points="281,-146 201,-146 "/><polyline fill="none" stroke="black" points="281,-146 281,-114 "/><polyline fill="none" stroke="black" points="281,-146 285,-150 "/><text text-anchor="middle" x="243" y="-128.3" font-family="Times,serif" font-size="14.00">Back&#45;End</text></g><!-- frontend&#45;&gt;backend --><g id="edge3" class="edge"><title>frontend&#45;&gt;backend</title><path fill="none" stroke="black" d="M151.29,-138.68C164.39,-138.83 177.95,-138.73 190.45,-138.38"/><polygon fill="black" stroke="black" points="190.81,-141.87 200.68,-138.02 190.57,-134.87 190.81,-141.87"/></g><!-- backend&#45;&gt;frontend --><g id="edge4" class="edge"><title>backend&#45;&gt;frontend</title><path fill="none" stroke="black" d="M200.68,-125.98C188.64,-125.47 175.08,-125.23 161.58,-125.25"/><polygon fill="black" stroke="black" points="161.27,-121.75 151.29,-125.32 161.32,-128.75 161.27,-121.75"/></g><!-- db --><g id="node3" class="node"><title>db</title><path fill="none" stroke="black" d="M375,-146.73C375,-148.53 362.9,-150 348,-150 333.1,-150 321,-148.53 321,-146.73 321,-146.73 321,-117.27 321,-117.27 321,-115.47 333.1,-114 348,-114 362.9,-114 375,-115.47 375,-117.27 375,-117.27 375,-146.73 375,-146.73"/><path fill="none" stroke="black" d="M375,-146.73C375,-144.92 362.9,-143.45 348,-143.45 333.1,-143.45 321,-144.92 321,-146.73"/><text text-anchor="middle" x="348" y="-128.3" font-family="Times,serif" font-size="14.00">BD</text></g><!-- backend&#45;&gt;db --><g id="edge5" class="edge"><title>backend&#45;&gt;db</title><path fill="none" stroke="black" d="M285,-125.38C293.52,-125.17 302.45,-125.22 310.78,-125.52"/><polygon fill="black" stroke="black" points="310.78,-129.03 320.95,-126.04 311.14,-122.04 310.78,-129.03"/></g><!-- db&#45;&gt;backend --><g id="edge6" class="edge"><title>db&#45;&gt;backend</title><path fill="none" stroke="black" d="M320.95,-137.96C313.03,-138.49 304.04,-138.76 295.07,-138.75"/><polygon fill="black" stroke="black" points="295.05,-135.25 285,-138.62 294.96,-142.25 295.05,-135.25"/></g><!-- desktop --><g id="node4" class="node"><title>desktop</title><polygon fill="none" stroke="black" points="165,-90 2,-90 2,-54 165,-54 165,-90"/><text text-anchor="middle" x="83.5" y="-68.3" font-family="Times,serif" font-size="14.00">Front&#45;End (Desktop)</text></g><!-- desktop&#45;&gt;backend --><g id="edge1" class="edge"><title>desktop&#45;&gt;backend</title><path fill="none" stroke="black" stroke-dasharray="1,5" d="M154.15,-90.13C157.84,-91.37 161.48,-92.66 165,-94 176.54,-98.38 188.67,-103.9 199.81,-109.37"/><polygon fill="black" stroke="black" points="198.38,-112.57 208.89,-113.92 201.52,-106.31 198.38,-112.57"/></g><!-- mobile --><g id="node5" class="node"><title>mobile</title><polygon fill="none" stroke="black" points="160,-36 7,-36 7,0 160,0 160,-36"/><text text-anchor="middle" x="83.5" y="-14.3" font-family="Times,serif" font-size="14.00">Front&#45;End (Mobile)</text></g><!-- mobile&#45;&gt;backend --><g id="edge2" class="edge"><title>mobile&#45;&gt;backend</title><path fill="none" stroke="black" stroke-dasharray="1,5" d="M148.8,-36.08C154.47,-38.7 159.96,-41.66 165,-45 189.06,-60.94 210.28,-86.24 224.32,-105.46"/><polygon fill="black" stroke="black" points="221.6,-107.68 230.25,-113.8 227.31,-103.62 221.6,-107.68"/></g></g></svg></div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="intro.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="backend.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="intro.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="backend.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

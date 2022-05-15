@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<html lang="pt-br" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Deploy via Docker Compose - Sistema Minerva</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">2.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">2.1.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="multi-tenancy.html"><strong aria-hidden="true">3.</strong> Multi-Tenancy</a></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">4.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">4.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="deploy-compose.html" class="active"><strong aria-hidden="true">4.2.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-minikube.html"><strong aria-hidden="true">4.3.</strong> Deploy via Kubernetes</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Sistema Minerva</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="deploy-usando-docker-compose"><a class="header" href="#deploy-usando-docker-compose">Deploy usando Docker Compose</a></h1>
+<p><img src="./docker-compose.png" alt="Docker Compose" /></p>
+<p>Você pode realizar deploy do projeto usando Docker Compose. Todavia,
+esta não é a forma mais recomendada de realização de deploy.</p>
+<h2 id="introdução"><a class="header" href="#introdução">Introdução</a></h2>
+<p>Docker Compose é uma ferramenta simples de orquestração de contêineres.
+Para o Minerva System, é principalmente uma forma de <strong>testar</strong> a forma
+como o serviço se comporta em rede.</p>
+<h2 id="objetivo"><a class="header" href="#objetivo">Objetivo</a></h2>
+<p>O deploy usando Docker Compose é útil principalmente do ponto de vista
+da geração das imagens das aplicações dos microsserviços do Minerva
+System, mas também não é a forma mais recomendada de colocar o sistema
+em produção, porque não prevê fatores de escalabilidade como o deploy
+usando Kubernetes.</p>
+<p>Utilize esta forma principalmente quando quiser avaliar o comportamento
+do sistema no que tange a interconexões entre os serviços numa rede
+virtual.</p>
+<h2 id="dependências"><a class="header" href="#dependências">Dependências</a></h2>
+<p>Você precisará ter instalado:</p>
+<ul>
+<li>Docker versão 20.10 ou superior;</li>
+<li>Docker Compose versão 2.2.3 ou superior.</li>
+</ul>
+<p>Além disso, <strong>todos os comandos a seguir devem ser executados no
+diretório raiz deste projeto</strong>.</p>
+<h2 id="geração-das-imagens"><a class="header" href="#geração-das-imagens">Geração das imagens</a></h2>
+<p>Caso você só precise gerar as imagens Docker para o serviço, você
+poderá fazê-lo com o comando a seguir:</p>
+<pre><code class="language-bash">docker compose build
+</code></pre>
+<p>Se você nunca tiver realizado deploy da aplicação com Compose, isto
+<strong>não é necessário</strong>, uma vez que o Compose se encarregará de gerá-las
+no primeiro deploy.</p>
+<p><strong>ATENÇÃO: O PROCESSO DE GERAÇÃO DAS IMAGENS É DEMORADO.</strong></p>
+<h3 id="gerando-uma-imagem"><a class="header" href="#gerando-uma-imagem">Gerando uma imagem</a></h3>
+<p>Pode ocorrer de você querer gerar apenas uma imagem, por exemplo, quando
+você já tiver realizado deploy antes e tiver realizado uma modificação
+em apenas um microsservico, e precisar testá-lo.</p>
+<p>Para isso, use o comando a seguir, substituindo <code>&lt;servico&gt;</code> pelo nome
+do serviço (como listado no arquivo <code>docker-compose.yml</code>):</p>
+<pre><code class="language-bash">docker compose build &lt;servico&gt;
+</code></pre>
+<p>Caso a geração da imagem apenas reutilize o cache da mesma já existente,
+você poderá forçar a geração da imagem da seguinte forma:</p>
+<pre><code class="language-bash">docker compose build --no-cache &lt;servico&gt;
+</code></pre>
+<p><strong>ATENÇÃO: ESTE PROCESSO PODE SER DEMORADO.</strong></p>
+<p><strong>ATENÇÃO: RECOMPILAR A IMAGEM NÃO REINICIA UM SERVIÇO EM EXECUÇÃO.</strong></p>
+<h3 id="nomes-e-tags-das-imagens-geradas"><a class="header" href="#nomes-e-tags-das-imagens-geradas">Nomes e tags das imagens geradas</a></h3>
+<p>As imagens geradas pelos passos anteriores são geradas com nomes
+específicos. Esses nomes não fazem tanta diferença para o Docker
+Compose, mas podem ser muito úteis do ponto de vista do deploy via
+Kubernetes.</p>
+<p>Os nomes das imagens geradas podem ser verificados no arquivo
+<code>docker-compose.yml</code>. Mais especificamente, para cada serviço, existe
+uma propriedade <code>image</code> que determina o nome da imagem gerada.</p>
+<p>As imagens são sempre geradas com a tag <code>latest</code>.</p>
+<p>A seguir, temos uma tabela relacionando os serviços com os nomes e tags
+das imagens geradas.</p>
+<table><thead><tr><th>Serviço</th><th>Nome e tag da imagem</th></tr></thead><tbody>
+<tr><td><code>frontend</code></td><td><code>minerva_frontend:latest</code></td></tr>
+<tr><td><code>rest</code></td><td><code>minerva_rest:latest</code></td></tr>
+<tr><td><code>runonce</code></td><td><code>minerva_runonce:latest</code></td></tr>
+<tr><td><code>users</code></td><td><code>minerva_users:latest</code></td></tr>
+<tr><td><code>postgresql</code></td><td><code>postgres:14</code> (Não gerado)</td></tr>
+<tr><td><code>pgadmin</code></td><td><code>minerva_pgadmin:latest</code></td></tr>
+</tbody></table>
+<h2 id="executando-os-serviços"><a class="header" href="#executando-os-serviços">Executando os serviços</a></h2>
+<p>Para executar os serviços usando Docker Compose, use o seguinte
+comando:</p>
+<pre><code class="language-bash">docker compose up
+</code></pre>
+<p>Caso você queira desligar o funcionamento dos serviços da sessão
+atual do console, poderá executá-los em forma de <em>daemon</em>:</p>
+<pre><code class="language-bash">docker compose up -d
+</code></pre>
+<p>Neste caso em específico, para <code>localhost</code>, estarão abertas as
+seguintes portas para acesso:</p>
+<table><thead><tr><th>Porta</th><th>Serviço</th></tr></thead><tbody>
+<tr><td><code>80</code></td><td>Front-End</td></tr>
+<tr><td><code>9000</code></td><td>API REST</td></tr>
+<tr><td><code>8484</code></td><td>pgAdmin4</td></tr>
+</tbody></table>
+<h2 id="acompanhando-logs"><a class="header" href="#acompanhando-logs">Acompanhando logs</a></h2>
+<p>Para acompanhar os logs de um deploy via <em>daemon</em> ou de um outro
+console, você poderá realizá-lo através do comando:</p>
+<pre><code class="language-bash">docker compose logs -f
+</code></pre>
+<p>Caso seja necessário acompanhar os logs de apenas um serviço:</p>
+<pre><code class="language-bash">docker compose logs -f &lt;servico&gt;
+</code></pre>
+<p>Lembre-se de que o nome do serviço em questão deverá ser informado
+como listado em <code>docker-compose.yml</code>.</p>
+<h3 id="reiniciando-um-único-serviço"><a class="header" href="#reiniciando-um-único-serviço">Reiniciando um único serviço</a></h3>
+<p>Você poderá reiniciar um único serviço, caso tenha recompilado a imagem
+do mesmo, por exemplo.</p>
+<p>Nesse caso, basta usar o seguinte comando:</p>
+<pre><code class="language-bash">docker compose up -d --no-deps &lt;servico&gt;
+</code></pre>
+<p>Caso você queira incluir o passo de recompilação da imagem:</p>
+<pre><code class="language-bash">docker compose up -d --no-deps --build &lt;servico&gt;
+</code></pre>
+<h2 id="encerrando-os-serviços"><a class="header" href="#encerrando-os-serviços">Encerrando os serviços</a></h2>
+<p>Para encerrar imediatamente o serviço, execute o seguinte comando:</p>
+<pre><code class="language-bash">docker compose down
+</code></pre>
+<p>Caso você queira também remover os volumes associados aos serviços
+(por exemplo, nocaso do PostgreSQL e do pgAdmin), use este comando
+em vez do anterior:</p>
+<pre><code class="language-bash">docker compose -v down
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="executar-maquina.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="deploy-minikube.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="executar-maquina.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="deploy-minikube.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
