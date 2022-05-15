@@ -1,7 +1,7 @@
-name: Build docs
+name: Build documentation
 
 on:
-  pull_request:
+  push:
     branches: [master]
 
 jobs:
