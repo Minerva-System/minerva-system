@@ -49,32 +49,6 @@ For documentation:
 - `mdbook`;
 - `mdbook-graphviz`.
 
-## Quickstart with Docker Compose
-
-You can quickstart the service by using Docker Compose. This will build all
-the services with their respective containers while keeping a cache of their
-needed packages for future builds (unless you change `Cargo.lock` or their
-`Cargo.toml`, but there is no absolute need to rebuild a project which you
-haven't messed up with on the first place).
-
-If this is your first time running the Minerva System, simply `cd` to the
-folder and run:
-
-```bash
-docker compose up
-```
-
-If the service is already running, and you wish to rebuild and deploy a
-specific service (e.g. the `RUNONCE` service, if you added a new tenant in
-`tenancy.toml`), simply run something like:
-
-```bash
-docker compose up -d --no-deps --build runonce
-```
-
-For more information on how the services are deployed, see the `docker-compose.yml`
-file.
-
 ### Running some requests
 
 There are some exported collections for Postman under `docs/postman/`. One would
@@ -95,3 +69,4 @@ mdbook serve --open
 
 This project is licensed under the GPLv3 license. For more information, see
 the LICENSE file, or refer to [Choose a License.com](https:///choosealicense.com).
+
