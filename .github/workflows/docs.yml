@@ -1,0 +1,42 @@
+name: Build docs
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Graphviz
+        run: |
+          sudo apt update
+          sudo apt install -y graphviz
+        
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Rust build cache
+        uses: Swatinem/rust-cache@v1
+
+      - name: Install mdBook
+        run: |
+          cargo install mdbook
+          cargo install mdbook-graphviz
+
+      - name: Compile docs
+        run: |
+          cd docs
+          mdbook build
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        with:
+          branch: gh-pages
+          folder: docs/book
+
