@@ -33,6 +33,9 @@ jobs:
           toolchain: stable
           components: clippy, rustfmt
 
+      - name: Rust build cache
+        uses: Swatinem/rust-cache@v1
+
       # - name: Linter
       #   run: cargo fmt -- --check
 
