@@ -1,5 +1,7 @@
 ./target
 **/*~
 **/*#*#
-postgres-data/
-
+./docs
+*.md
+*.yml
+./build

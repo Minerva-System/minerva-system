@@ -1,0 +1,38 @@
+name: minerva_frontend
+description: Minerva System Front-End
+publish_to: 'none'
+version: 1.0.0+1
+environment:
+  sdk: ">=2.16.2 <3.0.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  get: ^4.6.1
+  get_storage: ^2.0.3
+  validatorless: ^1.2.1
+  intl: ^0.17.0
+  flutter_neumorphic: ^3.0.3
+  fluttericon: ^2.0.0
+  collapsible_sidebar: ^2.0.1+2
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.1
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: nunitosans
+      fonts:
+        - asset: assets/fonts/nunitosans/NunitoSans-Light.ttf
+          style: normal
+        - asset: assets/fonts/nunitosans/NunitoSans-Regular.ttf
+          weight: 500
+        - asset: assets/fonts/nunitosans/NunitoSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/nunitosans/NunitoSans-ExtraBold.ttf
+          weight: 800
+  assets:
+    - assets/images/
+

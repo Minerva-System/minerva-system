@@ -1,8 +1,22 @@
 version: "3"
 
 services:
+  # Front-End service
+  frontend:
+    image: minerva_frontend
+    environment:
+      - NGINX_PORT=80
+    build:
+      dockerfile: build/Dockerfile.FRONTEND
+      context: .
+    ports:
+      - "80:80"
+    depends_on:
+      - "rest"
+  
   # REST service
   rest:
+    image: minerva_rest
     environment:
       - USER_SERVICE_SERVER=users
     build:
@@ -15,6 +29,7 @@ services:
   
   # RUNONCE service
   runonce:
+    image: minerva_runonce
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
     build:
@@ -25,6 +40,7 @@ services:
   
   # USERS service
   users:
+    image: minerva_users
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
     build:
@@ -41,10 +57,11 @@ services:
       - POSTGRES_PASSWORD=postgres
     image: postgres:14
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ../minerva-postgresql:/var/lib/postgresql/data
 
   # pgAdmin 4
   pgadmin:
+    image: minerva_pgadmin
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com
       - PGADMIN_DEFAULT_PASSWORD=admin
