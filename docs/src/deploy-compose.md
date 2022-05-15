@@ -168,7 +168,13 @@ do mesmo, por exemplo.
 Nesse caso, basta usar o seguinte comando:
 
 ```bash
-docker compose restart --no-deps <servico>
+docker compose up -d --no-deps <servico>
+```
+
+Caso você queira incluir o passo de recompilação da imagem:
+
+```bash
+docker compose up -d --no-deps --build <servico>
 ```
 
 

@@ -3,7 +3,7 @@ authors = ["Lucas S. Vieira"]
 language = "pt-br"
 multilingual = false
 src = "src"
-title = "Minerva: Especificação do Sistema"
+title = "Sistema Minerva"
 
 # Install mdbook-graphviz using Cargo so that Graphviz works.
 [preprocessor.graphviz]
