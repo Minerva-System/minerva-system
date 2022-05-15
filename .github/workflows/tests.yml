@@ -1,0 +1,48 @@
+name: Automated tests
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_PORT: 5432
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Install PostgreSQL dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y libpq5
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          components: clippy, rustfmt
+
+      # - name: Linter
+      #   run: cargo fmt -- --check
+
+      # - name: Clippy
+      #   run: cargo clippy -- -D clippy::all
+
+      - name: Run database migrations
+        run: cargo run --bin minerva-runonce
+      
+      - name: Run tests
+        run: cargo test
+
+  
