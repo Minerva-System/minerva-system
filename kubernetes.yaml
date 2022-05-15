@@ -322,45 +322,6 @@ items:
           restartPolicy: Always
     status: {}
 
-  # RUNONCE deployment
-  # - apiVersion: apps/v1
-  #   kind: Deployment
-  #   metadata:
-  #     annotations:
-  #       kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
-  #       kompose.version: 1.26.0 (40646f47)
-  #     creationTimestamp: null
-  #     labels:
-  #       io.kompose.service: runonce
-  #     name: runonce
-  #   spec:
-  #     replicas: 1
-  #     selector:
-  #       matchLabels:
-  #         io.kompose.service: runonce
-  #     strategy: {}
-  #     template:
-  #       metadata:
-  #         annotations:
-  #           kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
-  #           kompose.version: 1.26.0 (40646f47)
-  #         creationTimestamp: null
-  #         labels:
-  #           io.kompose.service: runonce
-  #       spec:
-  #         containers:
-  #           - env:
-  #               - name: DATABASE_SERVICE_SERVER
-  #                 value: postgresql
-  #             image: minerva_runonce
-  #             imagePullPolicy: Never
-  #             name: runonce
-  #             ports:
-  #               - containerPort: 80
-  #             resources: {}
-  #         restartPolicy: Always
-  #   status: {}
-
   # USERS deployment
   - apiVersion: apps/v1
     kind: Deployment
