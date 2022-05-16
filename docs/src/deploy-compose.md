@@ -43,7 +43,7 @@ diretório raiz deste projeto**.
 
 
 
-## Geração das imagens
+## Gerando imagens
 
 Caso você só precise gerar as imagens Docker para o serviço, você
 poderá fazê-lo com o comando a seguir:
