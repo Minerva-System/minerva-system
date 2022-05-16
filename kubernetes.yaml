@@ -149,7 +149,7 @@ items:
         io.kompose.service: frontend
       name: frontend
     spec:
-      replicas: 1
+      replicas: 2
       selector:
         matchLabels:
           io.kompose.service: frontend
@@ -295,7 +295,7 @@ items:
         io.kompose.service: rest
       name: rest
     spec:
-      replicas: 1
+      replicas: 3
       selector:
         matchLabels:
           io.kompose.service: rest
@@ -334,7 +334,7 @@ items:
         io.kompose.service: users
       name: users
     spec:
-      replicas: 1
+      replicas: 3
       selector:
         matchLabels:
           io.kompose.service: users
