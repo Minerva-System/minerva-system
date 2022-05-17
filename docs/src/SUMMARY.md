@@ -7,7 +7,7 @@
 - [Compilação](./compilacao.md)
   - [Executar com recursos da máquina](./executar-maquina.md)
   - [Deploy via Docker Compose](./deploy-compose.md)
-  - [Deploy via Kubernetes](./deploy-minikube.md)
+  - [Deploy via Kubernetes](./deploy-kubernetes.md)
 
 
 <!-- TODO: -->
