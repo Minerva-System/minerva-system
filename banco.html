@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introdução - Sistema Minerva</title>
+        <title>Banco de Dados - Sistema Minerva</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">2.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">2.1.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="banco.html"><strong aria-hidden="true">3.</strong> Banco de Dados</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="migrations.html"><strong aria-hidden="true">3.1.</strong> Executando migrations</a></li><li class="chapter-item expanded "><a href="multi-tenancy.html"><strong aria-hidden="true">3.2.</strong> Multi-Tenancy</a></li></ol></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">4.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">4.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="deploy-compose.html"><strong aria-hidden="true">4.2.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-kubernetes.html"><strong aria-hidden="true">4.3.</strong> Deploy via Kubernetes</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">2.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">2.1.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="banco.html" class="active"><strong aria-hidden="true">3.</strong> Banco de Dados</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="migrations.html"><strong aria-hidden="true">3.1.</strong> Executando migrations</a></li><li class="chapter-item expanded "><a href="multi-tenancy.html"><strong aria-hidden="true">3.2.</strong> Multi-Tenancy</a></li></ol></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">4.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">4.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="deploy-compose.html"><strong aria-hidden="true">4.2.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-kubernetes.html"><strong aria-hidden="true">4.3.</strong> Deploy via Kubernetes</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,26 +142,19 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="introdução"><a class="header" href="#introdução">Introdução</a></h1>
-<p><img src="./minerva-logo.png" alt="Logomarca do Sistema Minerva" /></p>
-<p>Este documento trata da especificação funcional do Sistema Minerva. O sistema
-é majoritariamente programado utilizando o método eXtreme Programming, portanto
-esta documentação não é exaustiva no sentido de uma especificação completa,
-posto que os requisitos do sistema estarão em constante mudança.</p>
-<p>A modificação deste documento é enormemente encorajada, mas é mais importante a
-prototipação constante do sistema que a escrita da especificação propriamente
-dita.</p>
-<p>Para mitigar os problemas que podem ocorrer mediante foco diminuído neste
-documento, recomenda-se um grande uso de testes unitários e também de documentação
-<em>ad-hoc</em> no código dos módulos do projeto, de preferência envolvendo as ferramentas
-padrão da linguagem.</p>
+                        <h1 id="banco-de-dados"><a class="header" href="#banco-de-dados">Banco de Dados</a></h1>
+<p>As próximas seções dizem respeito a partes relacionadas à estrutura do banco
+de dados e a como modificá-la.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="backend.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
-                            <a rel="next" href="estrutura.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="migrations.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -171,8 +164,11 @@ padrão da linguagem.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="backend.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
-                    <a rel="next" href="estrutura.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="migrations.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">2.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">2.1.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="multi-tenancy.html"><strong aria-hidden="true">3.</strong> Multi-Tenancy</a></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">4.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">4.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="deploy-compose.html"><strong aria-hidden="true">4.2.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-kubernetes.html"><strong aria-hidden="true">4.3.</strong> Deploy via Kubernetes</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">2.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">2.1.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="banco.html"><strong aria-hidden="true">3.</strong> Banco de Dados</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="migrations.html"><strong aria-hidden="true">3.1.</strong> Executando migrations</a></li><li class="chapter-item expanded "><a href="multi-tenancy.html"><strong aria-hidden="true">3.2.</strong> Multi-Tenancy</a></li></ol></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">4.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">4.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="deploy-compose.html"><strong aria-hidden="true">4.2.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-kubernetes.html"><strong aria-hidden="true">4.3.</strong> Deploy via Kubernetes</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -310,6 +310,72 @@ a configuração em desenvolvimento e em produção do mesmo.</p>
 <tr><td>REST</td><td>nenhuma</td><td><code>rest</code></td></tr>
 <tr><td>RUNONCE</td><td>nenhuma</td><td><code>runonce</code></td></tr>
 </tbody></table>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="banco-de-dados"><a class="header" href="#banco-de-dados">Banco de Dados</a></h1>
+<p>As próximas seções dizem respeito a partes relacionadas à estrutura do banco
+de dados e a como modificá-la.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="executando-migrations"><a class="header" href="#executando-migrations">Executando migrations</a></h1>
+<p>As migrations são uma parte vital do Sistema Minerva, não apenas porque
+definem as tabelas do banco de um <em>tenant</em>, mas porque também definem os
+<em>schemas</em> para a programação dos módulos.</p>
+<h2 id="pré-requisitos"><a class="header" href="#pré-requisitos">Pré-requisitos</a></h2>
+<ul>
+<li><a href="https://rustup.rs">Rust</a> (compilador <code>rustc</code> e gerenciador de
+pacotes <code>cargo</code>, versão 1.60.0 ou superior);</li>
+<li><a href="https://diesel.rs">Diesel</a> (versão 1.4.1 ou superior, com suporte
+a PostgreSQL);</li>
+<li><code>diesel_cli</code> com suporte a PostgreSQL;</li>
+<li>Docker versão 20.10 ou superior.</li>
+</ul>
+<p>Para instalar o <code>diesel_cli</code> apenas com suporte a PostgreSQL, use o
+seguinte comando:</p>
+<pre><code class="language-bash">cargo install diesel_cli --no-default-feature --features postgres
+</code></pre>
+<h2 id="considerações-importantes"><a class="header" href="#considerações-importantes">Considerações importantes</a></h2>
+<p><strong>Toda e qualquer migration deve ser criada no diretório do módulo
+<code>minerva-runonce</code></strong>, especificamente porque este diretório possui também
+as configurações de acesso e de geração de <em>schema</em> em
+<code>minerva-data/src/schema.rs</code>.</p>
+<p>Além disso, <strong>sempre execute todos os comandos abaixo no diretório do módulo
+<code>minerva-runonce</code></strong>.</p>
+<h2 id="configuração-inicial"><a class="header" href="#configuração-inicial">Configuração inicial</a></h2>
+<p>Para começar, crie um contêiner Docker com o banco de dados:</p>
+<pre><code class="language-bash">./make_docker_db.sh
+</code></pre>
+<p>Isso criará um contêiner com PostgreSQL 14 chamado <code>minerva-micro</code>. Caso o
+contêiner já exista, veja mais abaixo como removê-lo.</p>
+<p>Após a criação do contêiner, o processo de preparação do PostgreSQL pode
+ser um pouco demorado. Acompanhe este processo observando os logs:</p>
+<pre><code class="language-bash">docker logs -f minerva-micro
+</code></pre>
+<p>Em seguida, execute a operação inicial de criação de um banco de dados.
+Para tanto, vamos criar um banco chamado <code>minerva</code> e executar todas as
+migrations nele, logo de cara:</p>
+<pre><code class="language-bash">diesel setup --database-url=&quot;postgres://postgres:postgres@localhost/minerva&quot;
+</code></pre>
+<h2 id="criando-uma-migration"><a class="header" href="#criando-uma-migration">Criando uma migration</a></h2>
+<p>Para criar uma <em>migration</em>, use um comando similar ao seguinte:</p>
+<pre><code class="language-bash">diesel migration generate &lt;nome_da_migration&gt;
+</code></pre>
+<p>Substitua <code>&lt;nome_da_migration&gt;</code> por um nome que faça sentido.
+Isso gerará uma nova <em>migration</em> no diretório <code>migrations</code>,
+que possuirá os arquivos <code>up.sql</code> e <code>down.sql</code>. Edite-os de acordo
+com o necessário.</p>
+<h2 id="executando-migrations-1"><a class="header" href="#executando-migrations-1">Executando migrations</a></h2>
+<p>Para executar todas as <em>migrations</em> pendentes, execute o comando:</p>
+<pre><code class="language-bash">diesel migration run --database-url=&quot;postgres://postgres:postgres@localhost/minerva&quot;
+</code></pre>
+<p>Isso também poderá reconstruir o arquivo <code>minerva-data/src/schema.rs</code>, a depender
+de mudanças no <em>schema</em>.</p>
+<p>Para testar a última migration executada:</p>
+<pre><code class="language-bash">diesel migration redo --database-url=&quot;postgres://postgres:postgres@localhost/minerva&quot;
+</code></pre>
+<h2 id="removendo-banco-de-dados-de-teste"><a class="header" href="#removendo-banco-de-dados-de-teste">Removendo banco de dados de teste</a></h2>
+<p>Para remover o banco de dados de teste criado no Docker, use os comandos a seguir.</p>
+<p>Estes comandos servem para, respectivamente, parar a execução do contêiner e
+então excluí-lo.</p>
+<pre><code class="language-bash">docker stop minerva-micro
+docker rm minerva-micro
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="multi-tenancy"><a class="header" href="#multi-tenancy">Multi-Tenancy</a></h1>
 <p>O Minerva System é um sistema multi-tenant. Isso significa que é
 capaz de gerenciar bancos de dados diferentes dependendo do tenant
