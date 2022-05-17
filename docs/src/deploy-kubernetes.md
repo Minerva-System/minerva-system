@@ -67,6 +67,13 @@ Se você quiser parar o Minikube:
 minikube stop
 ```
 
+Você também pode acessar facilmente um dashboard web do Kubernetes,
+operando sob o Minikube, caso não queira usar o k9s posteriormente:
+
+```bash
+minikube dashbord
+```
+
 
 
 
@@ -267,8 +274,18 @@ kubectl logs --previous runonce--1-kl4rb
 
 ## Acessando serviços com Minikube
 
+Há duas formas de acessar serviços pelo Minikube: através de
+*NodePort* e de *LoadBalancer*. Este último envolve a ideia
+de *tunelamento* via Minikube.
+
+
+
+### Acessando via *NodePort*
+
 Caso você queira descobrir o endereço para um serviço de tipo
-*LoadBalancer*, você poderá descobrir o IP usando o Minikube:
+*LoadBalancer*, você poderá descobrir o IP usando o Minikube.
+Este método basicamente utiliza a ideia de *NodePort* para
+redirecionar o tráfego para a aplicação:
 
 ```bash
 minikube service rest --url
@@ -286,3 +303,55 @@ curl http://192.168.49.2:30617/minerva/users
 [{"id":1,"login":"admin","name":"Administrator","email":null}]
 ```
 
+
+### Acessando via *LoadBalancer*
+
+Primeiramente, caso você esteja executando o Minikube, abra um terminal
+avulso (que terá a execução bloqueada pelo próximo comando) e digite:
+
+```bash
+minikube tunnel
+```
+
+**Note que este comando pode exigir a senha do seu usuáio.**
+
+Isso fará com que todos os nós do tipo *LoadBalancer* recebem IPs externos
+que podem ser acessados imediatamente. Para verificar esses IPs externos,
+verifique os serviços ativos (isso também pode ser observado pelo k9s):
+
+```bash
+kubectl get svc
+```
+
+Um exemplo de saída do comando:
+
+```text
+NAME         TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)          AGE
+frontend     LoadBalancer   10.108.114.123   10.108.114.123   80:32613/TCP     31m
+kubernetes   ClusterIP      10.96.0.1        <none>           443/TCP          8h
+pgadmin      LoadBalancer   10.99.60.133     10.99.60.133     8484:30065/TCP   31m
+postgresql   ClusterIP      10.99.167.49     <none>           5432/TCP         31m
+rest         LoadBalancer   10.111.150.132   10.111.150.132   9000:31522/TCP   31m
+users        ClusterIP      10.97.99.55      <none>           9010/TCP         31m
+```
+
+No caso acima, podemos verificar, por exemplo, que requisições REST devem ser
+direcionadas para o caminho `http://10.111.150.132:9000`, como observado pelas
+colunas `EXTERNAL-IP` e `PORT(S)`.
+
+Portanto:
+
+```bash
+curl http://10.111.150.132:9000/minerva/users
+```
+
+```text
+[{"id":1,"login":"admin","name":"Administrator","email":null}]
+```
+
+Caso haja portas pendentes de clientes de tunelamento do Minikube que não tenham
+sido liberadas, você poderá liberar as portas manualmente com:
+
+```bash
+minikube tunnel --cleanup
+```
