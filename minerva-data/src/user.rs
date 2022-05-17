@@ -76,7 +76,7 @@ impl From<messages::User> for User {
             pwhash: message
                 .password
                 .map(|pw| encryption::generate_hash(&pw))
-                .unwrap_or(vec![]),
+                .unwrap_or_default(),
         }
     }
 }
@@ -87,7 +87,7 @@ impl Into<messages::User> for User {
             id: Some(self.id),
             login: self.login.clone(),
             name: self.name.clone(),
-            email: self.email.clone(),
+            email: self.email,
             password: None,
         }
     }
@@ -105,7 +105,7 @@ impl Into<messages::User> for RecvUser {
                 if pw.is_empty() {
                     None
                 } else {
-                    Some(pw.clone())
+                    Some(pw)
                 }
             } else {
                 None

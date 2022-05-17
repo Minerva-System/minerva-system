@@ -14,18 +14,16 @@ impl Products for ProductsService {
         &self,
         req: Request<messages::PageIndex>,
     ) -> Result<Response<messages::ProductList>, Status> {
-        let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
-            Status::failed_precondition("Missing tenant on request metadata"),
-        )?;
+        let tenant = metadata::get_value(req.metadata(), "tenant")
+            .ok_or_else(|| Status::failed_precondition("Missing tenant on request metadata"))?;
 
-        let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
-            Status::failed_precondition("Missing requestor on request metadata"),
-        )?;
+        let requestor = metadata::get_value(req.metadata(), "requestor")
+            .ok_or_else(|| Status::failed_precondition("Missing requestor on request metadata"))?;
 
         lib_data::log::print(
             lib_rpc::get_address(&req),
-            requestor.clone(),
-            tenant.clone(),
+            requestor,
+            tenant,
             "PRODUCT::INDEX",
         );
 
@@ -38,16 +36,15 @@ impl Products for ProductsService {
         &self,
         req: Request<messages::EntityIndex>,
     ) -> Result<Response<messages::Product>, Status> {
-        let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
-            Status::failed_precondition("Missing tenant on request metadata"),
-        )?;
-        let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
-            Status::failed_precondition("Missing requestor on request metadata"),
-        )?;
+        let tenant = metadata::get_value(req.metadata(), "tenant")
+            .ok_or_else(|| Status::failed_precondition("Missing tenant on request metadata"))?;
+        let requestor = metadata::get_value(req.metadata(), "requestor")
+            .ok_or_else(|| Status::failed_precondition("Missing requestor on request metadata"))?;
+
         lib_data::log::print(
             lib_rpc::get_address(&req),
-            requestor.clone(),
-            tenant.clone(),
+            requestor,
+            tenant,
             "PRODUCT::SHOW",
         );
 
@@ -58,16 +55,15 @@ impl Products for ProductsService {
         &self,
         req: Request<messages::Product>,
     ) -> Result<Response<messages::Product>, Status> {
-        let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
-            Status::failed_precondition("Missing tenant on request metadata"),
-        )?;
-        let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
-            Status::failed_precondition("Missing requestor on request metadata"),
-        )?;
+        let tenant = metadata::get_value(req.metadata(), "tenant")
+            .ok_or_else(|| Status::failed_precondition("Missing tenant on request metadata"))?;
+        let requestor = metadata::get_value(req.metadata(), "requestor")
+            .ok_or_else(|| Status::failed_precondition("Missing requestor on request metadata"))?;
+
         lib_data::log::print(
             lib_rpc::get_address(&req),
-            requestor.clone(),
-            tenant.clone(),
+            requestor,
+            tenant,
             "PRODUCT::STORE",
         );
 
@@ -78,16 +74,16 @@ impl Products for ProductsService {
         &self,
         req: Request<messages::Product>,
     ) -> Result<Response<messages::Product>, Status> {
-        let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
-            Status::failed_precondition("Missing tenant on request metadata"),
-        )?;
-        let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
-            Status::failed_precondition("Missing requestor on request metadata"),
-        )?;
+        let tenant = metadata::get_value(req.metadata(), "tenant")
+            .ok_or_else(|| Status::failed_precondition("Missing tenant on request metadata"))?;
+
+        let requestor = metadata::get_value(req.metadata(), "requestor")
+            .ok_or_else(|| Status::failed_precondition("Missing requestor on request metadata"))?;
+
         lib_data::log::print(
             lib_rpc::get_address(&req),
-            requestor.clone(),
-            tenant.clone(),
+            requestor,
+            tenant,
             "PRODUCT::UPDATE",
         );
 
@@ -95,16 +91,15 @@ impl Products for ProductsService {
     }
 
     async fn delete(&self, req: Request<messages::EntityIndex>) -> Result<Response<()>, Status> {
-        let tenant = metadata::get_value(req.metadata(), "tenant").ok_or(
-            Status::failed_precondition("Missing tenant on request metadata"),
-        )?;
-        let requestor = metadata::get_value(req.metadata(), "requestor").ok_or(
-            Status::failed_precondition("Missing requestor on request metadata"),
-        )?;
+        let tenant = metadata::get_value(req.metadata(), "tenant")
+            .ok_or_else(|| Status::failed_precondition("Missing tenant on request metadata"))?;
+        let requestor = metadata::get_value(req.metadata(), "requestor")
+            .ok_or_else(|| Status::failed_precondition("Missing requestor on request metadata"))?;
+
         lib_data::log::print(
             lib_rpc::get_address(&req),
-            requestor.clone(),
-            tenant.clone(),
+            requestor,
+            tenant,
             "PRODUCT::DELETE",
         );
 

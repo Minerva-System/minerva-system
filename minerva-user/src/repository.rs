@@ -70,14 +70,13 @@ pub fn update_user(
     use minerva_data::schema::syslog;
     use minerva_data::schema::user::dsl::*;
 
-    let old = get_user(data.id, connection)?;
-
-    let old = if old.is_none() {
-        return Err(Error::NotFound);
+    let old = if let Some(value) = get_user(data.id, connection)? {
+        value
     } else {
-        old.unwrap()
+        return Err(Error::NotFound);
     };
 
+    // Relies on model::User's Eq and/or PartialEq
     if old == data {
         return Ok(old);
     }

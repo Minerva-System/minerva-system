@@ -43,7 +43,7 @@ impl ClientInterceptor {
 impl Interceptor for ClientInterceptor {
     fn call(&mut self, mut request: Request<()>) -> Result<Request<()>, Status> {
         push_metadata(&mut request, self.tenant.as_ref(), self.requestor.as_ref())
-            .map_err(|e| Status::failed_precondition(e))?;
+            .map_err(Status::failed_precondition)?;
         Ok(request)
     }
 }
