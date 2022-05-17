@@ -81,26 +81,26 @@ impl From<messages::User> for User {
     }
 }
 
-impl Into<messages::User> for User {
-    fn into(self) -> messages::User {
-        messages::User {
-            id: Some(self.id),
-            login: self.login.clone(),
-            name: self.name.clone(),
-            email: self.email,
+impl From<User> for messages::User {
+    fn from(user: User) -> Self {
+        Self {
+            id: Some(user.id),
+            login: user.login.clone(),
+            name: user.name.clone(),
+            email: user.email,
             password: None,
         }
     }
 }
 
-impl Into<messages::User> for RecvUser {
-    fn into(self) -> messages::User {
-        messages::User {
+impl From<RecvUser> for messages::User {
+    fn from(recv: RecvUser) -> Self {
+        Self {
             id: None,
-            login: self.login.trim().to_string(),
-            name: self.name.trim().to_string(),
-            email: self.email.map(|e| e.trim().to_string()),
-            password: if let Some(pw) = self.password {
+            login: recv.login.trim().to_string(),
+            name: recv.name.trim().to_string(),
+            email: recv.email.map(|e| e.trim().to_string()),
+            password: if let Some(pw) = recv.password {
                 let pw = pw.trim().to_string();
                 if pw.is_empty() {
                     None
