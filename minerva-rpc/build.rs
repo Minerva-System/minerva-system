@@ -3,6 +3,7 @@ fn main() {
         "./proto/messages.proto",
         "./proto/users.proto",
         "./proto/products.proto",
+        "./proto/session.proto",
     ];
 
     for file in files {

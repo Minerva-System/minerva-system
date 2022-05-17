@@ -43,3 +43,14 @@ message Product {
 message ProductList {
   repeated Product products = 1;
 }
+
+// A message containing data to require a session creation on the backend
+message SessionData {
+  string tenant = 1;
+  string login = 2;
+}
+
+// A message for returning a session token for the user
+message SessionToken {
+  repeated string token = 1;
+}

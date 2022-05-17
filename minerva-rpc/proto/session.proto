@@ -1,0 +1,13 @@
+syntax = "proto3";
+import "messages.proto";
+import "google/protobuf/empty.proto";
+
+package Session;
+
+service Session {
+  // Generates session data for a user session.
+  rpc Generate(Messages.SessionData) returns (Messages.SessionToken);
+
+  // Removes a session if existing
+  rpc Remove(Messages.SessionToken) returns (google.protobuf.Empty);
+}

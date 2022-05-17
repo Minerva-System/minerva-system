@@ -13,3 +13,7 @@ pub mod users;
 pub mod messages {
     tonic::include_proto!("messages");
 }
+
+pub mod session {
+    tonic::include_proto!("session");
+}
