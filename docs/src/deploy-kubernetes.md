@@ -6,6 +6,9 @@ Você pode realizar deploy do projeto usando Kubernetes. Nos passos a
 seguir, será mostrado como realizar um deploy usando a ferramenta
 Minikube, para instalação do Kubernetes localmente.
 
+**ATENÇÃO:** Para detalhes não dispostos nesta página, veja a
+[documentação oficial do Kubernetes](https://kubernetes.io/docs/home/).
+
 
 
 
@@ -355,3 +358,21 @@ sido liberadas, você poderá liberar as portas manualmente com:
 ```bash
 minikube tunnel --cleanup
 ```
+
+
+
+## Escalando *deployments*
+
+Quando for necessário prover redundância em certos recursos do Kubernetes, poderemos
+escalar horizontalmente um ou mais *deployments*, criando *ReplicaSets* para os
+mesmos.
+
+Para tanto, use um comando como o mostrado a seguir, definindo o número de
+*ReplicaSets*:
+
+```bash
+kubectl scale deployment/<nome-do-deployment> --replicas=1
+```
+
+Note que introduzir um número de zero réplicas efetivamente eliminará todos os
+*pods* do *deployment*, até que as réplicas sejam definidas novamente.
