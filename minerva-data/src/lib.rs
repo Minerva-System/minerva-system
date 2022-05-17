@@ -9,17 +9,19 @@
 #[macro_use]
 extern crate diesel;
 #[macro_use]
-extern crate diesel_enum;
+extern crate diesel_derive_enum;
 extern crate num_derive;
 #[macro_use]
 extern crate serde_derive;
 
+#[allow(unused_imports)]
+#[rustfmt::skip]
+pub mod schema;
+
 pub mod db;
 pub mod encryption;
-pub mod enum_error;
 pub mod file;
 pub mod log;
-pub mod schema;
 pub mod syslog;
 pub mod tenancy;
 pub mod user;

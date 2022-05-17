@@ -313,11 +313,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "diesel-enum"
-version = "0.0.5"
+name = "diesel-derive-enum"
+version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "61f38b2219023272e1af42bc41b6ffc9bc6e7b2b251d335f9e091aeaf232164c"
+checksum = "6c8910921b014e2af16298f006de12aa08af894b71f0f49a486ab6d74b17bbed"
 dependencies = [
+ "heck",
  "proc-macro2",
  "quote",
  "syn",
@@ -823,7 +824,7 @@ dependencies = [
  "bigdecimal",
  "chrono",
  "diesel",
- "diesel-enum",
+ "diesel-derive-enum",
  "dotenv",
  "minerva-rpc",
  "num-derive",

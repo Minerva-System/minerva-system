@@ -36,11 +36,11 @@ jobs:
       - name: Rust build cache
         uses: Swatinem/rust-cache@v1
 
-      # - name: Linter
-      #   run: cargo fmt -- --check
+      - name: Linter
+        run: cargo fmt -- --check
 
-      # - name: Clippy
-      #   run: cargo clippy -- -D clippy::all
+      - name: Clippy
+        run: cargo clippy -- -D clippy::all
 
       - name: Run database migrations
         run: cargo run --bin minerva-runonce

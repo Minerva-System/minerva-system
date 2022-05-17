@@ -5,35 +5,16 @@
 //! table, and also describes which service did it and which user of this given
 //! tenance requested the operation.
 
-use crate::enum_error::EnumError;
 use crate::schema::syslog;
 use chrono::{DateTime, Utc};
-use diesel::sql_types::SmallInt;
-use num_derive::{FromPrimitive, ToPrimitive};
-use serde_repr::Serialize_repr;
 
 /// Enumeration for the type of operation registered on `syslog`.
-#[derive(
-    FromPrimitive,
-    ToPrimitive,
-    Debug,
-    Clone,
-    Copy,
-    PartialEq,
-    Eq,
-    AsExpression,
-    FromSqlRow,
-    DbEnum,
-    Serialize_repr,
-)]
-#[sql_type = "SmallInt"]
-#[error_fn = "EnumError::precondition_failed"]
-#[error_type = "EnumError"]
-#[repr(i16)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, DbEnum, Serialize)]
+#[DieselType = "Op_type"]
 pub enum OpType {
-    Insert = 0,
-    Update = 1,
-    Delete = 2,
+    Insert,
+    Update,
+    Delete,
 }
 
 /// DTO representing a single entry on the `syslog` table.

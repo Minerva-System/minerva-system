@@ -21,7 +21,7 @@ impl CreateDatabaseStmt {
 }
 
 impl<DB: Backend> QueryFragment<DB> for CreateDatabaseStmt {
-    fn walk_ast<'b>(&'b self, mut out: AstPass<'_, DB>) -> QueryResult<()> {
+    fn walk_ast(&self, mut out: AstPass<'_, DB>) -> QueryResult<()> {
         out.push_sql("CREATE DATABASE ");
         out.push_identifier(&self.dbname)?;
         Ok(())

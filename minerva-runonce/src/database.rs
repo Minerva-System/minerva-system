@@ -65,7 +65,7 @@ pub fn create_admin_user(tenant: &str, server: &str) {
         return;
     }
 
-    let pw = env::var("ADMIN_PASSWORD").unwrap_or(String::from("admin"));
+    let pw = env::var("ADMIN_PASSWORD").unwrap_or_else(|_| String::from("admin"));
 
     let admin_data = NewUser {
         login: "admin".to_string(),
