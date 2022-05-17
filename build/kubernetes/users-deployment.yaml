@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: users
+  name: users
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      io.kompose.service: users
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: users
+    spec:
+      containers:
+        - env:
+            - name: DATABASE_SERVICE_SERVER
+              value: postgresql
+          image: minerva_users
+          imagePullPolicy: Never
+          name: users
+          ports:
+            - containerPort: 9010
+          resources: {}
+      restartPolicy: Always
+status: {}

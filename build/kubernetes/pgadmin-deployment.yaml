@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: pgadmin
+  name: pgadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: pgadmin
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o kubernetes.yaml
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: pgadmin
+    spec:
+      containers:
+        - env:
+            - name: GUNICORN_ACCESS_LOGFILE
+              value: /dev/null
+            - name: PGADMIN_DEFAULT_EMAIL
+              value: admin@admin.com
+            - name: PGADMIN_DEFAULT_PASSWORD
+              value: admin
+          image: minerva_pgadmin
+          imagePullPolicy: Never
+          name: pgadmin
+          ports:
+            - containerPort: 80
+          resources: {}
+      restartPolicy: Always
+status: {}

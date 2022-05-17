@@ -141,6 +141,11 @@ De forma geral, no Kubernetes, temos que:
   mais especificamente agindo como uma forma de localizá-los na rede.
   Em outras palavras, age como um gerenciador de DNS.
 
+Os arquivos de configuração do Kubernetes estão desmembrados em suas
+devidas partes, seguindo ligeiramente o âmbito dos *services* e dos
+*deployments*, exceto quando não aplicável, e podem ser encontrados
+no diretório `build/kubernetes`.
+
 Assim, temos a seguinte configuração de serviços:
 
 | Serviço      | Tipo           | Réplicas padrão |
@@ -151,6 +156,8 @@ Assim, temos a seguinte configuração de serviços:
 | `runonce`    | *Job*          | **Sempre 1**    |
 | `users`      | *ClusterIP*    | 3               |
 | `postgresql` | *ClusterIP*    | **Sempre 1**    |
+
+Devemos considerar também, sobre os tipos dos serviços:
 
 - Serviços *LoadBalancer* são acessíveis via IP externo.
 - *Jobs* são executados no início da configuração do *node*.
@@ -166,21 +173,32 @@ estejam à disposição do Kubernetes (ou do Minikube), vá até o diretório
 raiz do projeto e execute:
 
 ```bash
-kubectl create -f kubernetes.yaml
+kubectl create -f build/kubernetes
 ```
 
-Caso você realize alguma alteração no arquivo `kubernetes.yaml` e
-queira aplicá-la, utilize:
+Isso criará o *node* com base em todos os arquivos `.yaml` existentes
+no diretório `build/kubernetes`.
+
+
+Caso você realize alguma alteração nos arquivos e queira aplicá-las,
+utilize:
 
 ```bash
-kubectl apply -f kubernetes.yaml
+kubectl apply -f build/kubernetes
+```
+
+Da mesma forma, é possível aplicar as alterações de um único arquivo.
+Por exemplo:
+
+```bash
+kubectl apply -f build/kubernetes/rest-deployment.yaml
 ```
 
 Caso você queira deletar o cluster posteriormente, utilize o comando
 similar no mesmo diretório:
 
 ```bash
-kubectl delete -f kubernetes.yaml
+kubectl delete -f build/kubernetes
 ```
 
 
