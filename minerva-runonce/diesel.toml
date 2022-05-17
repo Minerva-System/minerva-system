@@ -1,2 +1,3 @@
 [print_schema]
 file = "../minerva-data/src/schema.rs"
+import_types = ["diesel::sql_types::*", "crate::syslog::Op_type"]
