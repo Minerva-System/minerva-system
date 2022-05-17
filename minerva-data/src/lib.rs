@@ -14,12 +14,14 @@ extern crate num_derive;
 #[macro_use]
 extern crate serde_derive;
 
+#[allow(unused_imports)]
+#[rustfmt::skip]
+pub mod schema;
+
 pub mod db;
 pub mod encryption;
 pub mod file;
 pub mod log;
-#[allow(unused_imports)]
-pub mod schema;
 pub mod syslog;
 pub mod tenancy;
 pub mod user;
