@@ -49,7 +49,7 @@ pub fn try_make_single_connection(
 /// and the server endpoint for the database (e.g. `localhost:5432`).
 pub fn make_single_connection(tenant: &str, server: &str) -> PgConnection {
     try_make_single_connection(tenant, server)
-        .map_err(|e| panic!("Error establishing database connection: {}", e))
+        .map_err(|e| panic!("Error establishing relational database connection: {}", e))
         .unwrap()
 }
 

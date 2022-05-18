@@ -24,4 +24,4 @@ bb8-diesel = "0.2.1"
 sodiumoxide = ">= 0.2.7"
 chrono = {version = "0.4", features = ["serde", "rustc-serialize"]}
 tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync", "net"]}
-
+mongodb = "2.2.1"
