@@ -32,11 +32,13 @@ services:
     image: minerva_runonce
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
+      - MONGO_SERVICE_SERVER=mongodb
     build:
       dockerfile: build/Dockerfile.RUNONCE
       context: .
     depends_on:
       - "postgresql"
+      - "mongodb"
   
   # USERS service
   users:
@@ -50,7 +52,7 @@ services:
       runonce:
         condition: service_completed_successfully
 
-  # Database
+  # PostgreSQL
   postgresql:
     environment:
       - POSTGRES_USER=postgres
@@ -71,4 +73,13 @@ services:
       context: build
     ports:
       - "8484:80"
+
+  # MongoDB
+  mongodb:
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=mongo
+    image: mongo:5
+    volumes:
+      - ../minerva-mongodb:/data/db
 
