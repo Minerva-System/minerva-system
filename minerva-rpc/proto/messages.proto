@@ -52,5 +52,5 @@ message SessionData {
 
 // A message for returning a session token for the user
 message SessionToken {
-  repeated string token = 1;
+  string token = 1;
 }
