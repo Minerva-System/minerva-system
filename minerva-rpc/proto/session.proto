@@ -5,8 +5,11 @@ import "google/protobuf/empty.proto";
 package Session;
 
 service Session {
-  // Generates session data for a user session.
-  rpc Generate(Messages.SessionData) returns (Messages.SessionToken);
+  // Generates session data for a user.
+  rpc Generate(Messages.SessionCreationData) returns (Messages.SessionToken);
+
+  // Retrieves session data from a session token.
+  rpc Retrieve(Messages.SessionToken) returns (Messages.SessionData);
 
   // Removes a session if existing
   rpc Remove(Messages.SessionToken) returns (google.protobuf.Empty);

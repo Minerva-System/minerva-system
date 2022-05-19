@@ -15,8 +15,15 @@ pub struct SessionService {
 impl Session for SessionService {
     async fn generate(
         &self,
-        req: Request<messages::SessionData>,
+        req: Request<messages::SessionCreationData>,
     ) -> Result<Response<messages::SessionToken>, Status> {
+        todo!();
+    }
+
+    async fn retrieve(
+        &self,
+        req: Request<messages::SessionToken>,
+    ) -> Result<Response<messages::SessionData>, Status> {
         todo!();
     }
 

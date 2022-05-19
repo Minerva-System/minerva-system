@@ -45,9 +45,17 @@ message ProductList {
 }
 
 // A message containing data to require a session creation on the backend
+message SessionCreationData {
+  string tenant = 1;
+  string login = 2;
+  string password = 3;
+}
+
+// A message containing session data retrieved from the backend
 message SessionData {
   string tenant = 1;
   string login = 2;
+  int64 creation_date = 3;
 }
 
 // A message for returning a session token for the user
