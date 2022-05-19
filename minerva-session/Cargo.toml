@@ -12,3 +12,7 @@ tonic = "0.7"
 mongodb = "2.2.1"
 futures-util = "0.3"
 base64 = "0.13.0"
+diesel = { version = "1.4.4", features = ["postgres"] }
+bb8 = "0.7.1"
+bb8-diesel = "0.2.1"
+

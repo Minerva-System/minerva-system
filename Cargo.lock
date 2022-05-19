@@ -1223,6 +1223,9 @@ name = "minerva-session"
 version = "0.1.0"
 dependencies = [
  "base64",
+ "bb8",
+ "bb8-diesel",
+ "diesel",
  "dotenv",
  "futures-util",
  "minerva-data",

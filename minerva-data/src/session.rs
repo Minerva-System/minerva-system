@@ -17,6 +17,16 @@ pub struct NewSession {
     pub password: String,
 }
 
+impl From<NewSession> for Session {
+    fn from(new: NewSession) -> Self {
+        Self {
+            tenant: new.tenant.trim().to_string(),
+            login: new.login.trim().to_string(),
+            creation_date: DateTime::now(),
+        }
+    }
+}
+
 impl From<messages::SessionData> for Session {
     fn from(msg: messages::SessionData) -> Self {
         Self {
@@ -169,5 +179,25 @@ mod unit_tests {
         let result: NewSession = msg.into();
 
         assert_eq!(expected, result);
+    }
+
+    #[test]
+    fn convert_new_session_to_session() {
+        let new = NewSession {
+            tenant: "minerva".to_string(),
+            login: "admin".to_string(),
+            password: "admin".to_string(),
+        };
+
+        let expected = Session {
+            tenant: "minerva".to_string(),
+            login: "admin".to_string(),
+            creation_date: DateTime::now(),
+        };
+
+        let result: Session = new.into();
+
+        assert_eq!(expected.tenant, result.tenant);
+        assert_eq!(expected.login, result.login);
     }
 }

@@ -32,13 +32,14 @@ async fn make_test_server(
     let address = format!("0.0.0.0:{}", port).parse().unwrap();
     let endpoint = format!("http://127.0.0.1:{}", port);
     let dbserver = env::var("DATABASE_SERVICE_SERVER").unwrap();
+    let mongoserver = env::var("MONGO_SERVICE_SERVER").unwrap();
 
     let mut pools = HashMap::new();
     pools.insert(
         "minerva".into(),
         (
             db::make_connection_pool("minerva", &dbserver, 1).await,
-            mongo::make_client("minerva").await,
+            mongo::make_client(&mongoserver).await,
         ),
     );
 
