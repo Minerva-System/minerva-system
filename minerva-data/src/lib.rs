@@ -23,6 +23,7 @@ pub mod encryption;
 pub mod file;
 pub mod log;
 pub mod mongo;
+pub mod session;
 pub mod syslog;
 pub mod tenancy;
 pub mod user;

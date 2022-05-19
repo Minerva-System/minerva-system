@@ -1225,7 +1225,9 @@ dependencies = [
  "dotenv",
  "minerva-data",
  "minerva-rpc",
+ "mongodb",
  "tokio",
+ "tonic",
 ]
 
 [[package]]
