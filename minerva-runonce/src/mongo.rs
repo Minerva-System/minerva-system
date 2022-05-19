@@ -10,13 +10,11 @@ pub async fn database_spinlock(server: &str) {
     let client = mongo::make_client(server).await;
     let mut lock = true;
     while lock {
-        if let Ok(_) = client
+        lock = client
             .database("admin")
             .run_command(doc! { "ping": 1 }, None)
             .await
-        {
-            lock = false;
-        }
+            .is_err();
     }
 }
 

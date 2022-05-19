@@ -79,7 +79,7 @@ pub async fn remove_session(token: String, mongo: Database) -> Result<(), Status
         ObjectId::parse_str(&id).map_err(|_| Status::internal("Unable to decode session token"))?;
 
     // Find session object
-    if let Ok(_) = collection.find_one(doc! { "_id": id }, None).await {
+    if collection.find_one(doc! { "_id": id }, None).await.is_ok() {
         // Since the object was found, remove it
         collection
             .delete_one(doc! { "_id": id }, None)

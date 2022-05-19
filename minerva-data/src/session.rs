@@ -57,22 +57,22 @@ impl From<messages::SessionCreationData> for NewSession {
     }
 }
 
-impl Into<messages::SessionData> for Session {
-    fn into(self) -> messages::SessionData {
-        messages::SessionData {
-            tenant: self.tenant.trim().to_string(),
-            login: self.login.trim().to_string(),
-            creation_date: self.creation_date.timestamp_millis(),
+impl From<Session> for messages::SessionData {
+    fn from(session: Session) -> Self {
+        Self {
+            tenant: session.tenant.trim().to_string(),
+            login: session.login.trim().to_string(),
+            creation_date: session.creation_date.timestamp_millis(),
         }
     }
 }
 
-impl Into<messages::SessionCreationData> for NewSession {
-    fn into(self) -> messages::SessionCreationData {
-        messages::SessionCreationData {
-            tenant: self.tenant.trim().to_string(),
-            login: self.login.trim().to_string(),
-            password: self.password.trim().to_string(),
+impl From<NewSession> for messages::SessionCreationData {
+    fn from(new: NewSession) -> Self {
+        Self {
+            tenant: new.tenant.trim().to_string(),
+            login: new.login.trim().to_string(),
+            password: new.password.trim().to_string(),
         }
     }
 }
