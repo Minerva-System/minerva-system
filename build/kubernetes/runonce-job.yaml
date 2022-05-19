@@ -18,5 +18,7 @@ spec:
         env:
         - name: DATABASE_SERVICE_SERVER
           value: postgresql
+        - name: MONGO_SERVICE_SERVER
+          value: mongodb
       restartPolicy: Never
   backoffLimit: 4
