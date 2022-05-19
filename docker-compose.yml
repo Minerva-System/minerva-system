@@ -52,6 +52,19 @@ services:
       runonce:
         condition: service_completed_successfully
 
+  # SESSION service
+  session:
+    image: minerva_session
+    environment:
+      - DATABASE_SERVICE_SERVER=postgresql
+      - MONGO_SERVICE_SERVER=mongodb
+    build:
+      dockerfile: build/Dockerfile.SESSION
+      context: .
+    depends_on:
+      runonce:
+        condition: service_completed_successfully
+
   # PostgreSQL
   postgresql:
     environment:

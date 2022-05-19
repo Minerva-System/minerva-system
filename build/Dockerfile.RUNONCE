@@ -35,5 +35,6 @@ WORKDIR ${APP}
 
 ENV USER_SERVICE_SERVER=users
 ENV DATABASE_SERVICE_SERVER=postgresql
+ENV MONGO_SERVICE_SERVER=mongodb
 
 CMD ["./minerva-runonce"]
