@@ -27,6 +27,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Await for relational database on spinlock...");
     database::database_spinlock(&dbserver);
 
+    println!("Await for non-relational database on spinlock...");
+    mongo::database_spinlock(&mongoserver).await;
+
     println!("Running preparation...");
 
     for tenant in minerva_data::tenancy::get_tenants("tenancy.toml") {

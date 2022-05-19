@@ -6,6 +6,20 @@ use mongodb::{
     IndexModel,
 };
 
+pub async fn database_spinlock(server: &str) {
+    let client = mongo::make_client(server).await;
+    let mut lock = true;
+    while lock {
+        if let Ok(_) = client
+            .database("admin")
+            .run_command(doc! { "ping": 1 }, None)
+            .await
+        {
+            lock = false;
+        }
+    }
+}
+
 pub async fn prepare_database(tenant: &str, server: &str) -> Result<(), mongodb::error::Error> {
     println!("{}: Connecting to MongoDB client...", tenant);
     let client = mongo::make_client(server).await;
