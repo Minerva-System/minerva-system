@@ -45,6 +45,16 @@ diretório raiz deste projeto**.
 
 ## Gerando imagens
 
+Antes de começar, gere a imagem base para a compilação das demais
+imagens:
+
+```bash
+cd build
+./build_base.sh
+```
+
+Em seguida, **retorne ao diretório raiz do repositório**.
+
 Caso você só precise gerar as imagens Docker para o serviço, você
 poderá fazê-lo com o comando a seguir:
 

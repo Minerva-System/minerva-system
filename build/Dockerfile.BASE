@@ -1,0 +1,13 @@
+FROM rust:latest
+
+WORKDIR /
+RUN apt update && apt install -y cmake
+RUN mkdir /project
+RUN cd project && cargo new --bin minerva
+
+WORKDIR /project
+COPY Cargo.toml.base  /project/minerva/Cargo.toml
+
+WORKDIR /project/minerva
+RUN cargo build --release
+

@@ -1,21 +1,11 @@
-FROM rust:latest AS builder
-
-WORKDIR /
-RUN apt update && apt install -y cmake
-RUN mkdir /project
-RUN cd project && cargo new --bin minerva
+FROM minerva_base AS builder
 
 WORKDIR /project
 ADD ./minerva-cache/ /project/minerva-cache/
 ADD ./minerva-data/ /project/minerva-data/
 ADD ./minerva-rpc/ /project/minerva-rpc/
-COPY Cargo.lock /project/minerva/Cargo.lock
-COPY ./minerva-user/Cargo.toml /project/minerva/Cargo.toml
 
 WORKDIR /project/minerva
-RUN cargo build --release
-
-# Ater cache, specific stuff
 RUN rm -r src/ && rm -r ./target/release/deps/minerva*
 ADD ./minerva-user /project/minerva/
 RUN rm .env tenancy.toml
