@@ -8,12 +8,9 @@ pub fn get_address<T>(req: &Request<T>) -> SocketAddr {
 
 pub mod metadata;
 pub mod products;
+pub mod session;
 pub mod users;
 
 pub mod messages {
     tonic::include_proto!("messages");
-}
-
-pub mod session {
-    tonic::include_proto!("session");
 }

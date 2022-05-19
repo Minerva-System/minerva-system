@@ -10,6 +10,13 @@ pub struct Session {
     pub creation_date: DateTime,
 }
 
+#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
+pub struct NewSession {
+    pub tenant: String,
+    pub login: String,
+    pub password: String,
+}
+
 impl From<messages::SessionData> for Session {
     fn from(msg: messages::SessionData) -> Self {
         Self {
@@ -30,12 +37,32 @@ impl From<messages::SessionCreationData> for Session {
     }
 }
 
+impl From<messages::SessionCreationData> for NewSession {
+    fn from(msg: messages::SessionCreationData) -> Self {
+        Self {
+            tenant: msg.tenant.trim().to_string(),
+            login: msg.login.trim().to_string(),
+            password: msg.password.trim().to_string(),
+        }
+    }
+}
+
 impl Into<messages::SessionData> for Session {
     fn into(self) -> messages::SessionData {
         messages::SessionData {
             tenant: self.tenant.trim().to_string(),
             login: self.login.trim().to_string(),
             creation_date: self.creation_date.timestamp_millis(),
+        }
+    }
+}
+
+impl Into<messages::SessionCreationData> for NewSession {
+    fn into(self) -> messages::SessionCreationData {
+        messages::SessionCreationData {
+            tenant: self.tenant.trim().to_string(),
+            login: self.login.trim().to_string(),
+            password: self.password.trim().to_string(),
         }
     }
 }
@@ -102,6 +129,44 @@ mod unit_tests {
         };
 
         let result: Session = message.into();
+
+        assert_eq!(expected, result);
+    }
+
+    #[test]
+    fn convert_session_creation_data_to_creation_message() {
+        let data = NewSession {
+            tenant: "minerva".to_string(),
+            login: "admin".to_string(),
+            password: "admin".to_string(),
+        };
+
+        let expected = messages::SessionCreationData {
+            tenant: "minerva".to_string(),
+            login: "admin".to_string(),
+            password: "admin".to_string(),
+        };
+
+        let result: messages::SessionCreationData = data.into();
+
+        assert_eq!(expected, result);
+    }
+
+    #[test]
+    fn convert_session_creation_message_to_creation_data() {
+        let msg = messages::SessionCreationData {
+            tenant: "minerva".to_string(),
+            login: "admin".to_string(),
+            password: "admin".to_string(),
+        };
+
+        let expected = NewSession {
+            tenant: "minerva".to_string(),
+            login: "admin".to_string(),
+            password: "admin".to_string(),
+        };
+
+        let result: NewSession = msg.into();
 
         assert_eq!(expected, result);
     }

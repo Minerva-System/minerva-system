@@ -1222,7 +1222,9 @@ dependencies = [
 name = "minerva-session"
 version = "0.1.0"
 dependencies = [
+ "base64",
  "dotenv",
+ "futures-util",
  "minerva-data",
  "minerva-rpc",
  "mongodb",
