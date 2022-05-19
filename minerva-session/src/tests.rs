@@ -6,6 +6,7 @@ use minerva_data::{
     session::{NewSession, Session},
 };
 use minerva_rpc::{
+    messages::SessionToken,
     metadata::ClientInterceptor,
     session::{session_client::SessionClient, session_server::SessionServer},
 };
@@ -18,7 +19,7 @@ use tokio::task::JoinHandle;
 use tonic::{
     codegen::InterceptedService,
     transport::{Channel, Server},
-    Request,
+    Code, Request,
 };
 
 async fn make_test_server(
@@ -105,7 +106,8 @@ async fn integration_test_single_session() {
 #[tokio::test(flavor = "multi_thread", worker_threads = 3)]
 async fn integration_test_multiple_sessions() {
     let (handle, mut client, tx) = make_test_server(11011).await;
-    let mongo_client = mongo::make_client("minerva").await;
+    let mongoserver = env::var("MONGO_SERVICE_SERVER").unwrap();
+    let mongo_client = mongo::make_client(&mongoserver).await;
 
     // Create session
     let new_session = NewSession {
@@ -137,6 +139,7 @@ async fn integration_test_multiple_sessions() {
     let object = collection
         .find_one(doc! { "_id": object_id }, None)
         .await
+        .expect("Error searching for Session object")
         .expect("Unable to find Session object");
 
     println!("Token: {:#?}", token.token);
@@ -154,8 +157,57 @@ async fn integration_test_multiple_sessions() {
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 3)]
-async fn integration_test_session_token() {
+async fn integration_test_deleted_session() {
     let (handle, mut client, tx) = make_test_server(11012).await;
+
+    // Create session
+    let new_session = NewSession {
+        tenant: "minerva".to_string(),
+        login: "admin".to_string(),
+        password: "admin".to_string(),
+    };
+    let token = client
+        .generate(Request::new(new_session.clone().into()))
+        .await
+        .map_err(|e| panic!("Error while requesting session generation: {}", e))
+        .unwrap()
+        .into_inner();
+
+    // Logoff
+    client
+        .remove(Request::new(token.clone()))
+        .await
+        .map_err(|e| panic!("Error while requesting session termination: {}", e))
+        .unwrap();
+
+    // Retrieve deleted session
+    match client.retrieve(Request::new(token)).await {
+        Ok(session) => panic!("Session was not deleted: {:#?}", session.into_inner()),
+        Err(status) => assert_eq!(status.code(), Code::NotFound),
+    }
+
+    tx.send(()).unwrap();
+    handle.await.unwrap();
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 3)]
+async fn integration_test_invalid_session() {
+    let (handle, mut client, tx) = make_test_server(11013).await;
+
+    // Retrieve invalid session
+    let token = "NjI4NmE4YjQ2YTY1OGYzN2Y1ZGUwYzU1".to_string();
+    match client.retrieve(Request::new(SessionToken { token })).await {
+        Ok(session) => panic!("Session was not deleted: {:#?}", session.into_inner()),
+        Err(status) => assert_eq!(status.code(), Code::NotFound),
+    }
+
+    tx.send(()).unwrap();
+    handle.await.unwrap();
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 3)]
+async fn integration_test_session_token() {
+    let (handle, mut client, tx) = make_test_server(11014).await;
 
     // Create session
     let new_session = NewSession {

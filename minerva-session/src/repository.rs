@@ -3,6 +3,8 @@ use minerva_data::db::DBPool;
 use minerva_data::encryption;
 use minerva_data::session as model;
 use minerva_data::user::User;
+use mongodb::bson::oid::ObjectId;
+use mongodb::bson::{doc, Document};
 use mongodb::Database;
 use tonic::Status;
 
@@ -32,7 +34,7 @@ pub async fn create_session(
     // Create session object
     let collection = mongo.collection::<model::Session>("session");
     let session: model::Session = data.into();
-    println!("Emplacing collection");
+
     let result = collection
         .insert_one(session, None)
         .await
@@ -44,4 +46,47 @@ pub async fn create_session(
     let token = base64::encode(result);
 
     Ok(token)
+}
+
+pub async fn recover_session(token: String, mongo: Database) -> Result<model::Session, Status> {
+    let collection = mongo.collection::<model::Session>("session");
+
+    // Decode session token
+    let id = base64::decode(token.as_bytes())
+        .map_err(|_| Status::internal("Unable to decode session token"))?;
+    let id =
+        String::from_utf8(id).map_err(|_| Status::internal("Unable to decode session token"))?;
+    let id =
+        ObjectId::parse_str(&id).map_err(|_| Status::internal("Unable to decode session token"))?;
+
+    // Find session object
+    collection
+        .find_one(doc! { "_id": id }, None)
+        .await
+        .map_err(|e| Status::internal(format!("Error while trying to recover session: {}", e)))?
+        .ok_or_else(|| Status::not_found("Session does not exist"))
+}
+
+pub async fn remove_session(token: String, mongo: Database) -> Result<(), Status> {
+    let collection = mongo.collection::<Document>("session");
+
+    // Decode session token
+    let id = base64::decode(token.as_bytes())
+        .map_err(|_| Status::internal("Unable to decode session token"))?;
+    let id =
+        String::from_utf8(id).map_err(|_| Status::internal("Unable to decode session token"))?;
+    let id =
+        ObjectId::parse_str(&id).map_err(|_| Status::internal("Unable to decode session token"))?;
+
+    // Find session object
+    if let Ok(_) = collection.find_one(doc! { "_id": id }, None).await {
+        // Since the object was found, remove it
+        collection
+            .delete_one(doc! { "_id": id }, None)
+            .await
+            .map_err(|e| Status::internal(format!("Error while deleting session data: {}", e)))?;
+    }
+
+    // If session was not found, return success anyway
+    Ok(())
 }

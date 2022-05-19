@@ -1,6 +1,3 @@
-extern crate bb8_diesel;
-extern crate diesel;
-
 use dotenv::dotenv;
 use minerva_data::{db, encryption, mongo};
 use minerva_rpc::session::session_server::SessionServer;

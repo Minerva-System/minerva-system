@@ -59,7 +59,11 @@ impl Session for SessionService {
             "SESSION::RETRIEVE",
         );
 
-        todo!();
+        let token = req.into_inner().token;
+        let (_, mongodb) = self.pools.get(&tenant).expect("Unable to find tenant");
+        let mongo = mongodb.database(&tenant);
+        let session = repository::recover_session(token, mongo).await?;
+        Ok(Response::new(session.into()))
     }
 
     async fn remove(&self, req: Request<messages::SessionToken>) -> Result<Response<()>, Status> {
@@ -76,6 +80,10 @@ impl Session for SessionService {
             "SESSION::REMOVE",
         );
 
-        todo!();
+        let token = req.into_inner().token;
+        let (_, mongodb) = self.pools.get(&tenant).expect("Unable to find tenant");
+        let mongo = mongodb.database(&tenant);
+        let _ = repository::remove_session(token, mongo).await?;
+        Ok(Response::new(()))
     }
 }
