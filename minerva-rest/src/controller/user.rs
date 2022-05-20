@@ -88,7 +88,7 @@ async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Respon
 
     let message: rpc::messages::User = body.0.into();
 
-    if message.login == "unknown".to_string() {
+    if message.login == *"unknown" {
         return Response::BadRequest(
             json!({ "message": "Username \"unknown\" is reserved" }).to_string(),
         );
