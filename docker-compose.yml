@@ -66,7 +66,7 @@ services:
       runonce:
         condition: service_completed_successfully
 
-  # PostgreSQL
+  # PostgreSQL 14
   postgresql:
     environment:
       - POSTGRES_USER=postgres
@@ -88,7 +88,7 @@ services:
     ports:
       - "8484:80"
 
-  # MongoDB
+  # MongoDB 5
   mongodb:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
