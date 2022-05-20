@@ -26,7 +26,7 @@ pub fn get_endpoint() -> String {
 /// curl -X GET 'http://localhost:9000/users'
 /// curl -X GET 'http://localhost:9000/users?page=0'
 /// ```
-#[get("/users?<page>")]
+#[get("/?<page>")]
 async fn index(session: SessionInfo, page: Option<i64>) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
@@ -52,7 +52,7 @@ async fn index(session: SessionInfo, page: Option<i64>) -> Response {
 /// ```bash
 /// curl -X GET 'http://localhost:9000/users/1'
 /// ```
-#[get("/users/<id>")]
+#[get("/<id>")]
 async fn show(session: SessionInfo, id: i32) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
@@ -80,7 +80,7 @@ async fn show(session: SessionInfo, id: i32) -> Response {
 ///      -H 'Content-Type: application/json' \
 ///      -d '{"login": "fulano", "name": "Fulano da Silva", "email": null, "password": "senha123"}'
 /// ```
-#[post("/users", data = "<body>")]
+#[post("/", data = "<body>")]
 async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
@@ -118,7 +118,7 @@ async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Respon
 ///      -H 'Content-Type: application/json' \
 ///      -d '{"login": "fulano", "name": "Fulano da Silva", "email": null, "password": null}'
 /// ```
-#[put("/users/<id>", data = "<body>")]
+#[put("/<id>", data = "<body>")]
 async fn update(session: SessionInfo, id: i32, body: Json<data::user::RecvUser>) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
@@ -146,7 +146,7 @@ async fn update(session: SessionInfo, id: i32, body: Json<data::user::RecvUser>)
 /// ```bash
 /// curl -X DELETE 'http://localhost:9000/users/2'
 /// ```
-#[delete("/users/<index>")]
+#[delete("/<index>")]
 async fn delete(session: SessionInfo, index: i32) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();

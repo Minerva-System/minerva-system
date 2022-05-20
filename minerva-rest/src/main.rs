@@ -16,6 +16,6 @@ fn launch() -> rocket::Rocket<rocket::Build> {
     dotenv().ok();
 
     rocket::build()
-        .mount("/", controller::user::routes())
         .mount("/", controller::auth::routes())
+        .mount("/users", controller::user::routes())
 }
