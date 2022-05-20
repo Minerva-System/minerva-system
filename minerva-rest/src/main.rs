@@ -3,7 +3,7 @@ extern crate rocket;
 
 use dotenv::dotenv;
 
-mod routes;
+mod controller;
 
 #[launch]
 fn launch() -> rocket::Rocket<rocket::Build> {
@@ -13,5 +13,5 @@ fn launch() -> rocket::Rocket<rocket::Build> {
 
     dotenv().ok();
 
-    rocket::build().mount("/", routes::user::routes())
+    rocket::build().mount("/", controller::user::routes())
 }
