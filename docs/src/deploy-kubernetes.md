@@ -125,7 +125,8 @@ minikube image load \
 	 minerva_frontend:latest \
 	 minerva_pgadmin:latest \
 	 minerva_users:latest \
-	 minerva_runonce:latest
+	 minerva_runonce:latest \
+	 minerva_session:latest
 ```
 
 

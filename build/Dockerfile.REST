@@ -1,19 +1,7 @@
-FROM minerva_base AS builder
-
-WORKDIR /project
-ADD ./minerva-cache/ /project/minerva-cache/
-ADD ./minerva-data/ /project/minerva-data/
-ADD ./minerva-rpc/ /project/minerva-rpc/
-
-WORKDIR /project/minerva
-RUN rm -r src/
-RUN cp Cargo.lock /project
-#RUN rm -r src/ && rm -r ./target/release/deps/minerva*
-ADD ./minerva-rest /project/minerva
-RUN rm .env && rm Cargo.lock
-RUN mv /project/Cargo.lock ./
-RUN cargo build --release
-
+FROM minerva_base:latest AS builder
+WORKDIR /minerva
+ADD . .
+RUN cargo build --release --bin minerva-rest
 
 FROM debian:bullseye-slim
 ARG APP=/usr/src/app
@@ -32,7 +20,7 @@ RUN groupadd $APP_USER \
 
 COPY ./tenancy.toml ${APP}/tenancy.toml
 COPY ./minerva-rest/Rocket.toml ${APP}/Rocket.toml
-COPY --from=builder /project/minerva/target/release/minerva-rest ${APP}/minerva-rest
+COPY --from=builder /minerva/target/release/minerva-rest ${APP}/minerva-rest
 RUN chown -R $APP_USER:$APP_USER ${APP}
 
 USER $APP_USER

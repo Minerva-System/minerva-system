@@ -1,15 +1,7 @@
-FROM minerva_base AS builder
-
-WORKDIR /project
-ADD ./minerva-cache/ /project/minerva-cache/
-ADD ./minerva-data/ /project/minerva-data/
-ADD ./minerva-rpc/ /project/minerva-rpc/
-
-WORKDIR /project/minerva
-RUN rm -r src/ && rm -r ./target/release/deps/minerva*
-ADD ./minerva-runonce /project/minerva/
-RUN rm .env tenancy.toml
-RUN cargo build --release
+FROM minerva_base:latest AS builder
+WORKDIR /minerva
+ADD . .
+RUN cargo build --release --bin minerva-runonce
 
 
 FROM debian:bullseye-slim
@@ -26,8 +18,8 @@ RUN groupadd $APP_USER \
     && mkdir -p ${APP}
 
 COPY ./tenancy.toml ${APP}/tenancy.toml
-COPY --from=builder /project/minerva/migrations ${APP}/migrations
-COPY --from=builder /project/minerva/target/release/minerva-runonce ${APP}/minerva-runonce
+COPY ./minerva-runonce/migrations ${APP}/migrations
+COPY --from=builder /minerva/target/release/minerva-runonce ${APP}/minerva-runonce
 RUN chown -R $APP_USER:$APP_USER ${APP}
 
 USER $APP_USER

@@ -49,11 +49,8 @@ Antes de começar, gere a imagem base para a compilação das demais
 imagens:
 
 ```bash
-cd build
 ./build_base.sh
 ```
-
-Em seguida, **retorne ao diretório raiz do repositório**.
 
 Caso você só precise gerar as imagens Docker para o serviço, você
 poderá fazê-lo com o comando a seguir:
@@ -66,7 +63,7 @@ Se você nunca tiver realizado deploy da aplicação com Compose, isto
 **não é necessário**, uma vez que o Compose se encarregará de gerá-las
 no primeiro deploy.
 
-**ATENÇÃO: O PROCESSO DE GERAÇÃO DAS IMAGENS É DEMORADO.**
+**ATENÇÃO: O PROCESSO DE GERAÇÃO DAS IMAGENS PODE SER DEMORADO.**
 
 
 ### Gerando uma imagem

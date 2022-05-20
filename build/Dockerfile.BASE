@@ -1,13 +1,16 @@
-FROM rust:latest
-
+FROM rust:1.61.0 AS chef
 WORKDIR /
 RUN apt update && apt install -y cmake
-RUN mkdir /project
-RUN cd project && cargo new --bin minerva
+RUN cargo install cargo-chef
 
-WORKDIR /project
-COPY Cargo.toml.base  /project/minerva/Cargo.toml
+# NOTE: Execute this in the root folder of the project!
+FROM chef AS planner
+RUN mkdir /minerva
+WORKDIR /minerva
+ADD . .
+RUN cargo chef prepare --recipe-path recipe.json
 
-WORKDIR /project/minerva
-RUN cargo build --release
+FROM chef
+COPY --from=planner /minerva/recipe.json recipe.json
+RUN cargo chef cook --release --recipe-path recipe.json
 
