@@ -38,6 +38,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     let addr = format!("0.0.0.0:{}", port).parse()?;
+
+    println!("Starting SESSION on {}...", addr);
+
     let server = Server::builder()
         .add_service(SessionServer::new(service::SessionService { pools }))
         .serve(addr);

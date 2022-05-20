@@ -17,6 +17,22 @@ pub struct NewSession {
     pub password: String,
 }
 
+#[derive(Debug, Deserialize)]
+pub struct RecvSession {
+    pub login: String,
+    pub password: String,
+}
+
+impl RecvSession {
+    pub fn as_new(&self, tenant: &str) -> NewSession {
+        NewSession {
+            tenant: tenant.trim().to_string(),
+            login: self.login.clone(),
+            password: self.password.clone(),
+        }
+    }
+}
+
 impl From<NewSession> for Session {
     fn from(new: NewSession) -> Self {
         Self {
@@ -199,5 +215,23 @@ mod unit_tests {
 
         assert_eq!(expected.tenant, result.tenant);
         assert_eq!(expected.login, result.login);
+    }
+
+    #[test]
+    fn convert_recv_session_to_new_session() {
+        let recv = RecvSession {
+            login: "admin".to_string(),
+            password: "admin".to_string(),
+        };
+
+        let expected = NewSession {
+            tenant: "minerva".to_string(),
+            login: "admin".to_string(),
+            password: "admin".to_string(),
+        };
+
+        let result = recv.as_new("minerva");
+
+        assert_eq!(expected, result);
     }
 }

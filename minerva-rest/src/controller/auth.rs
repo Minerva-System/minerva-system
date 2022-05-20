@@ -23,11 +23,16 @@ pub fn get_endpoint() -> String {
     format!("http://{}:{}", srv, port)
 }
 
-#[post("/login", data = "<body>")]
-pub async fn login(cookies: &CookieJar<'_>, body: Json<data::session::NewSession>) -> Response {
+#[post("/<tenant>/login", data = "<body>")]
+pub async fn login(
+    tenant: &str,
+    cookies: &CookieJar<'_>,
+    body: Json<data::session::RecvSession>,
+) -> Response {
     let endpoint = get_endpoint();
     let requestor = "unknown".to_string();
-    let tenant = body.tenant.clone();
+    let body = body.as_new(tenant);
+    let tenant = tenant.to_string();
 
     data::log::print(
         utils::get_ip(),
@@ -38,7 +43,7 @@ pub async fn login(cookies: &CookieJar<'_>, body: Json<data::session::NewSession
 
     let mut client = rpc::session::make_client(endpoint, tenant.clone(), requestor).await;
     let response: Result<String, Status> = client
-        .generate(Request::new((*body).clone().into()))
+        .generate(Request::new(body.clone().into()))
         .await
         .map(|msg| {
             let token = msg.into_inner().token;
@@ -52,11 +57,11 @@ pub async fn login(cookies: &CookieJar<'_>, body: Json<data::session::NewSession
     Response::respond(response)
 }
 
-#[post("/logout")]
-pub async fn logout(cookies: &CookieJar<'_>) -> Response {
+#[post("/<tenant>/logout")]
+pub async fn logout(tenant: &str, cookies: &CookieJar<'_>) -> Response {
     let endpoint = get_endpoint();
     let requestor = "unknown".to_string();
-    let tenant = utils::get_tenant(cookies).map_err(|e| return e).unwrap();
+    let tenant = tenant.to_string();
 
     data::log::print(
         utils::get_ip(),
