@@ -4,7 +4,7 @@ use serde_json::json;
 use tonic::{Code, Status};
 
 #[allow(dead_code)]
-#[derive(Responder)]
+#[derive(Responder, Debug, Clone)]
 pub enum Response {
     #[response(status = 200, content_type = "json")]
     Ok(String),

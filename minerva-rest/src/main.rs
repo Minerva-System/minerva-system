@@ -4,6 +4,7 @@ extern crate rocket;
 use dotenv::dotenv;
 
 mod controller;
+mod fairings;
 mod utils;
 
 #[launch]
