@@ -27,6 +27,8 @@ spec:
         - env:
             - name: USER_SERVICE_SERVER
               value: users
+            - name: SESSION_SERVICE_SERVER
+              value: session
           image: minerva_rest
           imagePullPolicy: Never
           name: rest

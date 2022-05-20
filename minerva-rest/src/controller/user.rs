@@ -1,11 +1,11 @@
 use super::response;
+use crate::utils;
 use minerva_data as data;
 use minerva_rpc as rpc;
 use response::Response;
 use rocket::serde::json::Json;
 use rocket::Route;
 use std::env;
-use std::net::SocketAddr;
 use tonic::Request;
 
 // TODO: Change this! This should come from authentication.
@@ -13,11 +13,6 @@ const REQUESTOR: &str = "admin";
 
 pub fn routes() -> Vec<Route> {
     routes![index, show, store, update, delete]
-}
-
-fn get_ip() -> SocketAddr {
-    use std::net::{IpAddr, Ipv4Addr};
-    SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), 9000)
 }
 
 fn get_endpoint() -> String {
@@ -36,10 +31,10 @@ fn get_endpoint() -> String {
 async fn index(tenant: String, page: Option<i64>) -> Response {
     let endpoint = get_endpoint();
     data::log::print(
-        get_ip(),
+        utils::get_ip(),
         REQUESTOR.to_string(),
         tenant.clone(),
-        &format!("INDEX: Connecting to {}...", endpoint),
+        &format!("REST::INDEX > USERS::INDEX @ {}", endpoint),
     );
     let mut client = rpc::users::make_client(endpoint, tenant, REQUESTOR.into()).await;
     let response = client
@@ -58,10 +53,10 @@ async fn index(tenant: String, page: Option<i64>) -> Response {
 async fn show(tenant: String, id: i32) -> Response {
     let endpoint = get_endpoint();
     data::log::print(
-        get_ip(),
+        utils::get_ip(),
         REQUESTOR.to_string(),
         tenant.clone(),
-        &format!("SHOW: Connecting to {}...", endpoint),
+        &format!("REST::SHOW > USERS::SHOW @ {}", endpoint),
     );
     let mut client = rpc::users::make_client(endpoint, tenant, REQUESTOR.into()).await;
     let index = id;
@@ -82,10 +77,10 @@ async fn show(tenant: String, id: i32) -> Response {
 async fn store(tenant: String, body: Json<data::user::RecvUser>) -> Response {
     let endpoint = get_endpoint();
     data::log::print(
-        get_ip(),
+        utils::get_ip(),
         REQUESTOR.to_string(),
         tenant.clone(),
-        &format!("STORE: Connecting to {}...", endpoint),
+        &format!("REST::STORE > USERS::STORE @ {}", endpoint),
     );
     let mut client = rpc::users::make_client(endpoint, tenant, REQUESTOR.into()).await;
     let message = body.0.into();
@@ -109,10 +104,10 @@ async fn store(tenant: String, body: Json<data::user::RecvUser>) -> Response {
 async fn update(tenant: String, id: i32, body: Json<data::user::RecvUser>) -> Response {
     let endpoint = get_endpoint();
     data::log::print(
-        get_ip(),
+        utils::get_ip(),
         REQUESTOR.to_string(),
         tenant.clone(),
-        &format!("UPDATE: Connecting to {}...", endpoint),
+        &format!("REST::UPDATE > USERS::UPDATE @ {}", endpoint),
     );
     let mut client = rpc::users::make_client(endpoint, tenant, REQUESTOR.into()).await;
     let mut message: rpc::messages::User = body.0.into();
@@ -133,10 +128,10 @@ async fn update(tenant: String, id: i32, body: Json<data::user::RecvUser>) -> Re
 async fn delete(tenant: String, index: i32) -> Response {
     let endpoint = get_endpoint();
     data::log::print(
-        get_ip(),
+        utils::get_ip(),
         REQUESTOR.to_string(),
         tenant.clone(),
-        &format!("DELETE: Connecting to {}...", endpoint),
+        &format!("REST::DELETE > USERS::DELETE @ {}", endpoint),
     );
     let mut client = rpc::users::make_client(endpoint, tenant, REQUESTOR.into()).await;
     let response = client

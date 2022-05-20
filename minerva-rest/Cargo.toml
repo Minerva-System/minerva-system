@@ -7,7 +7,7 @@ edition = "2021"
 minerva-rpc = {path = "../minerva-rpc"}
 minerva-data = {path = "../minerva-data"}
 dotenv = "0.15.0"
-rocket = { version = "0.5.0-rc.2", features = ["json"] }
+rocket = { version = "0.5.0-rc.2", features = ["json", "secrets"] }
 tonic = "0.7"
 serde = "1.0"
 serde_json = "1.0"

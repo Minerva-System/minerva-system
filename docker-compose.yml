@@ -19,6 +19,7 @@ services:
     image: minerva_rest
     environment:
       - USER_SERVICE_SERVER=users
+      - SESSION_SERVICE_SERVER=session
     build:
       dockerfile: build/Dockerfile.REST
       context: .
