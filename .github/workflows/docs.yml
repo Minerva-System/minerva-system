@@ -35,7 +35,7 @@ jobs:
           cargo install mdbook-graphviz
 
       - name: Generate Rust documentation
-       run: |
+        run: |
          cargo doc --no-deps
          mv target/doc docs/src/doc
          rm docs/src/.gitignore
