@@ -1,4 +1,4 @@
-[debug]
+[default]
 address    = "127.0.0.1"
 port       = 9000
 secret_key = "8fQ8d5Nf8d0cEks0TD/rMTHpj7idSbD43L+3/uAmhYs="

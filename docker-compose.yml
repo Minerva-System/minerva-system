@@ -94,6 +94,8 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=mongo
     image: mongo:5
+    command: mongod --quiet --logpath /dev/null
     volumes:
       - ../minerva-mongodb:/data/db
+
 
