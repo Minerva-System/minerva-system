@@ -117,7 +117,9 @@ pub async fn remove_session(token: String, pool: DBPool, mongo: Database) -> Res
             let _ = diesel::insert_into(syslog::table)
                 .values(&NewLog {
                     service: "SESSION".to_string(),
-                    requestor: session.map(|s| s.login).unwrap_or("unknown".to_string()),
+                    requestor: session
+                        .map(|s| s.login)
+                        .unwrap_or_else(|| "unknown".to_string()),
                     entity: "session".to_string(),
                     operation: OpType::Delete,
                     datetime: chrono::offset::Utc::now(),
