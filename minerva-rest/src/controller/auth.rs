@@ -67,7 +67,7 @@ pub async fn logout(tenant: &str, cookies: &CookieJar<'_>) -> Response {
         utils::get_ip(),
         requestor.clone(),
         tenant.clone(),
-        &format!("REST::LOGIN > SESSION::GENERATE @ {}", endpoint),
+        &format!("REST::LOGOUT > SESSION::REMOVE @ {}", endpoint),
     );
 
     match cookies.get_private(AUTH_COOKIE) {
