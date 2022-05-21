@@ -2,6 +2,7 @@
 
 - [Introdução](./intro.md)
 - [Estrutura geral do projeto](./estrutura.md)
+  - [Front-End]()
   - [Back-End](./backend.md)
 - [Multi-Tenancy](./multi-tenancy.md)
 - [Banco de Dados Relacional](./banco-relacional.md)
@@ -12,7 +13,7 @@
   - [Executar com recursos da máquina](./executar-maquina.md)
   - [Deploy via Docker Compose](./deploy-compose.md)
   - [Deploy via Kubernetes](./deploy-kubernetes.md)
-
+- [Documentação do Projeto](./documentacao.md)
 
 <!-- TODO: -->
 
