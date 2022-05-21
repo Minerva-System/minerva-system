@@ -81,9 +81,9 @@ impl Session for SessionService {
         );
 
         let token = req.into_inner().token;
-        let (_, mongodb) = self.pools.get(&tenant).expect("Unable to find tenant");
+        let (postgres, mongodb) = self.pools.get(&tenant).expect("Unable to find tenant");
         let mongo = mongodb.database(&tenant);
-        let _ = repository::remove_session(token, mongo).await?;
+        let _ = repository::remove_session(token, postgres.clone(), mongo).await?;
         Ok(Response::new(()))
     }
 }

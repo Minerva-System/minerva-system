@@ -8,7 +8,7 @@ use rocket::serde::json::Json;
 use rocket::Route;
 use serde_json::json;
 use std::env;
-use tonic::{Request, Status};
+use tonic::Request;
 
 pub static AUTH_COOKIE: &str = "auth_token";
 pub static TENANT_COOKIE: &str = "tenant";
@@ -42,7 +42,7 @@ pub async fn login(
     );
 
     let mut client = rpc::session::make_client(endpoint, tenant.clone(), requestor).await;
-    let response: Result<String, Status> = client
+    let response = client
         .generate(Request::new(body.clone().into()))
         .await
         .map(|msg| {
@@ -51,7 +51,8 @@ pub async fn login(
             let tenant_cookie = Cookie::new(TENANT_COOKIE, tenant.clone());
             cookies.add_private(auth_cookie);
             cookies.add(tenant_cookie);
-            token
+
+            json!({ "token": token, "tenant": tenant })
         });
 
     Response::respond(response)
@@ -79,7 +80,8 @@ pub async fn logout(cookies: &CookieJar<'_>) -> Response {
             let token = cookie.value().to_string();
             let response = client
                 .remove(Request::new(rpc::messages::SessionToken { token }))
-                .await;
+                .await
+                .map(|_| json!({ "message": "User logout successful" }));
 
             if response.is_ok() {
                 cookies.remove_private(cookie);
@@ -88,7 +90,7 @@ pub async fn logout(cookies: &CookieJar<'_>) -> Response {
                 }
             }
 
-            Response::respond_empty(response)
+            Response::respond(response)
         }
         None => Response::Unauthorized(
             json!({
