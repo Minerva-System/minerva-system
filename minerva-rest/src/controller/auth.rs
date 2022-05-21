@@ -57,11 +57,14 @@ pub async fn login(
     Response::respond(response)
 }
 
-#[post("/<tenant>/logout")]
-pub async fn logout(tenant: &str, cookies: &CookieJar<'_>) -> Response {
+#[post("/logout")]
+pub async fn logout(cookies: &CookieJar<'_>) -> Response {
     let endpoint = get_endpoint();
     let requestor = "unknown".to_string();
-    let tenant = tenant.to_string();
+    let tenant = match utils::get_tenant(cookies) {
+        Ok(tenant) => tenant,
+        Err(response) => return response,
+    };
 
     data::log::print(
         utils::get_ip(),
