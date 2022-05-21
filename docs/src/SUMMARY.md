@@ -13,7 +13,7 @@
   - [Executar com recursos da máquina](./executar-maquina.md)
   - [Deploy via Docker Compose](./deploy-compose.md)
   - [Deploy via Kubernetes](./deploy-kubernetes.md)
-- [Documentação do Projeto](./documentacao.md)
+- [Documentação do Código](./documentacao.md)
 
 <!-- TODO: -->
 
