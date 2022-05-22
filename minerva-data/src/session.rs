@@ -1,29 +1,49 @@
+//! This module contains Data Transfer Objects for the user sessions on the
+//! system, representing a user's login session for a given tenant. These DTO's
+//! mostly relate to the `session` collecton on MongoDB database.
+
 use minerva_rpc::messages;
 use mongodb::bson::DateTime;
 use serde::{Deserialize, Serialize};
 
+/// DTO representing the data for a user session.
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct Session {
+    /// Tenant of this session.
     pub tenant: String,
+    /// User logged in.
     pub login: String,
+    /// Creation date of the session, used for checks
+    /// related to expiration date.
     pub creation_date: DateTime,
 }
 
+/// DTO representing the data for a new session, to be received by the
+/// gRPC session service.
 #[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
 pub struct NewSession {
+    /// Tenant of the required session.
     pub tenant: String,
+    /// User attempting to log in.
     pub login: String,
+    /// Plain text password of the user attempting to log in.
     pub password: String,
 }
 
+/// DTO representing the data for a new session, to be received by the
+/// REST gateway endpoint.
 #[derive(Debug, Deserialize)]
 pub struct RecvSession {
+    /// User attempting to log in.
     pub login: String,
+    /// Plain text password of the user attempting to log in.
     pub password: String,
 }
 
 impl RecvSession {
+    /// Converts this DTO to another DTO that can be
+    /// used by the gRPC service.
     pub fn as_new(&self, tenant: &str) -> NewSession {
         NewSession {
             tenant: tenant.trim().to_string(),
@@ -93,6 +113,7 @@ impl From<NewSession> for messages::SessionCreationData {
     }
 }
 
+/// Unit tests for this module.
 #[cfg(test)]
 mod unit_tests {
     use super::*;

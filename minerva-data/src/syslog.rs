@@ -12,8 +12,11 @@ use chrono::{DateTime, Utc};
 #[derive(Debug, Clone, Copy, PartialEq, Eq, DbEnum, Serialize)]
 #[DieselType = "Op_type"]
 pub enum OpType {
+    /// Operation for inserting new entities.
     Insert,
+    /// Operation for updating entities.
     Update,
+    /// Operation for removing entities.
     Delete,
 }
 

@@ -11,8 +11,11 @@ use std::collections::HashMap;
 /// Each entry is prepended by a `[[tenants]]` line.
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 pub struct Tenant {
+    /// Human-readable tenant name, mostly for aesthetic reasons.
     pub name: String,
+    /// Actual tenant name and database name on any database service.
     pub database: String,
+    /// Max number of connections on a connection pool, whenever it applies.
     pub connections: u32,
 }
 

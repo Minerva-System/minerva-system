@@ -142,6 +142,7 @@ pub fn vec_to_message(v: Vec<User>) -> messages::UserList {
     }
 }
 
+/// Unit tests for this module.
 #[cfg(test)]
 mod unit_tests {
     use super::*;
