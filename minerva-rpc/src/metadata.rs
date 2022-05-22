@@ -13,13 +13,13 @@ pub fn push_metadata(
 ) -> Result<(), String> {
     request.metadata_mut().insert(
         "tenant",
-        MetadataValue::from_str(tenant)
+        MetadataValue::try_from(tenant)
             .map_err(|e| format!("Failure while applying tenant to request: {}", e))?,
     );
 
     request.metadata_mut().insert(
         "requestor",
-        MetadataValue::from_str(requestor)
+        MetadataValue::try_from(requestor)
             .map_err(|e| format!("Failure while applying requestor to request: {}", e))?,
     );
 
