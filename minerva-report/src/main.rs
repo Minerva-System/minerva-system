@@ -1,3 +1,6 @@
+#![warn(clippy::all)]
+#![warn(missing_docs)]
+
 use dotenv::dotenv;
 use std::env;
 

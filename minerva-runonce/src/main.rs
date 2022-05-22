@@ -1,3 +1,6 @@
+#![warn(clippy::all)]
+#![warn(missing_docs)]
+
 #[macro_use]
 extern crate diesel_migrations;
 extern crate minerva_data;

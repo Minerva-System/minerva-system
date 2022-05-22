@@ -1,3 +1,6 @@
+#![warn(clippy::all)]
+#![warn(missing_docs)]
+
 use dotenv::dotenv;
 use minerva_data::encryption;
 use minerva_rpc::products::products_server::ProductsServer;

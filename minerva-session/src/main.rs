@@ -1,3 +1,6 @@
+#![warn(clippy::all)]
+#![warn(missing_docs)]
+
 use dotenv::dotenv;
 use minerva_data::{db, encryption, mongo};
 use minerva_rpc::session::session_server::SessionServer;

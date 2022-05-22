@@ -1,3 +1,6 @@
+#![warn(clippy::all)]
+#![warn(missing_docs)]
+
 extern crate bb8_diesel;
 extern crate diesel;
 
