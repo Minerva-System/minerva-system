@@ -1128,15 +1128,11 @@ checksum = "2a60c7ce501c71e03a9c9c0d35b861413ae925bd979cc7a4e30d060069aaac8d"
 
 [[package]]
 name = "minerva-cache"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "diesel",
-]
+version = "0.0.0"
 
 [[package]]
 name = "minerva-data"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "bb8",
  "bb8-diesel",
@@ -1160,7 +1156,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-product"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "chrono",
  "diesel",
@@ -1173,7 +1169,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-report"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "dotenv",
  "minerva-data",
@@ -1196,7 +1192,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-rpc"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "dotenv",
  "prost",
@@ -1207,7 +1203,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-runonce"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "chrono",
  "diesel",
@@ -1236,7 +1232,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-stock"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "chrono",
  "diesel",

@@ -1,7 +1,9 @@
 [package]
 name = "minerva-rpc"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
+description = "Remote Procedure Call library for the Minerva System"
+authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
 
 [lib]
 path = "src/lib.rs"

@@ -2,6 +2,8 @@
 name = "minerva-rest"
 version = "0.2.0"
 edition = "2021"
+description = "REST gateway for the Minerva System"
+authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
 
 [dependencies]
 minerva-rpc = {path = "../minerva-rpc"}

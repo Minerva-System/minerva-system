@@ -1,11 +1,11 @@
 [package]
 name = "minerva-cache"
-version = "0.1.0"
+version = "0.0.0"
 edition = "2021"
+description = "Cache library for the Minerva System"
+authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
 
 [lib]
 path = "src/lib.rs"
 
 [dependencies]
-diesel = {version = "1.4.8", features = ["postgres", "extras", "numeric", "chrono"]}
-chrono = {version = "0.4", features = ["serde", "rustc-serialize"]}
