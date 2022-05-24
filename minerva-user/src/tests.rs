@@ -103,8 +103,8 @@ async fn integration_test_store() {
     let response = client
         .store(messages::User {
             id: None,
-            login: "fulano".to_string(),
-            name: "Fulano de Tal".to_string(),
+            login: "fulano1234".to_string(),
+            name: "Fulano de Tal1234".to_string(),
             email: None,
             password: Some("minhasenha123".to_string()),
         })
@@ -113,8 +113,8 @@ async fn integration_test_store() {
 
     let stored_user: model::User = response.into_inner().into();
     println!("STORE: {:#?}", stored_user);
-    assert_eq!(stored_user.login, "fulano");
-    assert_eq!(stored_user.name, "Fulano de Tal");
+    assert_eq!(stored_user.login, "fulano1234");
+    assert_eq!(stored_user.name, "Fulano de Tal1234");
     assert_eq!(stored_user.pwhash, Vec::<u8>::new());
 
     // Remove that user
@@ -136,27 +136,27 @@ async fn integration_test_store_update_show() {
     let response = client
         .store(messages::User {
             id: None,
-            login: "ciclano".to_string(),
-            name: "Ciclano de Tal".to_string(),
-            email: Some("ciclano@exemplo.com".to_string()),
+            login: "ciclano1234".to_string(),
+            name: "Ciclano de Tal1234".to_string(),
+            email: Some("ciclano1234@exemplo.com".to_string()),
             password: Some("outrasenha456".to_string()),
         })
         .await
         .unwrap();
 
     let stored_user: model::User = response.into_inner().into();
-    assert_eq!(stored_user.login, "ciclano");
-    assert_eq!(stored_user.name, "Ciclano de Tal");
-    assert_eq!(stored_user.email.unwrap(), "ciclano@exemplo.com");
+    assert_eq!(stored_user.login, "ciclano1234");
+    assert_eq!(stored_user.name, "Ciclano de Tal1234");
+    assert_eq!(stored_user.email.unwrap(), "ciclano1234@exemplo.com");
     assert_eq!(stored_user.pwhash, Vec::<u8>::new());
 
     // Update the given user
     let response = client
         .update(messages::User {
             id: Some(stored_user.id),
-            login: "ciclano".to_string(),
-            name: "Ciclano da Silva".to_string(),
-            email: Some("ciclano@servidor.com".to_string()),
+            login: "ciclano1234".to_string(),
+            name: "Ciclano da Silva1234".to_string(),
+            email: Some("ciclano1234@servidor.com".to_string()),
             password: None,
         })
         .await
@@ -164,9 +164,9 @@ async fn integration_test_store_update_show() {
 
     let stored_user: model::User = response.into_inner().into();
     println!("UPDATE: {:#?}", stored_user);
-    assert_eq!(stored_user.login, "ciclano");
-    assert_eq!(stored_user.name, "Ciclano da Silva");
-    assert_eq!(stored_user.email.unwrap(), "ciclano@servidor.com");
+    assert_eq!(stored_user.login, "ciclano1234");
+    assert_eq!(stored_user.name, "Ciclano da Silva1234");
+    assert_eq!(stored_user.email.unwrap(), "ciclano1234@servidor.com");
     assert_eq!(stored_user.pwhash, Vec::<u8>::new());
 
     // Fetch the updated user yet again
@@ -177,9 +177,9 @@ async fn integration_test_store_update_show() {
         .unwrap();
 
     let stored_user: model::User = response.into_inner().into();
-    assert_eq!(stored_user.login, "ciclano");
-    assert_eq!(stored_user.name, "Ciclano da Silva");
-    assert_eq!(stored_user.email.unwrap(), "ciclano@servidor.com");
+    assert_eq!(stored_user.login, "ciclano1234");
+    assert_eq!(stored_user.name, "Ciclano da Silva1234");
+    assert_eq!(stored_user.email.unwrap(), "ciclano1234@servidor.com");
     assert_eq!(stored_user.pwhash, Vec::<u8>::new());
 
     let index = stored_user.id;

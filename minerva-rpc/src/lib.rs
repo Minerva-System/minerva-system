@@ -16,12 +16,8 @@ pub fn get_address<T>(req: &Request<T>) -> SocketAddr {
         .unwrap_or_else(|| SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), 0))
 }
 
+pub mod messages;
 pub mod metadata;
 pub mod products;
 pub mod session;
 pub mod users;
-
-#[allow(missing_docs)]
-pub mod messages {
-    tonic::include_proto!("messages");
-}

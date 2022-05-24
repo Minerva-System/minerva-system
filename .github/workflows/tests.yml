@@ -47,8 +47,10 @@ jobs:
       - name: Linter
         run: cargo fmt -- --check
 
-      - name: Clippy
+      - name: Clippy & Warnings
         run: cargo clippy -- -D clippy::all
+        env:
+          RUSTFLAGS: -D warnings
 
       - name: Run database migrations
         run: cargo run --bin minerva-runonce

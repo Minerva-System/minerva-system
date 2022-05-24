@@ -10,7 +10,8 @@ use tonic::{Request, Status};
 /// Retrieve the string value from a request's metadata map by its key.
 ///
 /// # Example
-/// ```rust
+///
+/// ```ignore
 /// let tenant = get_value(request.metadata(), "tenant")
 ///     .expect("Missing tenant info on request metadata");
 /// ```
@@ -68,7 +69,7 @@ pub fn push_metadata(
 /// Imagine that this single procedure implementation requires that tenant and
 /// requestor data are embedded within a request for this to work. For example:
 ///
-/// ```rust
+/// ```ignore
 /// // example.rs
 /// tonic::include_proto!("example");
 ///
@@ -90,7 +91,7 @@ pub fn push_metadata(
 ///
 /// One may want to use this structure to send data as needed.
 ///
-/// ```rust
+/// ```ignore
 /// // example.rs
 /// fn test_request() {
 ///     use tonic::transport::Channel;
