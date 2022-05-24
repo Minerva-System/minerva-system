@@ -1232,7 +1232,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-stock"
-version = "0.0.1"
+version = "0.0.0"
 dependencies = [
  "chrono",
  "diesel",

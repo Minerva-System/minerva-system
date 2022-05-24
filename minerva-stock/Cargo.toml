@@ -1,6 +1,6 @@
 [package]
 name = "minerva-stock"
-version = "0.0.1"
+version = "0.0.0"
 edition = "2021"
 description = "Product stock management microservice for the Minerva System"
 authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
