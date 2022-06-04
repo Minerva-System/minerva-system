@@ -1,10 +1,6 @@
 FROM ubuntu:22.04 AS builder
-
-# Preparation
 RUN apt update \
     && apt install -y curl git unzip xz-utils zip libglu1-mesa
-
-# Flutter config
 WORKDIR /
 RUN git clone https://github.com/flutter/flutter.git -b stable --depth 1
 ENV PATH=$PATH:/flutter/bin
@@ -16,15 +12,12 @@ RUN flutter config \
     --no-enable-macos-desktop
 RUN flutter doctor
 RUN flutter precache
-
-# Build app
 RUN mkdir /app
 ADD ./minerva_frontend/ /app
 WORKDIR /app
 RUN flutter pub get
 RUN flutter build web
 
-
-FROM nginx:latest
+FROM nginx:stable AS minerva_frontend
 ENV TZ=America/Sao_Paulo
 COPY --from=builder /app/build/web /usr/share/nginx/html

@@ -6,3 +6,4 @@
 *.md
 *.yml
 ./build
+docker-compose.yml

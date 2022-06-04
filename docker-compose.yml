@@ -3,12 +3,9 @@ version: "3"
 services:
   # Front-End service
   frontend:
-    image: minerva_frontend
+    image: luksamuk/minerva_frontend:latest
     environment:
       - NGINX_PORT=80
-    build:
-      dockerfile: build/Dockerfile.FRONTEND
-      context: .
     ports:
       - "80:80"
     depends_on:
@@ -16,13 +13,10 @@ services:
   
   # REST service
   rest:
-    image: minerva_rest
+    image: luksamuk/minerva_rest:latest
     environment:
       - USER_SERVICE_SERVER=users
       - SESSION_SERVICE_SERVER=session
-    build:
-      dockerfile: build/Dockerfile.REST
-      context: .
     ports:
       - "9000:9000"
     depends_on:
@@ -30,38 +24,29 @@ services:
   
   # RUNONCE service
   runonce:
-    image: minerva_runonce
+    image: luksamuk/minerva_runonce:latest
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
-    build:
-      dockerfile: build/Dockerfile.RUNONCE
-      context: .
     depends_on:
       - "postgresql"
       - "mongodb"
   
   # USERS service
   users:
-    image: minerva_users
+    image: luksamuk/minerva_users:latest
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
-    build:
-      dockerfile: build/Dockerfile.USER
-      context: .
     depends_on:
       runonce:
         condition: service_completed_successfully
 
   # SESSION service
   session:
-    image: minerva_session
+    image: luksamuk/minerva_session:latest
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
-    build:
-      dockerfile: build/Dockerfile.SESSION
-      context: .
     depends_on:
       runonce:
         condition: service_completed_successfully
@@ -77,14 +62,10 @@ services:
 
   # pgAdmin 4
   pgadmin:
-    image: minerva_pgadmin
+    image: luksamuk/minerva_pgadmin:latest
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com
       - PGADMIN_DEFAULT_PASSWORD=admin
-      - GUNICORN_ACCESS_LOGFILE=/dev/null
-    build:
-      dockerfile: Dockerfile.PGADMIN
-      context: build
     ports:
       - "8484:80"
 
