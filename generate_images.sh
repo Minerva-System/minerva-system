@@ -9,11 +9,17 @@ declare -a TARGETS=(
 # Rust language targets
 for TARGET in "${TARGETS[@]}"
 do
-    docker image build -f build/Dockerfile --target $TARGET -t luksamuk/${TARGET}:latest .
+    docker image build -f build/Dockerfile \
+	   --target $TARGET \
+	   -t luksamuk/${TARGET}:latest .
 done
 
 # FrontEnd target
-docker image build -f build/Dockerfile.frontend -t luksamuk/minerva_frontend:latest .
+docker image build -f build/Dockerfile.frontend \
+       -t luksamuk/minerva_frontend:latest \
+       .
 
 # PgAdmin
-docker image build -f build/Dockerfile.pgadmin -t luksamuk/minerva_pgadmin:latest .
+docker image build -f build/Dockerfile.pgadmin \
+       -t luksamuk/minerva_pgadmin:latest \
+       build

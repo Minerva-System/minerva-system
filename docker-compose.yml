@@ -13,7 +13,7 @@ services:
   
   # REST service
   rest:
-    image: luksamuk/minerva_rest:latest
+    image: luksamuk/minerva_rest:0.2.0
     environment:
       - USER_SERVICE_SERVER=users
       - SESSION_SERVICE_SERVER=session
@@ -24,7 +24,7 @@ services:
   
   # RUNONCE service
   runonce:
-    image: luksamuk/minerva_runonce:latest
+    image: luksamuk/minerva_runonce:0.2.0
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
@@ -34,7 +34,7 @@ services:
   
   # USERS service
   users:
-    image: luksamuk/minerva_users:latest
+    image: luksamuk/minerva_users:0.2.0
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
     depends_on:
@@ -43,7 +43,7 @@ services:
 
   # SESSION service
   session:
-    image: luksamuk/minerva_session:latest
+    image: luksamuk/minerva_session:0.1.0
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb

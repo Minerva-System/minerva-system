@@ -11,8 +11,11 @@
   - [Coleções](./colecoes.md)
 - [Compilação](./compilacao.md)
   - [Executar com recursos da máquina](./executar-maquina.md)
+  - [Gerando imagens via Docker](./gerando-imagens.md)
+- [Deploy](./deploy.md)
   - [Deploy via Docker Compose](./deploy-compose.md)
-  - [Deploy via Kubernetes](./deploy-kubernetes.md)
+  - [Deploy via Docker Swarm](./deploy-swarm.md)
+  - Deploy via Kubernetes <!-- A refazer -->
 - [Documentação do Código](./documentacao.md)
 
 <!-- TODO: -->

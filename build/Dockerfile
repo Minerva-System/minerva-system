@@ -1,15 +1,21 @@
-FROM rust:1.61.0 AS chef
+FROM rust:1.61.0 AS rust_base
 WORKDIR /
 RUN apt update && apt install -y cmake
 RUN cargo install cargo-chef
+
+FROM rust_base AS chef
 RUN mkdir /minerva
 WORKDIR /minerva
 COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 
 
-FROM chef AS builder
+FROM rust_base AS builder
+RUN mkdir /minerva
+WORKDIR /minerva
+COPY --from=chef /minerva/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
+COPY . .
 RUN cargo build --release
 
 FROM debian:bullseye-slim AS deploy
