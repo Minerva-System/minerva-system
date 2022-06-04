@@ -1,3 +1,6 @@
+//! This submodule describes routes for authentication and session creation
+//! services.
+
 use super::response;
 use crate::utils;
 use minerva_data as data;
@@ -10,21 +13,42 @@ use serde_json::json;
 use std::env;
 use tonic::Request;
 
+/// Cookie name for the authentication token, namely the session identification.
 pub static AUTH_COOKIE: &str = "auth_token";
+
+/// Cookie name for the tenant name, saved within the browser.
 pub static TENANT_COOKIE: &str = "tenant";
 
+/// Returns the list of routes for this module.
 pub fn routes() -> Vec<Route> {
     routes![login, logout]
 }
 
+/// Retrieves the endpoint for the gRPC session service. Requires that the proper
+/// environment variables are defined.
 pub fn get_endpoint() -> String {
     let port = env::var("SESSION_SERVICE_PORT").expect("Unable to read SESSION_SERVICE_PORT");
     let srv = env::var("SESSION_SERVICE_SERVER").expect("Unable to read SESSION_SERVICE_SERVER");
     format!("http://{}:{}", srv, port)
 }
 
+/// Route for user login.
+///
+/// This route requires that the tenant is informed on the login route.
+/// Furthermore, login needs login data for the creation of a session.
+///
+/// Upon a successful login attempt, the route will attempt to store session
+/// cookies on the client.
+///
+/// # Request example
+/// ```bash
+/// curl -X POST 'http://localhost:9000/minerva/login' \
+///      -H 'Content-Type: application/json' \
+///      -d '{"login": "admin", "password": "admin"}' \
+///      -c cookies.txt
+/// ```
 #[post("/<tenant>/login", data = "<body>")]
-pub async fn login(
+async fn login(
     tenant: &str,
     cookies: &CookieJar<'_>,
     body: Json<data::session::RecvSession>,
@@ -58,8 +82,19 @@ pub async fn login(
     Response::respond(response)
 }
 
+/// Route for user logoff.
+///
+/// This route requires that session cookies exist on the client requesting
+/// logoff. These cookies will be then accessed by the server and, upon
+/// successful logoff, will be deleted from the client's cookie jar.
+///
+/// # Request example
+/// ```bash
+/// curl -X POST http://localhost:9000/logoff \
+///      -b cookies.txt
+/// ```
 #[post("/logout")]
-pub async fn logout(cookies: &CookieJar<'_>) -> Response {
+async fn logout(cookies: &CookieJar<'_>) -> Response {
     let endpoint = get_endpoint();
     let requestor = "unknown".to_string();
     let tenant = match utils::get_tenant(cookies) {

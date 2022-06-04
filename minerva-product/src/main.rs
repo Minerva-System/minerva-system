@@ -19,6 +19,7 @@ use tonic::transport::Server;
 
 mod service;
 
+/// Entry point for this service.
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Minerva System: PRODUCT service");

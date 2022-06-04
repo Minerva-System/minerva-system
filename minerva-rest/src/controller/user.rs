@@ -21,10 +21,9 @@ pub fn get_endpoint() -> String {
 }
 
 /// # Request example
-///
 /// ```bash
-/// curl -X GET 'http://localhost:9000/users'
-/// curl -X GET 'http://localhost:9000/users?page=0'
+/// curl -X GET 'http://localhost:9000/users' -b cookies.txt
+/// curl -X GET 'http://localhost:9000/users?page=0' -b cookies.txt
 /// ```
 #[get("/?<page>")]
 async fn index(session: SessionInfo, page: Option<i64>) -> Response {
@@ -48,9 +47,8 @@ async fn index(session: SessionInfo, page: Option<i64>) -> Response {
 }
 
 /// # Request example
-///
 /// ```bash
-/// curl -X GET 'http://localhost:9000/users/1'
+/// curl -X GET 'http://localhost:9000/users/1' -b cookies.txt
 /// ```
 #[get("/<id>")]
 async fn show(session: SessionInfo, id: i32) -> Response {
@@ -74,10 +72,11 @@ async fn show(session: SessionInfo, id: i32) -> Response {
     Response::respond(response)
 }
 
-/// Request example
+/// # Request example
 /// ```bash
 /// curl -X POST 'http://localhost:9000/users' \
 ///      -H 'Content-Type: application/json' \
+///      -b cookies.txt
 ///      -d '{"login": "fulano", "name": "Fulano da Silva", "email": null, "password": "senha123"}'
 /// ```
 #[post("/", data = "<body>")]
@@ -116,6 +115,7 @@ async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Respon
 /// ```bash
 /// curl -X PUT 'http://localhost:9000/users/2' \
 ///      -H 'Content-Type: application/json' \
+///      -b cookies.txt
 ///      -d '{"login": "fulano", "name": "Fulano da Silva", "email": null, "password": null}'
 /// ```
 #[put("/<id>", data = "<body>")]
@@ -144,7 +144,7 @@ async fn update(session: SessionInfo, id: i32, body: Json<data::user::RecvUser>)
 /// # Request example
 ///
 /// ```bash
-/// curl -X DELETE 'http://localhost:9000/users/2'
+/// curl -X DELETE 'http://localhost:9000/users/2' -b cookies.txt
 /// ```
 #[delete("/<index>")]
 async fn delete(session: SessionInfo, index: i32) -> Response {
