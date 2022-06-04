@@ -10,6 +10,8 @@ services:
       - "80:80"
     depends_on:
       - "rest"
+    networks:
+      - minerva_system
   
   # REST service
   rest:
@@ -21,6 +23,8 @@ services:
       - "9000:9000"
     depends_on:
       - "users"
+    networks:
+      - minerva_system
   
   # RUNONCE service
   runonce:
@@ -31,6 +35,8 @@ services:
     depends_on:
       - "postgresql"
       - "mongodb"
+    networks:
+      - minerva_system
   
   # USERS service
   users:
@@ -40,6 +46,8 @@ services:
     depends_on:
       runonce:
         condition: service_completed_successfully
+    networks:
+      - minerva_system
 
   # SESSION service
   session:
@@ -50,6 +58,8 @@ services:
     depends_on:
       runonce:
         condition: service_completed_successfully
+    networks:
+      - minerva_system
 
   # PostgreSQL 14
   postgresql:
@@ -58,7 +68,9 @@ services:
       - POSTGRES_PASSWORD=postgres
     image: postgres:14
     volumes:
-      - ../minerva-postgresql:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - minerva_system
 
   # pgAdmin 4
   pgadmin:
@@ -68,6 +80,8 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=admin
     ports:
       - "8484:80"
+    networks:
+      - minerva_system
 
   # MongoDB 5
   mongodb:
@@ -77,6 +91,14 @@ services:
     image: mongo:5
     command: mongod --quiet --logpath /dev/null
     volumes:
-      - ../minerva-mongodb:/data/db
+      - mongodb-data:/data/db
+    networks:
+      - minerva_system
 
+networks:
+  minerva_system:
+
+volumes:
+  db-data:
+  mongodb-data:
 
