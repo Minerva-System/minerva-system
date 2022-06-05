@@ -13,12 +13,15 @@ services:
     networks:
       - minerva_system
     deploy:
+      replicas: 2
       restart_policy:
         condition: on-failure
+      placement:
+        constraints: [node.role == worker]
   
   # REST service
   rest:
-    image: luksamuk/minerva_rest:latest
+    image: luksamuk/minerva_rest:0.2.0
     environment:
       - USER_SERVICE_SERVER=users
       - SESSION_SERVICE_SERVER=session
@@ -29,12 +32,17 @@ services:
     networks:
       - minerva_system
     deploy:
+      mode: replicated
+      replicas: 2
+      labels: [APP = REST_SERVICE]
       restart_policy:
         condition: on-failure
+      placement:
+        constraints: [node.role == worker]
   
   # RUNONCE service
   runonce:
-    image: luksamuk/minerva_runonce:latest
+    image: luksamuk/minerva_runonce:0.2.0
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
@@ -44,29 +52,40 @@ services:
     networks:
       - minerva_system
     deploy:
+      mode: replicated
+      replicas: 1
+      labels: [APP = RUNONCE_SERVICE]
       restart_policy:
         condition: on-failure
+      placement:
+        constraints: [node.role == manager]
   
   # USERS service
   users:
-    image: luksamuk/minerva_users:latest
+    image: luksamuk/minerva_users:0.2.0
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
     networks:
       - minerva_system
     deploy:
+      mode: replicated
+      replicas: 2
+      labels: [APP = USERS_SERVICE]
       restart_policy:
         condition: on-failure
 
   # SESSION service
   session:
-    image: luksamuk/minerva_session:latest
+    image: luksamuk/minerva_session:0.1.0
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
     networks:
       - minerva_system
     deploy:
+      mode: replicated
+      replicas: 2
+      labels: [APP = SESSION_SERVICE]
       restart_policy:
         condition: on-failure
 
@@ -80,6 +99,9 @@ services:
       - db-data:/var/lib/postgresql/data
     networks:
       - minerva_system
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
   # pgAdmin 4
   pgadmin:
@@ -91,6 +113,9 @@ services:
       - "8484:80"
     networks:
       - minerva_system
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
   # MongoDB 5
   mongodb:
@@ -103,7 +128,22 @@ services:
       - mongodb-data:/data/db
     networks:
       - minerva_system
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
+  # Visualizer
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - 8080:8080
+    stop_grace_period: 1m30s
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+        
 networks:
   minerva_system:
 
