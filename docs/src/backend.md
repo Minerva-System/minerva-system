@@ -178,11 +178,12 @@ pelo orquestrador de contêineres.
 No caso do serviço REST, verifique o arquivo `Rocket.toml` para avaliar
 a configuração em desenvolvimento e em produção do mesmo.
 
-| Serviço        | Variável                  | Valor em Produção |
-|----------------|---------------------------|-------------------|
-| USER           | `USER_SERVICE_SERVER`     | `users`           |
-| Banco de Dados | `DATABASE_SERVICE_SERVER` | `postgresql`      |
-| REST           | nenhuma                   | `rest`            |
-| RUNONCE        | nenhuma                   | `runonce`         |
-| SESSION        | `SESSION_SERVICE_SERVER`  | `session`         |
+| Serviço                       | Variável                  | Valor em Produção |
+|-------------------------------|---------------------------|-------------------|
+| USER                          | `USER_SERVICE_SERVER`     | `users`           |
+| Banco de Dados Relacional     | `DATABASE_SERVICE_SERVER` | `postgresql`      |
+| Banco de Dados Não-Relacional | `MONGO_SERVICE_SERVER`    | `mongodb`         |
+| REST                          | nenhuma                   | `rest`            |
+| RUNONCE                       | nenhuma                   | `runonce`         |
+| SESSION                       | `SESSION_SERVICE_SERVER`  | `session`         |
 

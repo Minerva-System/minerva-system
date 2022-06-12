@@ -36,7 +36,7 @@ jobs:
 
       - name: Generate Rust documentation
         run: |
-         cargo doc --no-deps
+         cargo doc --no-deps --document-private-items
          mv target/doc docs/src/doc
          rm docs/src/.gitignore
 

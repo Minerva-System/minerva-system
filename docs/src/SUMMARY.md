@@ -15,7 +15,7 @@
 - [Deploy](./deploy.md)
   - [Deploy via Docker Compose](./deploy-compose.md)
   - [Deploy via Docker Swarm](./deploy-swarm.md)
-  - Deploy via Kubernetes <!-- A refazer -->
+  - [Deploy via Kubernetes](./deploy-kubernetes.md)
 - [Documentação do Código](./documentacao.md)
 
 <!-- TODO: -->
