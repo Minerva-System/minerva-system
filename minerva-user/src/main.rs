@@ -1,3 +1,12 @@
+//! # Minerva System: USERS Service
+//!
+//! ## About this service
+//! This service's responsibility is that of managing anything related to users,
+//! which are the primary actors for interfacing with the rest of the system.
+//!
+//! This service is not responsible for managing user authentication, for
+//! example, which is handled elsewhere.
+
 #![warn(clippy::all)]
 #![warn(missing_docs)]
 
