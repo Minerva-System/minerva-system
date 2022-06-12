@@ -1,3 +1,5 @@
+//! This module wraps the repository which handles the session DTOs.
+
 use diesel::prelude::*;
 use minerva_data::db::DBPool;
 use minerva_data::encryption;
@@ -10,6 +12,10 @@ use mongodb::bson::oid::ObjectId;
 use mongodb::Database;
 use tonic::Status;
 
+/// Creates a new session for a user. Given the data for a new session, checks
+/// if the database contains that user, if the password matches and, if it does,
+/// creates a new session on the non-relational database and returns its ID as a
+/// Base64 encoded string that should be stored on a cookie.
 pub async fn create_session(
     data: model::NewSession,
     pool: DBPool,
@@ -69,6 +75,10 @@ pub async fn create_session(
     Ok(token)
 }
 
+/// Recovers a user's session from the non-relational database, given a
+/// previously generated token. The token must be the actual ID for the session
+/// object on the non-relational database, encoded as Base64. If it was found,
+/// returns the `Session` object with the session information that was stored.
 pub async fn recover_session(token: String, mongo: Database) -> Result<model::Session, Status> {
     let collection = mongo.collection::<model::Session>("session");
 
@@ -88,6 +98,10 @@ pub async fn recover_session(token: String, mongo: Database) -> Result<model::Se
         .ok_or_else(|| Status::not_found("Session does not exist"))
 }
 
+/// Removes a user session from non-relational database, given a session token.
+/// The token must be the actual ID for the session object on the non-relational
+/// database, encoded as Base64. If it was found, remove it altogether from the
+/// non-relational database.
 pub async fn remove_session(token: String, pool: DBPool, mongo: Database) -> Result<(), Status> {
     let collection = mongo.collection::<model::Session>("session");
 

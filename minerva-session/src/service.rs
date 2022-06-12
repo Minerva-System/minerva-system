@@ -1,3 +1,6 @@
+//! This module contains the actual implementation for the `Session`
+//! gRPC service.
+
 use crate::repository;
 use minerva_data as lib_data;
 use minerva_data::db::DBPool;
@@ -7,8 +10,11 @@ use minerva_rpc::{messages, metadata};
 use std::collections::HashMap;
 use tonic::{Request, Response, Status};
 
+/// Represents a gRPC service for session.
 #[derive(Clone)]
 pub struct SessionService {
+    /// Holds database (relational and non-relational) connection pools for
+    /// all tenants.
     pub pools: HashMap<String, (DBPool, mongodb::Client)>,
 }
 

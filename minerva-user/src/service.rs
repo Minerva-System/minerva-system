@@ -1,3 +1,5 @@
+//! This module contains the actual implementation for the `Users` gRPC service.
+
 use crate::repository;
 use minerva_data as lib_data;
 use minerva_data::db::DBPool;

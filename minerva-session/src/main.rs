@@ -1,3 +1,15 @@
+//! # Minerva System: SESSION Service
+//!
+//! ## About this service
+//! This service's responsibility is to provide a means for managing user
+//! authentication, especially user sessions. Through this module, an existing
+//! user can start a session on the system so that it becomes possible to
+//! perform certain other operations.
+//!
+//! This service does not manage user data, but should have direct access to
+//! both databases so that it can check authentication data and create the
+//! actual session data, which is stored and managed server-side.
+
 #![warn(clippy::all)]
 #![warn(missing_docs)]
 
