@@ -1,3 +1,14 @@
+//! # Minerva System: RUNONCE Service
+//!
+//! ## About this service
+//! This service's responsibility is that of preparing the Minerva System
+//! environment for use, specially when it comes to preparing databases by
+//! running migrations, for example.
+//!
+//! This service is best used as a job, and should be run only when deploying
+//! new changes to the database service is really needed. This means that it
+//! should be a single-run job or a cron job at best.
+
 #![warn(clippy::all)]
 #![warn(missing_docs)]
 
@@ -13,6 +24,7 @@ embed_migrations!();
 mod database;
 mod mongo;
 
+/// Entry point for this service.
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Minerva System: RUNONCE");

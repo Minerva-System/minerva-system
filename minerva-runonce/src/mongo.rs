@@ -1,3 +1,6 @@
+//! This module wraps all functions related to operations that should be run
+//! once on the non-relational database, when the entire system starts.
+
 use core::time::Duration;
 use minerva_data::mongo;
 use mongodb::{
@@ -6,6 +9,7 @@ use mongodb::{
     IndexModel,
 };
 
+/// Awaits for non-relational database availability on a spinlock.
 pub async fn database_spinlock(server: &str) {
     let client = mongo::make_client(server).await;
     let mut lock = true;
@@ -18,6 +22,8 @@ pub async fn database_spinlock(server: &str) {
     }
 }
 
+/// Prepares the non-relational database collections with configuration such
+/// as expiration dates.
 pub async fn prepare_database(tenant: &str, server: &str) -> Result<(), mongodb::error::Error> {
     println!("{}: Connecting to MongoDB client...", tenant);
     let client = mongo::make_client(server).await;

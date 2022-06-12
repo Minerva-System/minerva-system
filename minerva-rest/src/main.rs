@@ -1,7 +1,7 @@
 //! # Minerva System: REST Service
 //!
 //! ## About this service
-//! This service's responsibility is that of begin a REST gateway for the rest
+//! This service's responsibility is that of being a REST gateway for the rest
 //! of the system. In other words, anything that can be accessed by the user
 //! should be accessible through REST requests that are managed by this service.
 //!
