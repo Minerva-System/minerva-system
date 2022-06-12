@@ -1,3 +1,6 @@
+//! This submodule describes routes for managing the data for a `User` entity,
+//! particularly with respect to connecting to the `USERS` gRPC service.
+
 use super::response;
 use crate::fairings::auth::SessionInfo;
 use crate::utils;
@@ -10,19 +13,36 @@ use serde_json::json;
 use std::env;
 use tonic::Request;
 
+/// Returns the list of routes for this module.
 pub fn routes() -> Vec<Route> {
     routes![index, show, store, update, delete]
 }
 
+/// Retrieves the endpoint for the gRPC users service. Requires that the proper
+/// environment variables are defined.
 pub fn get_endpoint() -> String {
     let port = env::var("USER_SERVICE_PORT").expect("Unable to read USER_SERVICE_PORT");
     let srv = env::var("USER_SERVICE_SERVER").expect("Unable to read USER_SERVICE_SERVER");
     format!("http://{}:{}", srv, port)
 }
 
-/// # Request example
+/// Route for listing all users.
+///
+/// This route uses the concept of pages, starting with page index `0`. The
+/// page number should be passed as a request parameter through the URL, under
+/// a value named `page`. If omitted, it is assumed to be `0`.
+///
+/// Upon success, returns a list of users in JSON format, containing up to the
+/// number of users per page as defined in the `USERS` microservice.
+///
+/// Furthermore, this route assumes that the authentication cookies are being
+/// passed as well.
+///
+/// # Request examples
+///
 /// ```bash
 /// curl -X GET 'http://localhost:9000/users' -b cookies.txt
+///
 /// curl -X GET 'http://localhost:9000/users?page=0' -b cookies.txt
 /// ```
 #[get("/?<page>")]
@@ -46,7 +66,18 @@ async fn index(session: SessionInfo, page: Option<i64>) -> Response {
     Response::respond(response)
 }
 
+/// Route for fetching data of a single user.
+///
+/// The numeric user ID should be passed through the route.
+///
+/// Upon success, retrieves data for a single user of the given ID in JSON
+/// format.
+///
+/// Furthermore, this route assumes that the authentication cookies are being
+/// passed as well.
+///
 /// # Request example
+///
 /// ```bash
 /// curl -X GET 'http://localhost:9000/users/1' -b cookies.txt
 /// ```
@@ -72,7 +103,18 @@ async fn show(session: SessionInfo, id: i32) -> Response {
     Response::respond(response)
 }
 
+/// Route for creating a new user.
+///
+/// To use this route, use a POST request, sending as body a JSON containing the
+/// expected data for creating a new user.
+///
+/// Upon success, returns the data for the created user as if it were requested
+/// through the `show` method.
+///
+/// This route assumes that the authentication cookies are being passed as well.
+///
 /// # Request example
+///
 /// ```bash
 /// curl -X POST 'http://localhost:9000/users' \
 ///      -H 'Content-Type: application/json' \
@@ -108,9 +150,20 @@ async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Respon
     Response::respond(response)
 }
 
-/// # Request example
+/// Route for updating data for a user.
 ///
-/// Ignore `password` or pass it as an empty string if you wish to prevent updates.
+/// To use this route, use a PUT request. The ID of the user to be updated
+/// should also be passed through the URL.
+///
+/// Ignore `password` or pass it as an empty string if you wish to prevent
+/// password updates.
+///
+/// Upon success, returns the data for the created user as if it were requested
+/// through the `show` method.
+///
+/// This route assumes that the authentication cookies are being passed as well.
+///
+/// # Request example
 ///
 /// ```bash
 /// curl -X PUT 'http://localhost:9000/users/2' \
@@ -141,6 +194,15 @@ async fn update(session: SessionInfo, id: i32, body: Json<data::user::RecvUser>)
     Response::respond(response)
 }
 
+/// Route for removing a user altogether.
+///
+/// To use this route, use a DELETE request. The ID of the user to be updated
+/// should also be passed through the URL.
+///
+/// Upon success, returns an empty object.
+///
+/// This route assumes that the authentication cookies are being passed as well.
+///
 /// # Request example
 ///
 /// ```bash
