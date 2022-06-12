@@ -1,22 +1,39 @@
+//! This submodule contains the implementation of an authentication fairing.
+
 use minerva_data::session::Session;
 use minerva_rpc as rpc;
 use rocket::http::Status;
 use rocket::request::{FromRequest, Outcome, Request};
 
+/// Struct for session information that can be retrieved for every access to a
+/// route that explicitly retrieves it.
+///
+/// Adding a `State` containing a `SessionInfo` to a route function's parameters
+/// automatically means that the route will only be accessible by an
+/// authenticated user that passes its authentication info through cookies. If
+/// a `SessionInfo` can be retrieved given the cookies information, then the
+/// user is authenticated for using that route.
 pub struct SessionInfo {
+    /// Session info for the authenticated user.
     pub info: Session,
 }
 
 impl SessionInfo {
+    /// Generates a new session info from a `SessionData` gRPC message.
     pub fn from(info: rpc::messages::SessionData) -> Self {
         Self { info: info.into() }
     }
 }
 
+/// Describes kinds of errors when attempting to retrieve a `SessionInfo`
+/// through the workings of its fairing.
 #[derive(Debug, Clone)]
 pub enum SessionError {
+    /// The cookies did not contain information on the tenant.
     MissingTenant,
+    /// There is no authentication data for that user's session.
     MissingAuth,
+    /// The authentication data has expired.
     ExpiredAuth,
 }
 
