@@ -9,6 +9,9 @@
   - [Executando migrations](./migrations.md)
 - [Banco de Dados Não-Relacional](./banco-nao-relacional.md)
   - [Coleções](./colecoes.md)
+- [Regras de Negócio]()
+  - [Documentação do Projeto](./documentacao.md)
+  - [Cache de Sessão via Redis]()
 - [Compilação](./compilacao.md)
   - [Executar com recursos da máquina](./executar-maquina.md)
   - [Gerando imagens via Docker](./gerando-imagens.md)
@@ -16,10 +19,3 @@
   - [Deploy via Docker Compose](./deploy-compose.md)
   - [Deploy via Docker Swarm](./deploy-swarm.md)
   - [Deploy via Kubernetes](./deploy-kubernetes.md)
-- [Documentação do Código](./documentacao.md)
-
-<!-- TODO: -->
-
-<!-- - Modificando o esquema do banco de dados adequadamente -->
-<!-- - Redis? -->
-<!-- - MongoDB? -->

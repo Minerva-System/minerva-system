@@ -1,4 +1,4 @@
-# Documentação do Código
+# Documentação do Projeto
 
 Esta seção contém links para a documentação das partes pertinentes ao código
 do Minerva System.
@@ -7,6 +7,11 @@ Por padrão, a documentação é escrita em Inglês, e pode ser muito pertinente
 durante a implementação de novas partes do sistema.
 
 Não se esqueça de consultar estes documentos com frequência.
+
+## API
+
+- [Documentação da API](https://documenter.getpostman.com/view/17061755/Uyxoi4MU) \
+  Documentação da API REST (Postman, em Inglês).
 
 ## Serviços externos
 
