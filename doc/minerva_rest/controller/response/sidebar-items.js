@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Response","Enumeration containing many kinds of responses to a REST request that was received. All of these responses should contain an embedded JSON in String format. These responses are modelled after HTTP response codes."]]});

@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["minerva_data"] = [{"text":"impl&lt;Conn&gt; RunQueryDsl&lt;Conn&gt; for <a class=\"struct\" href=\"minerva_data/db/create/struct.CreateDatabaseStmt.html\" title=\"struct minerva_data::db::create::CreateDatabaseStmt\">CreateDatabaseStmt</a>","synthetic":false,"types":["minerva_data::db::create::CreateDatabaseStmt"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

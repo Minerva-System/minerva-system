@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Deploy via Docker Compose - Sistema Minerva</title>
+        <title>Deploy via Docker Compose - Minerva System</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">2.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">2.1.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="banco.html"><strong aria-hidden="true">3.</strong> Banco de Dados</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="migrations.html"><strong aria-hidden="true">3.1.</strong> Executando migrations</a></li><li class="chapter-item expanded "><a href="multi-tenancy.html"><strong aria-hidden="true">3.2.</strong> Multi-Tenancy</a></li></ol></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">4.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">4.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="deploy-compose.html" class="active"><strong aria-hidden="true">4.2.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-kubernetes.html"><strong aria-hidden="true">4.3.</strong> Deploy via Kubernetes</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">2.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Front-End</div></li><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">2.2.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="multi-tenancy.html"><strong aria-hidden="true">3.</strong> Multi-Tenancy</a></li><li class="chapter-item expanded "><a href="banco-relacional.html"><strong aria-hidden="true">4.</strong> Banco de Dados Relacional</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="migrations.html"><strong aria-hidden="true">4.1.</strong> Executando migrations</a></li></ol></li><li class="chapter-item expanded "><a href="banco-nao-relacional.html"><strong aria-hidden="true">5.</strong> Banco de Dados Não-Relacional</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="colecoes.html"><strong aria-hidden="true">5.1.</strong> Coleções</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Regras de Negócio</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="documentacao.html"><strong aria-hidden="true">6.1.</strong> Documentação do Projeto</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Cache de Sessão via Redis</div></li></ol></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">7.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">7.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="gerando-imagens.html"><strong aria-hidden="true">7.2.</strong> Gerando imagens via Docker</a></li></ol></li><li class="chapter-item expanded "><a href="deploy.html"><strong aria-hidden="true">8.</strong> Deploy</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="deploy-compose.html" class="active"><strong aria-hidden="true">8.1.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-swarm.html"><strong aria-hidden="true">8.2.</strong> Deploy via Docker Swarm</a></li><li class="chapter-item expanded "><a href="deploy-kubernetes.html"><strong aria-hidden="true">8.3.</strong> Deploy via Kubernetes</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -110,7 +110,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Sistema Minerva</h1>
+                    <h1 class="menu-title">Minerva System</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -143,7 +143,9 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="deploy-usando-docker-compose"><a class="header" href="#deploy-usando-docker-compose">Deploy usando Docker Compose</a></h1>
-<p><img src="./docker-compose.png" alt="Docker Compose" /></p>
+<center>
+<img src="./docker-compose.png" alt="Docker Compose" width="350"/>
+</center>
 <p>Você pode realizar deploy do projeto usando Docker Compose. Todavia,
 esta não é a forma mais recomendada de realização de deploy.</p>
 <h2 id="introdução"><a class="header" href="#introdução">Introdução</a></h2>
@@ -160,55 +162,15 @@ usando Kubernetes.</p>
 do sistema no que tange a interconexões entre os serviços numa rede
 virtual.</p>
 <h2 id="dependências"><a class="header" href="#dependências">Dependências</a></h2>
-<p>Você precisará ter instalado:</p>
+<p>Você precisará ter:</p>
 <ul>
 <li>Docker versão 20.10 ou superior;</li>
-<li>Docker Compose versão 2.2.3 ou superior.</li>
+<li>Docker Compose versão 2.2.3 ou superior;</li>
+<li>As imagens do projeto (se não estiverem localmente disponíveis,
+serão baixadas).</li>
 </ul>
 <p>Além disso, <strong>todos os comandos a seguir devem ser executados no
 diretório raiz deste projeto</strong>.</p>
-<h2 id="gerando-imagens"><a class="header" href="#gerando-imagens">Gerando imagens</a></h2>
-<p>Caso você só precise gerar as imagens Docker para o serviço, você
-poderá fazê-lo com o comando a seguir:</p>
-<pre><code class="language-bash">docker compose build
-</code></pre>
-<p>Se você nunca tiver realizado deploy da aplicação com Compose, isto
-<strong>não é necessário</strong>, uma vez que o Compose se encarregará de gerá-las
-no primeiro deploy.</p>
-<p><strong>ATENÇÃO: O PROCESSO DE GERAÇÃO DAS IMAGENS É DEMORADO.</strong></p>
-<h3 id="gerando-uma-imagem"><a class="header" href="#gerando-uma-imagem">Gerando uma imagem</a></h3>
-<p>Pode ocorrer de você querer gerar apenas uma imagem, por exemplo, quando
-você já tiver realizado deploy antes e tiver realizado uma modificação
-em apenas um microsservico, e precisar testá-lo.</p>
-<p>Para isso, use o comando a seguir, substituindo <code>&lt;servico&gt;</code> pelo nome
-do serviço (como listado no arquivo <code>docker-compose.yml</code>):</p>
-<pre><code class="language-bash">docker compose build &lt;servico&gt;
-</code></pre>
-<p>Caso a geração da imagem apenas reutilize o cache da mesma já existente,
-você poderá forçar a geração da imagem da seguinte forma:</p>
-<pre><code class="language-bash">docker compose build --no-cache &lt;servico&gt;
-</code></pre>
-<p><strong>ATENÇÃO: ESTE PROCESSO PODE SER DEMORADO.</strong></p>
-<p><strong>ATENÇÃO: RECOMPILAR A IMAGEM NÃO REINICIA UM SERVIÇO EM EXECUÇÃO.</strong></p>
-<h3 id="nomes-e-tags-das-imagens-geradas"><a class="header" href="#nomes-e-tags-das-imagens-geradas">Nomes e tags das imagens geradas</a></h3>
-<p>As imagens geradas pelos passos anteriores são geradas com nomes
-específicos. Esses nomes não fazem tanta diferença para o Docker
-Compose, mas podem ser muito úteis do ponto de vista do deploy via
-Kubernetes.</p>
-<p>Os nomes das imagens geradas podem ser verificados no arquivo
-<code>docker-compose.yml</code>. Mais especificamente, para cada serviço, existe
-uma propriedade <code>image</code> que determina o nome da imagem gerada.</p>
-<p>As imagens são sempre geradas com a tag <code>latest</code>.</p>
-<p>A seguir, temos uma tabela relacionando os serviços com os nomes e tags
-das imagens geradas.</p>
-<table><thead><tr><th>Serviço</th><th>Nome e tag da imagem</th></tr></thead><tbody>
-<tr><td><code>frontend</code></td><td><code>minerva_frontend:latest</code></td></tr>
-<tr><td><code>rest</code></td><td><code>minerva_rest:latest</code></td></tr>
-<tr><td><code>runonce</code></td><td><code>minerva_runonce:latest</code></td></tr>
-<tr><td><code>users</code></td><td><code>minerva_users:latest</code></td></tr>
-<tr><td><code>postgresql</code></td><td><code>postgres:14</code> (Não gerado)</td></tr>
-<tr><td><code>pgadmin</code></td><td><code>minerva_pgadmin:latest</code></td></tr>
-</tbody></table>
 <h2 id="executando-os-serviços"><a class="header" href="#executando-os-serviços">Executando os serviços</a></h2>
 <p>Para executar os serviços usando Docker Compose, use o seguinte
 comando:</p>
@@ -258,11 +220,11 @@ em vez do anterior:</p>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="executar-maquina.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="deploy.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="deploy-kubernetes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="deploy-swarm.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -272,11 +234,11 @@ em vez do anterior:</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="executar-maquina.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="deploy.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="deploy-kubernetes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="deploy-swarm.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

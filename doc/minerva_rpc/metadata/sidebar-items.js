@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["get_value","Retrieve the string value from a request’s metadata map by its key."],["push_metadata","Emplace tenant and requestor information on a request’s metadata."]],"struct":[["ClientInterceptor","Defines the interceptor data for any gRPC client."]]});

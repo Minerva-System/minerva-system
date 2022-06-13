@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["OpType","Enumeration for the type of operation registered on `syslog`."]],"fn":[["_impl_insertable_for_newlog",""],["_impl_queryable_for_syslog",""]],"mod":[["db_enum_impl_OpType",""]],"struct":[["NewLog","DTO for adding a new entry on the `syslog` table."],["Op_type",""],["Syslog","DTO representing a single entry on the `syslog` table."]]});

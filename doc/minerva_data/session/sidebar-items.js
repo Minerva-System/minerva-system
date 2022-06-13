@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["NewSession","DTO representing the data for a new session, to be received by the gRPC session service."],["RecvSession","DTO representing the data for a new session, to be received by the REST gateway endpoint."],["Session","DTO representing the data for a user session."]]});

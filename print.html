@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Sistema Minerva</title>
+        <title>Minerva System</title>
         <meta name="robots" content="noindex" />
 
 
@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">2.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">2.1.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="banco.html"><strong aria-hidden="true">3.</strong> Banco de Dados</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="migrations.html"><strong aria-hidden="true">3.1.</strong> Executando migrations</a></li><li class="chapter-item expanded "><a href="multi-tenancy.html"><strong aria-hidden="true">3.2.</strong> Multi-Tenancy</a></li></ol></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">4.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">4.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="deploy-compose.html"><strong aria-hidden="true">4.2.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-kubernetes.html"><strong aria-hidden="true">4.3.</strong> Deploy via Kubernetes</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">2.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Front-End</div></li><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">2.2.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="multi-tenancy.html"><strong aria-hidden="true">3.</strong> Multi-Tenancy</a></li><li class="chapter-item expanded "><a href="banco-relacional.html"><strong aria-hidden="true">4.</strong> Banco de Dados Relacional</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="migrations.html"><strong aria-hidden="true">4.1.</strong> Executando migrations</a></li></ol></li><li class="chapter-item expanded "><a href="banco-nao-relacional.html"><strong aria-hidden="true">5.</strong> Banco de Dados Não-Relacional</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="colecoes.html"><strong aria-hidden="true">5.1.</strong> Coleções</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Regras de Negócio</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="documentacao.html"><strong aria-hidden="true">6.1.</strong> Documentação do Projeto</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Cache de Sessão via Redis</div></li></ol></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">7.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">7.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="gerando-imagens.html"><strong aria-hidden="true">7.2.</strong> Gerando imagens via Docker</a></li></ol></li><li class="chapter-item expanded "><a href="deploy.html"><strong aria-hidden="true">8.</strong> Deploy</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="deploy-compose.html"><strong aria-hidden="true">8.1.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-swarm.html"><strong aria-hidden="true">8.2.</strong> Deploy via Docker Swarm</a></li><li class="chapter-item expanded "><a href="deploy-kubernetes.html"><strong aria-hidden="true">8.3.</strong> Deploy via Kubernetes</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -111,7 +111,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Sistema Minerva</h1>
+                    <h1 class="menu-title">Minerva System</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -144,7 +144,9 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="introdução"><a class="header" href="#introdução">Introdução</a></h1>
+<center>
 <p><img src="./minerva-logo.png" alt="Logomarca do Sistema Minerva" /></p>
+</center>
 <p>Este documento trata da especificação funcional do Sistema Minerva. O sistema
 é majoritariamente programado utilizando o método eXtreme Programming, portanto
 esta documentação não é exaustiva no sentido de uma especificação completa,
@@ -184,7 +186,7 @@ tipos de Front-Ends que se comuniquem diretamente com o Back-End da aplicação,
 por exemplo, através de programas nativos para Desktop e Mobile.</p>
 <div><!-- Generated by graphviz version 2.43.0 (0)
  --><!-- Title: %3 Pages: 1 --><svg width="407pt" height="228pt"
- viewBox="0.00 0.00 407.00 228.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 224)"><title>%3</title><polygon fill="white" stroke="transparent" points="-4,4 -4,-224 403,-224 403,4 -4,4"/><g id="clust2" class="cluster"><title>cluster_webservice</title><polygon fill="none" stroke="black" points="8,-98 8,-212 391,-212 391,-98 8,-98"/><text text-anchor="middle" x="199.5" y="-196.8" font-family="Times,serif" font-size="14.00">Serviço Web</text></g><g id="clust3" class="cluster"><title>cluster_internal</title><polygon fill="none" stroke="black" points="193,-106 193,-181 383,-181 383,-106 193,-106"/><text text-anchor="middle" x="288" y="-165.8" font-family="Times,serif" font-size="14.00">Interno</text></g><!-- frontend --><g id="node1" class="node"><title>frontend</title><polygon fill="none" stroke="black" points="145,-150 16,-150 16,-114 151,-114 151,-144 145,-150"/><polyline fill="none" stroke="black" points="145,-150 145,-144 "/><polyline fill="none" stroke="black" points="151,-144 145,-144 "/><text text-anchor="middle" x="83.5" y="-128.3" font-family="Times,serif" font-size="14.00">Front&#45;End (Web)</text></g><!-- backend --><g id="node2" class="node"><title>backend</title><polygon fill="none" stroke="black" points="285,-150 205,-150 201,-146 201,-114 281,-114 285,-118 285,-150"/><polyline fill="none" stroke="black" points="281,-146 201,-146 "/><polyline fill="none" stroke="black" points="281,-146 281,-114 "/><polyline fill="none" stroke="black" points="281,-146 285,-150 "/><text text-anchor="middle" x="243" y="-128.3" font-family="Times,serif" font-size="14.00">Back&#45;End</text></g><!-- frontend&#45;&gt;backend --><g id="edge3" class="edge"><title>frontend&#45;&gt;backend</title><path fill="none" stroke="black" d="M151.29,-138.68C164.39,-138.83 177.95,-138.73 190.45,-138.38"/><polygon fill="black" stroke="black" points="190.81,-141.87 200.68,-138.02 190.57,-134.87 190.81,-141.87"/></g><!-- backend&#45;&gt;frontend --><g id="edge4" class="edge"><title>backend&#45;&gt;frontend</title><path fill="none" stroke="black" d="M200.68,-125.98C188.64,-125.47 175.08,-125.23 161.58,-125.25"/><polygon fill="black" stroke="black" points="161.27,-121.75 151.29,-125.32 161.32,-128.75 161.27,-121.75"/></g><!-- db --><g id="node3" class="node"><title>db</title><path fill="none" stroke="black" d="M375,-146.73C375,-148.53 362.9,-150 348,-150 333.1,-150 321,-148.53 321,-146.73 321,-146.73 321,-117.27 321,-117.27 321,-115.47 333.1,-114 348,-114 362.9,-114 375,-115.47 375,-117.27 375,-117.27 375,-146.73 375,-146.73"/><path fill="none" stroke="black" d="M375,-146.73C375,-144.92 362.9,-143.45 348,-143.45 333.1,-143.45 321,-144.92 321,-146.73"/><text text-anchor="middle" x="348" y="-128.3" font-family="Times,serif" font-size="14.00">BD</text></g><!-- backend&#45;&gt;db --><g id="edge5" class="edge"><title>backend&#45;&gt;db</title><path fill="none" stroke="black" d="M285,-125.38C293.52,-125.17 302.45,-125.22 310.78,-125.52"/><polygon fill="black" stroke="black" points="310.78,-129.03 320.95,-126.04 311.14,-122.04 310.78,-129.03"/></g><!-- db&#45;&gt;backend --><g id="edge6" class="edge"><title>db&#45;&gt;backend</title><path fill="none" stroke="black" d="M320.95,-137.96C313.03,-138.49 304.04,-138.76 295.07,-138.75"/><polygon fill="black" stroke="black" points="295.05,-135.25 285,-138.62 294.96,-142.25 295.05,-135.25"/></g><!-- desktop --><g id="node4" class="node"><title>desktop</title><polygon fill="none" stroke="black" points="165,-90 2,-90 2,-54 165,-54 165,-90"/><text text-anchor="middle" x="83.5" y="-68.3" font-family="Times,serif" font-size="14.00">Front&#45;End (Desktop)</text></g><!-- desktop&#45;&gt;backend --><g id="edge1" class="edge"><title>desktop&#45;&gt;backend</title><path fill="none" stroke="black" stroke-dasharray="1,5" d="M154.15,-90.13C157.84,-91.37 161.48,-92.66 165,-94 176.54,-98.38 188.67,-103.9 199.81,-109.37"/><polygon fill="black" stroke="black" points="198.38,-112.57 208.89,-113.92 201.52,-106.31 198.38,-112.57"/></g><!-- mobile --><g id="node5" class="node"><title>mobile</title><polygon fill="none" stroke="black" points="160,-36 7,-36 7,0 160,0 160,-36"/><text text-anchor="middle" x="83.5" y="-14.3" font-family="Times,serif" font-size="14.00">Front&#45;End (Mobile)</text></g><!-- mobile&#45;&gt;backend --><g id="edge2" class="edge"><title>mobile&#45;&gt;backend</title><path fill="none" stroke="black" stroke-dasharray="1,5" d="M148.8,-36.08C154.47,-38.7 159.96,-41.66 165,-45 189.06,-60.94 210.28,-86.24 224.32,-105.46"/><polygon fill="black" stroke="black" points="221.6,-107.68 230.25,-113.8 227.31,-103.62 221.6,-107.68"/></g></g></svg></div>
+ viewBox="0.00 0.00 407.00 228.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 224)"><title>%3</title><g id="clust2" class="cluster"><title>cluster_webservice</title><polygon fill="#666666" stroke="black" points="8,-98 8,-212 391,-212 391,-98 8,-98"/><text text-anchor="middle" x="199.5" y="-196.8" font-family="Times,serif" font-size="14.00">Serviço Web</text></g><g id="clust3" class="cluster"><title>cluster_internal</title><polygon fill="#999999" stroke="black" points="193,-106 193,-181 383,-181 383,-106 193,-106"/><text text-anchor="middle" x="288" y="-165.8" font-family="Times,serif" font-size="14.00">Interno</text></g><!-- frontend --><g id="node1" class="node"><title>frontend</title><polygon fill="lightgrey" stroke="black" points="145,-150 16,-150 16,-114 151,-114 151,-144 145,-150"/><polyline fill="none" stroke="black" points="145,-150 145,-144 "/><polyline fill="none" stroke="black" points="151,-144 145,-144 "/><text text-anchor="middle" x="83.5" y="-128.3" font-family="Times,serif" font-size="14.00">Front&#45;End (Web)</text></g><!-- backend --><g id="node2" class="node"><title>backend</title><polygon fill="lightgrey" stroke="black" points="285,-150 205,-150 201,-146 201,-114 281,-114 285,-118 285,-150"/><polyline fill="none" stroke="black" points="281,-146 201,-146 "/><polyline fill="none" stroke="black" points="281,-146 281,-114 "/><polyline fill="none" stroke="black" points="281,-146 285,-150 "/><text text-anchor="middle" x="243" y="-128.3" font-family="Times,serif" font-size="14.00">Back&#45;End</text></g><!-- frontend&#45;&#45;backend --><g id="edge3" class="edge"><title>frontend&#45;&#45;backend</title><path fill="none" stroke="darkorange" d="M151.29,-132C168.06,-132 185.57,-132 200.68,-132"/></g><!-- db --><g id="node3" class="node"><title>db</title><path fill="lightgrey" stroke="black" d="M375,-146.73C375,-148.53 362.9,-150 348,-150 333.1,-150 321,-148.53 321,-146.73 321,-146.73 321,-117.27 321,-117.27 321,-115.47 333.1,-114 348,-114 362.9,-114 375,-115.47 375,-117.27 375,-117.27 375,-146.73 375,-146.73"/><path fill="none" stroke="black" d="M375,-146.73C375,-144.92 362.9,-143.45 348,-143.45 333.1,-143.45 321,-144.92 321,-146.73"/><text text-anchor="middle" x="348" y="-128.3" font-family="Times,serif" font-size="14.00">BD</text></g><!-- backend&#45;&#45;db --><g id="edge4" class="edge"><title>backend&#45;&#45;db</title><path fill="none" stroke="darkmagenta" d="M285,-132C297.12,-132 310.05,-132 320.95,-132"/></g><!-- desktop --><g id="node4" class="node"><title>desktop</title><polygon fill="lightgrey" stroke="black" points="165,-90 2,-90 2,-54 165,-54 165,-90"/><text text-anchor="middle" x="83.5" y="-68.3" font-family="Times,serif" font-size="14.00">Front&#45;End (Desktop)</text></g><!-- desktop&#45;&#45;backend --><g id="edge1" class="edge"><title>desktop&#45;&#45;backend</title><path fill="none" stroke="darkorange" stroke-dasharray="5,2" d="M154.15,-90.13C157.84,-91.37 161.48,-92.66 165,-94 179.77,-99.61 195.52,-107.08 208.89,-113.92"/></g><!-- mobile --><g id="node5" class="node"><title>mobile</title><polygon fill="lightgrey" stroke="black" points="160,-36 7,-36 7,0 160,0 160,-36"/><text text-anchor="middle" x="83.5" y="-14.3" font-family="Times,serif" font-size="14.00">Front&#45;End (Mobile)</text></g><!-- mobile&#45;&#45;backend --><g id="edge2" class="edge"><title>mobile&#45;&#45;backend</title><path fill="none" stroke="darkorange" stroke-dasharray="5,2" d="M148.8,-36.08C154.47,-38.7 159.96,-41.66 165,-45 192.75,-63.38 216.71,-94.21 230.25,-113.8"/></g></g></svg></div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="back-end"><a class="header" href="#back-end">Back-End</a></h1>
 <p>O back-end Minerva compõe-se de microsserviços, com uma interface comum de
 comunicação externa que seja simples de usar para os padrões atuais.</p>
@@ -219,8 +221,8 @@ mais especificamente nas operações de inserção, atualização e exclusão.</
 da aplicação, que também constituem-se de bibliotecas que podem ser utilizadas
 e referenciadas entre si.</p>
 <div><!-- Generated by graphviz version 2.43.0 (0)
- --><!-- Title: %3 Pages: 1 --><svg width="590pt" height="393pt"
- viewBox="0.00 0.00 590.00 393.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 389)"><title>%3</title><polygon fill="white" stroke="transparent" points="-4,4 -4,-389 586,-389 586,4 -4,4"/><g id="clust1" class="cluster"><title>cluster_db</title><polygon fill="none" stroke="darkmagenta" points="174,-8 174,-98 388,-98 388,-8 174,-8"/><text text-anchor="middle" x="281" y="-82.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">BANCO DE DADOS</text><text text-anchor="middle" x="281" y="-67.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">(multi&#45;inquilino)</text></g><g id="clust3" class="cluster"><title>cluster_backend</title><polygon fill="none" stroke="darkred" points="8,-146 8,-308 574,-308 574,-146 8,-146"/><text text-anchor="middle" x="291" y="-292.8" font-family="Times,serif" font-size="14.00" fill="darkred">BACK&#45;END</text></g><!-- frontend --><g id="node1" class="node"><title>frontend</title><polygon fill="white" stroke="darkorange" points="275,-385 175,-385 175,-349 281,-349 281,-379 275,-385"/><polyline fill="none" stroke="darkorange" points="275,-385 275,-379 "/><polyline fill="none" stroke="darkorange" points="281,-379 275,-379 "/><text text-anchor="middle" x="228" y="-363.3" font-family="Times,serif" font-size="14.00" fill="darkorange">FRONT&#45;END</text></g><!-- rest --><g id="node5" class="node"><title>rest</title><polygon fill="white" stroke="black" points="256,-277 204,-277 200,-273 200,-241 252,-241 256,-245 256,-277"/><polyline fill="none" stroke="black" points="252,-273 200,-273 "/><polyline fill="none" stroke="black" points="252,-273 252,-241 "/><polyline fill="none" stroke="black" points="252,-273 256,-277 "/><text text-anchor="middle" x="228" y="-255.3" font-family="Times,serif" font-size="14.00">REST</text></g><!-- frontend&#45;&#45;rest --><g id="edge13" class="edge"><title>frontend&#45;&#45;rest</title><path fill="none" stroke="green" d="M228,-348.97C228,-329.31 228,-297.13 228,-277.34"/><text text-anchor="middle" x="248" y="-319.8" font-family="Times,serif" font-size="14.00" fill="green">REST</text></g><!-- db2 --><g id="node2" class="node"><title>db2</title><path fill="white" stroke="darkmagenta" d="M380,-48.73C380,-50.53 367.9,-52 353,-52 338.1,-52 326,-50.53 326,-48.73 326,-48.73 326,-19.27 326,-19.27 326,-17.47 338.1,-16 353,-16 367.9,-16 380,-17.47 380,-19.27 380,-19.27 380,-48.73 380,-48.73"/><path fill="none" stroke="darkmagenta" d="M380,-48.73C380,-46.92 367.9,-45.45 353,-45.45 338.1,-45.45 326,-46.92 326,-48.73"/><text text-anchor="middle" x="353" y="-30.3" font-family="Times,serif" font-size="14.00" fill="darkmagenta">inq3</text></g><!-- db1 --><g id="node3" class="node"><title>db1</title><path fill="white" stroke="darkmagenta" d="M308,-48.73C308,-50.53 295.9,-52 281,-52 266.1,-52 254,-50.53 254,-48.73 254,-48.73 254,-19.27 254,-19.27 254,-17.47 266.1,-16 281,-16 295.9,-16 308,-17.47 308,-19.27 308,-19.27 308,-48.73 308,-48.73"/><path fill="none" stroke="darkmagenta" d="M308,-48.73C308,-46.92 295.9,-45.45 281,-45.45 266.1,-45.45 254,-46.92 254,-48.73"/><text text-anchor="middle" x="281" y="-30.3" font-family="Times,serif" font-size="14.00" fill="darkmagenta">inq2</text></g><!-- db3 --><g id="node4" class="node"><title>db3</title><path fill="white" stroke="darkmagenta" d="M236,-48.73C236,-50.53 223.9,-52 209,-52 194.1,-52 182,-50.53 182,-48.73 182,-48.73 182,-19.27 182,-19.27 182,-17.47 194.1,-16 209,-16 223.9,-16 236,-17.47 236,-19.27 236,-19.27 236,-48.73 236,-48.73"/><path fill="none" stroke="darkmagenta" d="M236,-48.73C236,-46.92 223.9,-45.45 209,-45.45 194.1,-45.45 182,-46.92 182,-48.73"/><text text-anchor="middle" x="209" y="-30.3" font-family="Times,serif" font-size="14.00" fill="darkmagenta">inq1</text></g><!-- user --><g id="node6" class="node"><title>user</title><polygon fill="white" stroke="black" points="75.5,-190 20.5,-190 16.5,-186 16.5,-154 71.5,-154 75.5,-158 75.5,-190"/><polyline fill="none" stroke="black" points="71.5,-186 16.5,-186 "/><polyline fill="none" stroke="black" points="71.5,-186 71.5,-154 "/><polyline fill="none" stroke="black" points="71.5,-186 75.5,-190 "/><text text-anchor="middle" x="46" y="-168.3" font-family="Times,serif" font-size="14.00">USER</text></g><!-- rest&#45;&#45;user --><g id="edge1" class="edge"><title>rest&#45;&#45;user</title><path fill="none" stroke="blue" d="M199.96,-244.91C166.26,-229.16 109.96,-202.87 75.58,-186.82"/><text text-anchor="middle" x="167" y="-211.8" font-family="Times,serif" font-size="14.00" fill="blue">gRPC</text></g><!-- session --><g id="node7" class="node"><title>session</title><polygon fill="white" stroke="black" points="217,-190 137,-190 133,-186 133,-154 213,-154 217,-158 217,-190"/><polyline fill="none" stroke="black" points="213,-186 133,-186 "/><polyline fill="none" stroke="black" points="213,-186 213,-154 "/><polyline fill="none" stroke="black" points="213,-186 217,-190 "/><text text-anchor="middle" x="175" y="-168.3" font-family="Times,serif" font-size="14.00">SESSION</text></g><!-- rest&#45;&#45;session --><g id="edge2" class="edge"><title>rest&#45;&#45;session</title><path fill="none" stroke="blue" d="M217.27,-240.8C208.08,-226.05 194.9,-204.92 185.71,-190.18"/><text text-anchor="middle" x="224" y="-211.8" font-family="Times,serif" font-size="14.00" fill="blue">gRPC</text></g><!-- product --><g id="node8" class="node"><title>product</title><polygon fill="white" stroke="black" points="326.5,-190 239.5,-190 235.5,-186 235.5,-154 322.5,-154 326.5,-158 326.5,-190"/><polyline fill="none" stroke="black" points="322.5,-186 235.5,-186 "/><polyline fill="none" stroke="black" points="322.5,-186 322.5,-154 "/><polyline fill="none" stroke="black" points="322.5,-186 326.5,-190 "/><text text-anchor="middle" x="281" y="-168.3" font-family="Times,serif" font-size="14.00">PRODUCT</text></g><!-- rest&#45;&#45;product --><g id="edge3" class="edge"><title>rest&#45;&#45;product</title><path fill="none" stroke="blue" d="M238.73,-240.8C247.92,-226.05 261.1,-204.92 270.29,-190.18"/><text text-anchor="middle" x="277" y="-211.8" font-family="Times,serif" font-size="14.00" fill="blue">gRPC</text></g><!-- stock --><g id="node9" class="node"><title>stock</title><polygon fill="white" stroke="black" points="452,-190 388,-190 384,-186 384,-154 448,-154 452,-158 452,-190"/><polyline fill="none" stroke="black" points="448,-186 384,-186 "/><polyline fill="none" stroke="black" points="448,-186 448,-154 "/><polyline fill="none" stroke="black" points="448,-186 452,-190 "/><text text-anchor="middle" x="418" y="-168.3" font-family="Times,serif" font-size="14.00">STOCK</text></g><!-- rest&#45;&#45;stock --><g id="edge4" class="edge"><title>rest&#45;&#45;stock</title><path fill="none" stroke="blue" d="M256.04,-245.46C290,-230.26 347.19,-204.68 383.73,-188.33"/><text text-anchor="middle" x="354" y="-211.8" font-family="Times,serif" font-size="14.00" fill="blue">gRPC</text></g><!-- report --><g id="node11" class="node"><title>report</title><polygon fill="white" stroke="black" points="392,-277 318,-277 314,-273 314,-241 388,-241 392,-245 392,-277"/><polyline fill="none" stroke="black" points="388,-273 314,-273 "/><polyline fill="none" stroke="black" points="388,-273 388,-241 "/><polyline fill="none" stroke="black" points="388,-273 392,-277 "/><text text-anchor="middle" x="353" y="-255.3" font-family="Times,serif" font-size="14.00">REPORT</text></g><!-- rest&#45;&#45;report --><g id="edge7" class="edge"><title>rest&#45;&#45;report</title><path fill="none" stroke="blue" d="M256.05,-259C273.04,-259 294.96,-259 313.67,-259"/><text text-anchor="middle" x="285" y="-265.8" font-family="Times,serif" font-size="14.00" fill="blue">gRPC</text></g><!-- user&#45;&#45;db1 --><g id="edge8" class="edge"><title>user&#45;&#45;db1</title><path fill="none" stroke="darkmagenta" d="M69.54,-153.92C92.08,-138.54 127.63,-116.76 162,-106 179.68,-100.46 229.44,-108.06 245,-98"/><text text-anchor="middle" x="182.5" y="-124.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">DB</text><text text-anchor="middle" x="182.5" y="-109.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">(Pool)</text></g><!-- user&#45;&#45;session --><g id="edge5" class="edge"><title>user&#45;&#45;session</title><path fill="none" stroke="blue" d="M75.6,-172C92.56,-172 114.12,-172 132.83,-172"/><text text-anchor="middle" x="104.25" y="-178.8" font-family="Times,serif" font-size="14.00" fill="blue">gRPC</text></g><!-- session&#45;&#45;db1 --><g id="edge9" class="edge"><title>session&#45;&#45;db1</title><path fill="none" stroke="darkmagenta" d="M190.39,-153.76C202.49,-140.43 219.92,-121.65 236,-106 239.84,-102.27 241.63,-102.16 245,-98"/><text text-anchor="middle" x="256.5" y="-124.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">DB</text><text text-anchor="middle" x="256.5" y="-109.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">(Pool)</text></g><!-- product&#45;&#45;db1 --><g id="edge10" class="edge"><title>product&#45;&#45;db1</title><path fill="none" stroke="darkmagenta" d="M281,-153.78C281,-139.56 281,-118.48 281,-98"/><text text-anchor="middle" x="301.5" y="-124.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">DB</text><text text-anchor="middle" x="301.5" y="-109.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">(Pool)</text></g><!-- product&#45;&#45;stock --><g id="edge6" class="edge"><title>product&#45;&#45;stock</title><path fill="none" stroke="blue" d="M326.62,-172C345.3,-172 366.55,-172 383.85,-172"/><text text-anchor="middle" x="355.25" y="-178.8" font-family="Times,serif" font-size="14.00" fill="blue">gRPC</text></g><!-- stock&#45;&#45;db1 --><g id="edge11" class="edge"><title>stock&#45;&#45;db1</title><path fill="none" stroke="darkmagenta" d="M393.05,-153.79C365.17,-134.44 323.11,-104.8 317,-98"/><text text-anchor="middle" x="385.5" y="-124.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">DB</text><text text-anchor="middle" x="385.5" y="-109.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">(Pool)</text></g><!-- runonce --><g id="node10" class="node"><title>runonce</title><polygon fill="white" stroke="black" points="565.5,-190 474.5,-190 470.5,-186 470.5,-154 561.5,-154 565.5,-158 565.5,-190"/><polyline fill="none" stroke="black" points="561.5,-186 470.5,-186 "/><polyline fill="none" stroke="black" points="561.5,-186 561.5,-154 "/><polyline fill="none" stroke="black" points="561.5,-186 565.5,-190 "/><text text-anchor="middle" x="518" y="-168.3" font-family="Times,serif" font-size="14.00">RUNONCE</text></g><!-- runonce&#45;&#45;db1 --><g id="edge12" class="edge"><title>runonce&#45;&#45;db1</title><path fill="none" stroke="magenta" d="M496.3,-153.82C475.47,-138.37 442.47,-116.54 410,-106 390.27,-99.6 334.48,-109.17 317,-98"/><text text-anchor="middle" x="497" y="-124.8" font-family="Times,serif" font-size="14.00" fill="magenta">DB</text><text text-anchor="middle" x="497" y="-109.8" font-family="Times,serif" font-size="14.00" fill="magenta">(Avulsa)</text></g></g></svg></div>
+ --><!-- Title: %3 Pages: 1 --><svg width="512pt" height="393pt"
+ viewBox="0.00 0.00 512.00 393.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 389)"><title>%3</title><g id="clust1" class="cluster"><title>cluster_db</title><polygon fill="transparent" stroke="darkmagenta" points="135,-8 135,-98 349,-98 349,-8 135,-8"/><text text-anchor="middle" x="242" y="-82.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">BANCO DE DADOS</text><text text-anchor="middle" x="242" y="-67.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">(multi&#45;tenant)</text></g><g id="clust3" class="cluster"><title>cluster_backend</title><polygon fill="transparent" stroke="darkred" points="8,-146 8,-308 496,-308 496,-146 8,-146"/><text text-anchor="middle" x="252" y="-292.8" font-family="Times,serif" font-size="14.00" fill="darkred">BACK&#45;END</text></g><!-- frontend --><g id="node1" class="node"><title>frontend</title><polygon fill="transparent" stroke="darkorange" points="236,-385 136,-385 136,-349 242,-349 242,-379 236,-385"/><polyline fill="none" stroke="darkorange" points="236,-385 236,-379 "/><polyline fill="none" stroke="darkorange" points="242,-379 236,-379 "/><text text-anchor="middle" x="189" y="-363.3" font-family="Times,serif" font-size="14.00" fill="darkorange">FRONT&#45;END</text></g><!-- rest --><g id="node5" class="node"><title>rest</title><polygon fill="#999999" stroke="green" points="217,-277 165,-277 161,-273 161,-241 213,-241 217,-245 217,-277"/><polyline fill="none" stroke="green" points="213,-273 161,-273 "/><polyline fill="none" stroke="green" points="213,-273 213,-241 "/><polyline fill="none" stroke="green" points="213,-273 217,-277 "/><text text-anchor="middle" x="189" y="-255.3" font-family="Times,serif" font-size="14.00" fill="green">REST</text></g><!-- frontend&#45;&#45;rest --><g id="edge11" class="edge"><title>frontend&#45;&#45;rest</title><path fill="none" stroke="green" d="M189,-348.97C189,-329.31 189,-297.13 189,-277.34"/><text text-anchor="middle" x="209" y="-319.8" font-family="Times,serif" font-size="14.00" fill="green">REST</text></g><!-- db2 --><g id="node2" class="node"><title>db2</title><path fill="#999999" stroke="darkmagenta" d="M341,-48.73C341,-50.53 328.9,-52 314,-52 299.1,-52 287,-50.53 287,-48.73 287,-48.73 287,-19.27 287,-19.27 287,-17.47 299.1,-16 314,-16 328.9,-16 341,-17.47 341,-19.27 341,-19.27 341,-48.73 341,-48.73"/><path fill="none" stroke="darkmagenta" d="M341,-48.73C341,-46.92 328.9,-45.45 314,-45.45 299.1,-45.45 287,-46.92 287,-48.73"/><text text-anchor="middle" x="314" y="-30.3" font-family="Times,serif" font-size="14.00" fill="darkmagenta">inq3</text></g><!-- db1 --><g id="node3" class="node"><title>db1</title><path fill="#999999" stroke="darkmagenta" d="M269,-48.73C269,-50.53 256.9,-52 242,-52 227.1,-52 215,-50.53 215,-48.73 215,-48.73 215,-19.27 215,-19.27 215,-17.47 227.1,-16 242,-16 256.9,-16 269,-17.47 269,-19.27 269,-19.27 269,-48.73 269,-48.73"/><path fill="none" stroke="darkmagenta" d="M269,-48.73C269,-46.92 256.9,-45.45 242,-45.45 227.1,-45.45 215,-46.92 215,-48.73"/><text text-anchor="middle" x="242" y="-30.3" font-family="Times,serif" font-size="14.00" fill="darkmagenta">inq2</text></g><!-- db3 --><g id="node4" class="node"><title>db3</title><path fill="#999999" stroke="darkmagenta" d="M197,-48.73C197,-50.53 184.9,-52 170,-52 155.1,-52 143,-50.53 143,-48.73 143,-48.73 143,-19.27 143,-19.27 143,-17.47 155.1,-16 170,-16 184.9,-16 197,-17.47 197,-19.27 197,-19.27 197,-48.73 197,-48.73"/><path fill="none" stroke="darkmagenta" d="M197,-48.73C197,-46.92 184.9,-45.45 170,-45.45 155.1,-45.45 143,-46.92 143,-48.73"/><text text-anchor="middle" x="170" y="-30.3" font-family="Times,serif" font-size="14.00" fill="darkmagenta">inq1</text></g><!-- user --><g id="node6" class="node"><title>user</title><polygon fill="#999999" stroke="blue" points="75.5,-190 20.5,-190 16.5,-186 16.5,-154 71.5,-154 75.5,-158 75.5,-190"/><polyline fill="none" stroke="blue" points="71.5,-186 16.5,-186 "/><polyline fill="none" stroke="blue" points="71.5,-186 71.5,-154 "/><polyline fill="none" stroke="blue" points="71.5,-186 75.5,-190 "/><text text-anchor="middle" x="46" y="-168.3" font-family="Times,serif" font-size="14.00" fill="blue">USER</text></g><!-- rest&#45;&#45;user --><g id="edge1" class="edge"><title>rest&#45;&#45;user</title><path fill="none" stroke="blue" d="M160.96,-246.22C146.85,-239.92 129.68,-231.69 115,-223 98.32,-213.13 80.65,-200.27 67.36,-190.06"/><text text-anchor="middle" x="135" y="-211.8" font-family="Times,serif" font-size="14.00" fill="blue">gRPC</text></g><!-- session --><g id="node7" class="node"><title>session</title><polygon fill="#999999" stroke="blue" points="178,-190 98,-190 94,-186 94,-154 174,-154 178,-158 178,-190"/><polyline fill="none" stroke="blue" points="174,-186 94,-186 "/><polyline fill="none" stroke="blue" points="174,-186 174,-154 "/><polyline fill="none" stroke="blue" points="174,-186 178,-190 "/><text text-anchor="middle" x="136" y="-168.3" font-family="Times,serif" font-size="14.00" fill="blue">SESSION</text></g><!-- rest&#45;&#45;session --><g id="edge2" class="edge"><title>rest&#45;&#45;session</title><path fill="none" stroke="blue" d="M178.27,-240.8C169.08,-226.05 155.9,-204.92 146.71,-190.18"/><text text-anchor="middle" x="185" y="-211.8" font-family="Times,serif" font-size="14.00" fill="blue">gRPC</text></g><!-- product --><g id="node8" class="node"><title>product</title><polygon fill="#999999" stroke="blue" points="287.5,-190 200.5,-190 196.5,-186 196.5,-154 283.5,-154 287.5,-158 287.5,-190"/><polyline fill="none" stroke="blue" points="283.5,-186 196.5,-186 "/><polyline fill="none" stroke="blue" points="283.5,-186 283.5,-154 "/><polyline fill="none" stroke="blue" points="283.5,-186 287.5,-190 "/><text text-anchor="middle" x="242" y="-168.3" font-family="Times,serif" font-size="14.00" fill="blue">PRODUCT</text></g><!-- rest&#45;&#45;product --><g id="edge3" class="edge"><title>rest&#45;&#45;product</title><path fill="none" stroke="blue" d="M199.73,-240.8C208.92,-226.05 222.1,-204.92 231.29,-190.18"/><text text-anchor="middle" x="238" y="-211.8" font-family="Times,serif" font-size="14.00" fill="blue">gRPC</text></g><!-- stock --><g id="node9" class="node"><title>stock</title><polygon fill="#999999" stroke="blue" points="374,-190 310,-190 306,-186 306,-154 370,-154 374,-158 374,-190"/><polyline fill="none" stroke="blue" points="370,-186 306,-186 "/><polyline fill="none" stroke="blue" points="370,-186 370,-154 "/><polyline fill="none" stroke="blue" points="370,-186 374,-190 "/><text text-anchor="middle" x="340" y="-168.3" font-family="Times,serif" font-size="14.00" fill="blue">STOCK</text></g><!-- rest&#45;&#45;stock --><g id="edge4" class="edge"><title>rest&#45;&#45;stock</title><path fill="none" stroke="blue" d="M217.14,-245.49C230.87,-239.14 247.51,-231.08 262,-223 280.26,-212.82 300.09,-200.08 315.19,-190.01"/><text text-anchor="middle" x="306" y="-211.8" font-family="Times,serif" font-size="14.00" fill="blue">gRPC</text></g><!-- report --><g id="node11" class="node"><title>report</title><polygon fill="#999999" stroke="blue" points="353,-277 279,-277 275,-273 275,-241 349,-241 353,-245 353,-277"/><polyline fill="none" stroke="blue" points="349,-273 275,-273 "/><polyline fill="none" stroke="blue" points="349,-273 349,-241 "/><polyline fill="none" stroke="blue" points="349,-273 353,-277 "/><text text-anchor="middle" x="314" y="-255.3" font-family="Times,serif" font-size="14.00" fill="blue">REPORT</text></g><!-- rest&#45;&#45;report --><g id="edge5" class="edge"><title>rest&#45;&#45;report</title><path fill="none" stroke="blue" d="M217.05,-259C234.04,-259 255.96,-259 274.67,-259"/><text text-anchor="middle" x="246" y="-265.8" font-family="Times,serif" font-size="14.00" fill="blue">gRPC</text></g><!-- user&#45;&#45;db1 --><g id="edge6" class="edge"><title>user&#45;&#45;db1</title><path fill="none" stroke="darkmagenta" d="M60.56,-153.84C74.76,-138.41 97.85,-116.59 123,-106 157.15,-91.62 174.88,-118.12 206,-98"/><text text-anchor="middle" x="143.5" y="-124.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">DB</text><text text-anchor="middle" x="143.5" y="-109.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">(Pool)</text></g><!-- session&#45;&#45;db1 --><g id="edge7" class="edge"><title>session&#45;&#45;db1</title><path fill="none" stroke="darkmagenta" d="M151.39,-153.76C163.49,-140.43 180.92,-121.65 197,-106 200.84,-102.27 202.63,-102.16 206,-98"/><text text-anchor="middle" x="217.5" y="-124.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">DB</text><text text-anchor="middle" x="217.5" y="-109.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">(Pool)</text></g><!-- product&#45;&#45;db1 --><g id="edge8" class="edge"><title>product&#45;&#45;db1</title><path fill="none" stroke="darkmagenta" d="M242,-153.78C242,-139.56 242,-118.48 242,-98"/><text text-anchor="middle" x="262.5" y="-124.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">DB</text><text text-anchor="middle" x="262.5" y="-109.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">(Pool)</text></g><!-- stock&#45;&#45;db1 --><g id="edge9" class="edge"><title>stock&#45;&#45;db1</title><path fill="none" stroke="darkmagenta" d="M327.2,-153.81C316.88,-140.33 301.71,-121.35 287,-106 283.3,-102.14 281.37,-102.16 278,-98"/><text text-anchor="middle" x="332.5" y="-124.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">DB</text><text text-anchor="middle" x="332.5" y="-109.8" font-family="Times,serif" font-size="14.00" fill="darkmagenta">(Pool)</text></g><!-- runonce --><g id="node10" class="node"><title>runonce</title><polygon fill="#999999" stroke="blue" points="487.5,-190 396.5,-190 392.5,-186 392.5,-154 483.5,-154 487.5,-158 487.5,-190"/><polyline fill="none" stroke="blue" points="483.5,-186 392.5,-186 "/><polyline fill="none" stroke="blue" points="483.5,-186 483.5,-154 "/><polyline fill="none" stroke="blue" points="483.5,-186 487.5,-190 "/><text text-anchor="middle" x="440" y="-168.3" font-family="Times,serif" font-size="14.00" fill="blue">RUNONCE</text></g><!-- runonce&#45;&#45;db1 --><g id="edge10" class="edge"><title>runonce&#45;&#45;db1</title><path fill="none" stroke="magenta" d="M424.02,-153.87C408.51,-138.47 383.49,-116.66 357,-106 324.26,-92.82 307.59,-117.23 278,-98"/><text text-anchor="middle" x="431" y="-124.8" font-family="Times,serif" font-size="14.00" fill="magenta">DB</text><text text-anchor="middle" x="431" y="-109.8" font-family="Times,serif" font-size="14.00" fill="magenta">(Avulsa)</text></g></g></svg></div>
 <h2 id="bibliotecas"><a class="header" href="#bibliotecas">Bibliotecas</a></h2>
 <p>As bibliotecas planejadas para o sistema são:</p>
 <ul>
@@ -247,7 +249,7 @@ Deve ser importado principalmente no módulo de sessão.</li>
 <li><input disabled="" type="checkbox" checked=""/>
 <code>minerva-user</code>: Servidor gRPC para CRUD de usuários. Deve ser capaz de
 manipular as regras de negócios relacionadas a clientes.</li>
-<li><input disabled="" type="checkbox"/>
+<li><input disabled="" type="checkbox" checked=""/>
 <code>minerva-session</code>: Servidor gRPC para gerência de sessão de usuário.</li>
 <li><input disabled="" type="checkbox"/>
 <code>minerva-product</code>: Servidor gRPC para CRUD de produtos. Deve ser capaz
@@ -306,13 +308,54 @@ pelo orquestrador de contêineres.</p>
 a configuração em desenvolvimento e em produção do mesmo.</p>
 <table><thead><tr><th>Serviço</th><th>Variável</th><th>Valor em Produção</th></tr></thead><tbody>
 <tr><td>USER</td><td><code>USER_SERVICE_SERVER</code></td><td><code>users</code></td></tr>
-<tr><td>Banco de Dados</td><td><code>DATABASE_SERVICE_SERVER</code></td><td><code>postgresql</code></td></tr>
+<tr><td>Banco de Dados Relacional</td><td><code>DATABASE_SERVICE_SERVER</code></td><td><code>postgresql</code></td></tr>
+<tr><td>Banco de Dados Não-Relacional</td><td><code>MONGO_SERVICE_SERVER</code></td><td><code>mongodb</code></td></tr>
 <tr><td>REST</td><td>nenhuma</td><td><code>rest</code></td></tr>
 <tr><td>RUNONCE</td><td>nenhuma</td><td><code>runonce</code></td></tr>
+<tr><td>SESSION</td><td><code>SESSION_SERVICE_SERVER</code></td><td><code>session</code></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="banco-de-dados"><a class="header" href="#banco-de-dados">Banco de Dados</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="multi-tenancy"><a class="header" href="#multi-tenancy">Multi-Tenancy</a></h1>
+<p>O Sistema Minerva é um sistema <em>multi-tenant</em>. Isso significa que é
+capaz de gerenciar bancos de dados diferentes dependendo do <em>tenant</em>
+(cliente do serviço) atual. No Sistema Minerva, isso é gerenciado de
+acordo com a forma como as requisições são recebidas.</p>
+<h2 id="configuração"><a class="header" href="#configuração">Configuração</a></h2>
+<p>Os tenants devem ser gerenciados através do arquivo <code>tenancy.toml</code>.</p>
+<p>A seguir, um exemplo do conteúdo em potencial deste arquivo.</p>
+<pre><code class="language-toml">[[tenants]]
+name = &quot;Minerva System&quot;
+database = &quot;minerva&quot;
+connections = 5
+
+[[tenants]]
+name = &quot;Test Database&quot;
+database = &quot;teste&quot;
+connections = 5
+
+[[tenants]]
+name = &quot;Comercial Fulano S/A&quot;
+database = &quot;comercial-fulano&quot;
+connections = 5
+</code></pre>
+<h2 id="criação-dos-bancos-de-dados"><a class="header" href="#criação-dos-bancos-de-dados">Criação dos bancos de dados</a></h2>
+<p>O serviço <code>RUNONCE</code> deverá executar a criação dos bancos de dados, caso
+não seja possível conectar-se aos mesmos. Isso deve ser feito sobretudo
+através da leitura do arquivo <code>tenancy.toml</code>, encontrado na pasta de
+execução do projeto.</p>
+<p>Caso um novo tenant seja adicionado ao sistema, o serviço <code>RUNONCE</code>
+deverá ser forçadamente executado para que o sistema fique apto a
+utilizar o banco de dados para aquele tenant.</p>
+<p>O sistema <code>RUNONCE</code> deverá, para cada tenant listado em <code>tenancy.toml</code>:</p>
+<ol>
+<li>Tentar conectar-se aos bancos em questão. Se isso não for possível,
+deverá criá-los;</li>
+<li>Executar as migrations (no BD relacional) para aquele <em>tenant</em>;</li>
+<li>Criar as coleções e índices (no BD não-relacional) para aquele <em>tenant</em>;</li>
+<li>Criar o usuário <code>admin</code> (no BD relacional) para aquele <em>tenant</em>.</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="banco-de-dados-relacional"><a class="header" href="#banco-de-dados-relacional">Banco de Dados Relacional</a></h1>
 <p>As próximas seções dizem respeito a partes relacionadas à estrutura do banco
-de dados e a como modificá-la.</p>
+de dados relacional (PostgreSQL) e a como modificá-la.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="executando-migrations"><a class="header" href="#executando-migrations">Executando migrations</a></h1>
 <p>As migrations são uma parte vital do Sistema Minerva, não apenas porque
 definem as tabelas do banco de um <em>tenant</em>, mas porque também definem os
@@ -376,49 +419,73 @@ então excluí-lo.</p>
 <pre><code class="language-bash">docker stop minerva-micro
 docker rm minerva-micro
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="multi-tenancy"><a class="header" href="#multi-tenancy">Multi-Tenancy</a></h1>
-<p>O Minerva System é um sistema multi-tenant. Isso significa que é
-capaz de gerenciar bancos de dados diferentes dependendo do tenant
-(cliente do serviço) atual. No Minerva System, isso é gerenciado de
-acordo com a forma como as requisições são recebidas.</p>
-<h2 id="configuração"><a class="header" href="#configuração">Configuração</a></h2>
-<p>Os tenants devem ser gerenciados através do arquivo <code>tenancy.toml</code>.</p>
-<p>A seguir, um exemplo do conteúdo em potencial deste arquivo.</p>
-<pre><code class="language-toml">[[tenants]]
-name = &quot;Minerva System&quot;
-database = &quot;minerva&quot;
-connections = 5
-
-[[tenants]]
-name = &quot;Test Database&quot;
-database = &quot;teste&quot;
-connections = 5
-
-[[tenants]]
-name = &quot;Comercial Fulano S/A&quot;
-database = &quot;comercial-fulano&quot;
-connections = 5
-</code></pre>
-<h2 id="criação-do-banco-de-dados"><a class="header" href="#criação-do-banco-de-dados">Criação do banco de dados</a></h2>
-<p>O serviço <code>RUNONCE</code> deverá executar a criação do banco de dados, caso
-não seja possível conectar-se ao mesmo. Isso deve ser feito sobretudo
-através da leitura do arquivo <code>tenancy.toml</code>, encontrado na pasta de
-execução do projeto.</p>
-<p>Caso um novo tenant seja adicionado ao sistema, o serviço <code>RUNONCE</code>
-deverá ser forçadamente executado para que o sistema fique apto a
-utilizar o banco de dados para aquele tenant.</p>
-<p>O sistema <code>RUNONCE</code> deverá, para cada tenant listado em <code>tenancy.toml</code>:</p>
-<ol>
-<li>Tentar conectar-se ao banco em questão. Se isso não for possível,
-deverá criá-lo;</li>
-<li>Executar as migrations para aquele banco;</li>
-<li>Criar o usuário <code>admin</code> para aquele banco.</li>
-</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="banco-de-dados-não-relacional"><a class="header" href="#banco-de-dados-não-relacional">Banco de Dados Não-Relacional</a></h1>
+<p>As próximas seções dizem respeito a partes relacionadas à estrutura do banco
+de dados não-relacional (MongoDB) e a seu uso.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="coleções"><a class="header" href="#coleções">Coleções</a></h1>
+<p>Assim como no caso do banco de dados relacional, o banco de dados não-relacional
+(criado através do MongoDB) também trabalha com um sistema <em>multi-tenant</em>, sendo
+portanto representável como um banco de dados para cada cliente.</p>
+<p>Ainda assim, para cada cliente, algumas coleções são essenciais de serem criadas
+e configuradas até mesmo antes do primeiro acesso.</p>
+<h2 id="coleção-session"><a class="header" href="#coleção-session">Coleção <code>session</code></a></h2>
+<p>A coleção <code>session</code> armazena documentos contendo dados de sessão de um usuário.
+A responsabilidade de armazenar dados dos usuários é do banco de dados relacional,
+assim como a responsabilidade de autenticá-los é do serviço <code>SESSION</code>. Esta coleção,
+todavia, armazena os dados de autenticação após a realização de um login válido.</p>
+<p>Cada documento nesta coleção possui um tempo de expiração de uma semana, o que
+alinha-se com o tempo máximo de uma sessão do usuário ser, igualmente, uma semana.
+A gerência desse tempo de expiração se dá através de um campo <code>creationDate</code> no
+documento, que armazena um <em>timestamp</em> indicando a data de início daquela sessão.
+Caso o documento não possua esse campo, o MongoDB, por padrão, acaba não expirando-o.</p>
+<p>A responsabilidade da definição e criação adequada do <code>creationDate</code> é do serviço
+<code>SESSION</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="documentação-do-projeto"><a class="header" href="#documentação-do-projeto">Documentação do Projeto</a></h1>
+<p>Esta seção contém links para a documentação das partes pertinentes ao código
+do Minerva System.</p>
+<p>Por padrão, a documentação é escrita em Inglês, e pode ser muito pertinente
+durante a implementação de novas partes do sistema.</p>
+<p>Não se esqueça de consultar estes documentos com frequência.</p>
+<h2 id="api"><a class="header" href="#api">API</a></h2>
+<ul>
+<li><a href="https://documenter.getpostman.com/view/17061755/Uyxoi4MU">Documentação da API</a><br />
+Documentação da API REST (Postman, em Inglês).</li>
+</ul>
+<h2 id="serviços-externos"><a class="header" href="#serviços-externos">Serviços externos</a></h2>
+<ul>
+<li><a href="./doc/minerva_frontend/index.html">FRONTEND</a><br />
+<em>Front-End</em> do Minerva System.</li>
+<li><a href="./doc/minerva_rest/index.html">REST</a><br />
+<em>Gateway</em> REST para acesso aos demais serviços.</li>
+</ul>
+<h2 id="microsserviços"><a class="header" href="#microsserviços">Microsserviços</a></h2>
+<ul>
+<li><a href="./doc/minerva_runonce/index.html">RUNONCE</a><br />
+Utilitário de configuração inicial do sistema durante um deploy.</li>
+<li><a href="./doc/minerva_session/index.html">SESSION</a><br />
+Serviço de gerenciamento de sessão de usuário.</li>
+<li><a href="./doc/minerva_user/index.html">USER</a><br />
+Serviço de gerenciamento de usuários.</li>
+<li>PRODUCT <em>(não implementado)</em></li>
+<li>REPORT <em>(não implementado)</em></li>
+<li>STOCK <em>(não implementado)</em></li>
+</ul>
+<h2 id="bibliotecas-1"><a class="header" href="#bibliotecas-1">Bibliotecas</a></h2>
+<ul>
+<li><a href="./doc/minerva_data/index.html">DATA</a><br />
+Biblioteca de manipulação de DTOs e conversões de dados.</li>
+<li><a href="./doc/minerva_rpc/index.html">RPC</a><br />
+Biblioteca de implementação de Protocol Buffers, mensagens gRPC e afins.</li>
+<li>CACHE <em>(não implementado)</em></li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="compilação"><a class="header" href="#compilação">Compilação</a></h1>
-<p>Este capítulo fala a respeito das formas de compilação e <em>deploy</em>
-do sistema.</p>
-<p>Essas formas não são exaustivas, e os artigos a seguir devem ser
-evoluídos à medida que o <em>deploy</em> for melhorado.</p>
+<p>Este capítulo fala a respeito das formas de compilação do sistema.</p>
+<p>Para compilar e executar a aplicação, vamos utilizar recursos da
+máquina (em caso de situações envolvendo desenvolvimento) ou teste
+de aplicação usando Docker.</p>
+<p>A geração de imagens Docker é particularmente importante para a
+realização de testes e deploy posteriores, o que será abordado
+no próximo capítulo.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="compilando-e-executando-com-recursos-da-máquina"><a class="header" href="#compilando-e-executando-com-recursos-da-máquina">Compilando e executando com recursos da máquina</a></h1>
 <p>Você pode compilar os módulos do sistema individualmente e executá-los
 usando o próprio ambiente Rust.</p>
@@ -616,8 +683,102 @@ flutter build web
 </code></pre>
 <p>Você poderá encontrar a versão compilada da aplicação <em>front-end</em> no
 diretório <code>minerva_frontend/build/web</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="gerando-imagens-via-docker"><a class="header" href="#gerando-imagens-via-docker">Gerando imagens via Docker</a></h1>
+<h2 id="script-para-geração-de-imagens"><a class="header" href="#script-para-geração-de-imagens">Script para geração de imagens</a></h2>
+<p>Já existe um script separado para a geração das imagens. Para gerá-las, vá até
+a raiz do repositório e execute o comando:</p>
+<pre><code class="language-bash">./generate_images.sh
+</code></pre>
+<p>Esse script foi especialmente feito para um console Bash, e pensado para
+execução no Linux. No entanto, caso você esteja no Windows, poderá executá-lo
+via Git Bash, MSYS2 ou similar, desde que seja possível utilizar o Docker
+através da linha de comando.</p>
+<h2 id="gerando-uma-imagem-em-específico"><a class="header" href="#gerando-uma-imagem-em-específico">Gerando uma imagem em específico</a></h2>
+<p>Caso seja necessário, você poderá gerar uma imagem em específico de um projeto.</p>
+<h3 id="projetos-rust"><a class="header" href="#projetos-rust">Projetos Rust</a></h3>
+<p>Para qualquer projeto feito em Rust, poderá executar o seguinte comando a partir
+da raiz do repositório:</p>
+<pre><code class="language-bash">docker image build -f build/Dockerfile \
+	--target minerva_&lt;projeto&gt; \
+	-t seu_username/minerva_&lt;projeto&gt;:latest \
+	.
+</code></pre>
+<p>Lembre-se de substituir <code>&lt;projeto&gt;</code> pelo projeto em questão.</p>
+<h3 id="front-end"><a class="header" href="#front-end">Front-End</a></h3>
+<p>Para gerar o front-end da aplicação, feito com Flutter, teremos que usar um
+Dockerfile diferente:</p>
+<pre><code class="language-bash">docker image build -f build/Dockerfile.frontend \
+	-t seu_username/minerva_frontend:latest \
+	.
+</code></pre>
+<h3 id="pgadmin-4"><a class="header" href="#pgadmin-4">PgAdmin 4</a></h3>
+<p>A imagem com PgAdmin 4 é customizada com meros arquivos de configuração para
+monitoramento do PostgreSQL. Por isso, também usa um Dockerfile diferente.</p>
+<p>Veja também que ela é construída no diretório <code>build</code>.</p>
+<pre><code class="language-bash">docker image build -f build/Dockerfile.pgadmin \
+	-t seu_username/minerva_pgadmin:latest \
+	build
+</code></pre>
+<h2 id="nomes-e-tags-das-imagens-geradas"><a class="header" href="#nomes-e-tags-das-imagens-geradas">Nomes e tags das imagens geradas</a></h2>
+<p>As imagens geradas pelos passos anteriores são geradas com nomes
+específicos. Esses nomes serão muito úteis do ponto de vista do
+envio dessas imagens para o DockerHub e do deploy via Docker
+Compose, Docker Swarm e Kubernetes.</p>
+<p>As imagens são sempre geradas com a tag <code>latest</code>.</p>
+<p>A seguir, temos uma tabela relacionando os serviços com os nomes e tags
+das imagens geradas. Veja que elas se relacionam, inclusive, com a forma
+como essas imagens encontram-se no DockerHub (sob o /username/ <code>luksamuk</code>):</p>
+<table><thead><tr><th>Serviço</th><th>Nome e tag da imagem</th></tr></thead><tbody>
+<tr><td><code>frontend</code></td><td><code>luksamuk/minerva_frontend:latest</code></td></tr>
+<tr><td><code>rest</code></td><td><code>luksamuk/minerva_rest:latest</code></td></tr>
+<tr><td><code>runonce</code></td><td><code>luksamuk/minerva_runonce:latest</code></td></tr>
+<tr><td><code>users</code></td><td><code>luksamuk/minerva_users:latest</code></td></tr>
+<tr><td><code>session</code></td><td><code>luksamuk/minerva_session:latest</code></td></tr>
+<tr><td><code>pgadmin</code></td><td><code>luksamuk/minerva_pgadmin:latest</code></td></tr>
+<tr><td><code>postgresql</code></td><td><code>postgres:14</code> (Não gerado)</td></tr>
+<tr><td><code>mongodb</code></td><td><code>mongo:5</code> (Não gerado)</td></tr>
+</tbody></table>
+<h2 id="subindo-imagens-para-o-dockerhub"><a class="header" href="#subindo-imagens-para-o-dockerhub">Subindo imagens para o DockerHub</a></h2>
+<p>Para enviar uma imagem para o DockerHub, primeiro é necessário se certificar de
+que essa imagem possua uma <em>tag</em> adequada. Por exemplo, supondo que acabamos de
+gerar a imagem com a <em>tag</em> 0.2.0 para o módulo <code>users</code>:</p>
+<pre><code class="language-bash"># Faça algo similar para cada uma das imagens
+docker image tag luksamuk/minerva_users luksamuk/minerva_users:0.2.0
+</code></pre>
+<p>Em seguida, poderemos enviar todas as tags das imagens para o DockerHub.</p>
+<pre><code class="language-bash">docker image push -a luksamuk/minerva_frontend
+docker image push -a luksamuk/minerva_rest
+docker image push -a luksamuk/minerva_runonce
+docker image push -a luksamuk/minerva_users
+docker image push -a luksamuk/minerva_session
+docker image push -a luksamuk/minerva_pgadmin
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="deploy"><a class="header" href="#deploy">Deploy</a></h1>
+<p>As sessões a seguir tratarão do deploy da aplicação, ou mais especificamente, de
+formas escaláveis de subir a aplicação num ambiente que simule produção.</p>
+<p>Este capítulo trata de três tipos específicos de deploy:</p>
+<ul>
+<li>Usando Docker Compose;</li>
+<li>Usando Docker Swarm;</li>
+<li>Usando Kubernetes, através do Minikube.</li>
+</ul>
+<p>O Docker Compose poderá ser utilizado em situações de teste e desenvolvimento,
+especialmente porque seu arquivo de configuração sempre aponta para a imagem
+com tag <code>latest</code> de todos os contêineres (o que significa que utilizará
+as imagens que tiverem sido recém-geradas na máquina).</p>
+<p>O Docker Swarm trabalha de forma similar ao Compose em sua configuração, porém
+utilizaremos a ferramenta <code>docker stack</code>, além de certa configuração manual,
+para subir um cluster com <code>docker-machine</code>, que pode também ser configurado de
+forma doméstica. A configuração poderá então ser usada para orquestração de
+contêineres.</p>
+<p>Já o Kubernetes, utilizando uma máquina virtual KVM2 através do Minikube,
+possibilita uma orquestração de contêineres ainda mais flexível. Esta configuração
+é utilizada também para um ambiente local, mas será a forma mais próxima de
+colocar o sistema em produção.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="deploy-usando-docker-compose"><a class="header" href="#deploy-usando-docker-compose">Deploy usando Docker Compose</a></h1>
-<p><img src="./docker-compose.png" alt="Docker Compose" /></p>
+<center>
+<img src="./docker-compose.png" alt="Docker Compose" width="350"/>
+</center>
 <p>Você pode realizar deploy do projeto usando Docker Compose. Todavia,
 esta não é a forma mais recomendada de realização de deploy.</p>
 <h2 id="introdução-2"><a class="header" href="#introdução-2">Introdução</a></h2>
@@ -634,55 +795,15 @@ usando Kubernetes.</p>
 do sistema no que tange a interconexões entre os serviços numa rede
 virtual.</p>
 <h2 id="dependências-1"><a class="header" href="#dependências-1">Dependências</a></h2>
-<p>Você precisará ter instalado:</p>
+<p>Você precisará ter:</p>
 <ul>
 <li>Docker versão 20.10 ou superior;</li>
-<li>Docker Compose versão 2.2.3 ou superior.</li>
+<li>Docker Compose versão 2.2.3 ou superior;</li>
+<li>As imagens do projeto (se não estiverem localmente disponíveis,
+serão baixadas).</li>
 </ul>
 <p>Além disso, <strong>todos os comandos a seguir devem ser executados no
 diretório raiz deste projeto</strong>.</p>
-<h2 id="gerando-imagens"><a class="header" href="#gerando-imagens">Gerando imagens</a></h2>
-<p>Caso você só precise gerar as imagens Docker para o serviço, você
-poderá fazê-lo com o comando a seguir:</p>
-<pre><code class="language-bash">docker compose build
-</code></pre>
-<p>Se você nunca tiver realizado deploy da aplicação com Compose, isto
-<strong>não é necessário</strong>, uma vez que o Compose se encarregará de gerá-las
-no primeiro deploy.</p>
-<p><strong>ATENÇÃO: O PROCESSO DE GERAÇÃO DAS IMAGENS É DEMORADO.</strong></p>
-<h3 id="gerando-uma-imagem"><a class="header" href="#gerando-uma-imagem">Gerando uma imagem</a></h3>
-<p>Pode ocorrer de você querer gerar apenas uma imagem, por exemplo, quando
-você já tiver realizado deploy antes e tiver realizado uma modificação
-em apenas um microsservico, e precisar testá-lo.</p>
-<p>Para isso, use o comando a seguir, substituindo <code>&lt;servico&gt;</code> pelo nome
-do serviço (como listado no arquivo <code>docker-compose.yml</code>):</p>
-<pre><code class="language-bash">docker compose build &lt;servico&gt;
-</code></pre>
-<p>Caso a geração da imagem apenas reutilize o cache da mesma já existente,
-você poderá forçar a geração da imagem da seguinte forma:</p>
-<pre><code class="language-bash">docker compose build --no-cache &lt;servico&gt;
-</code></pre>
-<p><strong>ATENÇÃO: ESTE PROCESSO PODE SER DEMORADO.</strong></p>
-<p><strong>ATENÇÃO: RECOMPILAR A IMAGEM NÃO REINICIA UM SERVIÇO EM EXECUÇÃO.</strong></p>
-<h3 id="nomes-e-tags-das-imagens-geradas"><a class="header" href="#nomes-e-tags-das-imagens-geradas">Nomes e tags das imagens geradas</a></h3>
-<p>As imagens geradas pelos passos anteriores são geradas com nomes
-específicos. Esses nomes não fazem tanta diferença para o Docker
-Compose, mas podem ser muito úteis do ponto de vista do deploy via
-Kubernetes.</p>
-<p>Os nomes das imagens geradas podem ser verificados no arquivo
-<code>docker-compose.yml</code>. Mais especificamente, para cada serviço, existe
-uma propriedade <code>image</code> que determina o nome da imagem gerada.</p>
-<p>As imagens são sempre geradas com a tag <code>latest</code>.</p>
-<p>A seguir, temos uma tabela relacionando os serviços com os nomes e tags
-das imagens geradas.</p>
-<table><thead><tr><th>Serviço</th><th>Nome e tag da imagem</th></tr></thead><tbody>
-<tr><td><code>frontend</code></td><td><code>minerva_frontend:latest</code></td></tr>
-<tr><td><code>rest</code></td><td><code>minerva_rest:latest</code></td></tr>
-<tr><td><code>runonce</code></td><td><code>minerva_runonce:latest</code></td></tr>
-<tr><td><code>users</code></td><td><code>minerva_users:latest</code></td></tr>
-<tr><td><code>postgresql</code></td><td><code>postgres:14</code> (Não gerado)</td></tr>
-<tr><td><code>pgadmin</code></td><td><code>minerva_pgadmin:latest</code></td></tr>
-</tbody></table>
 <h2 id="executando-os-serviços"><a class="header" href="#executando-os-serviços">Executando os serviços</a></h2>
 <p>Para executar os serviços usando Docker Compose, use o seguinte
 comando:</p>
@@ -727,8 +848,165 @@ do mesmo, por exemplo.</p>
 em vez do anterior:</p>
 <pre><code class="language-bash">docker compose -v down
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="deploy-via-docker-swarm"><a class="header" href="#deploy-via-docker-swarm">Deploy via Docker Swarm</a></h1>
+<center>
+<img src="./docker-swarm.png" alt="Docker Swarm" width="200"/>
+</center>
+<p>Além do deploy via Docker Compose, também é possível disponibilizar a stack do
+Sistema Minerva em um <em>cluster</em> do Docker Swarm.</p>
+<p>Para tanto, é necessário inicializar o cluster. Isso pode ser feito, por
+exemplo, com máquinas virtuais para finalidade de teste (neste caso, pode ser
+utilizado o VirtualBox para prover essa facilidade).</p>
+<h2 id="pré-requisitos-1"><a class="header" href="#pré-requisitos-1">Pré-requisitos</a></h2>
+<ul>
+<li>Docker Machine;</li>
+<li>VirtualBox.</li>
+</ul>
+<h2 id="reinicializando-o-cluster"><a class="header" href="#reinicializando-o-cluster">Reinicializando o cluster</a></h2>
+<p>Caso você já tenha construído um cluster e feito <em>deploy</em> anteriormente, é
+bem provável que você não precise fazer a maioria do trabalho. Você poderá
+simplesmente reiniciar as máquinas virtuais:</p>
+<pre><code class="language-bash">docker-machine start `docker-machine ls &quot;minerva-*&quot; -q`
+</code></pre>
+<p>Existe a possibilidade de as máquinas virtuais não conseguirem se reconhecer
+por uma mudança de IP. Se isso ocorrer, reconfigure o <em>cluster</em> manualmente,
+gerando os <em>tokens</em> para cada máquina virtual e inserindo-as no <em>cluster</em>.</p>
+<h2 id="criando-o-cluster"><a class="header" href="#criando-o-cluster">Criando o cluster</a></h2>
+<p>Se você ainda não tiver um <em>cluster</em> criado, poderá criar o <em>cluster</em> através
+da ferramenta Docker Machine. Comece criando uma máquina virtual chamada
+<code>minerva-vm1</code>, que será nosso inicializador do <em>cluster</em>.</p>
+<pre><code class="language-bash">docker-machine create -d virtualbox --swarm-master minerva-vm1
+</code></pre>
+<h3 id="iniciando-o-cluster"><a class="header" href="#iniciando-o-cluster">Iniciando o cluster</a></h3>
+<p>Vamos começar iniciando o Docker Swarm na primeira máquina virtual.</p>
+<p>Para acessar o console de uma máquina virtual via SSH, use também o Docker
+Machine para isso.</p>
+<pre><code class="language-bash">docker-machine ssh minerva-vm1
+</code></pre>
+<p>Para iniciar o cluster, precisamos descobrir também o IP dessa máquina virtual.
+Você poderá ver o IP de uma máquina virtual em específico via Docker Machine
+também, em outro console:</p>
+<pre><code class="language-bash">docker-machine ip minerva-vm1
+</code></pre>
+<p>Voltando ao console da VM, vamos iniciar o Docker Swarm.</p>
+<pre><code class="language-bash"># Em minerva-vm1
+docker swarm init --advertise-addr &lt;IP&gt;
+</code></pre>
+<h3 id="criando-mais-managers"><a class="header" href="#criando-mais-managers">Criando mais managers</a></h3>
+<p>Uma arquitetura básica de managers e workers do Swarm, para que o algoritmo de
+consenso RAFT opere como esperado, poderia envolver três managers e dois workers
+-- portanto, cinco máquinas virtuais.</p>
+<p>Vamos criar mais duas máquinas virtuais que vão servir de managers (<code>minerva-vm2</code>
+e <code>minerva-vm3</code>):</p>
+<pre><code class="language-bash">docker-machine create -d virtualbox --swarm-master minerva-vm2
+docker-machine create -d virtualbox --swarm-master minerva-vm3
+</code></pre>
+<p>Para adicionar essas VMs no <em>cluster</em>, vamos obter o token de entrada no <em>cluster</em>
+para managers, que será um mero comando do console. Copiamos esse comando e colamos
+no console das duas máquinas virtuais recém-criadas.</p>
+<pre><code class="language-bash"># Em minerva-vm1
+docker swarm join-token manager
+
+# Em minerva-vm2 e minerva-vm3: Cole o comando
+docker swarm join --token...
+</code></pre>
+<h3 id="criando-workers"><a class="header" href="#criando-workers">Criando workers</a></h3>
+<p>Criaremos mais duas máquinas virtuais com o Swarm preparado, mas dessa vez, vamos
+prepará-las para serem meros workers:</p>
+<pre><code class="language-bash">docker-machine create -d virtualbox --swarm minerva-vm4
+docker-machine create -d virtualbox --swarm minerva-vm5
+</code></pre>
+<p>O princípio para adicionar workers no <em>cluster</em> é o mesmo, porém usaremos um comando
+diferente para gerar o token. Geramos esse comando, copiamos e colamos no console
+das VMs <code>minerva-vm4</code> e <code>minerva-vm5</code>.</p>
+<pre><code class="language-bash"># Em minerva-vm1
+docker swarm join-token worker
+
+# Em minerva-vm4 e minerva-vm5: Cole o comando
+docker swarm join --token...
+</code></pre>
+<h3 id="verificando-a-topologia-do-cluster"><a class="header" href="#verificando-a-topologia-do-cluster">Verificando a topologia do cluster</a></h3>
+<p>Vamos verificar a topologia do <em>cluster</em>. Podemos observar a atividade das máquinas
+virtuais diretamente através do Docker Machine:</p>
+<pre><code class="language-bash">docker-machine ls
+</code></pre>
+<pre><code>NAME          ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER      ERRORS
+minerva-vm1   -        virtualbox   Running   tcp://192.168.99.108:2376           v19.03.12
+minerva-vm2   -        virtualbox   Running   tcp://192.168.99.109:2376           v19.03.12
+minerva-vm3   -        virtualbox   Running   tcp://192.168.99.110:2376           v19.03.12
+minerva-vm4   -        virtualbox   Running   tcp://192.168.99.111:2376           v19.03.12
+minerva-vm5   -        virtualbox   Running   tcp://192.168.99.112:2376           v19.03.12
+</code></pre>
+<p>Para avaliarmos o <em>cluster</em> em si e a forma como os nós se conectam, poderemos ver a
+topologia dos nós diretamente dentro da primeira VM:</p>
+<pre><code class="language-bash"># Em minerva-vm1
+docker node ls
+</code></pre>
+<pre><code>ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+exgmsiju6pnrl01tt33n5guui *   minerva-vm1         Ready               Active              Leader              19.03.12
+cpxtnhalvu9tat9ek4n1n0117     minerva-vm2         Ready               Active              Reachable           19.03.12
+p2v7v8ac93wuhwhcdsjl00p8y     minerva-vm3         Ready               Active              Reachable           19.03.12
+jihrf6wgm145xzr0pdb6tnrck     minerva-vm4         Ready               Active                                  19.03.12
+b1wfgme22m14pmjceo8ktn1hj     minerva-vm5         Ready               Active                                  19.03.12
+</code></pre>
+<p>Outra opção interessante é acompanhar também os serviços e os contêineres criados:</p>
+<pre><code class="language-bash"># Em minerva-vm1
+docker service ls
+docker container ls
+</code></pre>
+<h3 id="fazendo-backup-do-cluster"><a class="header" href="#fazendo-backup-do-cluster">Fazendo backup do cluster</a></h3>
+<p>Caso você queira fazer backup da topologia do <em>cluster</em>, lembre-se de copiar o
+diretório <code>/var/lib/docker/swarm</code> em <code>minerva-vm1</code>.</p>
+<pre><code class="language-bash"># Em minerva-vm1
+sudo cp -r /var/lib/docker/swarm ./swarm
+sudo chown -R $USER ./swarm
+
+# No host
+docker-machine scp -r minerva-vm1:/home/docker/swarm localhost:~/swarm-backup
+</code></pre>
+<h2 id="fazendo-deploy-do-sistema-minerva"><a class="header" href="#fazendo-deploy-do-sistema-minerva">Fazendo deploy do Sistema Minerva</a></h2>
+<p>Para fazer <em>deploy</em> do sistema, dado que o <em>cluster</em> esteja configurado, basta
+reutilizar o arquivo preparado para isso no repositório do Sistema Minerva.</p>
+<p>Copiamos o arquivo para dentro da VM principal e então realizamos deploy:</p>
+<pre><code class="language-bash">docker-machine scp localhost:./docker-stack.yml minerva-vm1:/home/docker/docker-stack.yml
+
+# Em minerva-vm1
+docker stack deploy --compose-file docker-stack.yml minerva-system
+</code></pre>
+<h3 id="gerenciando-a-stack"><a class="header" href="#gerenciando-a-stack">Gerenciando a stack</a></h3>
+<p>Podemos gerenciar a stack facilmente dentro de uma VM manager.</p>
+<p>Para listar as stacks ativas:</p>
+<pre><code class="language-bash"># Em minerva-vm1
+docker stack ls
+</code></pre>
+<p>Se quisermos observar os serviços de uma stack em específico:</p>
+<pre><code class="language-bash"># Em minerva-vm1
+docker stack services minerva-system
+</code></pre>
+<p>Ou, em último caso, se quisermos remover uma stack:</p>
+<pre><code class="language-bash"># Em minerva-vm1
+docker stack rm minerva-system
+</code></pre>
+<h3 id="acessando-os-serviços"><a class="header" href="#acessando-os-serviços">Acessando os serviços</a></h3>
+<p>Para visualizar os serviços, primeiro visualize o IP das Docker Machines:</p>
+<pre><code class="language-bash">docker-machine ls
+</code></pre>
+<p>É possível usar o IP de qualquer Docker Machine, neste ponto. Basta utilizar
+as portas certas:</p>
+<table><thead><tr><th>Porta</th><th>Descrição</th></tr></thead><tbody>
+<tr><td>80</td><td>Front-end</td></tr>
+<tr><td>9000</td><td>API REST</td></tr>
+<tr><td>8484</td><td>PgAdmin 4</td></tr>
+<tr><td>8585</td><td>Visualizador do cluster</td></tr>
+</tbody></table>
+<h2 id="encerrando-o-serviço"><a class="header" href="#encerrando-o-serviço">Encerrando o serviço</a></h2>
+<p>Caso você queira parar todas as máquinas virtuais, use o comando a seguir.</p>
+<pre><code class="language-bash">docker-machine stop `docker-machine ls &quot;minerva-*&quot; -q`
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="deploy-usando-kubernetes-e-minikube"><a class="header" href="#deploy-usando-kubernetes-e-minikube">Deploy usando Kubernetes (e Minikube)</a></h1>
-<p><img src="./kubernetes-logo.webp" alt="Kubernetes" /></p>
+<center>
+<img src="./kubernetes-logo.webp" alt="Kubernetes" width="200"/>
+</center>
 <p>Você pode realizar deploy do projeto usando Kubernetes. Nos passos a
 seguir, será mostrado como realizar um deploy usando a ferramenta
 Minikube, para instalação do Kubernetes localmente.</p>
@@ -763,104 +1041,177 @@ superior;</li>
 e gerencialmento do Kubernetes via linha de comando.</p>
 <h3 id="iniciando-o-minikube"><a class="header" href="#iniciando-o-minikube">Iniciando o Minikube</a></h3>
 <p>Caso você esteja testando localmente, comece executando o Minikube.</p>
-<pre><code class="language-bash">minikube start
+<p>As configurações a seguir iniciam um cluster local via Minikube, usando
+KVM2 como backend. Você poderá também usar os backends <code>docker</code> ou
+<code>virtualbox</code>, à escolha.</p>
+<pre><code class="language-bash">minikube start \
+	--vm-driver=kvm2 \
+	--disable-optimizations=false \
+	--extra-config=kubelet.housekeeping-interval=10s
+
+minikube addons enable metrics-server
 </code></pre>
 <p>Se você quiser parar o Minikube:</p>
 <pre><code class="language-bash">minikube stop
 </code></pre>
-<p>Você também pode acessar facilmente um dashboard web do Kubernetes,
-operando sob o Minikube, caso não queira usar o k9s posteriormente:</p>
-<pre><code class="language-bash">minikube dashbord
+<p>Igualmente, se quiser remover o cluster:</p>
+<pre><code class="language-bash">minikube delete --all
 </code></pre>
-<h2 id="geração-das-imagens"><a class="header" href="#geração-das-imagens">Geração das imagens</a></h2>
-<p>Antes de realizar deploy, é preciso gerar as imagens de cada um dos
-serviços. No caso específico do Minikube, é preciso também que essas
-imagens localmente construídas sejam carregadas para dentro deste
-serviço.</p>
-<h3 id="gerando-imagens-com-docker-compose"><a class="header" href="#gerando-imagens-com-docker-compose">Gerando imagens com Docker Compose</a></h3>
-<p>Você poderá gerar as imagens dos serviços usando a própria
-infraestrutura de geração de imagens do Docker Compose, o que é
-recomendado. Para tanto, veja a seção
-<a href="./deploy-compose.html#gerando-imagens">geração das imagens</a>
-na página de configuração do Docker Compose.</p>
-<p>Esse passo é essencial para serviços e jobs marcados com
-<code>imagePullPolicy</code> igual a <code>Never</code>.</p>
-<h3 id="compartilhando-as-imagens-com-o-minikube"><a class="header" href="#compartilhando-as-imagens-com-o-minikube">Compartilhando as imagens com o Minikube</a></h3>
-<p>Caso você esteja utilizando o Minikube, precisará carregar as
-imagens no ambiente do mesmo, do contrário ainda terá erros
-relacionados ao <code>imagePullPolicy</code>. Isso pode ser feito com um
-comando como mostrado a seguir:</p>
-<pre><code class="language-bash">minikube image load &lt;nome-imagem&gt;:&lt;tag&gt;
+<h3 id="problemas-com-libvirt-e-apparmor"><a class="header" href="#problemas-com-libvirt-e-apparmor">Problemas com Libvirt e AppArmor</a></h3>
+<p>Caso você tenha problemas para inicializar a máquina virtual com KVM2,
+pode ser que sua instalação local do AppArmor esteja interferindo com
+o <code>libvirt</code>.</p>
+<p>Como ferramenta paliativa à configuração do AppArmor para o <code>libvirt</code>,
+você poderá colocar os utilitários usados pelo Minikube no modo <em>complain</em>.
+Lembre-se de que isso é necessariamente detrimental à segurança do sistema.</p>
+<pre><code class="language-bash">sudo aa-complain /usr/sbin/libvirtd
+sudo aa-complain /usr/libexec/virt-aa-helper
 </code></pre>
-<p>Por exemplo, para carregar a imagem do Front-End, use o comando
-<code>minikube image load minerva_frontend:latest</code>.</p>
-<p>Você poderá também informar mais de uma imagem de uma só vez,
-por exemplo:</p>
-<pre><code class="language-bash">minikube image load \
-	 minerva_rest:latest \
-	 minerva_frontend:latest \
-	 minerva_pgadmin:latest \
-	 minerva_users:latest \
-	 minerva_runonce:latest
+<h2 id="estrutura-do-cluster"><a class="header" href="#estrutura-do-cluster">Estrutura do Cluster</a></h2>
+<p>A seguir, trataremos da estrutura do cluster como atualmente é definido.
+As seções a seguir tratam sempre de objetos específicos do Kubernetes,
+e são também uma sugestão de ordem de aplicação dos arquivos de configuração.</p>
+<p>Todos os arquivos serão encontrados de forma homônima no diretório <code>deploy</code>,
+com a extensão <code>yml</code>.</p>
+<p>Caso queira aplicar todos os arquivos enumerados abaixo, simplesmente execute:</p>
+<pre><code class="language-bash">kubectl apply -f deploy
 </code></pre>
-<h2 id="disposição-da-configuração"><a class="header" href="#disposição-da-configuração">Disposição da configuração</a></h2>
-<p>A configuração do Sistema Minerva para Kubernetes foi originalmente
-produzida através de conversão direta da configuração do Docker
-Compose, mais especificamente através da ferramenta
-<a href="https://kompose.io">Kompose</a>, e então modificada para suprir algumas
-necessidades do sistema.</p>
-<p>De forma geral, no Kubernetes, temos que:</p>
+<h3 id="configmaps"><a class="header" href="#configmaps"><em>ConfigMaps</em></a></h3>
+<p>Um <em>ConfigMap</em> é um objeto que armazena dados que serão utilizados como
+variáveis de ambiente de um <em>pod</em>.</p>
 <ul>
-<li>Um <strong>node</strong> refere-se a uma instalação do Kubernetes em uma máquina.</li>
-<li>Um <strong>pod</strong> é um grupo de um ou mais contêineres, que compartilha
-armazenamento e recursos de rede.</li>
-<li>Um <strong>deployment</strong> é a descrição de um <em>pod</em>, mais especificamente
-o seu comportamento e suas características. Também pode ser usado
-para gerenciar réplicas de <em>pods</em> (ou <em>ReplicaSets</em>).</li>
-<li>Um <strong>service</strong> é uma configuração de acessibilidade para os <em>pods</em>,
-mais especificamente agindo como uma forma de localizá-los na rede.
-Em outras palavras, age como um gerenciador de DNS.</li>
+<li><code>postgresql-configmap</code>: Variáveis padrão para definições iniciais do
+PostgreSQL 14.</li>
+<li><code>mongodb-configmap</code>: Variáveis padrão para definições iniciais do
+MongoDB 5.</li>
+<li><code>runonce-configmap</code>: Variáveis padrão para definições iniciais do
+Job RUNONCE.</li>
+<li><code>frontend-configmap</code>: Variáveis padrão para uso do Front-End.</li>
+<li><code>rest-configmap</code>: Variáveis padrão para a API REST.</li>
+<li><code>ports-configmap</code>: Portas para acesso aos serviços no cluster.</li>
+<li><code>servers-configmap</code>: Nomes dos serviços a serem acessados. Geralmente
+associados a cada Deployment ou StatefulSet.</li>
 </ul>
-<p>Os arquivos de configuração do Kubernetes estão desmembrados em suas
-devidas partes, seguindo ligeiramente o âmbito dos <em>services</em> e dos
-<em>deployments</em>, exceto quando não aplicável, e podem ser encontrados
-no diretório <code>build/kubernetes</code>.</p>
-<p>Assim, temos a seguinte configuração de serviços:</p>
-<table><thead><tr><th>Serviço</th><th>Tipo</th><th>Réplicas padrão</th></tr></thead><tbody>
-<tr><td><code>frontend</code></td><td><em>LoadBalancer</em></td><td>2</td></tr>
-<tr><td><code>pgadmin</code></td><td><em>LoadBalancer</em></td><td>1</td></tr>
-<tr><td><code>rest</code></td><td><em>LoadBalancer</em></td><td>3</td></tr>
-<tr><td><code>runonce</code></td><td><em>Job</em></td><td><strong>Sempre 1</strong></td></tr>
-<tr><td><code>users</code></td><td><em>ClusterIP</em></td><td>3</td></tr>
-<tr><td><code>postgresql</code></td><td><em>ClusterIP</em></td><td><strong>Sempre 1</strong></td></tr>
-</tbody></table>
-<p>Devemos considerar também, sobre os tipos dos serviços:</p>
+<p>Para aplicar todos os <em>ConfigMaps</em>, execute:</p>
+<pre><code class="language-bash">for f in `ls deploy/*-configmap.yml`; do kubectl apply -f $f; done
+</code></pre>
+<h3 id="persistentvolumeclaims"><a class="header" href="#persistentvolumeclaims"><em>PersistentVolumeClaims</em></a></h3>
+<p>Um <em>PersistentVolumeClaim</em> age como uma reserva de volume persistente
+(<em>PersistentVolume</em>). Pode associar-se a um volume que exista ou, neste
+caso, cria um volume com tamanho específico dinamicamente.</p>
 <ul>
-<li>Serviços <em>LoadBalancer</em> são acessíveis via IP externo.</li>
-<li><em>Jobs</em> são executados no início da configuração do <em>node</em>.</li>
-<li>Serviços <em>ClusterIP</em> são acessíveis apenas na rede interna do <em>node</em>.</li>
+<li><code>postgresql-pvc</code>: PersistentVolumeClaim para o PostgreSQL. Solicita 1GB
+de armazenamento e criação dinâmica.</li>
+<li><code>mongodb-pvc</code>: PersistentVolumeClaim para o MongoDB. Solicita 1GB de
+armazenamento e criação dinâmica.</li>
 </ul>
-<h2 id="executando-e-gerenciando-o-cluster"><a class="header" href="#executando-e-gerenciando-o-cluster">Executando e gerenciando o cluster</a></h2>
-<p>Para iniciar a configuração, posto que as imagens dos serviços
-estejam à disposição do Kubernetes (ou do Minikube), vá até o diretório
-raiz do projeto e execute:</p>
-<pre><code class="language-bash">kubectl create -f build/kubernetes
+<p>Para aplicar todos os <em>PersistentVolumeClaims</em>, execute:</p>
+<pre><code class="language-bash">for f in `ls deploy/*-pvc.yml`; do kubectl apply -f $f; done
 </code></pre>
-<p>Isso criará o <em>node</em> com base em todos os arquivos <code>.yaml</code> existentes
-no diretório <code>build/kubernetes</code>.</p>
-<p>Caso você realize alguma alteração nos arquivos e queira aplicá-las,
-utilize:</p>
-<pre><code class="language-bash">kubectl apply -f build/kubernetes
+<h3 id="deployments"><a class="header" href="#deployments"><em>Deployments</em></a></h3>
+<p>Um <em>Deployment</em> é uma forma de gerenciar <em>pods</em> e suas réplicas. Mais
+especificamente, trata-se de uma evolução de um <em>ReplicaSet</em> que permite
+a utilização de versionamento.</p>
+<ul>
+<li><code>postgresql-deployment</code>: Deployment para o banco de dados PostgreSQL.</li>
+<li><code>mongodb-deployment</code>: Deployment para o banco de dados MongoDB.</li>
+<li><code>frontend-deployment</code>: Deployment para o Front-End Web do sistema.</li>
+<li><code>rest-deployment</code>: Deployment para o gateway REST do sistema.</li>
+<li><code>users-deployment</code>: Deployment para o microsserviço <code>USERS</code>.</li>
+<li><code>session-deployment</code>: Deployment para o microsserviço <code>SESSION</code>.</li>
+</ul>
+<p>Para aplicar todos os <em>Deployments</em>, execute:</p>
+<pre><code class="language-bash">for f in `ls deploy/*-deployment.yml`; do kubectl apply -f $f; done
 </code></pre>
-<p>Da mesma forma, é possível aplicar as alterações de um único arquivo.
-Por exemplo:</p>
-<pre><code class="language-bash">kubectl apply -f build/kubernetes/rest-deployment.yaml
+<h3 id="services"><a class="header" href="#services"><em>Services</em></a></h3>
+<p>Um <em>Service</em> determina a conexão de um ou mais <em>pods</em> com o restante do
+cluster ou com a internet. <em>Services</em> podem ser do tipo <em>ClusterIP</em>,
+<em>NodePort</em> ou <em>LoadBalancer</em>. O primeiro tipo expõe os <em>pods</em> apenas para
+outros <em>pods</em> do cluster; o segundo e o terceiro expõem para a internet,
+com a diferença que um <em>LoadBalancer</em> é a maneira padrão de exposição por
+integrar-se com o balanceador de recursos do provedor do cluster.</p>
+<p>Além disso, serviços do tipo <em>LoadBalancer</em> agem retroativamente como
+<em>NodePort</em>, e estes agem também retroativamente como <em>ClusterIP</em>.</p>
+<ul>
+<li><code>postgresql-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods
+PostgreSQL.</li>
+<li><code>mongodb-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods
+MongoDB.</li>
+<li><code>users-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods do
+microsserviço USERS.</li>
+<li><code>session-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods do
+microsserviço SESSION.</li>
+<li><code>frontend-svc</code> (<em>LoadBalancer</em>): Serviço para acesso interno e externo
+aos pods do Front-End Web do sistema. Exposto na porta <code>30001</code>.</li>
+<li><code>rest-svc</code> (<em>LoadBalancer</em>): Serviço para acesso interno e externo aos
+pods do gateway REST do sistema. Exposto na porta <code>30000</code>.</li>
+</ul>
+<p>Para aplicar todos os <em>Services</em>, execute:</p>
+<pre><code class="language-bash">for f in `ls deploy/*-svc.yml`; do kubectl apply -f $f; done
 </code></pre>
-<p>Caso você queira deletar o cluster posteriormente, utilize o comando
-similar no mesmo diretório:</p>
-<pre><code class="language-bash">kubectl delete -f build/kubernetes
+<h3 id="jobs"><a class="header" href="#jobs"><em>Jobs</em></a></h3>
+<p>Um <em>Job</em> é responsável por criar um <em>pod</em> que executará alguma ação, até
+seu completamento ser realizado com sucesso.</p>
+<ul>
+<li><code>runonce-job</code>: Job a ser executado no início do deploy do cluster, para
+configuração inicial. Reiniciará o <em>pod</em> em caso de falhas dez vezes e,
+após sucesso, será removido junto com o <em>pod</em> após cinco minutos.</li>
+</ul>
+<p>Para aplicar todos os <em>ConfigMaps</em>, execute:</p>
+<pre><code class="language-bash">for f in `ls deploy/*-job.yml`; do kubectl apply -f $f; done
 </code></pre>
-<h3 id="monitorando-via-k9s"><a class="header" href="#monitorando-via-k9s">Monitorando via k9s</a></h3>
+<h3 id="horizontalpodautoscalers"><a class="header" href="#horizontalpodautoscalers">HorizontalPodAutoscalers</a></h3>
+<ul>
+<li><code>rest-hpa</code>: Escalonador horizontal do gateway REST. Mantém entre 1 e
+15 réplicas para <code>rest-deployment</code> com uso médio de 50% do CPU alocado.</li>
+<li><code>users-hpa</code>: Escalonador horizontal do microsserviço USERS. Mantém entre
+2 e 6 réplicas para <code>users-deployment</code> com uso médio de 65% do CPU alocado.</li>
+<li><code>session-hpa</code>: Escalonador horizontal do microsserviço SESSION. Mantém
+entre 2 e 6 réplicas para <code>session-deployment</code> com uso médio de 65%
+do CPU alocado.</li>
+</ul>
+<p>Para aplicar todos os <em>HorizontalPodAutoscalers</em>, execute:</p>
+<pre><code class="language-bash">for f in `ls deploy/*-hpa.yml`; do kubectl apply -f $f; done
+</code></pre>
+<h3 id="ingresses"><a class="header" href="#ingresses"><em>Ingresses</em></a></h3>
+<p>Um <em>Ingress</em> é um objeto responsável por gerenciar acesso externo a
+serviços no cluster, tipicamente via HTTP.</p>
+<ul>
+<li><code>api-ingress</code>: Ponto de entrada para a API através do URL
+<code>http://minerva-system.io</code>. Expõe a API em <code>/api</code>.</li>
+<li><code>frontend-ingress</code>: Ponto de entrada para o Front-End através do URL
+<code>http://minerva-system.io</code>. Expõe o Front-End em <code>/</code>.</li>
+</ul>
+<p>Para aplicar todos os <em>Ingresses</em>, execute:</p>
+<pre><code class="language-bash">for f in `ls deploy/*-ingress.yml`; do kubectl apply -f $f; done
+</code></pre>
+<h2 id="acesso-via-nodeport"><a class="header" href="#acesso-via-nodeport">Acesso via NodePort</a></h2>
+<p>Para acessar os serviços expostos via <em>NodePort</em> (ou <em>LoadBalancer</em>) no
+cluster, diretamente através do IP do Minikube, primeiramente verifique
+o endereço IP do cluster. Isso pode ser feito via Kubectl:</p>
+<pre><code class="language-bash">kubectl get node -o wide
+</code></pre>
+<p>Isso pode também ser feito através do Minikube:</p>
+<pre><code class="language-bash">minikube ip
+</code></pre>
+<p>Você poderá acessar os serviços através deste mesmo IP, através das portas
+<code>30000</code> (API REST) ou <code>30001</code> (Front-End).</p>
+<h2 id="acesso-via-ingress"><a class="header" href="#acesso-via-ingress">Acesso via Ingress</a></h2>
+<p>Outra forma de acessar envolve o uso dos objetos <em>Ingress</em>. Isso nos
+permitirá usar o endereço <code>http://minerva-system.io/</code> como URL base
+do sistema.</p>
+<p>Primeiramente, habilite o addon <code>ingress</code> no Minikube:</p>
+<pre><code class="language-bash">minikube addons enable ingress
+</code></pre>
+<p>Agora, descubra o IP do Minikube na máquina:</p>
+<pre><code class="language-bash">minikube ip
+</code></pre>
+<p>Finalmente, edite o arquivo <code>/etc/hosts</code> e adicione o seguinte:</p>
+<pre><code>&lt;ip-do-minikube&gt;	minerva-system.io
+</code></pre>
+<p>O Front-End agora poderá ser acessado em <code>http://minerva-system.io/</code>,
+e a API poderá ser acessada em <code>http://minerva-system.io/api</code>.</p>
+<h2 id="monitorando-via-k9s"><a class="header" href="#monitorando-via-k9s">Monitorando via k9s</a></h2>
 <p><img src="./k9s.png" alt="k9s" /></p>
 <p>Uma das ferramentas possíveis de se utilizar para monitorar o cluster
 é o <code>k9s</code>.</p>
@@ -870,94 +1221,30 @@ mostrados na tela. Alguns comandos interessantes de serem utilizados
 são:</p>
 <ul>
 <li><code>:q</code>: Sair da aplicação.</li>
-<li><code>:po</code>: Lista de <em>pods</em>.</li>
-<li><code>:svc</code>: Lista de <em>services</em>.</li>
-<li><code>:deployment</code>: Lista de <em>deployments</em>.</li>
+<li><code>:po</code>: Lista de <em>Pods</em>.</li>
+<li><code>:svc</code>: Lista de <em>Services</em>.</li>
+<li><code>:dp</code>: Lista de <em>Deployments</em>.</li>
+<li><code>:ing</code>: Lista de <em>Ingresses</em>.</li>
+<li><code>:hpa</code>: Lista de <em>HorizontalPodAutoscalers</em>.</li>
+<li><code>:pvc</code>: Lista de <em>PersistentVolumeClaims</em>.</li>
+<li><code>:pv</code>: Lista de <em>PersistentVolumes</em>.</li>
 </ul>
 <p>Você poderá usar o <code>k9s</code> para visualizar logs e também para modificar
-algumas propriedades mais avançadas também.</p>
-<h3 id="logs"><a class="header" href="#logs">Logs</a></h3>
-<p>Para visualizar logs completos de cada <em>pod</em>, primeiramente descubra
-o nome do <em>pod</em> que você deseja observar:</p>
-<pre><code class="language-bash">kubectl get pods
+algumas propriedades mais avançadas também. É possível até mesmo acessar
+diretamente o console dos contêineres.</p>
+<h2 id="monitorando-via-dashboard"><a class="header" href="#monitorando-via-dashboard">Monitorando via dashboard</a></h2>
+<p>Você também pode acessar facilmente um dashboard web do Kubernetes,
+operando sob o Minikube, caso não queira usar o <code>k9s</code> posteriormente
+(lembre-se de que objetos como <em>HorizontalPodAutoscaler</em> não são
+visíveis nesse Dashboard):</p>
+<pre><code class="language-bash">minikube dashboard
 </code></pre>
-<p>Um exemplo da saída deste comando poderia ser:</p>
-<pre><code class="language-text">NAME                          READY   STATUS      RESTARTS   AGE
-frontend-86c7955bdc-7zv4g     1/1     Running     0          43m
-pgadmin-76c5d7ccf7-4wk7g      1/1     Running     0          43m
-postgresql-6f8b685668-94qbs   1/1     Running     0          43m
-rest-57f984cb4c-25s9h         1/1     Running     0          42m
-runonce--1-kl4rb              0/1     Completed   0          43m
-users-549f5775c4-8fh9x        1/1     Running     0          42m
+<h2 id="testes-de-stress"><a class="header" href="#testes-de-stress">Testes de Stress</a></h2>
+<p>Para realizar testes de stress, use o script <code>deploy/stress_test.sh</code>.
+Você poderá testar cada sistema crucial usando um comando como este:</p>
+<pre><code class="language-bash">./deploy/stress_test.sh minerva-system.io/api users
 </code></pre>
-<p>Para ver os logs completos da execução atual de um pod qualquer,
-use o nome completo do <em>pod</em>, como mostrado acima:</p>
-<pre><code class="language-bash">kubectl logs runonce--1-kl4rb
-</code></pre>
-<p>Caso o <em>pod</em> não tenha sido encerrado corretamente da última vez,
-você poderá ver os logs anteriores com a flag <code>--previous</code>:</p>
-<pre><code class="language-bash">kubectl logs --previous runonce--1-kl4rb
-</code></pre>
-<h2 id="acessando-serviços-com-minikube"><a class="header" href="#acessando-serviços-com-minikube">Acessando serviços com Minikube</a></h2>
-<p>Há duas formas de acessar serviços pelo Minikube: através de
-<em>NodePort</em> e de <em>LoadBalancer</em>. Este último envolve a ideia
-de <em>tunelamento</em> via Minikube.</p>
-<h3 id="acessando-via-nodeport"><a class="header" href="#acessando-via-nodeport">Acessando via <em>NodePort</em></a></h3>
-<p>Caso você queira descobrir o endereço para um serviço de tipo
-<em>LoadBalancer</em>, você poderá descobrir o IP usando o Minikube.
-Este método basicamente utiliza a ideia de <em>NodePort</em> para
-redirecionar o tráfego para a aplicação:</p>
-<pre><code class="language-bash">minikube service rest --url
-</code></pre>
-<p>Supondo que este comando retorne um valor para o serviço <code>rest</code> como
-<code>http://192.168.49.2:30617</code>, agora será possível fazer uma requisição
-REST comum diretamente neste endereço:</p>
-<pre><code class="language-bash">curl http://192.168.49.2:30617/minerva/users
-</code></pre>
-<pre><code class="language-text">[{&quot;id&quot;:1,&quot;login&quot;:&quot;admin&quot;,&quot;name&quot;:&quot;Administrator&quot;,&quot;email&quot;:null}]
-</code></pre>
-<h3 id="acessando-via-loadbalancer"><a class="header" href="#acessando-via-loadbalancer">Acessando via <em>LoadBalancer</em></a></h3>
-<p>Primeiramente, caso você esteja executando o Minikube, abra um terminal
-avulso (que terá a execução bloqueada pelo próximo comando) e digite:</p>
-<pre><code class="language-bash">minikube tunnel
-</code></pre>
-<p><strong>Note que este comando pode exigir a senha do seu usuáio.</strong></p>
-<p>Isso fará com que todos os nós do tipo <em>LoadBalancer</em> recebem IPs externos
-que podem ser acessados imediatamente. Para verificar esses IPs externos,
-verifique os serviços ativos (isso também pode ser observado pelo k9s):</p>
-<pre><code class="language-bash">kubectl get svc
-</code></pre>
-<p>Um exemplo de saída do comando:</p>
-<pre><code class="language-text">NAME         TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)          AGE
-frontend     LoadBalancer   10.108.114.123   10.108.114.123   80:32613/TCP     31m
-kubernetes   ClusterIP      10.96.0.1        &lt;none&gt;           443/TCP          8h
-pgadmin      LoadBalancer   10.99.60.133     10.99.60.133     8484:30065/TCP   31m
-postgresql   ClusterIP      10.99.167.49     &lt;none&gt;           5432/TCP         31m
-rest         LoadBalancer   10.111.150.132   10.111.150.132   9000:31522/TCP   31m
-users        ClusterIP      10.97.99.55      &lt;none&gt;           9010/TCP         31m
-</code></pre>
-<p>No caso acima, podemos verificar, por exemplo, que requisições REST devem ser
-direcionadas para o caminho <code>http://10.111.150.132:9000</code>, como observado pelas
-colunas <code>EXTERNAL-IP</code> e <code>PORT(S)</code>.</p>
-<p>Portanto:</p>
-<pre><code class="language-bash">curl http://10.111.150.132:9000/minerva/users
-</code></pre>
-<pre><code class="language-text">[{&quot;id&quot;:1,&quot;login&quot;:&quot;admin&quot;,&quot;name&quot;:&quot;Administrator&quot;,&quot;email&quot;:null}]
-</code></pre>
-<p>Caso haja portas pendentes de clientes de tunelamento do Minikube que não tenham
-sido liberadas, você poderá liberar as portas manualmente com:</p>
-<pre><code class="language-bash">minikube tunnel --cleanup
-</code></pre>
-<h2 id="escalando-deployments"><a class="header" href="#escalando-deployments">Escalando <em>deployments</em></a></h2>
-<p>Quando for necessário prover redundância em certos recursos do Kubernetes, poderemos
-escalar horizontalmente um ou mais <em>deployments</em>, criando <em>ReplicaSets</em> para os
-mesmos.</p>
-<p>Para tanto, use um comando como o mostrado a seguir, definindo o número de
-<em>ReplicaSets</em>:</p>
-<pre><code class="language-bash">kubectl scale deployment/&lt;nome-do-deployment&gt; --replicas=1
-</code></pre>
-<p>Note que introduzir um número de zero réplicas efetivamente eliminará todos os
-<em>pods</em> do <em>deployment</em>, até que as réplicas sejam definidas novamente.</p>
+<p>Para maiores informações, execute o script sem argumentos.</p>
 
                     </main>
 

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Multi-Tenancy - Sistema Minerva</title>
+        <title>Multi-Tenancy - Minerva System</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">2.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">2.1.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="banco.html"><strong aria-hidden="true">3.</strong> Banco de Dados</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="migrations.html"><strong aria-hidden="true">3.1.</strong> Executando migrations</a></li><li class="chapter-item expanded "><a href="multi-tenancy.html" class="active"><strong aria-hidden="true">3.2.</strong> Multi-Tenancy</a></li></ol></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">4.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">4.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="deploy-compose.html"><strong aria-hidden="true">4.2.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-kubernetes.html"><strong aria-hidden="true">4.3.</strong> Deploy via Kubernetes</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">2.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Front-End</div></li><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">2.2.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="multi-tenancy.html" class="active"><strong aria-hidden="true">3.</strong> Multi-Tenancy</a></li><li class="chapter-item expanded "><a href="banco-relacional.html"><strong aria-hidden="true">4.</strong> Banco de Dados Relacional</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="migrations.html"><strong aria-hidden="true">4.1.</strong> Executando migrations</a></li></ol></li><li class="chapter-item expanded "><a href="banco-nao-relacional.html"><strong aria-hidden="true">5.</strong> Banco de Dados Não-Relacional</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="colecoes.html"><strong aria-hidden="true">5.1.</strong> Coleções</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Regras de Negócio</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="documentacao.html"><strong aria-hidden="true">6.1.</strong> Documentação do Projeto</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Cache de Sessão via Redis</div></li></ol></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">7.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">7.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="gerando-imagens.html"><strong aria-hidden="true">7.2.</strong> Gerando imagens via Docker</a></li></ol></li><li class="chapter-item expanded "><a href="deploy.html"><strong aria-hidden="true">8.</strong> Deploy</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="deploy-compose.html"><strong aria-hidden="true">8.1.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-swarm.html"><strong aria-hidden="true">8.2.</strong> Deploy via Docker Swarm</a></li><li class="chapter-item expanded "><a href="deploy-kubernetes.html"><strong aria-hidden="true">8.3.</strong> Deploy via Kubernetes</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -110,7 +110,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Sistema Minerva</h1>
+                    <h1 class="menu-title">Minerva System</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -143,9 +143,9 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="multi-tenancy"><a class="header" href="#multi-tenancy">Multi-Tenancy</a></h1>
-<p>O Minerva System é um sistema multi-tenant. Isso significa que é
-capaz de gerenciar bancos de dados diferentes dependendo do tenant
-(cliente do serviço) atual. No Minerva System, isso é gerenciado de
+<p>O Sistema Minerva é um sistema <em>multi-tenant</em>. Isso significa que é
+capaz de gerenciar bancos de dados diferentes dependendo do <em>tenant</em>
+(cliente do serviço) atual. No Sistema Minerva, isso é gerenciado de
 acordo com a forma como as requisições são recebidas.</p>
 <h2 id="configuração"><a class="header" href="#configuração">Configuração</a></h2>
 <p>Os tenants devem ser gerenciados através do arquivo <code>tenancy.toml</code>.</p>
@@ -165,9 +165,9 @@ name = &quot;Comercial Fulano S/A&quot;
 database = &quot;comercial-fulano&quot;
 connections = 5
 </code></pre>
-<h2 id="criação-do-banco-de-dados"><a class="header" href="#criação-do-banco-de-dados">Criação do banco de dados</a></h2>
-<p>O serviço <code>RUNONCE</code> deverá executar a criação do banco de dados, caso
-não seja possível conectar-se ao mesmo. Isso deve ser feito sobretudo
+<h2 id="criação-dos-bancos-de-dados"><a class="header" href="#criação-dos-bancos-de-dados">Criação dos bancos de dados</a></h2>
+<p>O serviço <code>RUNONCE</code> deverá executar a criação dos bancos de dados, caso
+não seja possível conectar-se aos mesmos. Isso deve ser feito sobretudo
 através da leitura do arquivo <code>tenancy.toml</code>, encontrado na pasta de
 execução do projeto.</p>
 <p>Caso um novo tenant seja adicionado ao sistema, o serviço <code>RUNONCE</code>
@@ -175,21 +175,22 @@ deverá ser forçadamente executado para que o sistema fique apto a
 utilizar o banco de dados para aquele tenant.</p>
 <p>O sistema <code>RUNONCE</code> deverá, para cada tenant listado em <code>tenancy.toml</code>:</p>
 <ol>
-<li>Tentar conectar-se ao banco em questão. Se isso não for possível,
-deverá criá-lo;</li>
-<li>Executar as migrations para aquele banco;</li>
-<li>Criar o usuário <code>admin</code> para aquele banco.</li>
+<li>Tentar conectar-se aos bancos em questão. Se isso não for possível,
+deverá criá-los;</li>
+<li>Executar as migrations (no BD relacional) para aquele <em>tenant</em>;</li>
+<li>Criar as coleções e índices (no BD não-relacional) para aquele <em>tenant</em>;</li>
+<li>Criar o usuário <code>admin</code> (no BD relacional) para aquele <em>tenant</em>.</li>
 </ol>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="migrations.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="backend.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="compilacao.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="banco-relacional.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -199,11 +200,11 @@ deverá criá-lo;</li>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="migrations.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="backend.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="compilacao.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="banco-relacional.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

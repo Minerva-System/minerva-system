@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SessionService","Represents a gRPC service for session."]]});

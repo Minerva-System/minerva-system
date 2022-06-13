@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["create_database","Runs a database creation query, if said database does not exist. The database in question shall have the same name of a tenant. This function also expects the endpoint to a database server (e.g. `localhost:5432`)."]],"struct":[["CreateDatabaseStmt","A Diesel statement for creating a database."]]});

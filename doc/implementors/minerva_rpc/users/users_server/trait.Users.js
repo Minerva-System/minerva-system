@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["minerva_user"] = [{"text":"impl <a class=\"trait\" href=\"minerva_rpc/users/users_server/trait.Users.html\" title=\"trait minerva_rpc::users::users_server::Users\">Users</a> for <a class=\"struct\" href=\"minerva_user/service/struct.UsersService.html\" title=\"struct minerva_user::service::UsersService\">UsersService</a>","synthetic":false,"types":["minerva_user::service::UsersService"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Deploy via Kubernetes - Sistema Minerva</title>
+        <title>Deploy via Kubernetes - Minerva System</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">2.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">2.1.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="banco.html"><strong aria-hidden="true">3.</strong> Banco de Dados</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="migrations.html"><strong aria-hidden="true">3.1.</strong> Executando migrations</a></li><li class="chapter-item expanded "><a href="multi-tenancy.html"><strong aria-hidden="true">3.2.</strong> Multi-Tenancy</a></li></ol></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">4.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">4.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="deploy-compose.html"><strong aria-hidden="true">4.2.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-kubernetes.html" class="active"><strong aria-hidden="true">4.3.</strong> Deploy via Kubernetes</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">2.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Front-End</div></li><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">2.2.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="multi-tenancy.html"><strong aria-hidden="true">3.</strong> Multi-Tenancy</a></li><li class="chapter-item expanded "><a href="banco-relacional.html"><strong aria-hidden="true">4.</strong> Banco de Dados Relacional</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="migrations.html"><strong aria-hidden="true">4.1.</strong> Executando migrations</a></li></ol></li><li class="chapter-item expanded "><a href="banco-nao-relacional.html"><strong aria-hidden="true">5.</strong> Banco de Dados Não-Relacional</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="colecoes.html"><strong aria-hidden="true">5.1.</strong> Coleções</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.</strong> Regras de Negócio</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="documentacao.html"><strong aria-hidden="true">6.1.</strong> Documentação do Projeto</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.2.</strong> Cache de Sessão via Redis</div></li></ol></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">7.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">7.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="gerando-imagens.html"><strong aria-hidden="true">7.2.</strong> Gerando imagens via Docker</a></li></ol></li><li class="chapter-item expanded "><a href="deploy.html"><strong aria-hidden="true">8.</strong> Deploy</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="deploy-compose.html"><strong aria-hidden="true">8.1.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-swarm.html"><strong aria-hidden="true">8.2.</strong> Deploy via Docker Swarm</a></li><li class="chapter-item expanded "><a href="deploy-kubernetes.html" class="active"><strong aria-hidden="true">8.3.</strong> Deploy via Kubernetes</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -110,7 +110,7 @@
                         </button>
                     </div>
 
-                    <h1 class="menu-title">Sistema Minerva</h1>
+                    <h1 class="menu-title">Minerva System</h1>
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
@@ -143,7 +143,9 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="deploy-usando-kubernetes-e-minikube"><a class="header" href="#deploy-usando-kubernetes-e-minikube">Deploy usando Kubernetes (e Minikube)</a></h1>
-<p><img src="./kubernetes-logo.webp" alt="Kubernetes" /></p>
+<center>
+<img src="./kubernetes-logo.webp" alt="Kubernetes" width="200"/>
+</center>
 <p>Você pode realizar deploy do projeto usando Kubernetes. Nos passos a
 seguir, será mostrado como realizar um deploy usando a ferramenta
 Minikube, para instalação do Kubernetes localmente.</p>
@@ -178,104 +180,177 @@ superior;</li>
 e gerencialmento do Kubernetes via linha de comando.</p>
 <h3 id="iniciando-o-minikube"><a class="header" href="#iniciando-o-minikube">Iniciando o Minikube</a></h3>
 <p>Caso você esteja testando localmente, comece executando o Minikube.</p>
-<pre><code class="language-bash">minikube start
+<p>As configurações a seguir iniciam um cluster local via Minikube, usando
+KVM2 como backend. Você poderá também usar os backends <code>docker</code> ou
+<code>virtualbox</code>, à escolha.</p>
+<pre><code class="language-bash">minikube start \
+	--vm-driver=kvm2 \
+	--disable-optimizations=false \
+	--extra-config=kubelet.housekeeping-interval=10s
+
+minikube addons enable metrics-server
 </code></pre>
 <p>Se você quiser parar o Minikube:</p>
 <pre><code class="language-bash">minikube stop
 </code></pre>
-<p>Você também pode acessar facilmente um dashboard web do Kubernetes,
-operando sob o Minikube, caso não queira usar o k9s posteriormente:</p>
-<pre><code class="language-bash">minikube dashbord
+<p>Igualmente, se quiser remover o cluster:</p>
+<pre><code class="language-bash">minikube delete --all
 </code></pre>
-<h2 id="geração-das-imagens"><a class="header" href="#geração-das-imagens">Geração das imagens</a></h2>
-<p>Antes de realizar deploy, é preciso gerar as imagens de cada um dos
-serviços. No caso específico do Minikube, é preciso também que essas
-imagens localmente construídas sejam carregadas para dentro deste
-serviço.</p>
-<h3 id="gerando-imagens-com-docker-compose"><a class="header" href="#gerando-imagens-com-docker-compose">Gerando imagens com Docker Compose</a></h3>
-<p>Você poderá gerar as imagens dos serviços usando a própria
-infraestrutura de geração de imagens do Docker Compose, o que é
-recomendado. Para tanto, veja a seção
-<a href="./deploy-compose.html#gerando-imagens">geração das imagens</a>
-na página de configuração do Docker Compose.</p>
-<p>Esse passo é essencial para serviços e jobs marcados com
-<code>imagePullPolicy</code> igual a <code>Never</code>.</p>
-<h3 id="compartilhando-as-imagens-com-o-minikube"><a class="header" href="#compartilhando-as-imagens-com-o-minikube">Compartilhando as imagens com o Minikube</a></h3>
-<p>Caso você esteja utilizando o Minikube, precisará carregar as
-imagens no ambiente do mesmo, do contrário ainda terá erros
-relacionados ao <code>imagePullPolicy</code>. Isso pode ser feito com um
-comando como mostrado a seguir:</p>
-<pre><code class="language-bash">minikube image load &lt;nome-imagem&gt;:&lt;tag&gt;
+<h3 id="problemas-com-libvirt-e-apparmor"><a class="header" href="#problemas-com-libvirt-e-apparmor">Problemas com Libvirt e AppArmor</a></h3>
+<p>Caso você tenha problemas para inicializar a máquina virtual com KVM2,
+pode ser que sua instalação local do AppArmor esteja interferindo com
+o <code>libvirt</code>.</p>
+<p>Como ferramenta paliativa à configuração do AppArmor para o <code>libvirt</code>,
+você poderá colocar os utilitários usados pelo Minikube no modo <em>complain</em>.
+Lembre-se de que isso é necessariamente detrimental à segurança do sistema.</p>
+<pre><code class="language-bash">sudo aa-complain /usr/sbin/libvirtd
+sudo aa-complain /usr/libexec/virt-aa-helper
 </code></pre>
-<p>Por exemplo, para carregar a imagem do Front-End, use o comando
-<code>minikube image load minerva_frontend:latest</code>.</p>
-<p>Você poderá também informar mais de uma imagem de uma só vez,
-por exemplo:</p>
-<pre><code class="language-bash">minikube image load \
-	 minerva_rest:latest \
-	 minerva_frontend:latest \
-	 minerva_pgadmin:latest \
-	 minerva_users:latest \
-	 minerva_runonce:latest
+<h2 id="estrutura-do-cluster"><a class="header" href="#estrutura-do-cluster">Estrutura do Cluster</a></h2>
+<p>A seguir, trataremos da estrutura do cluster como atualmente é definido.
+As seções a seguir tratam sempre de objetos específicos do Kubernetes,
+e são também uma sugestão de ordem de aplicação dos arquivos de configuração.</p>
+<p>Todos os arquivos serão encontrados de forma homônima no diretório <code>deploy</code>,
+com a extensão <code>yml</code>.</p>
+<p>Caso queira aplicar todos os arquivos enumerados abaixo, simplesmente execute:</p>
+<pre><code class="language-bash">kubectl apply -f deploy
 </code></pre>
-<h2 id="disposição-da-configuração"><a class="header" href="#disposição-da-configuração">Disposição da configuração</a></h2>
-<p>A configuração do Sistema Minerva para Kubernetes foi originalmente
-produzida através de conversão direta da configuração do Docker
-Compose, mais especificamente através da ferramenta
-<a href="https://kompose.io">Kompose</a>, e então modificada para suprir algumas
-necessidades do sistema.</p>
-<p>De forma geral, no Kubernetes, temos que:</p>
+<h3 id="configmaps"><a class="header" href="#configmaps"><em>ConfigMaps</em></a></h3>
+<p>Um <em>ConfigMap</em> é um objeto que armazena dados que serão utilizados como
+variáveis de ambiente de um <em>pod</em>.</p>
 <ul>
-<li>Um <strong>node</strong> refere-se a uma instalação do Kubernetes em uma máquina.</li>
-<li>Um <strong>pod</strong> é um grupo de um ou mais contêineres, que compartilha
-armazenamento e recursos de rede.</li>
-<li>Um <strong>deployment</strong> é a descrição de um <em>pod</em>, mais especificamente
-o seu comportamento e suas características. Também pode ser usado
-para gerenciar réplicas de <em>pods</em> (ou <em>ReplicaSets</em>).</li>
-<li>Um <strong>service</strong> é uma configuração de acessibilidade para os <em>pods</em>,
-mais especificamente agindo como uma forma de localizá-los na rede.
-Em outras palavras, age como um gerenciador de DNS.</li>
+<li><code>postgresql-configmap</code>: Variáveis padrão para definições iniciais do
+PostgreSQL 14.</li>
+<li><code>mongodb-configmap</code>: Variáveis padrão para definições iniciais do
+MongoDB 5.</li>
+<li><code>runonce-configmap</code>: Variáveis padrão para definições iniciais do
+Job RUNONCE.</li>
+<li><code>frontend-configmap</code>: Variáveis padrão para uso do Front-End.</li>
+<li><code>rest-configmap</code>: Variáveis padrão para a API REST.</li>
+<li><code>ports-configmap</code>: Portas para acesso aos serviços no cluster.</li>
+<li><code>servers-configmap</code>: Nomes dos serviços a serem acessados. Geralmente
+associados a cada Deployment ou StatefulSet.</li>
 </ul>
-<p>Os arquivos de configuração do Kubernetes estão desmembrados em suas
-devidas partes, seguindo ligeiramente o âmbito dos <em>services</em> e dos
-<em>deployments</em>, exceto quando não aplicável, e podem ser encontrados
-no diretório <code>build/kubernetes</code>.</p>
-<p>Assim, temos a seguinte configuração de serviços:</p>
-<table><thead><tr><th>Serviço</th><th>Tipo</th><th>Réplicas padrão</th></tr></thead><tbody>
-<tr><td><code>frontend</code></td><td><em>LoadBalancer</em></td><td>2</td></tr>
-<tr><td><code>pgadmin</code></td><td><em>LoadBalancer</em></td><td>1</td></tr>
-<tr><td><code>rest</code></td><td><em>LoadBalancer</em></td><td>3</td></tr>
-<tr><td><code>runonce</code></td><td><em>Job</em></td><td><strong>Sempre 1</strong></td></tr>
-<tr><td><code>users</code></td><td><em>ClusterIP</em></td><td>3</td></tr>
-<tr><td><code>postgresql</code></td><td><em>ClusterIP</em></td><td><strong>Sempre 1</strong></td></tr>
-</tbody></table>
-<p>Devemos considerar também, sobre os tipos dos serviços:</p>
+<p>Para aplicar todos os <em>ConfigMaps</em>, execute:</p>
+<pre><code class="language-bash">for f in `ls deploy/*-configmap.yml`; do kubectl apply -f $f; done
+</code></pre>
+<h3 id="persistentvolumeclaims"><a class="header" href="#persistentvolumeclaims"><em>PersistentVolumeClaims</em></a></h3>
+<p>Um <em>PersistentVolumeClaim</em> age como uma reserva de volume persistente
+(<em>PersistentVolume</em>). Pode associar-se a um volume que exista ou, neste
+caso, cria um volume com tamanho específico dinamicamente.</p>
 <ul>
-<li>Serviços <em>LoadBalancer</em> são acessíveis via IP externo.</li>
-<li><em>Jobs</em> são executados no início da configuração do <em>node</em>.</li>
-<li>Serviços <em>ClusterIP</em> são acessíveis apenas na rede interna do <em>node</em>.</li>
+<li><code>postgresql-pvc</code>: PersistentVolumeClaim para o PostgreSQL. Solicita 1GB
+de armazenamento e criação dinâmica.</li>
+<li><code>mongodb-pvc</code>: PersistentVolumeClaim para o MongoDB. Solicita 1GB de
+armazenamento e criação dinâmica.</li>
 </ul>
-<h2 id="executando-e-gerenciando-o-cluster"><a class="header" href="#executando-e-gerenciando-o-cluster">Executando e gerenciando o cluster</a></h2>
-<p>Para iniciar a configuração, posto que as imagens dos serviços
-estejam à disposição do Kubernetes (ou do Minikube), vá até o diretório
-raiz do projeto e execute:</p>
-<pre><code class="language-bash">kubectl create -f build/kubernetes
+<p>Para aplicar todos os <em>PersistentVolumeClaims</em>, execute:</p>
+<pre><code class="language-bash">for f in `ls deploy/*-pvc.yml`; do kubectl apply -f $f; done
 </code></pre>
-<p>Isso criará o <em>node</em> com base em todos os arquivos <code>.yaml</code> existentes
-no diretório <code>build/kubernetes</code>.</p>
-<p>Caso você realize alguma alteração nos arquivos e queira aplicá-las,
-utilize:</p>
-<pre><code class="language-bash">kubectl apply -f build/kubernetes
+<h3 id="deployments"><a class="header" href="#deployments"><em>Deployments</em></a></h3>
+<p>Um <em>Deployment</em> é uma forma de gerenciar <em>pods</em> e suas réplicas. Mais
+especificamente, trata-se de uma evolução de um <em>ReplicaSet</em> que permite
+a utilização de versionamento.</p>
+<ul>
+<li><code>postgresql-deployment</code>: Deployment para o banco de dados PostgreSQL.</li>
+<li><code>mongodb-deployment</code>: Deployment para o banco de dados MongoDB.</li>
+<li><code>frontend-deployment</code>: Deployment para o Front-End Web do sistema.</li>
+<li><code>rest-deployment</code>: Deployment para o gateway REST do sistema.</li>
+<li><code>users-deployment</code>: Deployment para o microsserviço <code>USERS</code>.</li>
+<li><code>session-deployment</code>: Deployment para o microsserviço <code>SESSION</code>.</li>
+</ul>
+<p>Para aplicar todos os <em>Deployments</em>, execute:</p>
+<pre><code class="language-bash">for f in `ls deploy/*-deployment.yml`; do kubectl apply -f $f; done
 </code></pre>
-<p>Da mesma forma, é possível aplicar as alterações de um único arquivo.
-Por exemplo:</p>
-<pre><code class="language-bash">kubectl apply -f build/kubernetes/rest-deployment.yaml
+<h3 id="services"><a class="header" href="#services"><em>Services</em></a></h3>
+<p>Um <em>Service</em> determina a conexão de um ou mais <em>pods</em> com o restante do
+cluster ou com a internet. <em>Services</em> podem ser do tipo <em>ClusterIP</em>,
+<em>NodePort</em> ou <em>LoadBalancer</em>. O primeiro tipo expõe os <em>pods</em> apenas para
+outros <em>pods</em> do cluster; o segundo e o terceiro expõem para a internet,
+com a diferença que um <em>LoadBalancer</em> é a maneira padrão de exposição por
+integrar-se com o balanceador de recursos do provedor do cluster.</p>
+<p>Além disso, serviços do tipo <em>LoadBalancer</em> agem retroativamente como
+<em>NodePort</em>, e estes agem também retroativamente como <em>ClusterIP</em>.</p>
+<ul>
+<li><code>postgresql-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods
+PostgreSQL.</li>
+<li><code>mongodb-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods
+MongoDB.</li>
+<li><code>users-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods do
+microsserviço USERS.</li>
+<li><code>session-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods do
+microsserviço SESSION.</li>
+<li><code>frontend-svc</code> (<em>LoadBalancer</em>): Serviço para acesso interno e externo
+aos pods do Front-End Web do sistema. Exposto na porta <code>30001</code>.</li>
+<li><code>rest-svc</code> (<em>LoadBalancer</em>): Serviço para acesso interno e externo aos
+pods do gateway REST do sistema. Exposto na porta <code>30000</code>.</li>
+</ul>
+<p>Para aplicar todos os <em>Services</em>, execute:</p>
+<pre><code class="language-bash">for f in `ls deploy/*-svc.yml`; do kubectl apply -f $f; done
 </code></pre>
-<p>Caso você queira deletar o cluster posteriormente, utilize o comando
-similar no mesmo diretório:</p>
-<pre><code class="language-bash">kubectl delete -f build/kubernetes
+<h3 id="jobs"><a class="header" href="#jobs"><em>Jobs</em></a></h3>
+<p>Um <em>Job</em> é responsável por criar um <em>pod</em> que executará alguma ação, até
+seu completamento ser realizado com sucesso.</p>
+<ul>
+<li><code>runonce-job</code>: Job a ser executado no início do deploy do cluster, para
+configuração inicial. Reiniciará o <em>pod</em> em caso de falhas dez vezes e,
+após sucesso, será removido junto com o <em>pod</em> após cinco minutos.</li>
+</ul>
+<p>Para aplicar todos os <em>ConfigMaps</em>, execute:</p>
+<pre><code class="language-bash">for f in `ls deploy/*-job.yml`; do kubectl apply -f $f; done
 </code></pre>
-<h3 id="monitorando-via-k9s"><a class="header" href="#monitorando-via-k9s">Monitorando via k9s</a></h3>
+<h3 id="horizontalpodautoscalers"><a class="header" href="#horizontalpodautoscalers">HorizontalPodAutoscalers</a></h3>
+<ul>
+<li><code>rest-hpa</code>: Escalonador horizontal do gateway REST. Mantém entre 1 e
+15 réplicas para <code>rest-deployment</code> com uso médio de 50% do CPU alocado.</li>
+<li><code>users-hpa</code>: Escalonador horizontal do microsserviço USERS. Mantém entre
+2 e 6 réplicas para <code>users-deployment</code> com uso médio de 65% do CPU alocado.</li>
+<li><code>session-hpa</code>: Escalonador horizontal do microsserviço SESSION. Mantém
+entre 2 e 6 réplicas para <code>session-deployment</code> com uso médio de 65%
+do CPU alocado.</li>
+</ul>
+<p>Para aplicar todos os <em>HorizontalPodAutoscalers</em>, execute:</p>
+<pre><code class="language-bash">for f in `ls deploy/*-hpa.yml`; do kubectl apply -f $f; done
+</code></pre>
+<h3 id="ingresses"><a class="header" href="#ingresses"><em>Ingresses</em></a></h3>
+<p>Um <em>Ingress</em> é um objeto responsável por gerenciar acesso externo a
+serviços no cluster, tipicamente via HTTP.</p>
+<ul>
+<li><code>api-ingress</code>: Ponto de entrada para a API através do URL
+<code>http://minerva-system.io</code>. Expõe a API em <code>/api</code>.</li>
+<li><code>frontend-ingress</code>: Ponto de entrada para o Front-End através do URL
+<code>http://minerva-system.io</code>. Expõe o Front-End em <code>/</code>.</li>
+</ul>
+<p>Para aplicar todos os <em>Ingresses</em>, execute:</p>
+<pre><code class="language-bash">for f in `ls deploy/*-ingress.yml`; do kubectl apply -f $f; done
+</code></pre>
+<h2 id="acesso-via-nodeport"><a class="header" href="#acesso-via-nodeport">Acesso via NodePort</a></h2>
+<p>Para acessar os serviços expostos via <em>NodePort</em> (ou <em>LoadBalancer</em>) no
+cluster, diretamente através do IP do Minikube, primeiramente verifique
+o endereço IP do cluster. Isso pode ser feito via Kubectl:</p>
+<pre><code class="language-bash">kubectl get node -o wide
+</code></pre>
+<p>Isso pode também ser feito através do Minikube:</p>
+<pre><code class="language-bash">minikube ip
+</code></pre>
+<p>Você poderá acessar os serviços através deste mesmo IP, através das portas
+<code>30000</code> (API REST) ou <code>30001</code> (Front-End).</p>
+<h2 id="acesso-via-ingress"><a class="header" href="#acesso-via-ingress">Acesso via Ingress</a></h2>
+<p>Outra forma de acessar envolve o uso dos objetos <em>Ingress</em>. Isso nos
+permitirá usar o endereço <code>http://minerva-system.io/</code> como URL base
+do sistema.</p>
+<p>Primeiramente, habilite o addon <code>ingress</code> no Minikube:</p>
+<pre><code class="language-bash">minikube addons enable ingress
+</code></pre>
+<p>Agora, descubra o IP do Minikube na máquina:</p>
+<pre><code class="language-bash">minikube ip
+</code></pre>
+<p>Finalmente, edite o arquivo <code>/etc/hosts</code> e adicione o seguinte:</p>
+<pre><code>&lt;ip-do-minikube&gt;	minerva-system.io
+</code></pre>
+<p>O Front-End agora poderá ser acessado em <code>http://minerva-system.io/</code>,
+e a API poderá ser acessada em <code>http://minerva-system.io/api</code>.</p>
+<h2 id="monitorando-via-k9s"><a class="header" href="#monitorando-via-k9s">Monitorando via k9s</a></h2>
 <p><img src="./k9s.png" alt="k9s" /></p>
 <p>Uma das ferramentas possíveis de se utilizar para monitorar o cluster
 é o <code>k9s</code>.</p>
@@ -285,100 +360,36 @@ mostrados na tela. Alguns comandos interessantes de serem utilizados
 são:</p>
 <ul>
 <li><code>:q</code>: Sair da aplicação.</li>
-<li><code>:po</code>: Lista de <em>pods</em>.</li>
-<li><code>:svc</code>: Lista de <em>services</em>.</li>
-<li><code>:deployment</code>: Lista de <em>deployments</em>.</li>
+<li><code>:po</code>: Lista de <em>Pods</em>.</li>
+<li><code>:svc</code>: Lista de <em>Services</em>.</li>
+<li><code>:dp</code>: Lista de <em>Deployments</em>.</li>
+<li><code>:ing</code>: Lista de <em>Ingresses</em>.</li>
+<li><code>:hpa</code>: Lista de <em>HorizontalPodAutoscalers</em>.</li>
+<li><code>:pvc</code>: Lista de <em>PersistentVolumeClaims</em>.</li>
+<li><code>:pv</code>: Lista de <em>PersistentVolumes</em>.</li>
 </ul>
 <p>Você poderá usar o <code>k9s</code> para visualizar logs e também para modificar
-algumas propriedades mais avançadas também.</p>
-<h3 id="logs"><a class="header" href="#logs">Logs</a></h3>
-<p>Para visualizar logs completos de cada <em>pod</em>, primeiramente descubra
-o nome do <em>pod</em> que você deseja observar:</p>
-<pre><code class="language-bash">kubectl get pods
+algumas propriedades mais avançadas também. É possível até mesmo acessar
+diretamente o console dos contêineres.</p>
+<h2 id="monitorando-via-dashboard"><a class="header" href="#monitorando-via-dashboard">Monitorando via dashboard</a></h2>
+<p>Você também pode acessar facilmente um dashboard web do Kubernetes,
+operando sob o Minikube, caso não queira usar o <code>k9s</code> posteriormente
+(lembre-se de que objetos como <em>HorizontalPodAutoscaler</em> não são
+visíveis nesse Dashboard):</p>
+<pre><code class="language-bash">minikube dashboard
 </code></pre>
-<p>Um exemplo da saída deste comando poderia ser:</p>
-<pre><code class="language-text">NAME                          READY   STATUS      RESTARTS   AGE
-frontend-86c7955bdc-7zv4g     1/1     Running     0          43m
-pgadmin-76c5d7ccf7-4wk7g      1/1     Running     0          43m
-postgresql-6f8b685668-94qbs   1/1     Running     0          43m
-rest-57f984cb4c-25s9h         1/1     Running     0          42m
-runonce--1-kl4rb              0/1     Completed   0          43m
-users-549f5775c4-8fh9x        1/1     Running     0          42m
+<h2 id="testes-de-stress"><a class="header" href="#testes-de-stress">Testes de Stress</a></h2>
+<p>Para realizar testes de stress, use o script <code>deploy/stress_test.sh</code>.
+Você poderá testar cada sistema crucial usando um comando como este:</p>
+<pre><code class="language-bash">./deploy/stress_test.sh minerva-system.io/api users
 </code></pre>
-<p>Para ver os logs completos da execução atual de um pod qualquer,
-use o nome completo do <em>pod</em>, como mostrado acima:</p>
-<pre><code class="language-bash">kubectl logs runonce--1-kl4rb
-</code></pre>
-<p>Caso o <em>pod</em> não tenha sido encerrado corretamente da última vez,
-você poderá ver os logs anteriores com a flag <code>--previous</code>:</p>
-<pre><code class="language-bash">kubectl logs --previous runonce--1-kl4rb
-</code></pre>
-<h2 id="acessando-serviços-com-minikube"><a class="header" href="#acessando-serviços-com-minikube">Acessando serviços com Minikube</a></h2>
-<p>Há duas formas de acessar serviços pelo Minikube: através de
-<em>NodePort</em> e de <em>LoadBalancer</em>. Este último envolve a ideia
-de <em>tunelamento</em> via Minikube.</p>
-<h3 id="acessando-via-nodeport"><a class="header" href="#acessando-via-nodeport">Acessando via <em>NodePort</em></a></h3>
-<p>Caso você queira descobrir o endereço para um serviço de tipo
-<em>LoadBalancer</em>, você poderá descobrir o IP usando o Minikube.
-Este método basicamente utiliza a ideia de <em>NodePort</em> para
-redirecionar o tráfego para a aplicação:</p>
-<pre><code class="language-bash">minikube service rest --url
-</code></pre>
-<p>Supondo que este comando retorne um valor para o serviço <code>rest</code> como
-<code>http://192.168.49.2:30617</code>, agora será possível fazer uma requisição
-REST comum diretamente neste endereço:</p>
-<pre><code class="language-bash">curl http://192.168.49.2:30617/minerva/users
-</code></pre>
-<pre><code class="language-text">[{&quot;id&quot;:1,&quot;login&quot;:&quot;admin&quot;,&quot;name&quot;:&quot;Administrator&quot;,&quot;email&quot;:null}]
-</code></pre>
-<h3 id="acessando-via-loadbalancer"><a class="header" href="#acessando-via-loadbalancer">Acessando via <em>LoadBalancer</em></a></h3>
-<p>Primeiramente, caso você esteja executando o Minikube, abra um terminal
-avulso (que terá a execução bloqueada pelo próximo comando) e digite:</p>
-<pre><code class="language-bash">minikube tunnel
-</code></pre>
-<p><strong>Note que este comando pode exigir a senha do seu usuáio.</strong></p>
-<p>Isso fará com que todos os nós do tipo <em>LoadBalancer</em> recebem IPs externos
-que podem ser acessados imediatamente. Para verificar esses IPs externos,
-verifique os serviços ativos (isso também pode ser observado pelo k9s):</p>
-<pre><code class="language-bash">kubectl get svc
-</code></pre>
-<p>Um exemplo de saída do comando:</p>
-<pre><code class="language-text">NAME         TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)          AGE
-frontend     LoadBalancer   10.108.114.123   10.108.114.123   80:32613/TCP     31m
-kubernetes   ClusterIP      10.96.0.1        &lt;none&gt;           443/TCP          8h
-pgadmin      LoadBalancer   10.99.60.133     10.99.60.133     8484:30065/TCP   31m
-postgresql   ClusterIP      10.99.167.49     &lt;none&gt;           5432/TCP         31m
-rest         LoadBalancer   10.111.150.132   10.111.150.132   9000:31522/TCP   31m
-users        ClusterIP      10.97.99.55      &lt;none&gt;           9010/TCP         31m
-</code></pre>
-<p>No caso acima, podemos verificar, por exemplo, que requisições REST devem ser
-direcionadas para o caminho <code>http://10.111.150.132:9000</code>, como observado pelas
-colunas <code>EXTERNAL-IP</code> e <code>PORT(S)</code>.</p>
-<p>Portanto:</p>
-<pre><code class="language-bash">curl http://10.111.150.132:9000/minerva/users
-</code></pre>
-<pre><code class="language-text">[{&quot;id&quot;:1,&quot;login&quot;:&quot;admin&quot;,&quot;name&quot;:&quot;Administrator&quot;,&quot;email&quot;:null}]
-</code></pre>
-<p>Caso haja portas pendentes de clientes de tunelamento do Minikube que não tenham
-sido liberadas, você poderá liberar as portas manualmente com:</p>
-<pre><code class="language-bash">minikube tunnel --cleanup
-</code></pre>
-<h2 id="escalando-deployments"><a class="header" href="#escalando-deployments">Escalando <em>deployments</em></a></h2>
-<p>Quando for necessário prover redundância em certos recursos do Kubernetes, poderemos
-escalar horizontalmente um ou mais <em>deployments</em>, criando <em>ReplicaSets</em> para os
-mesmos.</p>
-<p>Para tanto, use um comando como o mostrado a seguir, definindo o número de
-<em>ReplicaSets</em>:</p>
-<pre><code class="language-bash">kubectl scale deployment/&lt;nome-do-deployment&gt; --replicas=1
-</code></pre>
-<p>Note que introduzir um número de zero réplicas efetivamente eliminará todos os
-<em>pods</em> do <em>deployment</em>, até que as réplicas sejam definidas novamente.</p>
+<p>Para maiores informações, execute o script sem argumentos.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="deploy-compose.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="deploy-swarm.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
@@ -389,7 +400,7 @@ mesmos.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="deploy-compose.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="deploy-swarm.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
