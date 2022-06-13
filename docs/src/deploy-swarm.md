@@ -1,5 +1,9 @@
 # Deploy via Docker Swarm
 
+<center>
+<img src="./docker-swarm.png" alt="Docker Swarm" width="200"/>
+</center>
+
 Além do deploy via Docker Compose, também é possível disponibilizar a stack do
 Sistema Minerva em um _cluster_ do Docker Swarm.
 

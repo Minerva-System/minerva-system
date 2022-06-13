@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+spec:
+  template:
+    metadata:
+      name: mongodb
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb-container
+          image: mongo:5
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongodb-pv
+          ports:
+            - containerPort: 27017
+          envFrom:
+            - configMapRef:
+                name: mongodb-configmap
+      volumes:
+        - name: mongodb-pv
+          persistentVolumeClaim:
+            claimName: mongodb-pvc
+  selector:
+    matchLabels:
+      app: mongodb

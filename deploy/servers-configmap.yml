@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: servers-configmap
+data:
+  USER_SERVICE_SERVER: users-svc
+  SESSION_SERVICE_SERVER: session-svc
+  DATABASE_SERVICE_SERVER: postgresql-svc
+  MONGO_SERVICE_SERVER: mongodb-svc
+  REST_SERVICE_SERVER: rest-svc

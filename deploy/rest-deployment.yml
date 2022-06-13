@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rest-deployment
+spec:
+  template:
+    metadata:
+      name: rest
+      labels:
+        app: rest
+    spec:
+      containers:
+        - name: rest-container
+          image: luksamuk/minerva_rest:0.2.0
+          ports:
+            - containerPort: 9000
+          envFrom:
+            - configMapRef:
+                name: servers-configmap
+            - configMapRef:
+                name: ports-configmap
+          resources:
+            requests:
+              cpu: 15m
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rest
+

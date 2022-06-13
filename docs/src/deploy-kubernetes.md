@@ -1,6 +1,8 @@
 # Deploy usando Kubernetes (e Minikube)
 
-![Kubernetes](./kubernetes-logo.webp)
+<center>
+<img src="./kubernetes-logo.webp" alt="Kubernetes" width="200"/>
+</center>
 
 Você pode realizar deploy do projeto usando Kubernetes. Nos passos a
 seguir, será mostrado como realizar um deploy usando a ferramenta
@@ -55,13 +57,21 @@ A instalação do k9s é opcional, sendo uma ferramenta de monitoramento
 e gerencialmento do Kubernetes via linha de comando.
 
 
-
 ### Iniciando o Minikube
 
 Caso você esteja testando localmente, comece executando o Minikube.
 
+As configurações a seguir iniciam um cluster local via Minikube, usando
+KVM2 como backend. Você poderá também usar os backends `docker` ou
+`virtualbox`, à escolha.
+
 ```bash
-minikube start
+minikube start \
+	--vm-driver=kvm2 \
+	--disable-optimizations=false \
+	--extra-config=kubelet.housekeeping-interval=10s
+
+minikube addons enable metrics-server
 ```
 
 Se você quiser parar o Minikube:
@@ -70,151 +80,230 @@ Se você quiser parar o Minikube:
 minikube stop
 ```
 
-Você também pode acessar facilmente um dashboard web do Kubernetes,
-operando sob o Minikube, caso não queira usar o k9s posteriormente:
+Igualmente, se quiser remover o cluster:
 
 ```bash
-minikube dashbord
+minikube delete --all
 ```
 
+### Problemas com Libvirt e AppArmor
 
+Caso você tenha problemas para inicializar a máquina virtual com KVM2,
+pode ser que sua instalação local do AppArmor esteja interferindo com
+o `libvirt`.
 
-
-## Geração das imagens
-
-Antes de realizar deploy, é preciso gerar as imagens de cada um dos
-serviços. No caso específico do Minikube, é preciso também que essas
-imagens localmente construídas sejam carregadas para dentro deste
-serviço.
-
-
-
-### Gerando imagens com Docker Compose
-
-Você poderá gerar as imagens dos serviços usando a própria
-infraestrutura de geração de imagens do Docker Compose, o que é
-recomendado. Para tanto, veja a seção
-[geração das imagens](./deploy-compose.md#gerando-imagens)
-na página de configuração do Docker Compose.
-
-Esse passo é essencial para serviços e jobs marcados com
-`imagePullPolicy` igual a `Never`.
-
-
-
-### Compartilhando as imagens com o Minikube
-
-Caso você esteja utilizando o Minikube, precisará carregar as
-imagens no ambiente do mesmo, do contrário ainda terá erros
-relacionados ao `imagePullPolicy`. Isso pode ser feito com um
-comando como mostrado a seguir:
+Como ferramenta paliativa à configuração do AppArmor para o `libvirt`,
+você poderá colocar os utilitários usados pelo Minikube no modo _complain_.
+Lembre-se de que isso é necessariamente detrimental à segurança do sistema.
 
 ```bash
-minikube image load <nome-imagem>:<tag>
+sudo aa-complain /usr/sbin/libvirtd
+sudo aa-complain /usr/libexec/virt-aa-helper
 ```
 
-Por exemplo, para carregar a imagem do Front-End, use o comando
-`minikube image load minerva_frontend:latest`.
+## Estrutura do Cluster
 
-Você poderá também informar mais de uma imagem de uma só vez,
-por exemplo:
+A seguir, trataremos da estrutura do cluster como atualmente é definido.
+As seções a seguir tratam sempre de objetos específicos do Kubernetes,
+e são também uma sugestão de ordem de aplicação dos arquivos de configuração.
+
+Todos os arquivos serão encontrados de forma homônima no diretório `deploy`,
+com a extensão `yml`.
+
+Caso queira aplicar todos os arquivos enumerados abaixo, simplesmente execute:
 
 ```bash
-minikube image load \
-	 minerva_rest:latest \
-	 minerva_frontend:latest \
-	 minerva_pgadmin:latest \
-	 minerva_users:latest \
-	 minerva_runonce:latest \
-	 minerva_session:latest
+kubectl apply -f deploy
 ```
 
+### _ConfigMaps_
 
+Um _ConfigMap_ é um objeto que armazena dados que serão utilizados como
+variáveis de ambiente de um _pod_.
 
+- `postgresql-configmap`: Variáveis padrão para definições iniciais do
+  PostgreSQL 14.
+- `mongodb-configmap`: Variáveis padrão para definições iniciais do
+  MongoDB 5.
+- `runonce-configmap`: Variáveis padrão para definições iniciais do
+  Job RUNONCE.
+- `frontend-configmap`: Variáveis padrão para uso do Front-End.
+- `rest-configmap`: Variáveis padrão para a API REST.
+- `ports-configmap`: Portas para acesso aos serviços no cluster.
+- `servers-configmap`: Nomes dos serviços a serem acessados. Geralmente
+  associados a cada Deployment ou StatefulSet.
 
-## Disposição da configuração
-
-A configuração do Sistema Minerva para Kubernetes foi originalmente
-produzida através de conversão direta da configuração do Docker
-Compose, mais especificamente através da ferramenta
-[Kompose](https://kompose.io), e então modificada para suprir algumas
-necessidades do sistema.
-
-De forma geral, no Kubernetes, temos que:
-
-- Um **node** refere-se a uma instalação do Kubernetes em uma máquina.
-- Um **pod** é um grupo de um ou mais contêineres, que compartilha
-  armazenamento e recursos de rede.
-- Um **deployment** é a descrição de um *pod*, mais especificamente
-  o seu comportamento e suas características. Também pode ser usado
-  para gerenciar réplicas de *pods* (ou *ReplicaSets*).
-- Um **service** é uma configuração de acessibilidade para os *pods*,
-  mais especificamente agindo como uma forma de localizá-los na rede.
-  Em outras palavras, age como um gerenciador de DNS.
-
-Os arquivos de configuração do Kubernetes estão desmembrados em suas
-devidas partes, seguindo ligeiramente o âmbito dos *services* e dos
-*deployments*, exceto quando não aplicável, e podem ser encontrados
-no diretório `build/kubernetes`.
-
-Assim, temos a seguinte configuração de serviços:
-
-| Serviço      | Tipo           | Réplicas padrão |
-|--------------|----------------|-----------------|
-| `frontend`   | *LoadBalancer* | 2               |
-| `pgadmin`    | *LoadBalancer* | 1               |
-| `rest`       | *LoadBalancer* | 3               |
-| `runonce`    | *Job*          | **Sempre 1**    |
-| `users`      | *ClusterIP*    | 3               |
-| `postgresql` | *ClusterIP*    | **Sempre 1**    |
-
-Devemos considerar também, sobre os tipos dos serviços:
-
-- Serviços *LoadBalancer* são acessíveis via IP externo.
-- *Jobs* são executados no início da configuração do *node*.
-- Serviços *ClusterIP* são acessíveis apenas na rede interna do *node*.
-
-
-
-
-## Executando e gerenciando o cluster
-
-Para iniciar a configuração, posto que as imagens dos serviços
-estejam à disposição do Kubernetes (ou do Minikube), vá até o diretório
-raiz do projeto e execute:
+Para aplicar todos os _ConfigMaps_, execute:
 
 ```bash
-kubectl create -f build/kubernetes
+for f in `ls deploy/*-configmap.yml`; do kubectl apply -f $f; done
 ```
 
-Isso criará o *node* com base em todos os arquivos `.yaml` existentes
-no diretório `build/kubernetes`.
+### _PersistentVolumeClaims_
 
+Um _PersistentVolumeClaim_ age como uma reserva de volume persistente
+(_PersistentVolume_). Pode associar-se a um volume que exista ou, neste
+caso, cria um volume com tamanho específico dinamicamente.
 
-Caso você realize alguma alteração nos arquivos e queira aplicá-las,
-utilize:
+- `postgresql-pvc`: PersistentVolumeClaim para o PostgreSQL. Solicita 1GB
+  de armazenamento e criação dinâmica.
+- `mongodb-pvc`: PersistentVolumeClaim para o MongoDB. Solicita 1GB de
+  armazenamento e criação dinâmica.
+  
+Para aplicar todos os _PersistentVolumeClaims_, execute:
 
 ```bash
-kubectl apply -f build/kubernetes
+for f in `ls deploy/*-pvc.yml`; do kubectl apply -f $f; done
 ```
+  
+### _Deployments_
 
-Da mesma forma, é possível aplicar as alterações de um único arquivo.
-Por exemplo:
+Um _Deployment_ é uma forma de gerenciar _pods_ e suas réplicas. Mais
+especificamente, trata-se de uma evolução de um _ReplicaSet_ que permite
+a utilização de versionamento.
+
+- `postgresql-deployment`: Deployment para o banco de dados PostgreSQL.
+- `mongodb-deployment`: Deployment para o banco de dados MongoDB.
+- `frontend-deployment`: Deployment para o Front-End Web do sistema.
+- `rest-deployment`: Deployment para o gateway REST do sistema.
+- `users-deployment`: Deployment para o microsserviço `USERS`.
+- `session-deployment`: Deployment para o microsserviço `SESSION`.
+
+Para aplicar todos os _Deployments_, execute:
 
 ```bash
-kubectl apply -f build/kubernetes/rest-deployment.yaml
+for f in `ls deploy/*-deployment.yml`; do kubectl apply -f $f; done
 ```
 
-Caso você queira deletar o cluster posteriormente, utilize o comando
-similar no mesmo diretório:
+### _Services_
+
+Um _Service_ determina a conexão de um ou mais _pods_ com o restante do
+cluster ou com a internet. _Services_ podem ser do tipo _ClusterIP_,
+_NodePort_ ou _LoadBalancer_. O primeiro tipo expõe os _pods_ apenas para
+outros _pods_ do cluster; o segundo e o terceiro expõem para a internet,
+com a diferença que um _LoadBalancer_ é a maneira padrão de exposição por
+integrar-se com o balanceador de recursos do provedor do cluster.
+
+Além disso, serviços do tipo _LoadBalancer_ agem retroativamente como
+_NodePort_, e estes agem também retroativamente como _ClusterIP_.
+
+- `postgresql-svc` (_ClusterIP_): Serviço para acesso interno aos pods
+  PostgreSQL.
+- `mongodb-svc` (_ClusterIP_): Serviço para acesso interno aos pods
+  MongoDB.
+- `users-svc` (_ClusterIP_): Serviço para acesso interno aos pods do
+  microsserviço USERS.
+- `session-svc` (_ClusterIP_): Serviço para acesso interno aos pods do
+  microsserviço SESSION.
+- `frontend-svc` (_LoadBalancer_): Serviço para acesso interno e externo
+  aos pods do Front-End Web do sistema. Exposto na porta `30001`.
+- `rest-svc` (_LoadBalancer_): Serviço para acesso interno e externo aos
+  pods do gateway REST do sistema. Exposto na porta `30000`.
+
+Para aplicar todos os _Services_, execute:
 
 ```bash
-kubectl delete -f build/kubernetes
+for f in `ls deploy/*-svc.yml`; do kubectl apply -f $f; done
 ```
 
+### _Jobs_
+
+Um _Job_ é responsável por criar um _pod_ que executará alguma ação, até
+seu completamento ser realizado com sucesso.
+
+- `runonce-job`: Job a ser executado no início do deploy do cluster, para
+  configuração inicial. Reiniciará o _pod_ em caso de falhas dez vezes e,
+  após sucesso, será removido junto com o _pod_ após cinco minutos.
+
+Para aplicar todos os _ConfigMaps_, execute:
+
+```bash
+for f in `ls deploy/*-job.yml`; do kubectl apply -f $f; done
+```
+
+### HorizontalPodAutoscalers
+
+- `rest-hpa`: Escalonador horizontal do gateway REST. Mantém entre 1 e
+  15 réplicas para `rest-deployment` com uso médio de 50% do CPU alocado.
+- `users-hpa`: Escalonador horizontal do microsserviço USERS. Mantém entre
+  2 e 6 réplicas para `users-deployment` com uso médio de 65% do CPU alocado.
+- `session-hpa`: Escalonador horizontal do microsserviço SESSION. Mantém
+  entre 2 e 6 réplicas para `session-deployment` com uso médio de 65%
+  do CPU alocado.
+
+Para aplicar todos os _HorizontalPodAutoscalers_, execute:
+
+```bash
+for f in `ls deploy/*-hpa.yml`; do kubectl apply -f $f; done
+```
+
+### _Ingresses_
+
+Um _Ingress_ é um objeto responsável por gerenciar acesso externo a
+serviços no cluster, tipicamente via HTTP.
+
+- `api-ingress`: Ponto de entrada para a API através do URL
+  `http://minerva-system.io`. Expõe a API em `/api`.
+- `frontend-ingress`: Ponto de entrada para o Front-End através do URL
+  `http://minerva-system.io`. Expõe o Front-End em `/`.
+
+Para aplicar todos os _Ingresses_, execute:
+
+```bash
+for f in `ls deploy/*-ingress.yml`; do kubectl apply -f $f; done
+```
+
+## Acesso via NodePort
+
+Para acessar os serviços expostos via _NodePort_ (ou _LoadBalancer_) no
+cluster, diretamente através do IP do Minikube, primeiramente verifique
+o endereço IP do cluster. Isso pode ser feito via Kubectl:
+
+```bash
+kubectl get node -o wide
+```
+
+Isso pode também ser feito através do Minikube:
+
+```bash
+minikube ip
+```
+
+Você poderá acessar os serviços através deste mesmo IP, através das portas
+`30000` (API REST) ou `30001` (Front-End).
 
 
-### Monitorando via k9s
+
+## Acesso via Ingress
+
+Outra forma de acessar envolve o uso dos objetos _Ingress_. Isso nos
+permitirá usar o endereço `http://minerva-system.io/` como URL base
+do sistema.
+
+Primeiramente, habilite o addon `ingress` no Minikube:
+
+```bash
+minikube addons enable ingress
+```
+
+Agora, descubra o IP do Minikube na máquina:
+
+```bash
+minikube ip
+```
+
+Finalmente, edite o arquivo `/etc/hosts` e adicione o seguinte:
+
+```
+<ip-do-minikube>	minerva-system.io
+```
+
+O Front-End agora poderá ser acessado em `http://minerva-system.io/`,
+e a API poderá ser acessada em `http://minerva-system.io/api`.
+
+
+
+## Monitorando via k9s
 
 ![k9s](./k9s.png)
 
@@ -227,153 +316,36 @@ mostrados na tela. Alguns comandos interessantes de serem utilizados
 são:
 
 - `:q`: Sair da aplicação.
-- `:po`: Lista de *pods*.
-- `:svc`: Lista de *services*.
-- `:deployment`: Lista de *deployments*.
+- `:po`: Lista de _Pods_.
+- `:svc`: Lista de _Services_.
+- `:dp`: Lista de _Deployments_.
+- `:ing`: Lista de _Ingresses_.
+- `:hpa`: Lista de _HorizontalPodAutoscalers_.
+- `:pvc`: Lista de _PersistentVolumeClaims_.
+- `:pv`: Lista de _PersistentVolumes_.
 
 Você poderá usar o `k9s` para visualizar logs e também para modificar
-algumas propriedades mais avançadas também.
+algumas propriedades mais avançadas também. É possível até mesmo acessar
+diretamente o console dos contêineres.
 
+## Monitorando via dashboard
 
-
-
-### Logs
-
-Para visualizar logs completos de cada *pod*, primeiramente descubra
-o nome do *pod* que você deseja observar:
-
-```bash
-kubectl get pods
-```
-
-Um exemplo da saída deste comando poderia ser:
-
-```text
-NAME                          READY   STATUS      RESTARTS   AGE
-frontend-86c7955bdc-7zv4g     1/1     Running     0          43m
-pgadmin-76c5d7ccf7-4wk7g      1/1     Running     0          43m
-postgresql-6f8b685668-94qbs   1/1     Running     0          43m
-rest-57f984cb4c-25s9h         1/1     Running     0          42m
-runonce--1-kl4rb              0/1     Completed   0          43m
-users-549f5775c4-8fh9x        1/1     Running     0          42m
-```
-
-Para ver os logs completos da execução atual de um pod qualquer,
-use o nome completo do *pod*, como mostrado acima:
+Você também pode acessar facilmente um dashboard web do Kubernetes,
+operando sob o Minikube, caso não queira usar o `k9s` posteriormente
+(lembre-se de que objetos como _HorizontalPodAutoscaler_ não são
+visíveis nesse Dashboard):
 
 ```bash
-kubectl logs runonce--1-kl4rb
+minikube dashboard
 ```
 
-Caso o *pod* não tenha sido encerrado corretamente da última vez,
-você poderá ver os logs anteriores com a flag `--previous`:
+## Testes de Stress
+
+Para realizar testes de stress, use o script `deploy/stress_test.sh`.
+Você poderá testar cada sistema crucial usando um comando como este:
 
 ```bash
-kubectl logs --previous runonce--1-kl4rb
+./deploy/stress_test.sh minerva-system.io/api users
 ```
 
-
-
-
-
-## Acessando serviços com Minikube
-
-Há duas formas de acessar serviços pelo Minikube: através de
-*NodePort* e de *LoadBalancer*. Este último envolve a ideia
-de *tunelamento* via Minikube.
-
-
-
-### Acessando via *NodePort*
-
-Caso você queira descobrir o endereço para um serviço de tipo
-*LoadBalancer*, você poderá descobrir o IP usando o Minikube.
-Este método basicamente utiliza a ideia de *NodePort* para
-redirecionar o tráfego para a aplicação:
-
-```bash
-minikube service rest --url
-```
-
-Supondo que este comando retorne um valor para o serviço `rest` como
-`http://192.168.49.2:30617`, agora será possível fazer uma requisição
-REST comum diretamente neste endereço:
-
-```bash
-curl http://192.168.49.2:30617/minerva/users
-```
-
-```text
-[{"id":1,"login":"admin","name":"Administrator","email":null}]
-```
-
-
-### Acessando via *LoadBalancer*
-
-Primeiramente, caso você esteja executando o Minikube, abra um terminal
-avulso (que terá a execução bloqueada pelo próximo comando) e digite:
-
-```bash
-minikube tunnel
-```
-
-**Note que este comando pode exigir a senha do seu usuáio.**
-
-Isso fará com que todos os nós do tipo *LoadBalancer* recebem IPs externos
-que podem ser acessados imediatamente. Para verificar esses IPs externos,
-verifique os serviços ativos (isso também pode ser observado pelo k9s):
-
-```bash
-kubectl get svc
-```
-
-Um exemplo de saída do comando:
-
-```text
-NAME         TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)          AGE
-frontend     LoadBalancer   10.108.114.123   10.108.114.123   80:32613/TCP     31m
-kubernetes   ClusterIP      10.96.0.1        <none>           443/TCP          8h
-pgadmin      LoadBalancer   10.99.60.133     10.99.60.133     8484:30065/TCP   31m
-postgresql   ClusterIP      10.99.167.49     <none>           5432/TCP         31m
-rest         LoadBalancer   10.111.150.132   10.111.150.132   9000:31522/TCP   31m
-users        ClusterIP      10.97.99.55      <none>           9010/TCP         31m
-```
-
-No caso acima, podemos verificar, por exemplo, que requisições REST devem ser
-direcionadas para o caminho `http://10.111.150.132:9000`, como observado pelas
-colunas `EXTERNAL-IP` e `PORT(S)`.
-
-Portanto:
-
-```bash
-curl http://10.111.150.132:9000/minerva/users
-```
-
-```text
-[{"id":1,"login":"admin","name":"Administrator","email":null}]
-```
-
-Caso haja portas pendentes de clientes de tunelamento do Minikube que não tenham
-sido liberadas, você poderá liberar as portas manualmente com:
-
-```bash
-minikube tunnel --cleanup
-```
-
-
-
-## Escalando *deployments*
-
-Quando for necessário prover redundância em certos recursos do Kubernetes, poderemos
-escalar horizontalmente um ou mais *deployments*, criando *ReplicaSets* para os
-mesmos.
-
-Para tanto, use um comando como o mostrado a seguir, definindo o número de
-*ReplicaSets*:
-
-```bash
-kubectl scale deployment/<nome-do-deployment> --replicas=1
-```
-
-Note que introduzir um número de zero réplicas efetivamente eliminará todos os
-*pods* do *deployment*, até que as réplicas sejam definidas novamente.
+Para maiores informações, execute o script sem argumentos.

@@ -1,6 +1,8 @@
 # Deploy usando Docker Compose
 
-![Docker Compose](./docker-compose.png)
+<center>
+<img src="./docker-compose.png" alt="Docker Compose" width="350"/>
+</center>
 
 Você pode realizar deploy do projeto usando Docker Compose. Todavia,
 esta não é a forma mais recomendada de realização de deploy.
@@ -12,7 +14,6 @@ esta não é a forma mais recomendada de realização de deploy.
 Docker Compose é uma ferramenta simples de orquestração de contêineres.
 Para o Minerva System, é principalmente uma forma de **testar** a forma
 como o serviço se comporta em rede.
-
 
 
 
