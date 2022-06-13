@@ -8,10 +8,10 @@ jobs:
   build-docs:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Graphviz
+      - name: Install Graphviz and PlantUML
         run: |
           sudo apt update
-          sudo apt install -y graphviz
+          sudo apt install -y graphviz plantuml
 
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
@@ -33,6 +33,7 @@ jobs:
         run: |
           cargo install mdbook
           cargo install mdbook-graphviz
+          cargo install mdbook-plantuml
 
       - name: Generate Rust documentation
         run: |
