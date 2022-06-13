@@ -37,15 +37,16 @@ e referenciadas entre si.
 
 ```dot process
 graph {
+	bgcolor=transparent;
 	rankdir="TB";
 	compound=true;
-	node[style=filled; fillcolor=white];
+	node[style=filled; fillcolor="#999999"];
 	
-	frontend[label="FRONT-END", shape=note, color=darkorange, fontcolor=darkorange];
+	frontend[label="FRONT-END", shape=note, color=darkorange, fontcolor=darkorange, fillcolor=transparent];
 	
 	subgraph cluster_db {
 		rankdir="LR";
-		label = "BANCO DE DADOS\n(multi-inquilino)";
+		label = "BANCO DE DADOS\n(multi-tenant)";
 		color=darkmagenta;
 		fontcolor=darkmagenta;
 		db2[label="inq3", shape=cylinder, color=darkmagenta, fontcolor=darkmagenta];
@@ -60,14 +61,14 @@ graph {
 		rankdir="LR";
 		color=darkred;
 		
-		rest[label="REST", shape=box3d];
+		rest[label="REST", shape=box3d, color=green, fontcolor=green];
 		
-		user[label="USER", shape=box3d];
-		session[label="SESSION", shape=box3d];
-		product[label="PRODUCT", shape=box3d];
-		stock[label="STOCK", shape=box3d];
-		runonce[label="RUNONCE", shape=box3d];
-		report[label="REPORT", shape=box3d];
+		user[label="USER", shape=box3d, color=blue, fontcolor=blue];
+		session[label="SESSION", shape=box3d, color=blue, fontcolor=blue];
+		product[label="PRODUCT", shape=box3d, color=blue, fontcolor=blue];
+		stock[label="STOCK", shape=box3d, color=blue, fontcolor=blue];
+		runonce[label="RUNONCE", shape=box3d, color=blue, fontcolor=blue];
+		report[label="REPORT", shape=box3d, color=blue, fontcolor=blue];
 		
 		{rank="same"; rest; report;}
 		{rank="same"; user; session; product; stock; runonce;}
@@ -76,9 +77,7 @@ graph {
 		rest -- session[label="gRPC", color=blue, fontcolor=blue];
 		rest -- product[label="gRPC", color=blue, fontcolor=blue];
 		rest -- stock[label="gRPC", color=blue, fontcolor=blue];
-		
-		user -- session[label="gRPC", color=blue, fontcolor=blue];
-		product -- stock[label="gRPC", color=blue, fontcolor=blue];
+
 		rest -- report[label="gRPC", color=blue, fontcolor=blue];
 		
 		user -- db1 [lhead=cluster_db, label="DB\n(Pool)", color=darkmagenta, fontcolor=darkmagenta];
@@ -116,7 +115,7 @@ Os módulos planejados para o sistema são:
 
 - [x] `minerva-user`: Servidor gRPC para CRUD de usuários. Deve ser capaz de
   manipular as regras de negócios relacionadas a clientes.
-- [ ] `minerva-session`: Servidor gRPC para gerência de sessão de usuário.
+- [x] `minerva-session`: Servidor gRPC para gerência de sessão de usuário.
 - [ ] `minerva-product`: Servidor gRPC para CRUD de produtos. Deve ser capaz
   de manipular as regras de negócios relacionadas a produtos, mas que não
   envolvam controle de estoque.
@@ -179,10 +178,12 @@ pelo orquestrador de contêineres.
 No caso do serviço REST, verifique o arquivo `Rocket.toml` para avaliar
 a configuração em desenvolvimento e em produção do mesmo.
 
-| Serviço        | Variável                  | Valor em Produção |
-|----------------|---------------------------|-------------------|
-| USER           | `USER_SERVICE_SERVER`     | `users`           |
-| Banco de Dados | `DATABASE_SERVICE_SERVER` | `postgresql`      |
-| REST           | nenhuma                   | `rest`            |
-| RUNONCE        | nenhuma                   | `runonce`         |
+| Serviço                       | Variável                  | Valor em Produção |
+|-------------------------------|---------------------------|-------------------|
+| USER                          | `USER_SERVICE_SERVER`     | `users`           |
+| Banco de Dados Relacional     | `DATABASE_SERVICE_SERVER` | `postgresql`      |
+| Banco de Dados Não-Relacional | `MONGO_SERVICE_SERVER`    | `mongodb`         |
+| REST                          | nenhuma                   | `rest`            |
+| RUNONCE                       | nenhuma                   | `runonce`         |
+| SESSION                       | `SESSION_SERVICE_SERVER`  | `session`         |
 

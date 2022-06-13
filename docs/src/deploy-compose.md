@@ -1,6 +1,8 @@
 # Deploy usando Docker Compose
 
-![Docker Compose](./docker-compose.png)
+<center>
+<img src="./docker-compose.png" alt="Docker Compose" width="350"/>
+</center>
 
 Você pode realizar deploy do projeto usando Docker Compose. Todavia,
 esta não é a forma mais recomendada de realização de deploy.
@@ -12,7 +14,6 @@ esta não é a forma mais recomendada de realização de deploy.
 Docker Compose é uma ferramenta simples de orquestração de contêineres.
 Para o Minerva System, é principalmente uma forma de **testar** a forma
 como o serviço se comporta em rede.
-
 
 
 
@@ -33,84 +34,15 @@ virtual.
 
 ## Dependências
 
-Você precisará ter instalado:
+Você precisará ter:
 
 - Docker versão 20.10 ou superior;
-- Docker Compose versão 2.2.3 ou superior.
+- Docker Compose versão 2.2.3 ou superior;
+- As imagens do projeto (se não estiverem localmente disponíveis,
+  serão baixadas).
 
 Além disso, **todos os comandos a seguir devem ser executados no
 diretório raiz deste projeto**.
-
-
-
-## Gerando imagens
-
-Caso você só precise gerar as imagens Docker para o serviço, você
-poderá fazê-lo com o comando a seguir:
-
-```bash
-docker compose build
-```
-
-Se você nunca tiver realizado deploy da aplicação com Compose, isto
-**não é necessário**, uma vez que o Compose se encarregará de gerá-las
-no primeiro deploy.
-
-**ATENÇÃO: O PROCESSO DE GERAÇÃO DAS IMAGENS É DEMORADO.**
-
-
-### Gerando uma imagem
-
-Pode ocorrer de você querer gerar apenas uma imagem, por exemplo, quando
-você já tiver realizado deploy antes e tiver realizado uma modificação
-em apenas um microsservico, e precisar testá-lo.
-
-Para isso, use o comando a seguir, substituindo `<servico>` pelo nome
-do serviço (como listado no arquivo `docker-compose.yml`):
-
-```bash
-docker compose build <servico>
-```
-
-Caso a geração da imagem apenas reutilize o cache da mesma já existente,
-você poderá forçar a geração da imagem da seguinte forma:
-
-```bash
-docker compose build --no-cache <servico>
-```
-
-**ATENÇÃO: ESTE PROCESSO PODE SER DEMORADO.**
-
-**ATENÇÃO: RECOMPILAR A IMAGEM NÃO REINICIA UM SERVIÇO EM EXECUÇÃO.**
-
-
-
-### Nomes e tags das imagens geradas
-
-As imagens geradas pelos passos anteriores são geradas com nomes
-específicos. Esses nomes não fazem tanta diferença para o Docker
-Compose, mas podem ser muito úteis do ponto de vista do deploy via
-Kubernetes.
-
-Os nomes das imagens geradas podem ser verificados no arquivo
-`docker-compose.yml`. Mais especificamente, para cada serviço, existe
-uma propriedade `image` que determina o nome da imagem gerada.
-
-As imagens são sempre geradas com a tag `latest`.
-
-A seguir, temos uma tabela relacionando os serviços com os nomes e tags
-das imagens geradas.
-
-| Serviço      | Nome e tag da imagem       |
-|--------------|----------------------------|
-| `frontend`   | `minerva_frontend:latest`  |
-| `rest`       | `minerva_rest:latest`      |
-| `runonce`    | `minerva_runonce:latest`   |
-| `users`      | `minerva_users:latest`     |
-| `postgresql` | `postgres:14` (Não gerado) |
-| `pgadmin`    | `minerva_pgadmin:latest`   |
-
-
 
 
 

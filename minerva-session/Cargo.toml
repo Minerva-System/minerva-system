@@ -2,9 +2,19 @@
 name = "minerva-session"
 version = "0.1.0"
 edition = "2021"
+description = "User session management microservice for the Minerva System"
+authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
 
 [dependencies]
 minerva-rpc = {path = "../minerva-rpc"}
 minerva-data = {path = "../minerva-data"}
 tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync"]}
 dotenv = "0.15.0"
+tonic = "0.7"
+mongodb = "2.2.1"
+futures-util = "0.3"
+base64 = "0.13.0"
+diesel = { version = "1.4.4", features = ["postgres"] }
+chrono = {version = "0.4", features = ["serde", "rustc-serialize"]}
+
+

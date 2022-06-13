@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-deployment
+spec:
+  template:
+    metadata:
+      name: users
+      labels:
+        app: users
+    spec:
+      containers:
+        - name: users-container
+          image: luksamuk/minerva_users:0.2.0
+          ports:
+            - containerPort: 9010
+          envFrom:
+            - configMapRef:
+                name: ports-configmap
+            - configMapRef:
+                name: servers-configmap
+          resources:
+            requests:
+              cpu: 10m
+  replicas: 2
+  selector:
+    matchLabels:
+      app: users
+

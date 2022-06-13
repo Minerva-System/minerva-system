@@ -1,7 +1,9 @@
-[debug]
-address = "127.0.0.1"
-port    = 9000
+[default]
+address    = "127.0.0.1"
+port       = 9000
+secret_key = "8fQ8d5Nf8d0cEks0TD/rMTHpj7idSbD43L+3/uAmhYs="
 
 [release]
-address = "0.0.0.0"
-port    = 9000
+address    = "0.0.0.0"
+port       = 9000
+secret_key = "hLFn0gMaHJuvYQcDwhsRGHUh0surq7xK42nQPcA2X2A="

@@ -1,2 +1,0 @@
-FROM dpage/pgadmin4
-COPY pgadmin/servers.json /pgadmin4/servers.json

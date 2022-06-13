@@ -1,3 +1,16 @@
+//! # Minerva System: STOCK Service
+//!
+//! ## About this service
+//! This service's responsibility is that of managing anything related to a
+//! product's stock and its business rules.
+//!
+//! This service is not responsible for managing products themselves, but only
+//! data related to the product's stock and how this information is stored on
+//! the database.
+
+#![warn(clippy::all)]
+#![warn(missing_docs)]
+
 use dotenv::dotenv;
 use std::env;
 

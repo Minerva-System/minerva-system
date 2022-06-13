@@ -1,6 +1,10 @@
 # Introdução
 
+<center>
+
 ![Logomarca do Sistema Minerva](./minerva-logo.png)
+
+</center>
 
 Este documento trata da especificação funcional do Sistema Minerva. O sistema
 é majoritariamente programado utilizando o método eXtreme Programming, portanto

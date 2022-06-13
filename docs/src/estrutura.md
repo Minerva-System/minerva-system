@@ -31,29 +31,30 @@ tipos de Front-Ends que se comuniquem diretamente com o Back-End da aplicação,
 por exemplo, através de programas nativos para Desktop e Mobile.
 
 ```dot process
-digraph {
-	frontend[label="Front-End (Web)", shape=note];
-	backend[label="Back-End", shape=box3d];
-	db[label="BD", shape=cylinder];
-	desktop[label="Front-End (Desktop)", shape=box];
-	mobile[label="Front-End (Mobile)", shape=box];
+graph {
+	bgcolor=transparent;
+	frontend[label="Front-End (Web)", shape=note, style=filled];
+	backend[label="Back-End", shape=box3d, style=filled];
+	db[label="BD", shape=cylinder, style=filled];
+	desktop[label="Front-End (Desktop)", shape=box, style=filled];
+	mobile[label="Front-End (Mobile)", shape=box, style=filled];
 
 	subgraph {
 		rankdir="LR";
-		desktop -> backend [style=dotted, shape=none];
-		mobile -> backend [style=dotted, shape=none];
+		desktop -- backend [style=dashed, shape=none, color=darkorange];
+		mobile -- backend [style=dashed, shape=none, color=darkorange];
 	}
 
 	rankdir="LR";
-    frontend -> backend;
-	backend -> frontend;
-	backend -> db;
-	db -> backend;
+    frontend -- backend[color=darkorange];
+	backend -- db[color=darkmagenta];
 	
 	subgraph cluster_webservice {
+		bgcolor="#666666";
 		label="Serviço Web";
 		frontend;
 		subgraph cluster_internal {
+			bgcolor="#999999";
 			label="Interno";
 		    backend;
 			db;

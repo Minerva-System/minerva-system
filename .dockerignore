@@ -1,3 +1,4 @@
+.git/
 ./target
 **/*~
 **/*#*#
@@ -5,3 +6,5 @@
 *.md
 *.yml
 ./build
+docker-compose.yml
+docker-stack.yml

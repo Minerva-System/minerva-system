@@ -18,6 +18,14 @@ jobs:
         ports:
           - 5432:5432
 
+      mongodb:
+        image: mongo:5
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: mongo
+        ports:
+          - "27017:27017"
+
     steps:
       - name: Install PostgreSQL dependencies
         run: |
@@ -39,8 +47,10 @@ jobs:
       - name: Linter
         run: cargo fmt -- --check
 
-      - name: Clippy
+      - name: Clippy & Warnings
         run: cargo clippy -- -D clippy::all
+        env:
+          RUSTFLAGS: -D warnings
 
       - name: Run database migrations
         run: cargo run --bin minerva-runonce

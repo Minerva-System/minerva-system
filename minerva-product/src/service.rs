@@ -1,3 +1,6 @@
+//! This module encloses the implementation of the PRODUCTS service and the
+//! implementation of its gRPC protocol.
+
 use minerva_data as lib_data;
 use minerva_rpc as lib_rpc;
 use minerva_rpc::messages;
@@ -5,6 +8,7 @@ use minerva_rpc::metadata;
 use minerva_rpc::products::products_server::Products;
 use tonic::{Request, Response, Status};
 
+/// Represents the PRODUCTS service that will be attached to the server.
 #[derive(Default, Clone)]
 pub struct ProductsService;
 

@@ -1,7 +1,9 @@
 [package]
 name = "minerva-user"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
+description = "User management microservice for the Minerva System"
+authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
 
 [dependencies]
 minerva-rpc = {path = "../minerva-rpc"}

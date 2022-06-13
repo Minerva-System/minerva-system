@@ -1,7 +1,9 @@
 [package]
 name = "minerva-report"
-version = "0.1.0"
+version = "0.0.0"
 edition = "2021"
+description = "Report generation microservice for the Minerva System"
+authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
 
 [dependencies]
 minerva-rpc = {path = "../minerva-rpc"}

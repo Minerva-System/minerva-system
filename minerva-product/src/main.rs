@@ -1,3 +1,16 @@
+//! # Minerva System: PRODUCT Service
+//!
+//! ## About this service
+//! This service's responsibility is that of managing anything related to
+//! products, namely creation, updating, removal and listing. This also relates
+//! to business rules related to these operations.
+//!
+//! This service is also not responsible for managing the stock of any products.
+//! For that, refer to the STOCK Service.
+
+#![warn(clippy::all)]
+#![warn(missing_docs)]
+
 use dotenv::dotenv;
 use minerva_data::encryption;
 use minerva_rpc::products::products_server::ProductsServer;
@@ -6,6 +19,7 @@ use tonic::transport::Server;
 
 mod service;
 
+/// Entry point for this service.
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Minerva System: PRODUCT service");

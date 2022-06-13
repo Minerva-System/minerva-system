@@ -1,7 +1,9 @@
 [package]
 name = "minerva-runonce"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
+description = "Startup job for deploying the Minerva System"
+authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
 
 [dependencies]
 diesel_migrations = "1.4.0"
@@ -10,4 +12,4 @@ minerva-data = {path = "../minerva-data"}
 dotenv = "0.15.0"
 tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync"]}
 chrono = {version = "0.4", features = ["serde", "rustc-serialize"]}
-
+mongodb = "2.2.1"

@@ -12,14 +12,19 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y graphviz
-        
-      - name: Checkout repository
-        uses: actions/checkout@v2
 
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+
+      - name: Install Flutter
+        uses: britannio/action-install-flutter@v1
+        with:
+          version: "3.0.1"
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Rust build cache
         uses: Swatinem/rust-cache@v1
@@ -29,11 +34,25 @@ jobs:
           cargo install mdbook
           cargo install mdbook-graphviz
 
-      - name: Compile docs
+      - name: Generate Rust documentation
+        run: |
+         cargo doc --no-deps --document-private-items
+         mv target/doc docs/src/doc
+         rm docs/src/.gitignore
+
+      - name: Generate Dart documentation
+        run: |
+          cd minerva_frontend
+          flutter pub get
+          dart doc .
+          cd ..
+          mv minerva_frontend/doc/api docs/src/doc/minerva_frontend
+         
+      - name: Generate book
         run: |
           cd docs
           mdbook build
-
+          
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.2.5
         with:
