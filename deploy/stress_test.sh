@@ -73,7 +73,7 @@ function session_stress_test() {
 	sleep 0.01
     done;
     
-    rm -r /tmp/minerva-cookies
+    rm -r /tmp/minerva_cookies
 }
 
 
