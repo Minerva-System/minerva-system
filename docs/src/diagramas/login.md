@@ -4,7 +4,7 @@
 
 ```plantuml
 @startuml
-!theme spacelab
+!theme amiga
 
 actor       Usuário    as ator
 boundary    FrontEnd   as frontend
