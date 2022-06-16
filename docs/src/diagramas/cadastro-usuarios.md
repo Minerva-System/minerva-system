@@ -1,4 +1,4 @@
-# Listagem de usuários
+# Cadastro de usuários
 
 <center>
 
@@ -13,9 +13,8 @@ control     SESSION    as session
 database    PostgreSQL as postgres
 collections MongoDB    as mongo
 
-
-ator -> frontend: Acessa lista de usuários
-frontend -> api: Requisita página de usuários
+ator     ->  frontend:     Cadastra novo usuário
+frontend ->  api:          Requisita criação do novo cadastro
 activate api
 api      ->  session:      Verifica validade da sessão
 activate session
@@ -26,17 +25,19 @@ deactivate mongo
 api      <-- session:      Aprovação da sessão
 deactivate session
 
-api -> users:              Requisita lista de usuários
+api      ->  users:        Requisição de criação de usuário
 activate users
-users -> postgres:         Requisita dados de usuários
+users    ->  postgres:     Verifica se usuário já existe
 activate postgres
-users <-- postgres:        Retorna dados de usuários
+users    <-- postgres:     Retorno vazio
+users    ->  postgres:     Insere dados de novo usuário
+users    <-- postgres:     Dados do usuário recém-inserido
 deactivate postgres
-api <-- users:             Retorna lista de usuários
+api      <-- users:        Dados do usuário criado
 deactivate users
-frontend <-- api:          Retorna página de usuários
+frontend <-- api:          Dados do usuário cadastrado
 deactivate api
-ator <-- frontend:         Mostra usuários na interface
+ator     <-- frontend:     Mensagem de sucesso
 
 @enduml
 ```
