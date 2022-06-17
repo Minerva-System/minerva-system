@@ -1,6 +1,6 @@
 [package]
 name = "minerva-session"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "User session management microservice for the Minerva System"
 authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
