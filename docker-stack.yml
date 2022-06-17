@@ -42,7 +42,7 @@ services:
   
   # RUNONCE service
   runonce:
-    image: luksamuk/minerva_runonce:0.2.0
+    image: luksamuk/minerva_runonce:0.2.1
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb

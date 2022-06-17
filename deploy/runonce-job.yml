@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: runonce
-          image: luksamuk/minerva_runonce:0.2.0
+          image: luksamuk/minerva_runonce:0.2.1
           envFrom:
             - configMapRef:
                 name: runonce-configmap
