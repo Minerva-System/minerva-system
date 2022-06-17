@@ -15,6 +15,5 @@ mongodb = "2.2.1"
 futures-util = "0.3"
 base64 = "0.13.0"
 diesel = { version = "1.4.4", features = ["postgres"] }
-chrono = {version = "0.4", features = ["serde", "rustc-serialize"]}
-
+chrono = {version = "0.4", features = ["serde"]}
 
