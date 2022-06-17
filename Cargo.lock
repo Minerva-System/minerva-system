@@ -1132,7 +1132,7 @@ version = "0.0.0"
 
 [[package]]
 name = "minerva-data"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "bb8",
  "bb8-diesel",
@@ -1156,7 +1156,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-product"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "chrono",
  "diesel",
@@ -1216,7 +1216,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-session"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "base64",
  "chrono",
@@ -1232,7 +1232,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-stock"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "chrono",
  "diesel",
@@ -1244,7 +1244,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-user"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "bb8",
  "bb8-diesel",

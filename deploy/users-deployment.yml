@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: users-container
-          image: luksamuk/minerva_users:0.2.0
+          image: luksamuk/minerva_users:0.2.1
           ports:
             - containerPort: 9010
           envFrom:
