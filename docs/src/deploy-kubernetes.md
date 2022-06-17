@@ -302,6 +302,51 @@ O Front-End agora poderá ser acessado em `http://minerva-system.io/`,
 e a API poderá ser acessada em `http://minerva-system.io/api`.
 
 
+### Usando o DNS de Ingress do Minikube
+
+Você poderá também usar o Minikube como servidor DNS, evitando de inserir
+o URL diretamente em `/etc/hosts`. Para tanto, adicione os addons:
+
+```bash
+minikube addons enable ingress
+minikube addons enable ingress-dns
+```
+
+Descubra o IP do Minikube:
+
+```bash
+minikube ip
+```
+
+O Minikube possui uma vasta documentação a respeito de como configurar esse
+DNS, mas mostrarei como fazê-lo caso você utiliza SystemD e tiver o ResolveD
+instalado (como é o caso de uma instalação pura com Fedora 36).
+
+Edite o arquivo `/etc/systemd/resolved.conf`. Supondo que você use o DNS
+do Google, por exemplo, insira o IP do Minikube no DNS e configure um FallbackDNS
+também:
+
+```conf
+[Resolve]
+DNS=192.168.39.97 8.8.8.8
+FallbackDNS=8.8.4.4
+```
+
+Em seguida, reinicie o ResolveD:
+
+```bash
+sudo systemctl restart systemd-resolved
+```
+
+Pode ser que a conexão com os demais serviços da internet fiquem ligeiramente
+instáveis, _enquanto o Minikube estiver em execução_.
+
+Você poderá verificar se funciona adequadamente com o comando:
+
+```bash
+nslookup minerva-system.io
+```
+
 
 ## Monitorando via k9s
 
