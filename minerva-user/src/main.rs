@@ -28,7 +28,7 @@ mod tests;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("Minerva System: USER service");
+    println!("Minerva System: USERS service");
     println!("Copyright (c) 2022 Lucas S. Vieira");
     println!();
     dotenv().ok();
@@ -60,8 +60,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .add_service(UsersServer::new(service::UsersService { pools }))
         .serve(addr);
 
-    println!("USER is ready to accept connections.");
+    println!("USERS is ready to accept connections.");
     server.await?;
-    println!("USER shut down.");
+    println!("USERS shut down.");
     Ok(())
 }

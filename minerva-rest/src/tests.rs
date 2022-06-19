@@ -1,6 +1,7 @@
 use super::launch;
-use rocket::http::Status;
-use rocket::local::blocking::Client;
+use rocket::http::{ContentType, Status};
+use rocket::local::blocking::{Client, LocalResponse};
+use serde::Deserialize;
 use serde_json::json;
 use serial_test::serial;
 use std::{
@@ -24,6 +25,7 @@ impl Microservices {
             .arg(service)
             .current_dir("../")
             .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
             .spawn()
             .expect(&format!("Failed to create child process for {}", service));
 
@@ -90,43 +92,84 @@ impl Microservices {
 
     fn dispose(&mut self) {
         for (svc, proc) in self.services.iter_mut() {
-            proc.kill()
-                .expect(&format!("Successfully kill {} microservice", svc))
+            proc.kill().expect(&format!(
+                "Successfully send kill signal to {} microservice",
+                svc
+            ));
+            proc.wait().unwrap();
         }
     }
+}
+
+fn make_client() -> Client {
+    let config = rocket::Config {
+        log_level: rocket::config::LogLevel::Critical,
+        ..rocket::Config::debug_default()
+    };
+    Client::tracked(launch().configure(config)).expect("Instância válida da API")
 }
 
 /* Authentication */
 
 #[test]
 #[serial]
-fn login_only() {
+fn login_logout() {
     let mut svc = Microservices::spawn(vec!["SESSION"]);
+    let client = make_client();
 
-    println!("Launching API...");
-    let client = Client::tracked(launch()).expect("Instância válida da API");
+    // Login
+    let response = client
+        .post("/teste/login")
+        .body(
+            json! ({
+                "login": "admin",
+                "password": "admin"
+            })
+            .to_string(),
+        )
+        .dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(response.content_type(), Some(ContentType::JSON));
 
-    let request = client.post("/teste/login").body(
-        json! ({
-            "login": "admin",
-            "password": "admin"
-        })
-        .to_string(),
-    );
+    #[derive(Deserialize)]
+    struct LoginResponse {
+        pub token: String,
+        pub tenant: String,
+    }
 
-    let response = request.dispatch();
+    let data = response
+        .into_json::<LoginResponse>()
+        .expect("Deserialize login data");
+
+    assert_eq!(data.tenant.trim(), "teste");
+    assert!(!data.token.trim().is_empty());
+
+    // Logout
+    // Reuses previous cookies
+    let response = client
+        .post("/logout")
+        .body(
+            json!({
+                "login": "admin",
+                "password": "admin"
+            })
+            .to_string(),
+        )
+        .dispatch();
     assert_eq!(response.status(), Status::Ok);
 
     svc.dispose();
 }
 
+/* Users API */
+
 #[test]
 #[serial]
-fn login_logout() {
-    let mut svc = Microservices::spawn(vec!["SESSION"]);
+fn get_user_data() {
+    use minerva_data::user::User;
 
-    println!("Launching API...");
-    let client = Client::tracked(launch()).expect("Instância válida da API");
+    let mut svc = Microservices::spawn(vec!["SESSION", "USERS"]);
+    let client = make_client();
 
     // Login
     let response = client
@@ -141,8 +184,138 @@ fn login_logout() {
         .dispatch();
     assert_eq!(response.status(), Status::Ok);
 
+    // Get users
+    let response: LocalResponse = client.get("/users").dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(response.content_type(), Some(ContentType::JSON));
+
+    let user_list = response
+        .into_json::<Vec<User>>()
+        .expect("Deserialize User list");
+    let user = user_list
+        .iter()
+        .find(|u| u.login.trim() == "admin")
+        .expect("Could not find admin");
+    assert_eq!(user.name.trim(), "Administrator");
+    assert_eq!(user.email, None);
+
+    // Get single user: the same administrator found before
+    let id = user.id;
+    let response = client.get(format!("/users/{}", id)).dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(response.content_type(), Some(ContentType::JSON));
+
+    let user = response.into_json::<User>().expect("Deserialize User");
+    assert_eq!(user.login.trim(), "admin");
+    assert_eq!(user.name.trim(), "Administrator");
+    assert_eq!(user.email, None);
+
     // Logout
-    // Reuses previous cookies
+    let response = client
+        .post("/logout")
+        .body(
+            json!({
+                "login": "admin",
+                "password": "admin"
+            })
+            .to_string(),
+        )
+        .dispatch();
+    assert_eq!(response.status(), Status::Ok);
+
+    svc.dispose();
+}
+
+#[test]
+#[serial]
+fn crud_user() {
+    use minerva_data::user::User;
+
+    let mut svc = Microservices::spawn(vec!["SESSION", "USERS"]);
+    let client = make_client();
+
+    // Login
+    let response = client
+        .post("/teste/login")
+        .body(
+            json! ({
+                "login": "admin",
+                "password": "admin"
+            })
+            .to_string(),
+        )
+        .dispatch();
+    assert_eq!(response.status(), Status::Ok);
+
+    // Create user
+    let response = client
+        .post("/users")
+        .body(
+            json!({
+            "login": "fulano_teste_rest",
+            "name": "Fulano da Silva",
+            "email": "fulano@exemplo.com",
+            "password": "senha123",
+            })
+            .to_string(),
+        )
+        .dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(response.content_type(), Some(ContentType::JSON));
+
+    let user = response.into_json::<User>().expect("Deserialize User");
+    assert_eq!(user.login.trim(), "fulano_teste_rest");
+    assert_eq!(user.name.trim(), "Fulano da Silva");
+    assert_eq!(user.email, Some("fulano@exemplo.com".into()));
+
+    // Fetch user as inserted
+    let id = user.id;
+    let response = client.get(format!("/users/{}", id)).dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(response.content_type(), Some(ContentType::JSON));
+
+    let user = response.into_json::<User>().expect("Deserialize User");
+    assert_eq!(user.login.trim(), "fulano_teste_rest");
+    assert_eq!(user.name.trim(), "Fulano da Silva");
+    assert_eq!(user.email, Some("fulano@exemplo.com".into()));
+
+    // Update user data
+    let response = client
+        .put(format!("/users/{}", id))
+        .body(
+            json!({
+                "login": user.login.clone(),
+                "name": "Fulano de Tal",
+                "email": user.email.clone()
+            })
+            .to_string(),
+        )
+        .dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(response.content_type(), Some(ContentType::JSON));
+
+    let user = response.into_json::<User>().expect("Deserialize User");
+    assert_eq!(user.login.trim(), "fulano_teste_rest");
+    assert_eq!(user.name.trim(), "Fulano de Tal");
+    assert_eq!(user.email, Some("fulano@exemplo.com".into()));
+
+    // Fetch modified user again
+    let response = client.get(format!("/users/{}", id)).dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(response.content_type(), Some(ContentType::JSON));
+
+    let user = response.into_json::<User>().expect("Deserialize User");
+    assert_eq!(user.login.trim(), "fulano_teste_rest");
+    assert_eq!(user.name.trim(), "Fulano de Tal");
+    assert_eq!(user.email, Some("fulano@exemplo.com".into()));
+
+    // Remove user
+    let response = client.delete(format!("/users/{}", id)).dispatch();
+    assert_eq!(response.status(), Status::Ok);
+    assert_eq!(response.content_type(), Some(ContentType::JSON));
+    assert_eq!(response.into_string(), Some("{}".into()));
+
+    // Logout
     let response = client
         .post("/logout")
         .body(

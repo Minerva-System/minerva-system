@@ -6,7 +6,7 @@ use crate::schema::user;
 use minerva_rpc::messages;
 
 /// DTO representing a single entry on the `user` table.
-#[derive(Queryable, Serialize, Clone, Debug)]
+#[derive(Queryable, Serialize, Deserialize, Clone, Debug)]
 pub struct User {
     /// ID of the entry on the table.
     pub id: i32,
@@ -18,6 +18,7 @@ pub struct User {
     pub email: Option<String>,
     /// Hash of the password of the user for this entry.
     #[serde(skip_serializing)]
+    #[serde(skip_deserializing)]
     pub pwhash: Vec<u8>,
 }
 

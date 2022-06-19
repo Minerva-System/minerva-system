@@ -32,7 +32,7 @@ impl Users for UsersService {
             lib_rpc::get_address(&req),
             requestor.clone(),
             tenant.clone(),
-            "USER::INDEX",
+            "USERS::INDEX",
         );
 
         let page = req.into_inner().index.unwrap_or(0);
@@ -67,7 +67,7 @@ impl Users for UsersService {
             lib_rpc::get_address(&req),
             requestor.clone(),
             tenant.clone(),
-            "USER::SHOW",
+            "USERS::SHOW",
         );
 
         let result = {
@@ -104,7 +104,7 @@ impl Users for UsersService {
             lib_rpc::get_address(&req),
             requestor.clone(),
             tenant.clone(),
-            "USER::STORE",
+            "USERS::STORE",
         );
 
         let result = {
@@ -140,7 +140,7 @@ impl Users for UsersService {
             lib_rpc::get_address(&req),
             requestor.clone(),
             tenant.clone(),
-            "USER::UPDATE",
+            "USERS::UPDATE",
         );
 
         let result = {
@@ -173,7 +173,7 @@ impl Users for UsersService {
             lib_rpc::get_address(&req),
             requestor.clone(),
             tenant.clone(),
-            "USER::DELETE",
+            "USERS::DELETE",
         );
 
         let result = {
