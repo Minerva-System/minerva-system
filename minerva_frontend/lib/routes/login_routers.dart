@@ -7,7 +7,7 @@ class LoginRouters {
 
   static final routers = <GetPage>[
     GetPage(
-      name: '/:tenant/',
+      name: '/',
       page: () => const LoginPage(),
     ),
   ];
