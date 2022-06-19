@@ -26,7 +26,7 @@
 	  - [Usuários](./diagramas-sequencia-usuarios.md)
 		- [Cadastro de usuários](./diagramas/cadastro-usuarios.md)
 	    - [Listagem de usuários](./diagramas/lista-usuarios.md)
-		- [Consultar usuário]()
+		- [Consultar usuário](./diagramas/consultar-usuarios.md)
 		- [Alteração de cadastro de usuários](./diagramas/alteracao-usuarios.md)
 		- [Remoção de usuários](./diagramas/remocao-usuarios.md)
 	  - [Produtos]()
