@@ -218,33 +218,40 @@ left to right direction
 actor :Usuário do Sistema: as user
 
 package STOCK {
-	usecase "início de estoque" as estoque_inicio
-	usecase movimentação as estoque_movimentacao
-	usecase entrada as estoque_entrada
-	usecase saída as estoque_saida
-	usecase consulta as estoque_consulta
+	usecase "início de estoque" as inicio
+	usecase movimentação as movimentacao
+	usecase entrada as entrada
+	usecase saída as saida
+	usecase consulta as consulta
+	usecase "listagem de estoques" as listagem
+	usecase "listagem de movimentações" as listagem_movimentos
 
-	(estoque_movimentacao) .> (estoque_inicio) : << extend >>
-	(estoque_entrada) .> (estoque_movimentacao) : << include >>
-	(estoque_saida) .> (estoque_movimentacao) : << include >>
+	(movimentacao) .> (inicio) : << extend >>
+	(entrada) .> (movimentacao) : << include >>
+	(saida) .> (movimentacao) : << include >>
 	
 	note "O usuário deverá ter iniciado\numa sessão para estes casos." as must_have_session
 	note "Para validar esses casos,\no produto associado deve existir." as product_must_exist
 	
-	(estoque_inicio)..must_have_session
-	(estoque_entrada)..must_have_session
-	(estoque_saida)..must_have_session
-	(estoque_consulta)..must_have_session
+	(inicio)..must_have_session
+	(entrada)..must_have_session
+	(saida)..must_have_session
+	(consulta)..must_have_session
+	(listagem)..must_have_session
+	(listagem_movimentos)..must_have_session
 	
-	(estoque_inicio)..product_must_exist
-	(estoque_movimentacao)..product_must_exist
-	(estoque_consulta)..product_must_exist
+	(inicio)..product_must_exist
+	(movimentacao)..product_must_exist
+	(consulta)..product_must_exist
+	(listagem_movimentos)..product_must_exist
 }
 
-user -- estoque_inicio
-user -- estoque_entrada
-user -- estoque_saida
-user -- estoque_consulta
+user -- inicio
+user -- entrada
+user -- saida
+user -- consulta
+user -- listagem
+user -- listagem_movimentos
 
 @enduml
 ```
