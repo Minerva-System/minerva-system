@@ -107,15 +107,8 @@ and</li>
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
-  &#47;&#47; Start normally at root, getting a 404.
-  &#47;&#47; Otherwise use the &#39;minerva&#39; tenant
-  var initialRoute = &#39;&#47;&#39;;
-  if (kDebugMode) {
-    initialRoute = &#39;&#47;minerva&#47;&#39;;
-  }
-
   return GetMaterialApp(
-    initialRoute: initialRoute,
+    initialRoute: &#39;&#47;&#39;,
     title: &#39;Minerva System&#39;,
     getPages: [
       ...LoginRouters.routers,
@@ -187,7 +180,7 @@ Widget build(BuildContext context) {
 <footer>
   <span class="no-break">
     minerva_frontend
-      1.0.0+1
+      0.1.1
   </span>
 
   
