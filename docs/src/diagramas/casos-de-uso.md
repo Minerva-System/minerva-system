@@ -46,9 +46,9 @@ left to right direction
 actor :Usuário do Sistema: as user
 
 package USERS {
-	usecase cadastro as cadastro
-	usecase listagem as listagem
-	usecase consulta as consulta
+	usecase cadastro
+	usecase listagem
+	usecase consulta
 	usecase alteração as alteracao
 	usecase remoção as remocao
 	
@@ -81,9 +81,30 @@ user -- remocao
 !theme amiga
 left to right direction
 actor :Usuário do Sistema: as user
+actor :Administrador do Sistema: as sysadmin
 
 package TENANCY {
+	usecase "listagem de nomes" as listagem_nomes
+	usecase listagem
+	usecase cadastro
+	usecase desativação as desativacao
+	
+	note right of listagem_nomes
+		Esta funcionalidade não requer autenticação,
+		pois poderá ser utilizada na tela de login.
+	end note
 }
+
+user -- listagem_nomes
+sysadmin -- listagem
+sysadmin -- cadastro
+sysadmin -- desativacao
+
+note top of sysadmin
+	O administrador do sistema deve ter permissões
+	de alterações globais apenas para gerenciamento
+	de inquilinos.
+end note
 
 @enduml
 ```
@@ -131,7 +152,17 @@ left to right direction
 actor :Usuário do Sistema: as user
 
 package REPORT {
+	usecase "obter dados do relatório" as obter_dados
+	usecase "emitir PDF do relatório" as emitir_pdf
+	
+	note "O usuário deverá ter iniciado\numa sessão para estes casos." as must_have_session
+	
+	(obter_dados)..must_have_session
+	(emitir_pdf)..must_have_session
 }
+
+user -- obter_dados
+user -- emitir_pdf
 
 @enduml
 ```
@@ -269,7 +300,35 @@ left to right direction
 actor :Usuário do Sistema: as user
 
 package COMM {
+	usecase "enviar mensagem instantânea" as enviar
+	usecase "enviar para WhatsApp" as whatsapp
+	usecase "enviar para Facebook Messenger" as messenger
+	usecase "enviar para Instagram" as instagram
+	usecase "enviar para Telegram" as telegram
+	
+	note "O usuário deverá ter iniciado\numa sessão para estes casos." as must_have_session
+	
+	(whatsapp) .> (enviar) : << include >>
+	(messenger) .> (enviar) : << include >>
+	(instagram) .> (enviar) : << include >>
+	(telegram) .> (enviar) : << include >>
+	
+	(whatsapp)..must_have_session
+	(messenger)..must_have_session
+	(instagram)..must_have_session
+	(telegram)..must_have_session
+	
+	note right of enviar
+		Os dados de envio da plataforma devem
+		existir no cadastro do cliente
+		referenciado.
+	end note
 }
+
+user -- whatsapp
+user -- messenger
+user -- instagram
+user -- telegram
 
 @enduml
 ```
