@@ -32,6 +32,7 @@ fn launch() -> rocket::Rocket<rocket::Build> {
     dotenv().ok();
 
     rocket::build()
+        .register("/", controller::handlers::catchers())
         .mount("/", controller::auth::routes())
         .mount("/users", controller::user::routes())
 }
