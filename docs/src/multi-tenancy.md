@@ -5,6 +5,10 @@ capaz de gerenciar bancos de dados diferentes dependendo do *tenant*
 (cliente do serviço) atual. No Sistema Minerva, isso é gerenciado de
 acordo com a forma como as requisições são recebidas.
 
+Atualmente, o *multi-tenancy* é gerenciado de forma estática, através
+de um arquivo de configuração, mas em breve será gerenciado através
+do microsserviço `TENANCY`.
+
 ## Configuração
 
 Os tenants devem ser gerenciados através do arquivo `tenancy.toml`.
