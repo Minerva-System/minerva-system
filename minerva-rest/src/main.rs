@@ -21,6 +21,9 @@ mod controller;
 mod fairings;
 mod utils;
 
+#[cfg(test)]
+mod tests;
+
 /// Entry point for this service. Creates the service and routes that will be
 /// served by the REST server.
 #[launch]
