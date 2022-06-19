@@ -26,7 +26,7 @@ Não se esqueça de consultar estes documentos com frequência.
   Utilitário de configuração inicial do sistema durante um deploy.
 - [SESSION](./doc/minerva_session/index.html) \
   Serviço de gerenciamento de sessão de usuário.
-- [USER](./doc/minerva_user/index.html) \
+- [USERS](./doc/minerva_user/index.html) \
   Serviço de gerenciamento de usuários.
 - PRODUCT _(não implementado)_ \
   Serviço de gerenciamento de produtos.
@@ -38,6 +38,10 @@ Não se esqueça de consultar estes documentos com frequência.
   Serviço de gerenciamento de clientes.
 - AUDIT _(não implementado)_ \
   Serviço de gerenciamento de _logs_ de auditoria.
+- TENANCY _(não implementado)_ \
+  Serviço de gerenciamento de inquilinos.
+- COMM _(não implementado)_ \
+  Serviço de gerenciamento de comunicações via mensagem instantânea.
 
 ## Bibliotecas
 
