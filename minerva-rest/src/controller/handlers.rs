@@ -3,7 +3,13 @@ use rocket::Request;
 use serde_json::json;
 
 pub fn catchers() -> Vec<rocket::Catcher> {
-    catchers![bad_request, unauthorized, not_found, internal]
+    catchers![
+        bad_request,
+        unauthorized,
+        not_found,
+        internal,
+        service_unavailable
+    ]
 }
 
 fn gen_message(message: &str) -> String {
@@ -33,5 +39,12 @@ fn not_found(_req: &Request) -> Response {
 fn internal(_req: &Request) -> Response {
     Response::InternalServerError(gen_message(
         "There was a problem in the service while processing your request.",
+    ))
+}
+
+#[catch(503)]
+fn service_unavailable(_req: &Request) -> Response {
+    Response::ServiceUnavailable(gen_message(
+	"The service is currently unavailable. This could be a problem with the authentication service."
     ))
 }
