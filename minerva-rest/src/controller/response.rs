@@ -44,6 +44,10 @@ pub enum Response {
     #[response(status = 412, content_type = "json")]
     PreconditionFailed(String),
 
+    /// 422 Unprocessable Entity
+    #[response(status = 422, content_type = "json")]
+    UnprocessableEntity(String),
+
     /// 444 No Response
     #[response(status = 444, content_type = "json")]
     NoResponse(String),
@@ -121,10 +125,10 @@ impl Response {
             Code::DeadlineExceeded => Self::RequestTimeout(message),
             Code::FailedPrecondition => Self::PreconditionFailed(message),
             Code::Internal => Self::InternalServerError(message),
-            Code::InvalidArgument => Self::BadRequest(message),
+            Code::InvalidArgument => Self::UnprocessableEntity(message),
             Code::NotFound => Self::NotFound(message),
             Code::Ok => panic!("Returned an error with an 'OK' status. What???"),
-            Code::OutOfRange => Self::BadRequest(message),
+            Code::OutOfRange => Self::UnprocessableEntity(message),
             Code::PermissionDenied => Self::Unauthorized(message),
             Code::Unauthenticated => Self::NetworkAuthenticationRequired(message),
             Code::Unavailable => Self::ServiceUnavailable(message),

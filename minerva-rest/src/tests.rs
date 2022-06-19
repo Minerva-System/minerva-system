@@ -130,6 +130,8 @@ fn login_logout() {
         .dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
+    assert!(response.cookies().get("tenant").is_some());
+    assert!(response.cookies().get_private("auth_token").is_some());
 
     #[derive(Deserialize)]
     struct LoginResponse {
@@ -146,16 +148,7 @@ fn login_logout() {
 
     // Logout
     // Reuses previous cookies
-    let response = client
-        .post("/logout")
-        .body(
-            json!({
-                "login": "admin",
-                "password": "admin"
-            })
-            .to_string(),
-        )
-        .dispatch();
+    let response = client.post("/logout").dispatch();
     assert_eq!(response.status(), Status::Ok);
 
     svc.dispose();
@@ -211,16 +204,7 @@ fn get_user_data() {
     assert_eq!(user.email, None);
 
     // Logout
-    let response = client
-        .post("/logout")
-        .body(
-            json!({
-                "login": "admin",
-                "password": "admin"
-            })
-            .to_string(),
-        )
-        .dispatch();
+    let response = client.post("/logout").dispatch();
     assert_eq!(response.status(), Status::Ok);
 
     svc.dispose();
@@ -316,16 +300,90 @@ fn crud_user() {
     assert_eq!(response.into_string(), Some("{}".into()));
 
     // Logout
+    let response = client.post("/logout").dispatch();
+    assert_eq!(response.status(), Status::Ok);
+
+    svc.dispose();
+}
+
+#[test]
+#[serial]
+fn failed_requests() {
+    let client = make_client();
+
+    // Requests for default catchers
+
+    // 404 with an invalid route
+    let response = client.get("/invalidroute").dispatch();
+    assert_eq!(response.status(), Status::NotFound);
+    assert_eq!(response.content_type(), Some(ContentType::JSON));
+
+    // 503 for trying to log in while SESSION was not created
     let response = client
-        .post("/logout")
+        .post("/teste/login")
         .body(
-            json!({
+            json! ({
                 "login": "admin",
                 "password": "admin"
             })
             .to_string(),
         )
         .dispatch();
+    assert_eq!(response.status(), Status::ServiceUnavailable);
+    assert_eq!(response.content_type(), Some(ContentType::JSON));
+    assert_eq!(response.cookies().get("tenant"), None);
+    assert_eq!(response.cookies().get_private("token"), None);
+
+    // Create microservices
+    let mut svc = Microservices::spawn(vec!["SESSION", "USERS"]);
+
+    // 422 for a malformed login request
+    let response = client
+        .post("/teste/login")
+        .body(
+            json! ({
+                "login": "admin",
+            })
+            .to_string(),
+        )
+        .dispatch();
+    assert_eq!(response.status(), Status::UnprocessableEntity);
+    assert_eq!(response.content_type(), Some(ContentType::JSON));
+
+    // 401 for attempting to list users without logging in
+    let response = client.get("/users").dispatch();
+    assert_eq!(response.status(), Status::Unauthorized);
+    assert_eq!(response.content_type(), Some(ContentType::JSON));
+
+    // Login
+    let response = client
+        .post("/teste/login")
+        .body(
+            json! ({
+                "login": "admin",
+                "password": "admin"
+            })
+            .to_string(),
+        )
+        .dispatch();
+    assert_eq!(response.status(), Status::Ok);
+
+    // 422 for a malformed user creation request
+    let response = client
+        .post("/users")
+        .body(
+            json!({
+                "name": "Fulano da Silva",
+                "email": "fulano@exemplo.com",
+            })
+            .to_string(),
+        )
+        .dispatch();
+    assert_eq!(response.status(), Status::UnprocessableEntity);
+    assert_eq!(response.content_type(), Some(ContentType::JSON));
+
+    // Logout
+    let response = client.post("/logout").dispatch();
     assert_eq!(response.status(), Status::Ok);
 
     svc.dispose();
