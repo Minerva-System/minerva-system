@@ -6,6 +6,7 @@ use serial_test::serial;
 use std::{
     io::{BufRead, BufReader},
     process::{Child, Command, Stdio},
+    time::{Duration, SystemTime},
 };
 
 #[derive(Debug)]
@@ -19,9 +20,10 @@ impl Microservices {
         // Spawn through `cargo run`
         let mut child = Command::new("cargo")
             .arg("run")
-            .current_dir(format!("../{}", service))
+            .arg("--bin")
+            .arg(service)
+            .current_dir("../")
             .stdout(Stdio::piped())
-            .stdin(Stdio::piped())
             .spawn()
             .expect(&format!("Failed to create child process for {}", service));
 
@@ -29,9 +31,9 @@ impl Microservices {
         // in command output
         let expected_text = format!("{} is ready to accept connections.", name);
 
-        println!("Awaiting for {} to be ready...", name);
+        println!("Awaiting for microservice {} to be ready...", name);
+        let start = SystemTime::now();
         'await_child: loop {
-            // TODO: Add a test timeout
             if let Some(stdout) = &mut child.stdout {
                 // There aren't many lines so slurp them on memory
                 let lines = BufReader::new(stdout).lines().enumerate();
@@ -45,6 +47,20 @@ impl Microservices {
                     }
                 }
             }
+            // Check for timeout. Max tolerance: two minutes.
+            let duration = SystemTime::now().duration_since(start).unwrap();
+            if duration > Duration::from_secs(120) {
+                child
+                    .kill()
+                    .expect("Gracefully kill microservice spawning that takes too long");
+                panic!(
+                    "Failed while spawning microservice {}: Timeout after two minutes",
+                    name
+                );
+            }
+
+            // Pause thread for two seconds
+            std::thread::sleep(Duration::from_secs(2));
         }
         child
     }
