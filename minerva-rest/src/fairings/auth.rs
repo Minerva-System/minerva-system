@@ -44,7 +44,7 @@ impl<'r> FromRequest<'r> for SessionInfo {
     async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
         let tenant = match req.cookies().get(crate::controller::auth::TENANT_COOKIE) {
             Some(cookie) => cookie.value().to_string(),
-            None => return Outcome::Failure((Status::BadRequest, SessionError::MissingTenant)),
+            None => return Outcome::Failure((Status::Unauthorized, SessionError::MissingTenant)),
         };
 
         match req
