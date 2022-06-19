@@ -30,6 +30,8 @@ Adicionalmente, será possível manter uma maleabilidade que permita a confecç�
 tipos de Front-Ends que se comuniquem diretamente com o Back-End da aplicação, como
 por exemplo, através de programas nativos para Desktop e Mobile.
 
+<center>
+
 ```dot process
 graph {
 	bgcolor=transparent;
@@ -62,3 +64,5 @@ graph {
 	}
 }
 ```
+
+</center>

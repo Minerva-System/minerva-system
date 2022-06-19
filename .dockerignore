@@ -6,5 +6,8 @@
 *.md
 *.yml
 ./build
+./deploy
 docker-compose.yml
 docker-stack.yml
+*.sh
+

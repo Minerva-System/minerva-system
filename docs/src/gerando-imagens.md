@@ -3,8 +3,8 @@
 
 ## Script para geração de imagens
 
-Já existe um script separado para a geração das imagens. Para gerá-las, vá até
-a raiz do repositório e execute o comando:
+Já existe um script separado para a geração das imagens (com _tags_
+apropriadas). Para gerá-las, vá até a raiz do repositório e execute o comando:
 
 ```bash
 ./generate_images.sh
@@ -45,6 +45,22 @@ docker image build -f build/Dockerfile.frontend \
 	.
 ```
 
+### Criando uma tag para a imagem
+
+Todas as imagens são geradas automaticamente com _tags_ de acordo com o projeto
+do qual está sendo gerado (arquivos `Cargo.toml` e `pubspec.yaml`).
+
+Se você estiver gerando as imagens manualmente, poderá definir uma _tag_ como
+no exemplo a seguir:
+
+```bash
+# Faça algo similar para cada uma das imagens
+docker image tag \
+	seu_username/minerva_users \
+	seu_username/minerva_users:0.2.0
+```
+
+
 ### PgAdmin 4
 
 A imagem com PgAdmin 4 é customizada com meros arquivos de configuração para
@@ -66,11 +82,13 @@ específicos. Esses nomes serão muito úteis do ponto de vista do
 envio dessas imagens para o DockerHub e do deploy via Docker
 Compose, Docker Swarm e Kubernetes.
 
-As imagens são sempre geradas com a tag `latest`.
+As imagens são sempre geradas com a tag `latest`, mas também
+receberão _tags_ de acordo com seus arquivos de projeto (`Cargo.toml`
+e `pubspec.yaml`).
 
 A seguir, temos uma tabela relacionando os serviços com os nomes e tags
 das imagens geradas. Veja que elas se relacionam, inclusive, com a forma
-como essas imagens encontram-se no DockerHub (sob o /username/ `luksamuk`):
+como essas imagens encontram-se no DockerHub (sob o _username_ `luksamuk`):
 
 | Serviço      | Nome e tag da imagem               |
 |--------------|------------------------------------|
@@ -91,10 +109,6 @@ Para enviar uma imagem para o DockerHub, primeiro é necessário se certificar d
 que essa imagem possua uma _tag_ adequada. Por exemplo, supondo que acabamos de
 gerar a imagem com a _tag_ 0.2.0 para o módulo `users`:
 
-```bash
-# Faça algo similar para cada uma das imagens
-docker image tag luksamuk/minerva_users luksamuk/minerva_users:0.2.0
-```
 
 Em seguida, poderemos enviar todas as tags das imagens para o DockerHub.
 

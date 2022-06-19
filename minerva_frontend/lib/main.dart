@@ -13,15 +13,8 @@ class MinervaMainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Start normally at root, getting a 404.
-    // Otherwise use the 'minerva' tenant
-    var initialRoute = '/';
-    if (kDebugMode) {
-      initialRoute = '/minerva/';
-    }
-    
     return GetMaterialApp(
-      initialRoute: initialRoute,
+      initialRoute: '/',
       title: 'Minerva System',
       getPages: [
         ...LoginRouters.routers,

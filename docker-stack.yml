@@ -3,7 +3,7 @@ version: "3"
 services:
   # Front-End service
   frontend:
-    image: luksamuk/minerva_frontend:latest
+    image: luksamuk/minerva_frontend:0.1.1
     environment:
       - NGINX_PORT=80
     ports:
@@ -42,7 +42,7 @@ services:
   
   # RUNONCE service
   runonce:
-    image: luksamuk/minerva_runonce:0.2.0
+    image: luksamuk/minerva_runonce:0.2.1
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb

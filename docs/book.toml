@@ -5,7 +5,11 @@ multilingual = false
 src = "src"
 title = "Minerva System"
 
-# Install mdbook-graphviz using Cargo so that Graphviz works.
 [preprocessor.graphviz]
 command = "mdbook-graphviz"
 output-to-file = false
+
+[preprocessor.plantuml]
+plantuml-cmd="plantuml"
+clickable-img=true
+

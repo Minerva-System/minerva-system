@@ -7,7 +7,7 @@ class MainRouters {
 
   static final routers = <GetPage>[
     GetPage(
-      name: '/:tenant/main',
+      name: '/main',
       page: () => const MainPage(),
     ),
   ];

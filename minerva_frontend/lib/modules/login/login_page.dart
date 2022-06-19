@@ -64,9 +64,7 @@ class _LoginPageState extends MinervaState<LoginPage, LoginController> {
                 onPressed: () {
                   final formValid = _formKey.currentState?.validate() ?? false;
                   if (formValid) {
-                    // TODO: Perform actual login
-                    var tenant = "/${Get.parameters['tenant'] ?? 'minerva'}";
-                    Get.toNamed("$tenant/main");
+                    Get.toNamed("/main");
                   }
                 },
                 child: const Icon(

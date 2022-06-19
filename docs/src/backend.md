@@ -35,6 +35,15 @@ Esses componentes possuem análogos programados, mas não são todos os módulos
 da aplicação, que também constituem-se de bibliotecas que podem ser utilizadas
 e referenciadas entre si.
 
+<style>
+svg:not(:root ) {
+      max-width: 100%;
+	  height: auto;
+}
+</style>
+
+<center>
+
 ```dot process
 graph {
 	bgcolor=transparent;
@@ -63,31 +72,81 @@ graph {
 		
 		rest[label="REST", shape=box3d, color=green, fontcolor=green];
 		
+		tenancy[label="TENANCY", shape=box3d, color=blue, fontcolor=blue];
 		user[label="USER", shape=box3d, color=blue, fontcolor=blue];
 		session[label="SESSION", shape=box3d, color=blue, fontcolor=blue];
 		product[label="PRODUCT", shape=box3d, color=blue, fontcolor=blue];
 		stock[label="STOCK", shape=box3d, color=blue, fontcolor=blue];
-		runonce[label="RUNONCE", shape=box3d, color=blue, fontcolor=blue];
+		runonce[label="RUNONCE", shape=box, color=lightblue, fontcolor=blue];
 		report[label="REPORT", shape=box3d, color=blue, fontcolor=blue];
+		client[label="CLIENT", shape=box3d, color=blue, fontcolor=blue];
+		audit[label="AUDIT", shape=box3d, color=blue, fontcolor=blue];
+		comm[label="COMM", shape=box3d, color=blue, fontcolor=blue];
 		
-		{rank="same"; rest; report;}
-		{rank="same"; user; session; product; stock; runonce;}
+		user -- session [color=blue, fontcolor=blue, penwidth=2.0];
+		comm -- client [color=blue, fontcolor=blue, penwidth=2.0];
 		
-		rest -- user[label="gRPC", color=blue, fontcolor=blue];
-		rest -- session[label="gRPC", color=blue, fontcolor=blue];
-		rest -- product[label="gRPC", color=blue, fontcolor=blue];
-		rest -- stock[label="gRPC", color=blue, fontcolor=blue];
+		rest -- tenancy[color=blue, fontcolor=blue, penwidth=2.0];
+		rest -- user[color=blue, fontcolor=blue, penwidth=2.0];
+		rest -- session[color=blue, fontcolor=blue, penwidth=2.0];
+		rest -- product[color=blue, fontcolor=blue, penwidth=2.0];
+		rest -- stock[color=blue, fontcolor=blue, penwidth=2.0];
+		rest -- client[color=blue, fontcolor=blue, penwidth=2.0];
+		rest -- audit[color=blue, fontcolor=blue, penwidth=2.0];
+		rest -- comm[color=blue, fontcolor=blue, penwidth=2.0];
 
-		rest -- report[label="gRPC", color=blue, fontcolor=blue];
+		rest -- report[color=blue, fontcolor=blue, penwidth=2.0];
 		
-		user -- db1 [lhead=cluster_db, label="DB\n(Pool)", color=darkmagenta, fontcolor=darkmagenta];
-		session -- db1 [lhead=cluster_db, label="DB\n(Pool)", color=darkmagenta, fontcolor=darkmagenta];
-		product -- db1 [lhead=cluster_db, label="DB\n(Pool)", color=darkmagenta, fontcolor=darkmagenta];
-		stock -- db1 [lhead=cluster_db, label="DB\n(Pool)", color=darkmagenta, fontcolor=darkmagenta];
-		runonce -- db1 [lhead=cluster_db, label="DB\n(Avulsa)", color=magenta, fontcolor=magenta];
+		tenancy -- db1 [lhead=cluster_db, color=darkmagenta, fontcolor=darkmagenta, penwidth=2.0];
+		user -- db1 [lhead=cluster_db, color=darkmagenta, fontcolor=darkmagenta, penwidth=2.0];
+		session -- db1 [lhead=cluster_db, color=darkmagenta, fontcolor=darkmagenta, penwidth=2.0];
+		product -- db1 [lhead=cluster_db, color=darkmagenta, fontcolor=darkmagenta, penwidth=2.0];
+		stock -- db1 [lhead=cluster_db, color=darkmagenta, fontcolor=darkmagenta, penwidth=2.0];
+		runonce -- db1 [lhead=cluster_db, color=magenta, fontcolor=magenta, penwidth=2.0];
+		client -- db1 [lhead=cluster_db, color=darkmagenta, fontcolor=darkmagenta, penwidth=2.0];
+		audit -- db1 [lhead=cluster_db, color=darkmagenta, fontcolor=darkmagenta, penwidth=2.0];
 	}
 
-	frontend -- rest[label="REST", color=green, fontcolor=green];
+	frontend -- rest[color=green, fontcolor=green, penwidth=2.0];
+	
+}
+```
+
+</center>
+
+```dot process
+graph {
+	bgcolor=transparent;
+	rankdir="TB";
+	compound=true;
+	node[style=filled; fillcolor=transparent];
+	
+	subgraph cluster_legenda {
+		label = "Legenda: Tipos de Conexão";
+		style = filled;
+		fillcolor = white;
+		key [label=<
+		  <table border="0" cellpadding="2" cellspacing="0" cellborder="0">
+			<tr><td align="right" port="i1">gRPC  </td></tr>
+            <tr><td align="right" port="i2">Banco de Dados via Pool  </td></tr>
+            <tr><td align="right" port="i3">Banco de Dados Avulsa  </td></tr>
+            <tr><td align="right" port="i4">HTTP via REST  </td></tr>
+          </table>
+		>; shape=plaintext]
+        key2 [label=<
+		  <table border="0" cellpadding="2" cellspacing="0" cellborder="0">
+            <tr><td port="i1">&nbsp;</td></tr>
+            <tr><td port="i2">&nbsp;</td></tr>
+            <tr><td port="i3">&nbsp;</td></tr>
+            <tr><td port="i4">&nbsp;</td></tr>
+          </table>
+	    >; shape=plaintext]
+		{rank=same; rankdir=LR; key; key2; }
+		key:i1:e -- key2:i1:w [color=blue; penwidth=2.0];
+		key:i2:e -- key2:i2:w [color=darkmagenta; penwidth=2.0];
+        key:i3:e -- key2:i3:w [color=magenta; penwidth=2.0];
+        key:i4:e -- key2:i4:w [color=green; penwidth=2.0];
+  }
 }
 ```
 
@@ -113,6 +172,10 @@ As bibliotecas planejadas para o sistema são:
 
 Os módulos planejados para o sistema são:
 
+- [ ] `minerva-tenancy`: Servidor gRPC para CRUD de inquilinos. Deve ser
+  capaz de gerenciar inquilinos, mas um inquilino não pode ser deletado
+  através desse serviço, apenas desativado. Apenas administradores do sistema
+  podem ter acesso.
 - [x] `minerva-user`: Servidor gRPC para CRUD de usuários. Deve ser capaz de
   manipular as regras de negócios relacionadas a clientes.
 - [x] `minerva-session`: Servidor gRPC para gerência de sessão de usuário.
@@ -131,6 +194,12 @@ Os módulos planejados para o sistema são:
 - [ ] `minerva-report`: Servidor gRPC para geração de relatórios. Deve receber
   dados com formatação esperada de um relatório, e então deverá gerar um
   arquivo PDF e retorná-lo inteiramente como resposta.
+- [ ] `minerva-client`: Servidor gRPC para CRUD de clientes. Deve ser capaz
+  de manipular as regras de negócios relacionadas a clientes.
+- [ ] `minerva-audit`: Servidor gRPC para gerenciamento de logs de auditoria.
+  Possibilita a consulta aos logs de auditoria do sistema.
+- [ ] `minerva-comm`: Servidor gRPC para comunicação externa com clientes
+  via mensagens instantâneas.
 
 ## Portas
 
@@ -143,12 +212,16 @@ de acordo com o serviço em questão.
 
 | Serviço | Variável               | Valor |
 |---------|------------------------|-------|
+| REST    | `ROCKET_PORT`          | 9000  |
 | USER    | `USER_SERVICE_PORT`    | 9010  |
 | SESSION | `SESSION_SERVICE_PORT` | 9011  |
 | PRODUCT | `PRODUCT_SERVICE_PORT` | 9012  |
 | STOCK   | `STOCK_SERVICE_PORT`   | 9013  |
 | REPORT  | `REPORT_SERVICE_PORT`  | 9014  |
-| REST    | `ROCKET_PORT`          | 9000  |
+| TENANCY | `TENANCY_SERVICE_PORT` | 9015  |
+| CLIENT  | `CLIENT_SERVICE_PORT`  | 9016  |
+| AUDIT   | `AUDIT_SERVICE_PORT`   | 9017  |
+| COMM    | `COMM_SERVICE_PORT`    | 9018  |
 
 
 No caso do serviço REST, verifique o arquivo `Rocket.toml` para avaliar
