@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: frontend-container
-          image: luksamuk/minerva_frontend:0.1.0
+          image: luksamuk/minerva_frontend:0.1.1
           ports:
             - containerPort: 80
           envFrom:
