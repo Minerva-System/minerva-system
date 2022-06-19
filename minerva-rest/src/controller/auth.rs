@@ -65,7 +65,12 @@ async fn login(
         &format!("REST::LOGIN > SESSION::GENERATE @ {}", endpoint),
     );
 
-    let mut client = rpc::session::make_client(endpoint, tenant.clone(), requestor).await;
+    let client = rpc::session::make_client(endpoint, tenant.clone(), requestor).await;
+    if client.is_err() {
+        return Response::generate_error(client);
+    }
+    let mut client = client.unwrap();
+
     let response = client
         .generate(Request::new(body.clone().into()))
         .await
@@ -111,7 +116,12 @@ async fn logout(cookies: &CookieJar<'_>) -> Response {
 
     match cookies.get_private(AUTH_COOKIE) {
         Some(cookie) => {
-            let mut client = rpc::session::make_client(endpoint, tenant, requestor).await;
+            let client = rpc::session::make_client(endpoint, tenant.clone(), requestor).await;
+            if client.is_err() {
+                return Response::generate_error(client);
+            }
+            let mut client = client.unwrap();
+
             let token = cookie.value().to_string();
             let response = client
                 .remove(Request::new(rpc::messages::SessionToken { token }))

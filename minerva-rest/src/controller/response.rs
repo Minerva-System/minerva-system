@@ -85,12 +85,21 @@ impl Response {
     /// Generates a `Response` from a gRPC response, whenever the response
     /// success result is empty. In that case, an empty JSON object is returned.
     /// If the gRPC response is an error `Status`, that error will be converted
-    /// to an appropriated HTTP error, containing the `Status`'s message.
+    /// to an appropriate HTTP error, containing the `Status`'s message.
     pub fn respond_empty(response: Result<tonic::Response<()>, Status>) -> Self {
         match response {
             Ok(_) => Response::Ok("{}".into()),
             Err(status) => Self::convert(status),
         }
+    }
+
+    /// Generates a `Response` from a gRPC response, assuming that the gRPC
+    /// response is an error. Must only be used whenever it is well known that
+    /// the response's error can be unwrapped, otherwise panics. The error will
+    /// be converted to an appropriate HTTP error, containing the `Status`'s
+    /// message.
+    pub fn generate_error<T: std::fmt::Debug>(response: Result<T, Status>) -> Self {
+        Self::convert(response.unwrap_err())
     }
 
     /// Actual internal conversion function for generating an error `Response`
