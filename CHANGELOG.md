@@ -13,10 +13,10 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.
 
 Relação de versões de microsserviços:
 
-- `USERS` - v0.2.1
+- `USER` - v0.2.2
 - `SESSION` - v0.1.1
 - `RUNONCE` - v0.2.1
-- `REST` - v0.2.1
+- `REST` - v0.2.2
 - Front-End - v0.1.1 (pré-alfa)
 
 #### Adicionado
@@ -33,7 +33,8 @@ Relação de versões de microsserviços:
 - Dependência da _crate_ `rustc-serialize` na configuração da _crate_
   `chrono` (em confirmidade com alerta Dependabot), para todos os módulos.
 
-### `REST` - v0.2.1
+
+### `REST` - v0.2.2
 
 #### Adicionado
 
@@ -44,6 +45,13 @@ Relação de versões de microsserviços:
 - Erros na conexão com um microsserviço agora retornam um erro 503 (Recurso
   Indisponível).
 
+
+### `USER` - v0.2.2
+
+#### Modificado
+
+- Alteração do nome do serviço de `USERS` para `USER`, evitando maiores
+  enganos.
 
 
 
