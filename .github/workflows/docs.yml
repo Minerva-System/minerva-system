@@ -3,7 +3,6 @@ name: Deploy documentation
 on:
   push:
     branches: [master]
-  workflow_dispatch
 
 env:
   LANG: pt_BR.UTF-8
