@@ -6,7 +6,7 @@ import "google/protobuf/empty.proto";
 
 package User;
 
-service Users {
+service User {
   // List all users, given a page index.
   rpc index(Messages.PageIndex) returns (Messages.UserList) {}
 

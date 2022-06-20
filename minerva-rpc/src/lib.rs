@@ -20,4 +20,4 @@ pub mod messages;
 pub mod metadata;
 pub mod products;
 pub mod session;
-pub mod users;
+pub mod user;
