@@ -16,6 +16,25 @@ utilizado o VirtualBox para prover essa facilidade).
 - Docker Machine;
 - VirtualBox.
 
+### Instalando o Docker Machine no Linux
+
+Como o Docker Machine é uma ferramenta defasada, é necessário executar
+passos como os a seguir para instalar:
+
+```bash
+base=https://github.com/docker/machine/releases/download/v0.16.2
+curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine
+sudo install /tmp/docker-machine /usr/local/bin/docker-machine
+```
+
+Para instalar os drivers de KVM2, caso você prefira utilizá-los:
+
+```bash
+base=https://github.com/praveenkumar/machine-kvm2-driver/releases/download/v0.11.0
+curl -L $base/docker-machine-driver-kvm2 >/tmp/docker-machine-driver-kvm2
+sudo install /tmp/docker-machine-driver-kvm2 /usr/local/bin/docker-machine-driver-kvm2
+```
+
 
 ## Reinicializando o cluster
 
