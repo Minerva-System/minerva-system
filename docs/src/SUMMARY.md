@@ -1,6 +1,7 @@
 # Sumário
 
 - [Introdução](./intro.md)
+- [Changelog](./CHANGELOG.md)
 - [Estrutura geral do projeto](./estrutura.md)
   - [Front-End]()
   - [Back-End](./backend.md)
