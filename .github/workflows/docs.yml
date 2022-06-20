@@ -15,7 +15,7 @@ jobs:
         run: |
           dnf install -y curl dnf-plugins-core openssl \
           openssl-devel cmake gcc clang make git unzip \
-          libpq libpq-devel graphviz plantuml
+          libpq libpq-devel rsync graphviz plantuml
         
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
@@ -57,10 +57,15 @@ jobs:
         run: |
           cd docs
           mdbook build
-          
+
+      - name: Trust workspace
+        run: |
+          git config --global --add save.directory "$GITHUB_WORKSPACE"
+      
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
           folder: docs/book
 
