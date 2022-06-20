@@ -55,7 +55,7 @@ async fn make_test_server(
 
     let client = minerva_rpc::user::make_client(endpoint, "minerva".into(), "tester".into())
         .await
-        .expect("Successfull connection to USERS gRPC client");
+        .expect("Successfull connection to USER gRPC client");
 
     (handle, client, tx)
 }

@@ -33,5 +33,5 @@ pub async fn make_client(
                 ClientInterceptor::new(&tenant, &requestor),
             )
         })
-        .map_err(|e| Status::unavailable(format!("Error connecting to USERS service: {}", e)))
+        .map_err(|e| Status::unavailable(format!("Error connecting to USER service: {}", e)))
 }
