@@ -4,6 +4,9 @@ on:
   push:
     branches: [master]
 
+env:
+  LANG: pt_BR.UTF-8
+    
 jobs:
   build-docs:
     runs-on: ubuntu-latest
@@ -13,7 +16,6 @@ jobs:
       - name: Adjust locale
         run: |
           dnf install -y langpacks-pt_BR
-          localectl set-locale LANG=pt_BR.UTF-8
           localedef --verbose --force -i pt_BR -f UTF-8 pt_BR.UTF-8
       
       - name: Install Graphviz, PlantUML and other tools
