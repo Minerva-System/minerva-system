@@ -35,7 +35,7 @@ ENV SESSION_SERVICE_PORT=9011
 ENV PRODUCT_SERVICE_PORT=9012
 ENV STOCK_SERVICE_PORT=9013
 ENV REPORT_SERVICE_PORT=9014
-ENV USER_SERVICE_SERVER=users
+ENV USER_SERVICE_SERVER=user
 ENV SESSION_SERVICE_SERVER=session
 ENV DATABASE_SERVICE_SERVER=postgresql
 ENV MONGO_SERVICE_SERVER=mongodb
@@ -70,8 +70,8 @@ COPY --from=builder /minerva/target/release/minerva-session ./minerva-session
 CMD ["./minerva-session"]
 
 
-# USERS
-FROM deploy AS minerva_users
+# USER
+FROM deploy AS minerva_user
 EXPOSE 9010
 COPY ./tenancy.toml ./tenancy.toml
 COPY --from=builder /minerva/target/release/minerva-user ./minerva-user
