@@ -130,6 +130,19 @@
 <span id="125">125</span>
 <span id="126">126</span>
 <span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This submodule contains structures and helper functions for creating</span>
 <span class="doccomment">//! responses for a request.</span>
 
@@ -176,6 +189,10 @@
     <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">412</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
     <span class="ident">PreconditionFailed</span>(<span class="ident">String</span>),
 
+    <span class="doccomment">/// 422 Unprocessable Entity</span>
+    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">422</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
+    <span class="ident">UnprocessableEntity</span>(<span class="ident">String</span>),
+
     <span class="doccomment">/// 444 No Response</span>
     <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">444</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
     <span class="ident">NoResponse</span>(<span class="ident">String</span>),
@@ -217,12 +234,21 @@
     <span class="doccomment">/// Generates a `Response` from a gRPC response, whenever the response</span>
     <span class="doccomment">/// success result is empty. In that case, an empty JSON object is returned.</span>
     <span class="doccomment">/// If the gRPC response is an error `Status`, that error will be converted</span>
-    <span class="doccomment">/// to an appropriated HTTP error, containing the `Status`&#39;s message.</span>
+    <span class="doccomment">/// to an appropriate HTTP error, containing the `Status`&#39;s message.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">respond_empty</span>(<span class="ident">response</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">Status</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">response</span> {
             <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="ident">Response::Ok</span>(<span class="string">&quot;{}&quot;</span>.<span class="ident">into</span>()),
             <span class="prelude-val">Err</span>(<span class="ident">status</span>) =&gt; <span class="ident"><span class="self">Self</span>::convert</span>(<span class="ident">status</span>),
         }
+    }
+
+    <span class="doccomment">/// Generates a `Response` from a gRPC response, assuming that the gRPC</span>
+    <span class="doccomment">/// response is an error. Must only be used whenever it is well known that</span>
+    <span class="doccomment">/// the response&#39;s error can be unwrapped, otherwise panics. The error will</span>
+    <span class="doccomment">/// be converted to an appropriate HTTP error, containing the `Status`&#39;s</span>
+    <span class="doccomment">/// message.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generate_error</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">std::fmt::Debug</span><span class="op">&gt;</span>(<span class="ident">response</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Status</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::convert</span>(<span class="ident">response</span>.<span class="ident">unwrap_err</span>())
     }
 
     <span class="doccomment">/// Actual internal conversion function for generating an error `Response`</span>
@@ -244,10 +270,10 @@
             <span class="ident">Code::DeadlineExceeded</span> =&gt; <span class="ident"><span class="self">Self</span>::RequestTimeout</span>(<span class="ident">message</span>),
             <span class="ident">Code::FailedPrecondition</span> =&gt; <span class="ident"><span class="self">Self</span>::PreconditionFailed</span>(<span class="ident">message</span>),
             <span class="ident">Code::Internal</span> =&gt; <span class="ident"><span class="self">Self</span>::InternalServerError</span>(<span class="ident">message</span>),
-            <span class="ident">Code::InvalidArgument</span> =&gt; <span class="ident"><span class="self">Self</span>::BadRequest</span>(<span class="ident">message</span>),
+            <span class="ident">Code::InvalidArgument</span> =&gt; <span class="ident"><span class="self">Self</span>::UnprocessableEntity</span>(<span class="ident">message</span>),
             <span class="ident">Code::NotFound</span> =&gt; <span class="ident"><span class="self">Self</span>::NotFound</span>(<span class="ident">message</span>),
             <span class="ident">Code::Ok</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Returned an error with an &#39;OK&#39; status. What???&quot;</span>),
-            <span class="ident">Code::OutOfRange</span> =&gt; <span class="ident"><span class="self">Self</span>::BadRequest</span>(<span class="ident">message</span>),
+            <span class="ident">Code::OutOfRange</span> =&gt; <span class="ident"><span class="self">Self</span>::UnprocessableEntity</span>(<span class="ident">message</span>),
             <span class="ident">Code::PermissionDenied</span> =&gt; <span class="ident"><span class="self">Self</span>::Unauthorized</span>(<span class="ident">message</span>),
             <span class="ident">Code::Unauthenticated</span> =&gt; <span class="ident"><span class="self">Self</span>::NetworkAuthenticationRequired</span>(<span class="ident">message</span>),
             <span class="ident">Code::Unavailable</span> =&gt; <span class="ident"><span class="self">Self</span>::ServiceUnavailable</span>(<span class="ident">message</span>),

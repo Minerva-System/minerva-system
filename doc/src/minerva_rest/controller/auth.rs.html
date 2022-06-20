@@ -140,6 +140,16 @@
 <span id="135">135</span>
 <span id="136">136</span>
 <span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This submodule describes routes for authentication and session creation</span>
 <span class="doccomment">//! services.</span>
 
@@ -207,7 +217,12 @@
         <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;REST::LOGIN &gt; SESSION::GENERATE @ {}&quot;</span>, <span class="ident">endpoint</span>),
     );
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::session::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>.<span class="ident">clone</span>(), <span class="ident">requestor</span>).<span class="kw">await</span>;
+    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::session::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>.<span class="ident">clone</span>(), <span class="ident">requestor</span>).<span class="kw">await</span>;
+    <span class="kw">if</span> <span class="ident">client</span>.<span class="ident">is_err</span>() {
+        <span class="kw">return</span> <span class="ident">Response::generate_error</span>(<span class="ident">client</span>);
+    }
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">unwrap</span>();
+
     <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">client</span>
         .<span class="ident">generate</span>(<span class="ident">Request::new</span>(<span class="ident">body</span>.<span class="ident">clone</span>().<span class="ident">into</span>()))
         .<span class="kw">await</span>
@@ -253,7 +268,12 @@
 
     <span class="kw">match</span> <span class="ident">cookies</span>.<span class="ident">get_private</span>(<span class="ident">AUTH_COOKIE</span>) {
         <span class="prelude-val">Some</span>(<span class="ident">cookie</span>) =&gt; {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::session::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>, <span class="ident">requestor</span>).<span class="kw">await</span>;
+            <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::session::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>.<span class="ident">clone</span>(), <span class="ident">requestor</span>).<span class="kw">await</span>;
+            <span class="kw">if</span> <span class="ident">client</span>.<span class="ident">is_err</span>() {
+                <span class="kw">return</span> <span class="ident">Response::generate_error</span>(<span class="ident">client</span>);
+            }
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">unwrap</span>();
+
             <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">cookie</span>.<span class="ident">value</span>().<span class="ident">to_string</span>();
             <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">client</span>
                 .<span class="ident">remove</span>(<span class="ident">Request::new</span>(<span class="ident">rpc::messages::SessionToken</span> { <span class="ident">token</span> }))

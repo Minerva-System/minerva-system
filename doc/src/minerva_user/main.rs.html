@@ -100,7 +100,7 @@
 
 <span class="attribute">#[<span class="ident">tokio::main</span>]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">main</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::error::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="macro">println!</span>(<span class="string">&quot;Minerva System: USER service&quot;</span>);
+    <span class="macro">println!</span>(<span class="string">&quot;Minerva System: USERS service&quot;</span>);
     <span class="macro">println!</span>(<span class="string">&quot;Copyright (c) 2022 Lucas S. Vieira&quot;</span>);
     <span class="macro">println!</span>();
     <span class="ident">dotenv</span>().<span class="ident">ok</span>();
@@ -132,9 +132,9 @@
         .<span class="ident">add_service</span>(<span class="ident">UsersServer::new</span>(<span class="ident">service::UsersService</span> { <span class="ident">pools</span> }))
         .<span class="ident">serve</span>(<span class="ident">addr</span>);
 
-    <span class="macro">println!</span>(<span class="string">&quot;USER is ready to accept connections.&quot;</span>);
+    <span class="macro">println!</span>(<span class="string">&quot;USERS is ready to accept connections.&quot;</span>);
     <span class="ident">server</span>.<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="macro">println!</span>(<span class="string">&quot;USER shut down.&quot;</span>);
+    <span class="macro">println!</span>(<span class="string">&quot;USERS shut down.&quot;</span>);
     <span class="prelude-val">Ok</span>(())
 }
 </code></pre></div>

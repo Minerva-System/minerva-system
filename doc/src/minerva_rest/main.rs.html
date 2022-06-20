@@ -40,6 +40,10 @@
 <span id="35">35</span>
 <span id="36">36</span>
 <span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
 </pre><pre class="rust"><code><span class="doccomment">//! # Minerva System: REST Service</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## About this service</span>
@@ -63,6 +67,9 @@
 <span class="kw">mod</span> <span class="ident">fairings</span>;
 <span class="kw">mod</span> <span class="ident">utils</span>;
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">mod</span> <span class="ident">tests</span>;
+
 <span class="doccomment">/// Entry point for this service. Creates the service and routes that will be</span>
 <span class="doccomment">/// served by the REST server.</span>
 <span class="attribute">#[<span class="ident">launch</span>]</span>
@@ -74,6 +81,7 @@
     <span class="ident">dotenv</span>().<span class="ident">ok</span>();
 
     <span class="ident">rocket::build</span>()
+        .<span class="ident">register</span>(<span class="string">&quot;/&quot;</span>, <span class="ident">controller::handlers::catchers</span>())
         .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="ident">controller::auth::routes</span>())
         .<span class="ident">mount</span>(<span class="string">&quot;/users&quot;</span>, <span class="ident">controller::user::routes</span>())
 }

@@ -429,6 +429,7 @@
 <span id="424">424</span>
 <span id="425">425</span>
 <span id="426">426</span>
+<span id="427">427</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This module contains Data Transfer Objects for the `user` table, which</span>
 <span class="doccomment">//! represents the registered users for this tenancy.</span>
 
@@ -437,7 +438,7 @@
 <span class="kw">use</span> <span class="ident">minerva_rpc::messages</span>;
 
 <span class="doccomment">/// DTO representing a single entry on the `user` table.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Queryable</span>, <span class="ident">Serialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Queryable</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">User</span> {
     <span class="doccomment">/// ID of the entry on the table.</span>
     <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">i32</span>,
@@ -449,6 +450,7 @@
     <span class="kw">pub</span> <span class="ident">email</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Hash of the password of the user for this entry.</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing</span>)]</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_deserializing</span>)]</span>
     <span class="kw">pub</span> <span class="ident">pwhash</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 }
 

@@ -73,6 +73,15 @@
 <span id="68">68</span>
 <span id="69">69</span>
 <span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This submodule contains the implementation of an authentication fairing.</span>
 
 <span class="kw">use</span> <span class="ident">minerva_data::session::Session</span>;
@@ -110,6 +119,8 @@
     <span class="ident">MissingAuth</span>,
     <span class="doccomment">/// The authentication data has expired.</span>
     <span class="ident">ExpiredAuth</span>,
+    <span class="doccomment">/// The required microservice could not be reached.</span>
+    <span class="ident">ServiceUnreachable</span>,
 }
 
 <span class="attribute">#[<span class="ident">rocket::async_trait</span>]</span>
@@ -119,7 +130,7 @@
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">from_request</span>(<span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> <span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Outcome</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">tenant</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">req</span>.<span class="ident">cookies</span>().<span class="ident">get</span>(<span class="ident"><span class="kw">crate</span>::controller::auth::TENANT_COOKIE</span>) {
             <span class="prelude-val">Some</span>(<span class="ident">cookie</span>) =&gt; <span class="ident">cookie</span>.<span class="ident">value</span>().<span class="ident">to_string</span>(),
-            <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="ident">Outcome::Failure</span>((<span class="ident">Status::BadRequest</span>, <span class="ident">SessionError::MissingTenant</span>)),
+            <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="ident">Outcome::Failure</span>((<span class="ident">Status::Unauthorized</span>, <span class="ident">SessionError::MissingTenant</span>)),
         };
 
         <span class="kw">match</span> <span class="ident">req</span>
@@ -132,7 +143,14 @@
                     <span class="ident">token</span>: <span class="ident">cookie</span>.<span class="ident">value</span>().<span class="ident">to_string</span>(),
                 };
                 <span class="kw">let</span> <span class="ident">requestor</span> <span class="op">=</span> <span class="string">&quot;unknown&quot;</span>.<span class="ident">into</span>();
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::session::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>, <span class="ident">requestor</span>).<span class="kw">await</span>;
+                <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::session::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>, <span class="ident">requestor</span>).<span class="kw">await</span>;
+                <span class="kw">if</span> <span class="ident">client</span>.<span class="ident">is_err</span>() {
+                    <span class="kw">return</span> <span class="ident">Outcome::Failure</span>((
+                        <span class="ident">Status::ServiceUnavailable</span>,
+                        <span class="ident">SessionError::ServiceUnreachable</span>,
+                    ));
+                }
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">unwrap</span>();
 
                 <span class="kw">match</span> <span class="ident">client</span>.<span class="ident">retrieve</span>(<span class="ident">tonic::Request::new</span>(<span class="ident">token</span>)).<span class="kw">await</span> {
                     <span class="prelude-val">Ok</span>(<span class="ident">response</span>) =&gt; <span class="ident">Outcome::Success</span>(<span class="ident">SessionInfo::from</span>(<span class="ident">response</span>.<span class="ident">into_inner</span>())),
