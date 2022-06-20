@@ -58,7 +58,12 @@ async fn index(session: SessionInfo, page: Option<i64>) -> Response {
         &format!("REST::INDEX > USERS::INDEX @ {}", endpoint),
     );
 
-    let mut client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    let client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    if client.is_err() {
+        return Response::generate_error(client);
+    }
+    let mut client = client.unwrap();
+
     let response = client
         .index(Request::new(rpc::messages::PageIndex { index: page }))
         .await
@@ -94,7 +99,12 @@ async fn show(session: SessionInfo, id: i32) -> Response {
         &format!("REST::SHOW > USERS::SHOW @ {}", endpoint),
     );
 
-    let mut client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    let client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    if client.is_err() {
+        return Response::generate_error(client);
+    }
+    let mut client = client.unwrap();
+
     let index = id;
     let response: Result<data::user::User, tonic::Status> = client
         .show(Request::new(rpc::messages::EntityIndex { index }))
@@ -142,7 +152,12 @@ async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Respon
         &format!("REST::STORE > USERS::STORE @ {}", endpoint),
     );
 
-    let mut client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    let client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    if client.is_err() {
+        return Response::generate_error(client);
+    }
+    let mut client = client.unwrap();
+
     let response: Result<data::user::User, tonic::Status> = client
         .store(Request::new(message))
         .await
@@ -184,7 +199,12 @@ async fn update(session: SessionInfo, id: i32, body: Json<data::user::RecvUser>)
         &format!("REST::UPDATE > USERS::UPDATE @ {}", endpoint),
     );
 
-    let mut client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    let client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    if client.is_err() {
+        return Response::generate_error(client);
+    }
+    let mut client = client.unwrap();
+
     let mut message: rpc::messages::User = body.0.into();
     message.id = Some(id);
     let response: Result<data::user::User, tonic::Status> = client
@@ -221,7 +241,12 @@ async fn delete(session: SessionInfo, index: i32) -> Response {
         &format!("REST::DELETE > USERS::DELETE @ {}", endpoint),
     );
 
-    let mut client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    let client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    if client.is_err() {
+        return Response::generate_error(client);
+    }
+    let mut client = client.unwrap();
+
     let response = client
         .delete(Request::new(rpc::messages::EntityIndex { index }))
         .await;

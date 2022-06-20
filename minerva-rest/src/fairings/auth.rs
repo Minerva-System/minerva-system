@@ -35,6 +35,8 @@ pub enum SessionError {
     MissingAuth,
     /// The authentication data has expired.
     ExpiredAuth,
+    /// The required microservice could not be reached.
+    ServiceUnreachable,
 }
 
 #[rocket::async_trait]
@@ -44,7 +46,7 @@ impl<'r> FromRequest<'r> for SessionInfo {
     async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
         let tenant = match req.cookies().get(crate::controller::auth::TENANT_COOKIE) {
             Some(cookie) => cookie.value().to_string(),
-            None => return Outcome::Failure((Status::BadRequest, SessionError::MissingTenant)),
+            None => return Outcome::Failure((Status::Unauthorized, SessionError::MissingTenant)),
         };
 
         match req
@@ -57,7 +59,14 @@ impl<'r> FromRequest<'r> for SessionInfo {
                     token: cookie.value().to_string(),
                 };
                 let requestor = "unknown".into();
-                let mut client = rpc::session::make_client(endpoint, tenant, requestor).await;
+                let client = rpc::session::make_client(endpoint, tenant, requestor).await;
+                if client.is_err() {
+                    return Outcome::Failure((
+                        Status::ServiceUnavailable,
+                        SessionError::ServiceUnreachable,
+                    ));
+                }
+                let mut client = client.unwrap();
 
                 match client.retrieve(tonic::Request::new(token)).await {
                     Ok(response) => Outcome::Success(SessionInfo::from(response.into_inner())),

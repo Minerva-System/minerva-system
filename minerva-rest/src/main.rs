@@ -21,6 +21,9 @@ mod controller;
 mod fairings;
 mod utils;
 
+#[cfg(test)]
+mod tests;
+
 /// Entry point for this service. Creates the service and routes that will be
 /// served by the REST server.
 #[launch]
@@ -32,6 +35,7 @@ fn launch() -> rocket::Rocket<rocket::Build> {
     dotenv().ok();
 
     rocket::build()
+        .register("/", controller::handlers::catchers())
         .mount("/", controller::auth::routes())
         .mount("/users", controller::user::routes())
 }

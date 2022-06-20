@@ -1,18 +1,22 @@
-name: Build documentation
+name: Deploy documentation
 
 on:
   push:
     branches: [master]
+  workflow_dispatch:
 
 jobs:
   build-docs:
     runs-on: ubuntu-latest
+    container:
+      image: fedora:36
     steps:
-      - name: Install Graphviz and PlantUML
+      - name: Install Graphviz, PlantUML and other tools
         run: |
-          sudo apt update
-          sudo apt install -y graphviz plantuml
-
+          dnf install -y curl dnf-plugins-core openssl \
+          openssl-devel cmake gcc clang make git unzip \
+          libpq libpq-devel graphviz plantuml
+        
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:

@@ -53,7 +53,9 @@ async fn make_test_server(
 
     tokio::time::sleep(Duration::from_millis(100)).await;
 
-    let client = minerva_rpc::users::make_client(endpoint, "minerva".into(), "tester".into()).await;
+    let client = minerva_rpc::users::make_client(endpoint, "minerva".into(), "tester".into())
+        .await
+        .expect("Successfull connection to USERS gRPC client");
 
     (handle, client, tx)
 }

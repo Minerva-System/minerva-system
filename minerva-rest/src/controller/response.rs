@@ -44,6 +44,10 @@ pub enum Response {
     #[response(status = 412, content_type = "json")]
     PreconditionFailed(String),
 
+    /// 422 Unprocessable Entity
+    #[response(status = 422, content_type = "json")]
+    UnprocessableEntity(String),
+
     /// 444 No Response
     #[response(status = 444, content_type = "json")]
     NoResponse(String),
@@ -85,12 +89,21 @@ impl Response {
     /// Generates a `Response` from a gRPC response, whenever the response
     /// success result is empty. In that case, an empty JSON object is returned.
     /// If the gRPC response is an error `Status`, that error will be converted
-    /// to an appropriated HTTP error, containing the `Status`'s message.
+    /// to an appropriate HTTP error, containing the `Status`'s message.
     pub fn respond_empty(response: Result<tonic::Response<()>, Status>) -> Self {
         match response {
             Ok(_) => Response::Ok("{}".into()),
             Err(status) => Self::convert(status),
         }
+    }
+
+    /// Generates a `Response` from a gRPC response, assuming that the gRPC
+    /// response is an error. Must only be used whenever it is well known that
+    /// the response's error can be unwrapped, otherwise panics. The error will
+    /// be converted to an appropriate HTTP error, containing the `Status`'s
+    /// message.
+    pub fn generate_error<T: std::fmt::Debug>(response: Result<T, Status>) -> Self {
+        Self::convert(response.unwrap_err())
     }
 
     /// Actual internal conversion function for generating an error `Response`
@@ -112,10 +125,10 @@ impl Response {
             Code::DeadlineExceeded => Self::RequestTimeout(message),
             Code::FailedPrecondition => Self::PreconditionFailed(message),
             Code::Internal => Self::InternalServerError(message),
-            Code::InvalidArgument => Self::BadRequest(message),
+            Code::InvalidArgument => Self::UnprocessableEntity(message),
             Code::NotFound => Self::NotFound(message),
             Code::Ok => panic!("Returned an error with an 'OK' status. What???"),
-            Code::OutOfRange => Self::BadRequest(message),
+            Code::OutOfRange => Self::UnprocessableEntity(message),
             Code::PermissionDenied => Self::Unauthorized(message),
             Code::Unauthenticated => Self::NetworkAuthenticationRequired(message),
             Code::Unavailable => Self::ServiceUnavailable(message),
