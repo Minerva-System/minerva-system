@@ -1,7 +1,7 @@
-name: Deploy documentation
+name: Test build documentation
 
 on:
-  push:
+  pull_request:
     branches: [master]
   workflow_dispatch:
 
@@ -57,10 +57,4 @@ jobs:
         run: |
           cd docs
           mdbook build
-          
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4.2.5
-        with:
-          branch: gh-pages
-          folder: docs/book
 
