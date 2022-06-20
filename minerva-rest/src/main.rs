@@ -37,5 +37,5 @@ fn launch() -> rocket::Rocket<rocket::Build> {
     rocket::build()
         .register("/", controller::handlers::catchers())
         .mount("/", controller::auth::routes())
-        .mount("/users", controller::user::routes())
+        .mount("/user", controller::user::routes())
 }
