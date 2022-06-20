@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Adjust locale
         run: |
-          dnf install -y langpacks-pt_BR
+          dnf install -y langpacks-pt_BR glibc-locale-source
           localedef --verbose --force -i pt_BR -f UTF-8 pt_BR.UTF-8
       
       - name: Install Graphviz, PlantUML and other tools
