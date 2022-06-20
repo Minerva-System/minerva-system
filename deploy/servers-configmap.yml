@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: servers-configmap
 data:
-  USER_SERVICE_SERVER: users-svc
+  USER_SERVICE_SERVER: user-svc
   SESSION_SERVICE_SERVER: session-svc
   DATABASE_SERVICE_SERVER: postgresql-svc
   MONGO_SERVICE_SERVER: mongodb-svc

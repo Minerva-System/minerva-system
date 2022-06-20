@@ -4,11 +4,11 @@ function usage() {
     echo "Uso: ./stress_test.sh <endpoint> <tipo>"
     echo "Onde <endpoint> é o caminho para a API (ex. minerva-system.io/api)"
     echo "e <tipo> é um dos possíveis sistemas:"
-    echo "  - users"
+    echo "  - user"
     echo "  - session"
     echo
     echo "Exemplo:"
-    echo "   ./stress_test.sh minerva-system.io/api users"
+    echo "   ./stress_test.sh minerva-system.io/api user"
     echo
 }
 
@@ -23,7 +23,7 @@ TEST_TYPE=$2
 TENANT=teste
 SESSION_STRESS_LOGIN_URL="http://${SERVER}/${TENANT}/login"
 SESSION_STRESS_LOGOUT_URL="http://${SERVER}/logout"
-USER_STRESS_URL="http://${SERVER}/users/1"
+USER_STRESS_URL="http://${SERVER}/user/1"
 COOKIE_FILE=/tmp/minerva_cookie.txt
 
 
@@ -45,7 +45,7 @@ function remove_session_cookie() {
 }
 
 
-function users_stress_test() {
+function user_stress_test() {
     get_session_cookie;
     for i in {1..10000}; do
 	curl -s -X GET $USER_STRESS_URL \
@@ -81,8 +81,8 @@ function session_stress_test() {
 
 echo 'Iniciando teste de stress. Use Ctrl+C para encerrar.'
 case $TEST_TYPE in
-    "users")
-	users_stress_test
+    "user")
+	user_stress_test
     ;;
 
     "session")

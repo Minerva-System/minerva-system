@@ -1178,7 +1178,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-rest"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "dotenv",
  "minerva-data",
@@ -1192,7 +1192,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-rpc"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "dotenv",
  "prost",
@@ -1244,7 +1244,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-user"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "bb8",
  "bb8-diesel",

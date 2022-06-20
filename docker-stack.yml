@@ -21,14 +21,14 @@ services:
   
   # REST service
   rest:
-    image: luksamuk/minerva_rest:0.2.1
+    image: luksamuk/minerva_rest:0.2.2
     environment:
-      - USER_SERVICE_SERVER=users
+      - USER_SERVICE_SERVER=user
       - SESSION_SERVICE_SERVER=session
     ports:
       - 9000:9000
     depends_on:
-      - "users"
+      - "user"
     networks:
       - minerva_system
     deploy:
@@ -60,9 +60,9 @@ services:
       placement:
         constraints: [node.role == manager]
   
-  # USERS service
-  users:
-    image: luksamuk/minerva_users:0.2.1
+  # USER service
+  user:
+    image: luksamuk/minerva_user:0.2.2
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
     networks:
@@ -70,7 +70,7 @@ services:
     deploy:
       mode: replicated
       replicas: 2
-      labels: [APP = USERS_SERVICE]
+      labels: [APP = USER_SERVICE]
       restart_policy:
         condition: on-failure
 
@@ -136,7 +136,7 @@ services:
   visualizer:
     image: dockersamples/visualizer:stable
     ports:
-      - 8080:8080
+      - 8080:8585
     stop_grace_period: 1m30s
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"

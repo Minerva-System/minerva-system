@@ -3,7 +3,7 @@ declare -a TARGETS=(
     "minerva_rest"
     "minerva_runonce"
     "minerva_session"
-    "minerva_users"
+    "minerva_user"
 )
 
 # Rust language targets
@@ -19,7 +19,6 @@ do
 
     # Scrape version information and use as tag
     DIRNAME=${TARGET/_/-}
-    DIRNAME=${DIRNAME/users/user} # users/user dichotomy. Should be removed!
     IMGVERSION=`awk '/^version/{print $3}' ./$DIRNAME/Cargo.toml | tr -d '"'`;
     TAGGEDIMGNAME=$IMGNAME:$IMGVERSION
 

@@ -5,8 +5,8 @@ use minerva_data::user as model;
 use minerva_data::{db, encryption};
 use minerva_rpc::messages;
 use minerva_rpc::metadata::ClientInterceptor;
-use minerva_rpc::users::users_client::UsersClient;
-use minerva_rpc::users::users_server::UsersServer;
+use minerva_rpc::user::user_client::UserClient;
+use minerva_rpc::user::user_server::UserServer;
 use std::collections::HashMap;
 use std::env;
 use std::time::Duration;
@@ -20,7 +20,7 @@ async fn make_test_server(
     port: u32,
 ) -> (
     JoinHandle<()>,
-    UsersClient<InterceptedService<Channel, ClientInterceptor>>,
+    UserClient<InterceptedService<Channel, ClientInterceptor>>,
     oneshot::Sender<()>,
 ) {
     encryption::init_hasher();
@@ -45,7 +45,7 @@ async fn make_test_server(
     // Spawn server on a concurrent task
     let handle = tokio::spawn(async move {
         Server::builder()
-            .add_service(UsersServer::new(service::UsersService { pools }))
+            .add_service(UserServer::new(service::UserService { pools }))
             .serve_with_shutdown(address, rx.map(drop))
             .await
             .unwrap();
@@ -53,9 +53,9 @@ async fn make_test_server(
 
     tokio::time::sleep(Duration::from_millis(100)).await;
 
-    let client = minerva_rpc::users::make_client(endpoint, "minerva".into(), "tester".into())
+    let client = minerva_rpc::user::make_client(endpoint, "minerva".into(), "tester".into())
         .await
-        .expect("Successfull connection to USERS gRPC client");
+        .expect("Successfull connection to USER gRPC client");
 
     (handle, client, tx)
 }

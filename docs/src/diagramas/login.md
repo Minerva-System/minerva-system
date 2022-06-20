@@ -10,7 +10,7 @@ Isso é gerenciado pelos próprios serviços. O MongoDB fará isso através do t
 de vida da coleção para aquele banco, enquanto o Redis fará isso através do
 tempo de vida da informação quando a mesma foi colocada em cache.
 
-**TODO:** Seria mais adequado fazer com que `SESSION` requeira a `USERS` os
+**TODO:** Seria mais adequado fazer com que `SESSION` requeira a `USER` os
 dados dos usuários, ao invés de recorrer ao banco?
 
 <center>

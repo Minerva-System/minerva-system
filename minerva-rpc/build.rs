@@ -1,7 +1,7 @@
 fn main() {
     let files = [
         "./proto/messages.proto",
-        "./proto/users.proto",
+        "./proto/user.proto",
         "./proto/products.proto",
         "./proto/session.proto",
     ];

@@ -8,7 +8,7 @@
 actor       Usuário    as ator
 boundary    FrontEnd   as frontend
 boundary    API        as api
-control     USERS      as users
+control     USER      as user
 control     SESSION    as session
 collections Redis      as redis
 collections MongoDB    as mongo
@@ -45,19 +45,19 @@ deactivate session
 
 == Verificação da existência do usuário ==
 
-api      ->  users:        Requisição de alteração de usuário
-activate users
-users    ->  postgres:     Verifica se usuário já existe
+api      ->  user:        Requisição de alteração de usuário
+activate user
+user    ->  postgres:     Verifica se usuário já existe
 activate postgres
-users    <-- postgres:     Retorno com dados do usuário
+user    <-- postgres:     Retorno com dados do usuário
 
 == Alteração do usuário no banco de dados ==
 
-users    ->  postgres:     Insere dados alterados do usuário
-users    <-- postgres:     Dados do usuário recém-alterado
+user    ->  postgres:     Insere dados alterados do usuário
+user    <-- postgres:     Dados do usuário recém-alterado
 deactivate postgres
-api      <-- users:        Dados do usuário alterado
-deactivate users
+api      <-- user:        Dados do usuário alterado
+deactivate user
 
 == Retorno da API ==
 

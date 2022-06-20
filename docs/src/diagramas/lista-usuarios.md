@@ -8,7 +8,7 @@
 actor       Usuário    as ator
 boundary    FrontEnd   as frontend
 boundary    API        as api
-control     USERS      as users
+control     USER      as user
 control     SESSION    as session
 collections Redis      as redis
 collections MongoDB    as mongo
@@ -45,14 +45,14 @@ deactivate session
 
 == Recuperação de dados de usuários ==
 
-api -> users:              Requisita lista de usuários
-activate users
-users -> postgres:         Requisita dados de usuários
+api -> user:              Requisita lista de usuários
+activate user
+user -> postgres:         Requisita dados de usuários
 activate postgres
-users <-- postgres:        Retorna dados de usuários
+user <-- postgres:        Retorna dados de usuários
 deactivate postgres
-api <-- users:             Retorna lista de usuários
-deactivate users
+api <-- user:             Retorna lista de usuários
+deactivate user
 
 == Retorno da API ==
 

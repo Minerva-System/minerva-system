@@ -166,7 +166,7 @@ a utilização de versionamento.
 - `mongodb-deployment`: Deployment para o banco de dados MongoDB.
 - `frontend-deployment`: Deployment para o Front-End Web do sistema.
 - `rest-deployment`: Deployment para o gateway REST do sistema.
-- `users-deployment`: Deployment para o microsserviço `USERS`.
+- `user-deployment`: Deployment para o microsserviço `USER`.
 - `session-deployment`: Deployment para o microsserviço `SESSION`.
 
 Para aplicar todos os _Deployments_, execute:
@@ -191,8 +191,8 @@ _NodePort_, e estes agem também retroativamente como _ClusterIP_.
   PostgreSQL.
 - `mongodb-svc` (_ClusterIP_): Serviço para acesso interno aos pods
   MongoDB.
-- `users-svc` (_ClusterIP_): Serviço para acesso interno aos pods do
-  microsserviço USERS.
+- `user-svc` (_ClusterIP_): Serviço para acesso interno aos pods do
+  microsserviço USER.
 - `session-svc` (_ClusterIP_): Serviço para acesso interno aos pods do
   microsserviço SESSION.
 - `frontend-svc` (_LoadBalancer_): Serviço para acesso interno e externo
@@ -225,8 +225,8 @@ for f in `ls deploy/*-job.yml`; do kubectl apply -f $f; done
 
 - `rest-hpa`: Escalonador horizontal do gateway REST. Mantém entre 1 e
   15 réplicas para `rest-deployment` com uso médio de 50% do CPU alocado.
-- `users-hpa`: Escalonador horizontal do microsserviço USERS. Mantém entre
-  2 e 6 réplicas para `users-deployment` com uso médio de 65% do CPU alocado.
+- `user-hpa`: Escalonador horizontal do microsserviço USER. Mantém entre
+  2 e 6 réplicas para `user-deployment` com uso médio de 65% do CPU alocado.
 - `session-hpa`: Escalonador horizontal do microsserviço SESSION. Mantém
   entre 2 e 6 réplicas para `session-deployment` com uso médio de 65%
   do CPU alocado.
@@ -390,7 +390,7 @@ Para realizar testes de stress, use o script `deploy/stress_test.sh`.
 Você poderá testar cada sistema crucial usando um comando como este:
 
 ```bash
-./deploy/stress_test.sh minerva-system.io/api users
+./deploy/stress_test.sh minerva-system.io/api user
 ```
 
 Para maiores informações, execute o script sem argumentos.

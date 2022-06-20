@@ -74,7 +74,7 @@ impl Microservices {
                 .map(|name| {
                     let service = match *name {
                         "TENANCY" => "minerva-tenancy",
-                        "USERS" => "minerva-user",
+                        "USER" => "minerva-user",
                         "SESSION" => "minerva-session",
                         "PRODUCT" => "minerva-product",
                         "STOCK" => "minerva-stock",
@@ -154,14 +154,14 @@ fn login_logout() {
     svc.dispose();
 }
 
-/* Users API */
+/* User API */
 
 #[test]
 #[serial]
 fn get_user_data() {
     use minerva_data::user::User;
 
-    let mut svc = Microservices::spawn(vec!["SESSION", "USERS"]);
+    let mut svc = Microservices::spawn(vec!["SESSION", "USER"]);
     let client = make_client();
 
     // Login
@@ -178,7 +178,7 @@ fn get_user_data() {
     assert_eq!(response.status(), Status::Ok);
 
     // Get users
-    let response: LocalResponse = client.get("/users").dispatch();
+    let response: LocalResponse = client.get("/user").dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
 
@@ -194,7 +194,7 @@ fn get_user_data() {
 
     // Get single user: the same administrator found before
     let id = user.id;
-    let response = client.get(format!("/users/{}", id)).dispatch();
+    let response = client.get(format!("/user/{}", id)).dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
 
@@ -215,7 +215,7 @@ fn get_user_data() {
 fn crud_user() {
     use minerva_data::user::User;
 
-    let mut svc = Microservices::spawn(vec!["SESSION", "USERS"]);
+    let mut svc = Microservices::spawn(vec!["SESSION", "USER"]);
     let client = make_client();
 
     // Login
@@ -233,7 +233,7 @@ fn crud_user() {
 
     // Create user
     let response = client
-        .post("/users")
+        .post("/user")
         .body(
             json!({
             "login": "fulano_teste_rest",
@@ -254,7 +254,7 @@ fn crud_user() {
 
     // Fetch user as inserted
     let id = user.id;
-    let response = client.get(format!("/users/{}", id)).dispatch();
+    let response = client.get(format!("/user/{}", id)).dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
 
@@ -265,7 +265,7 @@ fn crud_user() {
 
     // Update user data
     let response = client
-        .put(format!("/users/{}", id))
+        .put(format!("/user/{}", id))
         .body(
             json!({
                 "login": user.login.clone(),
@@ -284,7 +284,7 @@ fn crud_user() {
     assert_eq!(user.email, Some("fulano@exemplo.com".into()));
 
     // Fetch modified user again
-    let response = client.get(format!("/users/{}", id)).dispatch();
+    let response = client.get(format!("/user/{}", id)).dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
 
@@ -294,7 +294,7 @@ fn crud_user() {
     assert_eq!(user.email, Some("fulano@exemplo.com".into()));
 
     // Remove user
-    let response = client.delete(format!("/users/{}", id)).dispatch();
+    let response = client.delete(format!("/user/{}", id)).dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
     assert_eq!(response.into_string(), Some("{}".into()));
@@ -335,7 +335,7 @@ fn failed_requests() {
     assert_eq!(response.cookies().get_private("token"), None);
 
     // Create microservices
-    let mut svc = Microservices::spawn(vec!["SESSION", "USERS"]);
+    let mut svc = Microservices::spawn(vec!["SESSION", "USER"]);
 
     // 422 for a malformed login request
     let response = client
@@ -351,7 +351,7 @@ fn failed_requests() {
     assert_eq!(response.content_type(), Some(ContentType::JSON));
 
     // 401 for attempting to list users without logging in
-    let response = client.get("/users").dispatch();
+    let response = client.get("/user").dispatch();
     assert_eq!(response.status(), Status::Unauthorized);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
 
@@ -370,7 +370,7 @@ fn failed_requests() {
 
     // 422 for a malformed user creation request
     let response = client
-        .post("/users")
+        .post("/user")
         .body(
             json!({
                 "name": "Fulano da Silva",

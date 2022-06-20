@@ -1,5 +1,5 @@
 //! This submodule describes routes for managing the data for a `User` entity,
-//! particularly with respect to connecting to the `USERS` gRPC service.
+//! particularly with respect to connecting to the `USER` gRPC service.
 
 use super::response;
 use crate::fairings::auth::SessionInfo;
@@ -33,7 +33,7 @@ pub fn get_endpoint() -> String {
 /// a value named `page`. If omitted, it is assumed to be `0`.
 ///
 /// Upon success, returns a list of users in JSON format, containing up to the
-/// number of users per page as defined in the `USERS` microservice.
+/// number of users per page as defined in the `USER` microservice.
 ///
 /// Furthermore, this route assumes that the authentication cookies are being
 /// passed as well.
@@ -41,9 +41,9 @@ pub fn get_endpoint() -> String {
 /// # Request examples
 ///
 /// ```bash
-/// curl -X GET 'http://localhost:9000/users' -b cookies.txt
+/// curl -X GET 'http://localhost:9000/user' -b cookies.txt
 ///
-/// curl -X GET 'http://localhost:9000/users?page=0' -b cookies.txt
+/// curl -X GET 'http://localhost:9000/user?page=0' -b cookies.txt
 /// ```
 #[get("/?<page>")]
 async fn index(session: SessionInfo, page: Option<i64>) -> Response {
@@ -55,10 +55,10 @@ async fn index(session: SessionInfo, page: Option<i64>) -> Response {
         utils::get_ip(),
         requestor.clone(),
         tenant.clone(),
-        &format!("REST::INDEX > USERS::INDEX @ {}", endpoint),
+        &format!("REST::INDEX > USER::INDEX @ {}", endpoint),
     );
 
-    let client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
     if client.is_err() {
         return Response::generate_error(client);
     }
@@ -84,7 +84,7 @@ async fn index(session: SessionInfo, page: Option<i64>) -> Response {
 /// # Request example
 ///
 /// ```bash
-/// curl -X GET 'http://localhost:9000/users/1' -b cookies.txt
+/// curl -X GET 'http://localhost:9000/user/1' -b cookies.txt
 /// ```
 #[get("/<id>")]
 async fn show(session: SessionInfo, id: i32) -> Response {
@@ -96,10 +96,10 @@ async fn show(session: SessionInfo, id: i32) -> Response {
         utils::get_ip(),
         requestor.clone(),
         tenant.clone(),
-        &format!("REST::SHOW > USERS::SHOW @ {}", endpoint),
+        &format!("REST::SHOW > USER::SHOW @ {}", endpoint),
     );
 
-    let client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
     if client.is_err() {
         return Response::generate_error(client);
     }
@@ -126,7 +126,7 @@ async fn show(session: SessionInfo, id: i32) -> Response {
 /// # Request example
 ///
 /// ```bash
-/// curl -X POST 'http://localhost:9000/users' \
+/// curl -X POST 'http://localhost:9000/user' \
 ///      -H 'Content-Type: application/json' \
 ///      -b cookies.txt
 ///      -d '{"login": "fulano", "name": "Fulano da Silva", "email": null, "password": "senha123"}'
@@ -149,10 +149,10 @@ async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Respon
         utils::get_ip(),
         requestor.clone(),
         tenant.clone(),
-        &format!("REST::STORE > USERS::STORE @ {}", endpoint),
+        &format!("REST::STORE > USER::STORE @ {}", endpoint),
     );
 
-    let client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
     if client.is_err() {
         return Response::generate_error(client);
     }
@@ -181,7 +181,7 @@ async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Respon
 /// # Request example
 ///
 /// ```bash
-/// curl -X PUT 'http://localhost:9000/users/2' \
+/// curl -X PUT 'http://localhost:9000/user/2' \
 ///      -H 'Content-Type: application/json' \
 ///      -b cookies.txt
 ///      -d '{"login": "fulano", "name": "Fulano da Silva", "email": null, "password": null}'
@@ -196,10 +196,10 @@ async fn update(session: SessionInfo, id: i32, body: Json<data::user::RecvUser>)
         utils::get_ip(),
         requestor.clone(),
         tenant.clone(),
-        &format!("REST::UPDATE > USERS::UPDATE @ {}", endpoint),
+        &format!("REST::UPDATE > USER::UPDATE @ {}", endpoint),
     );
 
-    let client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
     if client.is_err() {
         return Response::generate_error(client);
     }
@@ -226,7 +226,7 @@ async fn update(session: SessionInfo, id: i32, body: Json<data::user::RecvUser>)
 /// # Request example
 ///
 /// ```bash
-/// curl -X DELETE 'http://localhost:9000/users/2' -b cookies.txt
+/// curl -X DELETE 'http://localhost:9000/user/2' -b cookies.txt
 /// ```
 #[delete("/<index>")]
 async fn delete(session: SessionInfo, index: i32) -> Response {
@@ -238,10 +238,10 @@ async fn delete(session: SessionInfo, index: i32) -> Response {
         utils::get_ip(),
         requestor.clone(),
         tenant.clone(),
-        &format!("REST::DELETE > USERS::DELETE @ {}", endpoint),
+        &format!("REST::DELETE > USER::DELETE @ {}", endpoint),
     );
 
-    let client = rpc::users::make_client(endpoint, tenant, requestor).await;
+    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
     if client.is_err() {
         return Response::generate_error(client);
     }
