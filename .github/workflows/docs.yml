@@ -3,9 +3,6 @@ name: Deploy documentation
 on:
   push:
     branches: [master]
-
-env:
-  LANG: pt_BR.UTF-8
     
 jobs:
   build-docs:
@@ -17,6 +14,8 @@ jobs:
         run: |
           dnf install -y langpacks-pt_BR glibc-locale-source
           localedef --verbose --force -i pt_BR -f UTF-8 pt_BR.UTF-8
+          export LANG=pt_BR.UTF-8
+          echo "LANG=pt_BR.UTF-8" >> $GITHUB_ENV
       
       - name: Install Graphviz, PlantUML and other tools
         run: |
