@@ -26,8 +26,8 @@ struct DefaultError {
     status: Status,
 }
 
-impl<'r> rocket::response::Responder<'r, 'static> for DefaultError {
-    fn respond_to(self, req: &'r Request<'_>) -> rocket::response::Result<'static> {
+impl rocket::response::Responder<'_, 'static> for DefaultError {
+    fn respond_to(self, req: &Request<'_>) -> rocket::response::Result<'static> {
         let message = format!(
             "There was an error processing the request: {}",
             self.status.reason().unwrap()
@@ -47,7 +47,7 @@ fn gen_message(message: &str) -> String {
 /// Default error catcher for any kind of error that was not treated
 /// specifically.
 #[catch(default)]
-fn default_catcher<'r>(status: Status, _req: &Request) -> DefaultError {
+fn default_catcher(status: Status, _req: &Request) -> DefaultError {
     DefaultError { status }
 }
 
