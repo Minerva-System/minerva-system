@@ -3,7 +3,10 @@ name: Deploy documentation
 on:
   push:
     branches: [master]
-  workflow_dispatch:
+  workflow_dispatch
+
+env:
+  LANG: pt_BR.UTF-8
 
 jobs:
   build-docs:
@@ -11,6 +14,10 @@ jobs:
     container:
       image: fedora:36
     steps:
+      - name: Adjust locale
+        run: |
+          localedef --verbose --force -i pt_BR -f UTF-8 pt_BR.UTF-8
+      
       - name: Install Graphviz, PlantUML and other tools
         run: |
           dnf install -y curl dnf-plugins-core openssl \

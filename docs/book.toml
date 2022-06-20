@@ -10,6 +10,6 @@ command = "mdbook-graphviz"
 output-to-file = false
 
 [preprocessor.plantuml]
-plantuml-cmd="plantuml"
+plantuml-cmd="plantuml -charset UTF-8"
 clickable-img=true
 
