@@ -9,7 +9,7 @@ use minerva_rpc::{messages, metadata};
 use std::collections::HashMap;
 use tonic::{Request, Response, Status};
 
-/// Represents a gRPC service for users.
+/// Represents a gRPC service for user.
 #[derive(Clone)]
 pub struct UserService {
     /// Holds database connection pools for all tenants.
@@ -32,7 +32,7 @@ impl User for UserService {
             lib_rpc::get_address(&req),
             requestor.clone(),
             tenant.clone(),
-            "USERS::INDEX",
+            "USER::INDEX",
         );
 
         let page = req.into_inner().index.unwrap_or(0);
@@ -67,7 +67,7 @@ impl User for UserService {
             lib_rpc::get_address(&req),
             requestor.clone(),
             tenant.clone(),
-            "USERS::SHOW",
+            "USER::SHOW",
         );
 
         let result = {
@@ -104,7 +104,7 @@ impl User for UserService {
             lib_rpc::get_address(&req),
             requestor.clone(),
             tenant.clone(),
-            "USERS::STORE",
+            "USER::STORE",
         );
 
         let result = {
@@ -140,7 +140,7 @@ impl User for UserService {
             lib_rpc::get_address(&req),
             requestor.clone(),
             tenant.clone(),
-            "USERS::UPDATE",
+            "USER::UPDATE",
         );
 
         let result = {
@@ -173,7 +173,7 @@ impl User for UserService {
             lib_rpc::get_address(&req),
             requestor.clone(),
             tenant.clone(),
-            "USERS::DELETE",
+            "USER::DELETE",
         );
 
         let result = {
