@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["UsersService","Represents a gRPC service for users."]]});
+initSidebarItems({"struct":[["UserService","Represents a gRPC service for user."]]});

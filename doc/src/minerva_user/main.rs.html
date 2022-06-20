@@ -70,7 +70,7 @@
 <span id="65">65</span>
 <span id="66">66</span>
 <span id="67">67</span>
-</pre><pre class="rust"><code><span class="doccomment">//! # Minerva System: USERS Service</span>
+</pre><pre class="rust"><code><span class="doccomment">//! # Minerva System: USER Service</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## About this service</span>
 <span class="doccomment">//! This service&#39;s responsibility is that of managing anything related to users,</span>
@@ -87,7 +87,7 @@
 
 <span class="kw">use</span> <span class="ident">dotenv::dotenv</span>;
 <span class="kw">use</span> <span class="ident">minerva_data</span>::{<span class="ident">db</span>, <span class="ident">encryption</span>};
-<span class="kw">use</span> <span class="ident">minerva_rpc::users::users_server::UsersServer</span>;
+<span class="kw">use</span> <span class="ident">minerva_rpc::user::user_server::UserServer</span>;
 <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 <span class="kw">use</span> <span class="ident">std::env</span>;
 <span class="kw">use</span> <span class="ident">tonic::transport::Server</span>;
@@ -100,7 +100,7 @@
 
 <span class="attribute">#[<span class="ident">tokio::main</span>]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">main</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::error::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="macro">println!</span>(<span class="string">&quot;Minerva System: USERS service&quot;</span>);
+    <span class="macro">println!</span>(<span class="string">&quot;Minerva System: USER service&quot;</span>);
     <span class="macro">println!</span>(<span class="string">&quot;Copyright (c) 2022 Lucas S. Vieira&quot;</span>);
     <span class="macro">println!</span>();
     <span class="ident">dotenv</span>().<span class="ident">ok</span>();
@@ -129,12 +129,12 @@
     <span class="macro">println!</span>(<span class="string">&quot;Starting USER on {}...&quot;</span>, <span class="ident">addr</span>);
 
     <span class="kw">let</span> <span class="ident">server</span> <span class="op">=</span> <span class="ident">Server::builder</span>()
-        .<span class="ident">add_service</span>(<span class="ident">UsersServer::new</span>(<span class="ident">service::UsersService</span> { <span class="ident">pools</span> }))
+        .<span class="ident">add_service</span>(<span class="ident">UserServer::new</span>(<span class="ident">service::UserService</span> { <span class="ident">pools</span> }))
         .<span class="ident">serve</span>(<span class="ident">addr</span>);
 
-    <span class="macro">println!</span>(<span class="string">&quot;USERS is ready to accept connections.&quot;</span>);
+    <span class="macro">println!</span>(<span class="string">&quot;USER is ready to accept connections.&quot;</span>);
     <span class="ident">server</span>.<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="macro">println!</span>(<span class="string">&quot;USERS shut down.&quot;</span>);
+    <span class="macro">println!</span>(<span class="string">&quot;USER shut down.&quot;</span>);
     <span class="prelude-val">Ok</span>(())
 }
 </code></pre></div>

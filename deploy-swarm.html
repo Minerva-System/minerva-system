@@ -156,6 +156,18 @@ utilizado o VirtualBox para prover essa facilidade).</p>
 <li>Docker Machine;</li>
 <li>VirtualBox.</li>
 </ul>
+<h3 id="instalando-o-docker-machine-no-linux"><a class="header" href="#instalando-o-docker-machine-no-linux">Instalando o Docker Machine no Linux</a></h3>
+<p>Como o Docker Machine é uma ferramenta defasada, é necessário executar
+passos como os a seguir para instalar:</p>
+<pre><code class="language-bash">base=https://github.com/docker/machine/releases/download/v0.16.2
+curl -L $base/docker-machine-$(uname -s)-$(uname -m) &gt;/tmp/docker-machine
+sudo install /tmp/docker-machine /usr/local/bin/docker-machine
+</code></pre>
+<p>Para instalar os drivers de KVM2, caso você prefira utilizá-los:</p>
+<pre><code class="language-bash">base=https://github.com/praveenkumar/machine-kvm2-driver/releases/download/v0.11.0
+curl -L $base/docker-machine-driver-kvm2 &gt;/tmp/docker-machine-driver-kvm2
+sudo install /tmp/docker-machine-driver-kvm2 /usr/local/bin/docker-machine-driver-kvm2
+</code></pre>
 <h2 id="reinicializando-o-cluster"><a class="header" href="#reinicializando-o-cluster">Reinicializando o cluster</a></h2>
 <p>Caso você já tenha construído um cluster e feito <em>deploy</em> anteriormente, é
 bem provável que você não precise fazer a maioria do trabalho. Você poderá

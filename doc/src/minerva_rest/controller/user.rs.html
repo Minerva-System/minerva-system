@@ -258,7 +258,7 @@
 <span id="253">253</span>
 <span id="254">254</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This submodule describes routes for managing the data for a `User` entity,</span>
-<span class="doccomment">//! particularly with respect to connecting to the `USERS` gRPC service.</span>
+<span class="doccomment">//! particularly with respect to connecting to the `USER` gRPC service.</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::response</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fairings::auth::SessionInfo</span>;
@@ -292,7 +292,7 @@
 <span class="doccomment">/// a value named `page`. If omitted, it is assumed to be `0`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Upon success, returns a list of users in JSON format, containing up to the</span>
-<span class="doccomment">/// number of users per page as defined in the `USERS` microservice.</span>
+<span class="doccomment">/// number of users per page as defined in the `USER` microservice.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Furthermore, this route assumes that the authentication cookies are being</span>
 <span class="doccomment">/// passed as well.</span>
@@ -300,9 +300,9 @@
 <span class="doccomment">/// # Request examples</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```bash</span>
-<span class="doccomment">/// curl -X GET &#39;http://localhost:9000/users&#39; -b cookies.txt</span>
+<span class="doccomment">/// curl -X GET &#39;http://localhost:9000/user&#39; -b cookies.txt</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// curl -X GET &#39;http://localhost:9000/users?page=0&#39; -b cookies.txt</span>
+<span class="doccomment">/// curl -X GET &#39;http://localhost:9000/user?page=0&#39; -b cookies.txt</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/?&lt;page&gt;&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">index</span>(<span class="ident">session</span>: <span class="ident">SessionInfo</span>, <span class="ident">page</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>) -&gt; <span class="ident">Response</span> {
@@ -314,10 +314,10 @@
         <span class="ident">utils::get_ip</span>(),
         <span class="ident">requestor</span>.<span class="ident">clone</span>(),
         <span class="ident">tenant</span>.<span class="ident">clone</span>(),
-        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;REST::INDEX &gt; USERS::INDEX @ {}&quot;</span>, <span class="ident">endpoint</span>),
+        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;REST::INDEX &gt; USER::INDEX @ {}&quot;</span>, <span class="ident">endpoint</span>),
     );
 
-    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::users::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>, <span class="ident">requestor</span>).<span class="kw">await</span>;
+    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::user::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>, <span class="ident">requestor</span>).<span class="kw">await</span>;
     <span class="kw">if</span> <span class="ident">client</span>.<span class="ident">is_err</span>() {
         <span class="kw">return</span> <span class="ident">Response::generate_error</span>(<span class="ident">client</span>);
     }
@@ -343,7 +343,7 @@
 <span class="doccomment">/// # Request example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```bash</span>
-<span class="doccomment">/// curl -X GET &#39;http://localhost:9000/users/1&#39; -b cookies.txt</span>
+<span class="doccomment">/// curl -X GET &#39;http://localhost:9000/user/1&#39; -b cookies.txt</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/&lt;id&gt;&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">show</span>(<span class="ident">session</span>: <span class="ident">SessionInfo</span>, <span class="ident">id</span>: <span class="ident">i32</span>) -&gt; <span class="ident">Response</span> {
@@ -355,10 +355,10 @@
         <span class="ident">utils::get_ip</span>(),
         <span class="ident">requestor</span>.<span class="ident">clone</span>(),
         <span class="ident">tenant</span>.<span class="ident">clone</span>(),
-        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;REST::SHOW &gt; USERS::SHOW @ {}&quot;</span>, <span class="ident">endpoint</span>),
+        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;REST::SHOW &gt; USER::SHOW @ {}&quot;</span>, <span class="ident">endpoint</span>),
     );
 
-    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::users::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>, <span class="ident">requestor</span>).<span class="kw">await</span>;
+    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::user::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>, <span class="ident">requestor</span>).<span class="kw">await</span>;
     <span class="kw">if</span> <span class="ident">client</span>.<span class="ident">is_err</span>() {
         <span class="kw">return</span> <span class="ident">Response::generate_error</span>(<span class="ident">client</span>);
     }
@@ -385,7 +385,7 @@
 <span class="doccomment">/// # Request example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```bash</span>
-<span class="doccomment">/// curl -X POST &#39;http://localhost:9000/users&#39; \</span>
+<span class="doccomment">/// curl -X POST &#39;http://localhost:9000/user&#39; \</span>
 <span class="doccomment">///      -H &#39;Content-Type: application/json&#39; \</span>
 <span class="doccomment">///      -b cookies.txt</span>
 <span class="doccomment">///      -d &#39;{&quot;login&quot;: &quot;fulano&quot;, &quot;name&quot;: &quot;Fulano da Silva&quot;, &quot;email&quot;: null, &quot;password&quot;: &quot;senha123&quot;}&#39;</span>
@@ -408,10 +408,10 @@
         <span class="ident">utils::get_ip</span>(),
         <span class="ident">requestor</span>.<span class="ident">clone</span>(),
         <span class="ident">tenant</span>.<span class="ident">clone</span>(),
-        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;REST::STORE &gt; USERS::STORE @ {}&quot;</span>, <span class="ident">endpoint</span>),
+        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;REST::STORE &gt; USER::STORE @ {}&quot;</span>, <span class="ident">endpoint</span>),
     );
 
-    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::users::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>, <span class="ident">requestor</span>).<span class="kw">await</span>;
+    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::user::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>, <span class="ident">requestor</span>).<span class="kw">await</span>;
     <span class="kw">if</span> <span class="ident">client</span>.<span class="ident">is_err</span>() {
         <span class="kw">return</span> <span class="ident">Response::generate_error</span>(<span class="ident">client</span>);
     }
@@ -440,7 +440,7 @@
 <span class="doccomment">/// # Request example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```bash</span>
-<span class="doccomment">/// curl -X PUT &#39;http://localhost:9000/users/2&#39; \</span>
+<span class="doccomment">/// curl -X PUT &#39;http://localhost:9000/user/2&#39; \</span>
 <span class="doccomment">///      -H &#39;Content-Type: application/json&#39; \</span>
 <span class="doccomment">///      -b cookies.txt</span>
 <span class="doccomment">///      -d &#39;{&quot;login&quot;: &quot;fulano&quot;, &quot;name&quot;: &quot;Fulano da Silva&quot;, &quot;email&quot;: null, &quot;password&quot;: null}&#39;</span>
@@ -455,10 +455,10 @@
         <span class="ident">utils::get_ip</span>(),
         <span class="ident">requestor</span>.<span class="ident">clone</span>(),
         <span class="ident">tenant</span>.<span class="ident">clone</span>(),
-        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;REST::UPDATE &gt; USERS::UPDATE @ {}&quot;</span>, <span class="ident">endpoint</span>),
+        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;REST::UPDATE &gt; USER::UPDATE @ {}&quot;</span>, <span class="ident">endpoint</span>),
     );
 
-    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::users::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>, <span class="ident">requestor</span>).<span class="kw">await</span>;
+    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::user::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>, <span class="ident">requestor</span>).<span class="kw">await</span>;
     <span class="kw">if</span> <span class="ident">client</span>.<span class="ident">is_err</span>() {
         <span class="kw">return</span> <span class="ident">Response::generate_error</span>(<span class="ident">client</span>);
     }
@@ -485,7 +485,7 @@
 <span class="doccomment">/// # Request example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```bash</span>
-<span class="doccomment">/// curl -X DELETE &#39;http://localhost:9000/users/2&#39; -b cookies.txt</span>
+<span class="doccomment">/// curl -X DELETE &#39;http://localhost:9000/user/2&#39; -b cookies.txt</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">delete</span>(<span class="string">&quot;/&lt;index&gt;&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete</span>(<span class="ident">session</span>: <span class="ident">SessionInfo</span>, <span class="ident">index</span>: <span class="ident">i32</span>) -&gt; <span class="ident">Response</span> {
@@ -497,10 +497,10 @@
         <span class="ident">utils::get_ip</span>(),
         <span class="ident">requestor</span>.<span class="ident">clone</span>(),
         <span class="ident">tenant</span>.<span class="ident">clone</span>(),
-        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;REST::DELETE &gt; USERS::DELETE @ {}&quot;</span>, <span class="ident">endpoint</span>),
+        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;REST::DELETE &gt; USER::DELETE @ {}&quot;</span>, <span class="ident">endpoint</span>),
     );
 
-    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::users::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>, <span class="ident">requestor</span>).<span class="kw">await</span>;
+    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">rpc::user::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>, <span class="ident">requestor</span>).<span class="kw">await</span>;
     <span class="kw">if</span> <span class="ident">client</span>.<span class="ident">is_err</span>() {
         <span class="kw">return</span> <span class="ident">Response::generate_error</span>(<span class="ident">client</span>);
     }

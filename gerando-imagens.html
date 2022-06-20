@@ -177,8 +177,8 @@ do qual está sendo gerado (arquivos <code>Cargo.toml</code> e <code>pubspec.yam
 no exemplo a seguir:</p>
 <pre><code class="language-bash"># Faça algo similar para cada uma das imagens
 docker image tag \
-	seu_username/minerva_users \
-	seu_username/minerva_users:0.2.0
+	seu_username/minerva_user \
+	seu_username/minerva_user:0.2.0
 </code></pre>
 <h3 id="pgadmin-4"><a class="header" href="#pgadmin-4">PgAdmin 4</a></h3>
 <p>A imagem com PgAdmin 4 é customizada com meros arquivos de configuração para
@@ -203,7 +203,7 @@ como essas imagens encontram-se no DockerHub (sob o <em>username</em> <code>luks
 <tr><td><code>frontend</code></td><td><code>luksamuk/minerva_frontend:latest</code></td></tr>
 <tr><td><code>rest</code></td><td><code>luksamuk/minerva_rest:latest</code></td></tr>
 <tr><td><code>runonce</code></td><td><code>luksamuk/minerva_runonce:latest</code></td></tr>
-<tr><td><code>users</code></td><td><code>luksamuk/minerva_users:latest</code></td></tr>
+<tr><td><code>user</code></td><td><code>luksamuk/minerva_user:latest</code></td></tr>
 <tr><td><code>session</code></td><td><code>luksamuk/minerva_session:latest</code></td></tr>
 <tr><td><code>pgadmin</code></td><td><code>luksamuk/minerva_pgadmin:latest</code></td></tr>
 <tr><td><code>postgresql</code></td><td><code>postgres:14</code> (Não gerado)</td></tr>
@@ -211,13 +211,12 @@ como essas imagens encontram-se no DockerHub (sob o <em>username</em> <code>luks
 </tbody></table>
 <h2 id="subindo-imagens-para-o-dockerhub"><a class="header" href="#subindo-imagens-para-o-dockerhub">Subindo imagens para o DockerHub</a></h2>
 <p>Para enviar uma imagem para o DockerHub, primeiro é necessário se certificar de
-que essa imagem possua uma <em>tag</em> adequada. Por exemplo, supondo que acabamos de
-gerar a imagem com a <em>tag</em> 0.2.0 para o módulo <code>users</code>:</p>
+que essa imagem possua uma <em>tag</em> adequada.</p>
 <p>Em seguida, poderemos enviar todas as tags das imagens para o DockerHub.</p>
 <pre><code class="language-bash">docker image push -a luksamuk/minerva_frontend
 docker image push -a luksamuk/minerva_rest
 docker image push -a luksamuk/minerva_runonce
-docker image push -a luksamuk/minerva_users
+docker image push -a luksamuk/minerva_user
 docker image push -a luksamuk/minerva_session
 docker image push -a luksamuk/minerva_pgadmin
 </code></pre>

@@ -256,7 +256,7 @@ a utilização de versionamento.</p>
 <li><code>mongodb-deployment</code>: Deployment para o banco de dados MongoDB.</li>
 <li><code>frontend-deployment</code>: Deployment para o Front-End Web do sistema.</li>
 <li><code>rest-deployment</code>: Deployment para o gateway REST do sistema.</li>
-<li><code>users-deployment</code>: Deployment para o microsserviço <code>USERS</code>.</li>
+<li><code>user-deployment</code>: Deployment para o microsserviço <code>USER</code>.</li>
 <li><code>session-deployment</code>: Deployment para o microsserviço <code>SESSION</code>.</li>
 </ul>
 <p>Para aplicar todos os <em>Deployments</em>, execute:</p>
@@ -276,8 +276,8 @@ integrar-se com o balanceador de recursos do provedor do cluster.</p>
 PostgreSQL.</li>
 <li><code>mongodb-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods
 MongoDB.</li>
-<li><code>users-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods do
-microsserviço USERS.</li>
+<li><code>user-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods do
+microsserviço USER.</li>
 <li><code>session-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods do
 microsserviço SESSION.</li>
 <li><code>frontend-svc</code> (<em>LoadBalancer</em>): Serviço para acesso interno e externo
@@ -303,8 +303,8 @@ após sucesso, será removido junto com o <em>pod</em> após cinco minutos.</li>
 <ul>
 <li><code>rest-hpa</code>: Escalonador horizontal do gateway REST. Mantém entre 1 e
 15 réplicas para <code>rest-deployment</code> com uso médio de 50% do CPU alocado.</li>
-<li><code>users-hpa</code>: Escalonador horizontal do microsserviço USERS. Mantém entre
-2 e 6 réplicas para <code>users-deployment</code> com uso médio de 65% do CPU alocado.</li>
+<li><code>user-hpa</code>: Escalonador horizontal do microsserviço USER. Mantém entre
+2 e 6 réplicas para <code>user-deployment</code> com uso médio de 65% do CPU alocado.</li>
 <li><code>session-hpa</code>: Escalonador horizontal do microsserviço SESSION. Mantém
 entre 2 e 6 réplicas para <code>session-deployment</code> com uso médio de 65%
 do CPU alocado.</li>
@@ -408,7 +408,7 @@ visíveis nesse Dashboard):</p>
 <h2 id="testes-de-stress"><a class="header" href="#testes-de-stress">Testes de Stress</a></h2>
 <p>Para realizar testes de stress, use o script <code>deploy/stress_test.sh</code>.
 Você poderá testar cada sistema crucial usando um comando como este:</p>
-<pre><code class="language-bash">./deploy/stress_test.sh minerva-system.io/api users
+<pre><code class="language-bash">./deploy/stress_test.sh minerva-system.io/api user
 </code></pre>
 <p>Para maiores informações, execute o script sem argumentos.</p>
 

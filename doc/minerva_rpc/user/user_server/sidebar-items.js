@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["UserServer",""],["_Inner",""]],"trait":[["User","Generated trait containing gRPC methods that should be implemented for use with UserServer."]]});

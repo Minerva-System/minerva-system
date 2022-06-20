@@ -166,10 +166,10 @@ e este projeto adere ao <a href="https://semver.org/spec/v2.0.0.html">Versioname
 <h3 id="geral"><a class="header" href="#geral">Geral</a></h3>
 <p>Relação de versões de microsserviços:</p>
 <ul>
-<li><code>USERS</code> - v0.2.1</li>
+<li><code>USER</code> - v0.2.2</li>
 <li><code>SESSION</code> - v0.1.1</li>
 <li><code>RUNONCE</code> - v0.2.1</li>
-<li><code>REST</code> - v0.2.1</li>
+<li><code>REST</code> - v0.2.2</li>
 <li>Front-End - v0.1.1 (pré-alfa)</li>
 </ul>
 <h4 id="adicionado"><a class="header" href="#adicionado">Adicionado</a></h4>
@@ -186,7 +186,7 @@ e este projeto adere ao <a href="https://semver.org/spec/v2.0.0.html">Versioname
 <li>Dependência da <em>crate</em> <code>rustc-serialize</code> na configuração da <em>crate</em>
 <code>chrono</code> (em confirmidade com alerta Dependabot), para todos os módulos.</li>
 </ul>
-<h3 id="rest---v021"><a class="header" href="#rest---v021"><code>REST</code> - v0.2.1</a></h3>
+<h3 id="rest---v022"><a class="header" href="#rest---v022"><code>REST</code> - v0.2.2</a></h3>
 <h4 id="adicionado-1"><a class="header" href="#adicionado-1">Adicionado</a></h4>
 <ul>
 <li><em>Catchers</em> para tipos de retorno comuns e retorno genérico padrão.</li>
@@ -195,6 +195,12 @@ e este projeto adere ao <a href="https://semver.org/spec/v2.0.0.html">Versioname
 <ul>
 <li>Erros na conexão com um microsserviço agora retornam um erro 503 (Recurso
 Indisponível).</li>
+</ul>
+<h3 id="user---v022"><a class="header" href="#user---v022"><code>USER</code> - v0.2.2</a></h3>
+<h4 id="modificado"><a class="header" href="#modificado">Modificado</a></h4>
+<ul>
+<li>Alteração do nome do serviço de <code>USERS</code> para <code>USER</code>, evitando maiores
+enganos.</li>
 </ul>
 <h2 id="v1---2022-06-17"><a class="header" href="#v1---2022-06-17"><a href="https://github.com/luksamuk/minerva-system/releases/tag/v1">v1</a> - 2022-06-17</a></h2>
 <h3 id="geral-1"><a class="header" href="#geral-1">Geral</a></h3>
@@ -439,7 +445,7 @@ pelo orquestrador de contêineres.</p>
 <p>No caso do serviço REST, verifique o arquivo <code>Rocket.toml</code> para avaliar
 a configuração em desenvolvimento e em produção do mesmo.</p>
 <table><thead><tr><th>Serviço</th><th>Variável</th><th>Valor em Produção</th></tr></thead><tbody>
-<tr><td>USER</td><td><code>USER_SERVICE_SERVER</code></td><td><code>users</code></td></tr>
+<tr><td>USER</td><td><code>USER_SERVICE_SERVER</code></td><td><code>user</code></td></tr>
 <tr><td>Banco de Dados Relacional</td><td><code>DATABASE_SERVICE_SERVER</code></td><td><code>postgresql</code></td></tr>
 <tr><td>Banco de Dados Não-Relacional</td><td><code>MONGO_SERVICE_SERVER</code></td><td><code>mongodb</code></td></tr>
 <tr><td>REST</td><td>nenhuma</td><td><code>rest</code></td></tr>
@@ -470,7 +476,7 @@ Documentação da API REST (Postman, em Inglês).</li>
 Utilitário de configuração inicial do sistema durante um deploy.</li>
 <li><a href="./doc/minerva_session/index.html">SESSION</a><br />
 Serviço de gerenciamento de sessão de usuário.</li>
-<li><a href="./doc/minerva_user/index.html">USERS</a><br />
+<li><a href="./doc/minerva_user/index.html">USER</a><br />
 Serviço de gerenciamento de usuários.</li>
 <li>PRODUCT <em>(não implementado)</em><br />
 Serviço de gerenciamento de produtos.</li>
@@ -508,7 +514,7 @@ microsserviços envolvidos.</p>
 </center>
 <h2 id="usuários"><a class="header" href="#usuários">Usuários</a></h2>
 <center>
-<p><img src="diagramas/../mdbook-plantuml-img/068ad07a559d1c993213ad22e64f1380cbdf5ac3.svg" alt="" /></p>
+<p><img src="diagramas/../mdbook-plantuml-img/11b49a40ed99cebd41bb3995a2ce327b0b92bcfd.svg" alt="" /></p>
 </center>
 <h2 id="inquilinos"><a class="header" href="#inquilinos">Inquilinos</a></h2>
 <center>
@@ -559,7 +565,7 @@ de vida limitado.</p>
 <p>Isso é gerenciado pelos próprios serviços. O MongoDB fará isso através do tempo
 de vida da coleção para aquele banco, enquanto o Redis fará isso através do
 tempo de vida da informação quando a mesma foi colocada em cache.</p>
-<p><strong>TODO:</strong> Seria mais adequado fazer com que <code>SESSION</code> requeira a <code>USERS</code> os
+<p><strong>TODO:</strong> Seria mais adequado fazer com que <code>SESSION</code> requeira a <code>USER</code> os
 dados dos usuários, ao invés de recorrer ao banco?</p>
 <center>
 <p><img src="diagramas/../mdbook-plantuml-img/63458478c32d8ed0a4f0f23445e03b499e30425d.svg" alt="" /></p>
@@ -574,23 +580,23 @@ sistema.</p>
 <p>A gerência de usuários não diz respeito à sessão em si.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="cadastro-de-usuários"><a class="header" href="#cadastro-de-usuários">Cadastro de usuários</a></h1>
 <center>
-<p><img src="diagramas/../mdbook-plantuml-img/287cfdd1ddfdb124cad33edd5662b6c4567d80d0.svg" alt="" /></p>
+<p><img src="diagramas/../mdbook-plantuml-img/5f55690e3503d66808f0db9a30a4c270c15b5514.svg" alt="" /></p>
 </center>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="listagem-de-usuários"><a class="header" href="#listagem-de-usuários">Listagem de usuários</a></h1>
 <center>
-<p><img src="diagramas/../mdbook-plantuml-img/f186c680f3038f7fedbb64659bb43c1650fd8bb6.svg" alt="" /></p>
+<p><img src="diagramas/../mdbook-plantuml-img/fb4c7675a8889cd1691a916d3d32270d802eed2c.svg" alt="" /></p>
 </center>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="consultar-usuário"><a class="header" href="#consultar-usuário">Consultar usuário</a></h1>
 <center>
-<p><img src="diagramas/../mdbook-plantuml-img/f229e0350080bbf33335b2a35e207a5b4702d5d5.svg" alt="" /></p>
+<p><img src="diagramas/../mdbook-plantuml-img/187126b200584370ac865b5a8943df58615ea8e0.svg" alt="" /></p>
 </center>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="alteração-do-cadastro-de-usuários"><a class="header" href="#alteração-do-cadastro-de-usuários">Alteração do cadastro de usuários</a></h1>
 <center>
-<p><img src="diagramas/../mdbook-plantuml-img/54cb675f71f67e0bc39b269ef01dc49f16893c7b.svg" alt="" /></p>
+<p><img src="diagramas/../mdbook-plantuml-img/b4371f532464997c6570b0d00a457609603c94be.svg" alt="" /></p>
 </center>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="remoção-de-usuários"><a class="header" href="#remoção-de-usuários">Remoção de usuários</a></h1>
 <center>
-<p><img src="diagramas/../mdbook-plantuml-img/07c3fee005d91d16c598e4868a5979200923aae6.svg" alt="" /></p>
+<p><img src="diagramas/../mdbook-plantuml-img/4952d165285d7398dd046430df9632fec61a76f7.svg" alt="" /></p>
 </center>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="multi-tenancy"><a class="header" href="#multi-tenancy">Multi-Tenancy</a></h1>
 <p>O Sistema Minerva é um sistema <em>multi-tenant</em>. Isso significa que é
@@ -961,8 +967,8 @@ do qual está sendo gerado (arquivos <code>Cargo.toml</code> e <code>pubspec.yam
 no exemplo a seguir:</p>
 <pre><code class="language-bash"># Faça algo similar para cada uma das imagens
 docker image tag \
-	seu_username/minerva_users \
-	seu_username/minerva_users:0.2.0
+	seu_username/minerva_user \
+	seu_username/minerva_user:0.2.0
 </code></pre>
 <h3 id="pgadmin-4"><a class="header" href="#pgadmin-4">PgAdmin 4</a></h3>
 <p>A imagem com PgAdmin 4 é customizada com meros arquivos de configuração para
@@ -987,7 +993,7 @@ como essas imagens encontram-se no DockerHub (sob o <em>username</em> <code>luks
 <tr><td><code>frontend</code></td><td><code>luksamuk/minerva_frontend:latest</code></td></tr>
 <tr><td><code>rest</code></td><td><code>luksamuk/minerva_rest:latest</code></td></tr>
 <tr><td><code>runonce</code></td><td><code>luksamuk/minerva_runonce:latest</code></td></tr>
-<tr><td><code>users</code></td><td><code>luksamuk/minerva_users:latest</code></td></tr>
+<tr><td><code>user</code></td><td><code>luksamuk/minerva_user:latest</code></td></tr>
 <tr><td><code>session</code></td><td><code>luksamuk/minerva_session:latest</code></td></tr>
 <tr><td><code>pgadmin</code></td><td><code>luksamuk/minerva_pgadmin:latest</code></td></tr>
 <tr><td><code>postgresql</code></td><td><code>postgres:14</code> (Não gerado)</td></tr>
@@ -995,13 +1001,12 @@ como essas imagens encontram-se no DockerHub (sob o <em>username</em> <code>luks
 </tbody></table>
 <h2 id="subindo-imagens-para-o-dockerhub"><a class="header" href="#subindo-imagens-para-o-dockerhub">Subindo imagens para o DockerHub</a></h2>
 <p>Para enviar uma imagem para o DockerHub, primeiro é necessário se certificar de
-que essa imagem possua uma <em>tag</em> adequada. Por exemplo, supondo que acabamos de
-gerar a imagem com a <em>tag</em> 0.2.0 para o módulo <code>users</code>:</p>
+que essa imagem possua uma <em>tag</em> adequada.</p>
 <p>Em seguida, poderemos enviar todas as tags das imagens para o DockerHub.</p>
 <pre><code class="language-bash">docker image push -a luksamuk/minerva_frontend
 docker image push -a luksamuk/minerva_rest
 docker image push -a luksamuk/minerva_runonce
-docker image push -a luksamuk/minerva_users
+docker image push -a luksamuk/minerva_user
 docker image push -a luksamuk/minerva_session
 docker image push -a luksamuk/minerva_pgadmin
 </code></pre>
@@ -1114,6 +1119,18 @@ utilizado o VirtualBox para prover essa facilidade).</p>
 <li>Docker Machine;</li>
 <li>VirtualBox.</li>
 </ul>
+<h3 id="instalando-o-docker-machine-no-linux"><a class="header" href="#instalando-o-docker-machine-no-linux">Instalando o Docker Machine no Linux</a></h3>
+<p>Como o Docker Machine é uma ferramenta defasada, é necessário executar
+passos como os a seguir para instalar:</p>
+<pre><code class="language-bash">base=https://github.com/docker/machine/releases/download/v0.16.2
+curl -L $base/docker-machine-$(uname -s)-$(uname -m) &gt;/tmp/docker-machine
+sudo install /tmp/docker-machine /usr/local/bin/docker-machine
+</code></pre>
+<p>Para instalar os drivers de KVM2, caso você prefira utilizá-los:</p>
+<pre><code class="language-bash">base=https://github.com/praveenkumar/machine-kvm2-driver/releases/download/v0.11.0
+curl -L $base/docker-machine-driver-kvm2 &gt;/tmp/docker-machine-driver-kvm2
+sudo install /tmp/docker-machine-driver-kvm2 /usr/local/bin/docker-machine-driver-kvm2
+</code></pre>
 <h2 id="reinicializando-o-cluster"><a class="header" href="#reinicializando-o-cluster">Reinicializando o cluster</a></h2>
 <p>Caso você já tenha construído um cluster e feito <em>deploy</em> anteriormente, é
 bem provável que você não precise fazer a maioria do trabalho. Você poderá
@@ -1369,7 +1386,7 @@ a utilização de versionamento.</p>
 <li><code>mongodb-deployment</code>: Deployment para o banco de dados MongoDB.</li>
 <li><code>frontend-deployment</code>: Deployment para o Front-End Web do sistema.</li>
 <li><code>rest-deployment</code>: Deployment para o gateway REST do sistema.</li>
-<li><code>users-deployment</code>: Deployment para o microsserviço <code>USERS</code>.</li>
+<li><code>user-deployment</code>: Deployment para o microsserviço <code>USER</code>.</li>
 <li><code>session-deployment</code>: Deployment para o microsserviço <code>SESSION</code>.</li>
 </ul>
 <p>Para aplicar todos os <em>Deployments</em>, execute:</p>
@@ -1389,8 +1406,8 @@ integrar-se com o balanceador de recursos do provedor do cluster.</p>
 PostgreSQL.</li>
 <li><code>mongodb-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods
 MongoDB.</li>
-<li><code>users-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods do
-microsserviço USERS.</li>
+<li><code>user-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods do
+microsserviço USER.</li>
 <li><code>session-svc</code> (<em>ClusterIP</em>): Serviço para acesso interno aos pods do
 microsserviço SESSION.</li>
 <li><code>frontend-svc</code> (<em>LoadBalancer</em>): Serviço para acesso interno e externo
@@ -1416,8 +1433,8 @@ após sucesso, será removido junto com o <em>pod</em> após cinco minutos.</li>
 <ul>
 <li><code>rest-hpa</code>: Escalonador horizontal do gateway REST. Mantém entre 1 e
 15 réplicas para <code>rest-deployment</code> com uso médio de 50% do CPU alocado.</li>
-<li><code>users-hpa</code>: Escalonador horizontal do microsserviço USERS. Mantém entre
-2 e 6 réplicas para <code>users-deployment</code> com uso médio de 65% do CPU alocado.</li>
+<li><code>user-hpa</code>: Escalonador horizontal do microsserviço USER. Mantém entre
+2 e 6 réplicas para <code>user-deployment</code> com uso médio de 65% do CPU alocado.</li>
 <li><code>session-hpa</code>: Escalonador horizontal do microsserviço SESSION. Mantém
 entre 2 e 6 réplicas para <code>session-deployment</code> com uso médio de 65%
 do CPU alocado.</li>
@@ -1521,7 +1538,7 @@ visíveis nesse Dashboard):</p>
 <h2 id="testes-de-stress"><a class="header" href="#testes-de-stress">Testes de Stress</a></h2>
 <p>Para realizar testes de stress, use o script <code>deploy/stress_test.sh</code>.
 Você poderá testar cada sistema crucial usando um comando como este:</p>
-<pre><code class="language-bash">./deploy/stress_test.sh minerva-system.io/api users
+<pre><code class="language-bash">./deploy/stress_test.sh minerva-system.io/api user
 </code></pre>
 <p>Para maiores informações, execute o script sem argumentos.</p>
 
