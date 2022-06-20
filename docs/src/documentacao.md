@@ -26,7 +26,7 @@ Não se esqueça de consultar estes documentos com frequência.
   Utilitário de configuração inicial do sistema durante um deploy.
 - [SESSION](./doc/minerva_session/index.html) \
   Serviço de gerenciamento de sessão de usuário.
-- [USERS](./doc/minerva_user/index.html) \
+- [USER](./doc/minerva_user/index.html) \
   Serviço de gerenciamento de usuários.
 - PRODUCT _(não implementado)_ \
   Serviço de gerenciamento de produtos.

@@ -45,7 +45,7 @@ user -- logoff
 left to right direction
 actor :Usuário do Sistema: as user
 
-package USERS {
+package USER {
 	usecase cadastro
 	usecase listagem
 	usecase consulta

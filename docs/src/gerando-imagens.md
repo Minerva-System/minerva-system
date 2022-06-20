@@ -56,8 +56,8 @@ no exemplo a seguir:
 ```bash
 # Faça algo similar para cada uma das imagens
 docker image tag \
-	seu_username/minerva_users \
-	seu_username/minerva_users:0.2.0
+	seu_username/minerva_user \
+	seu_username/minerva_user:0.2.0
 ```
 
 
@@ -95,7 +95,7 @@ como essas imagens encontram-se no DockerHub (sob o _username_ `luksamuk`):
 | `frontend`   | `luksamuk/minerva_frontend:latest` |
 | `rest`       | `luksamuk/minerva_rest:latest`     |
 | `runonce`    | `luksamuk/minerva_runonce:latest`  |
-| `users`      | `luksamuk/minerva_users:latest`    |
+| `user`       | `luksamuk/minerva_user:latest`     |
 | `session`    | `luksamuk/minerva_session:latest`  |
 | `pgadmin`    | `luksamuk/minerva_pgadmin:latest`  |
 | `postgresql` | `postgres:14` (Não gerado)         |
@@ -106,9 +106,7 @@ como essas imagens encontram-se no DockerHub (sob o _username_ `luksamuk`):
 ## Subindo imagens para o DockerHub
 
 Para enviar uma imagem para o DockerHub, primeiro é necessário se certificar de
-que essa imagem possua uma _tag_ adequada. Por exemplo, supondo que acabamos de
-gerar a imagem com a _tag_ 0.2.0 para o módulo `users`:
-
+que essa imagem possua uma _tag_ adequada.
 
 Em seguida, poderemos enviar todas as tags das imagens para o DockerHub.
 
@@ -116,7 +114,7 @@ Em seguida, poderemos enviar todas as tags das imagens para o DockerHub.
 docker image push -a luksamuk/minerva_frontend
 docker image push -a luksamuk/minerva_rest
 docker image push -a luksamuk/minerva_runonce
-docker image push -a luksamuk/minerva_users
+docker image push -a luksamuk/minerva_user
 docker image push -a luksamuk/minerva_session
 docker image push -a luksamuk/minerva_pgadmin
 ```

@@ -8,7 +8,7 @@
 actor       Usuário    as ator
 boundary    FrontEnd   as frontend
 boundary    API        as api
-control     USERS      as users
+control     USER      as user
 control     SESSION    as session
 collections Redis      as redis
 collections MongoDB    as mongo
@@ -46,17 +46,17 @@ deactivate session
 
 == Verificação de existência do usuário ==
 
-api   ->  users:    Requisição da remoção de usuário
-activate users
-users ->  postgres: Verifica se usuário existe
+api   ->  user:    Requisição da remoção de usuário
+activate user
+user ->  postgres: Verifica se usuário existe
 activate postgres
-users <-- postgres: Retorno com dados do usuário
+user <-- postgres: Retorno com dados do usuário
 
 == Remoção de dados de sessão ==
 
-users   ->  postgres: Trava usuário para novas sessões
-users   <-- postgres: Sucesso
-users   ->  session:  Requisita encerramento das sessões do usuário
+user   ->  postgres: Trava usuário para novas sessões
+user   <-- postgres: Sucesso
+user   ->  session:  Requisita encerramento das sessões do usuário
 activate session
 session ->  mongo:    Requisita todas as chaves de sessões do usuário
 activate mongo
@@ -68,19 +68,19 @@ session ->  redis:    Remove todas as sessões em cache através das chaves
 activate redis
 session <-- redis:    Sucesso
 deactivate redis
-users   <-- session:  Sucesso
+user   <-- session:  Sucesso
 deactivate session
 
 == Remoção do usuário ==
 
-users    -> postgres:  Requisita remoção do usuário
-users    <-- postgres: Sucesso
+user    -> postgres:  Requisita remoção do usuário
+user    <-- postgres: Sucesso
 deactivate postgres
-api      <-- users:    Sucesso
+api      <-- user:    Sucesso
 
 == Retorno da API ==
 
-deactivate users
+deactivate user
 frontend <-- api:      Retorno vazio com sucesso
 deactivate api
 ator     <-- frontend: Mensagem de sucesso e redirecionamento
