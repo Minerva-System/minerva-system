@@ -1,4 +1,4 @@
-//! # Minerva System: USERS Service
+//! # Minerva System: USER Service
 //!
 //! ## About this service
 //! This service's responsibility is that of managing anything related to users,
@@ -15,7 +15,7 @@ extern crate diesel;
 
 use dotenv::dotenv;
 use minerva_data::{db, encryption};
-use minerva_rpc::users::users_server::UsersServer;
+use minerva_rpc::user::user_server::UserServer;
 use std::collections::HashMap;
 use std::env;
 use tonic::transport::Server;
@@ -28,7 +28,7 @@ mod tests;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("Minerva System: USERS service");
+    println!("Minerva System: USER service");
     println!("Copyright (c) 2022 Lucas S. Vieira");
     println!();
     dotenv().ok();
@@ -57,11 +57,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Starting USER on {}...", addr);
 
     let server = Server::builder()
-        .add_service(UsersServer::new(service::UsersService { pools }))
+        .add_service(UserServer::new(service::UserService { pools }))
         .serve(addr);
 
-    println!("USERS is ready to accept connections.");
+    println!("USER is ready to accept connections.");
     server.await?;
-    println!("USERS shut down.");
+    println!("USER shut down.");
     Ok(())
 }

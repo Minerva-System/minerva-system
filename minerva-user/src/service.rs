@@ -1,23 +1,23 @@
-//! This module contains the actual implementation for the `Users` gRPC service.
+//! This module contains the actual implementation for the `User` gRPC service.
 
 use crate::repository;
 use minerva_data as lib_data;
 use minerva_data::db::DBPool;
 use minerva_rpc as lib_rpc;
-use minerva_rpc::users::users_server::Users;
+use minerva_rpc::user::user_server::User;
 use minerva_rpc::{messages, metadata};
 use std::collections::HashMap;
 use tonic::{Request, Response, Status};
 
 /// Represents a gRPC service for users.
 #[derive(Clone)]
-pub struct UsersService {
+pub struct UserService {
     /// Holds database connection pools for all tenants.
     pub pools: HashMap<String, DBPool>,
 }
 
 #[tonic::async_trait]
-impl Users for UsersService {
+impl User for UserService {
     async fn index(
         &self,
         req: Request<messages::PageIndex>,
