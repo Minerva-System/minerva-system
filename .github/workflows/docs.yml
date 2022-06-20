@@ -11,6 +11,7 @@ jobs:
       image: fedora:36
     steps:
       - name: Adjust locale
+        continue-on-error: true
         run: |
           dnf install -y langpacks-pt_BR glibc-locale-source
           localedef --verbose --force -i pt_BR -f UTF-8 pt_BR.UTF-8
