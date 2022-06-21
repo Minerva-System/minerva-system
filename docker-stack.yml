@@ -94,7 +94,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    image: postgres:14
+    image: postgres:14-alpine
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
@@ -143,6 +143,19 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager]
+
+  # Redis 7
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis-data:/data
+    networks:
+      - minerva_system
+    deploy:
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: [node.role == worker]
         
 networks:
   minerva_system:
@@ -150,4 +163,5 @@ networks:
 volumes:
   db-data:
   mongodb-data:
+  redis-data:
 
