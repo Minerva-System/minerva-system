@@ -41,20 +41,28 @@ Além disso, **sempre execute todos os comandos abaixo no diretório do módulo
 
 ## Configuração inicial
 
-Para começar, crie um contêiner Docker com o banco de dados:
+Para começar, crie um contêiner Docker para cada um dos bancos de dados:
 
 ```bash
-./make_docker_db.sh
+./make_postgres_db.sh
+./make_mongo_db.sh
+./make_redis_db.sh
 ```
 
-Isso criará um contêiner com PostgreSQL 14 chamado `minerva-micro`. Caso o
-contêiner já exista, veja mais abaixo como removê-lo.
+Isso criará contêineres executando PostgreSQL 14, MongoDB 5 e Redis 7.
 
-Após a criação do contêiner, o processo de preparação do PostgreSQL pode
-ser um pouco demorado. Acompanhe este processo observando os logs:
+Após a criação dos contêineres, o processo de preparação dos bancos de dados
+pode ser um pouco demorado. Acompanhe este processo observando os logs:
 
 ```bash
-docker logs -f minerva-micro
+# Banco relacional
+docker logs -f minerva-postgres
+
+# Banco não-relacional
+docker logs -f minerva-mongo
+
+# Cache
+docker logs -f minerva-redis
 ```
 
 Em seguida, execute a operação inicial de criação de um banco de dados.
@@ -106,13 +114,14 @@ diesel migration redo --database-url="postgres://postgres:postgres@localhost/min
 
 ## Removendo banco de dados de teste
 
-Para remover o banco de dados de teste criado no Docker, use os comandos a seguir.
+Para remover os bancos de dados de teste criados no Docker, use os comandos a
+seguir.
 
-Estes comandos servem para, respectivamente, parar a execução do contêiner e
-então excluí-lo.
+Estes comandos servem para, respectivamente, parar a execução dos contêineres e
+então excluí-los.
 
 ```bash
-docker stop minerva-micro
-docker rm minerva-micro
+docker stop minerva-postgres minerva-mongo minerva-redis
+docker rm minerva-postgres minerva-mongo minerva-redis
 ```
 
