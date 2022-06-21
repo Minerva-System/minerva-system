@@ -22,6 +22,10 @@ $extract_manager_ip_script = <<SCRIPT
 ip addr | grep "inet 172.20.20.1" | awk '{print $2}' | cut -d'/' -f 1 | awk '{print$1":2377"}' > /vagrant/managerip
 SCRIPT
 
+$start_minerva_system = <<SCRIPT
+vagrant ssh -c 'docker stack deploy --compose-file /vagrant/docker-stack.yml minerva' manager01
+SCRIPT
+
 # Defaults
 BOX_NAME = "boxomatic/alpine-3.14"
 MEMORY = "512"
@@ -76,6 +80,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
       # Join cluster as worker
       worker.vm.provision "shell", inline: "docker swarm join --token `cat /vagrant/workertoken` `cat /vagrant/managerip`"
+
+      # After adding last worker, run Docker Stack
+      worker.trigger.after :up do |trigger|
+        if(i == WORKERS) then
+          # Starting Minerva System
+          trigger.info = "Iniciando Minerva System..."
+          trigger.run = {inline: $start_minerva_system}
+        end
+      end
     end
   end
 end
