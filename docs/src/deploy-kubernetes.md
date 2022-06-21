@@ -131,7 +131,10 @@ variáveis de ambiente de um _pod_.
 - `rest-configmap`: Variáveis padrão para a API REST.
 - `ports-configmap`: Portas para acesso aos serviços no cluster.
 - `servers-configmap`: Nomes dos serviços a serem acessados. Geralmente
-  associados a cada Deployment ou StatefulSet.
+  associados a cada Deployment ou StatefulSet;
+- `redis-configmap`: Dados de configuração do Redis. Mais especificamente
+  um arquivo `redis.conf` que será recuperado nos _pods_ do Redis através
+  da montagem desse _ConfigMap_, como se fosse um volume mutável.
 
 Para aplicar todos os _ConfigMaps_, execute:
 
@@ -146,8 +149,10 @@ Um _PersistentVolumeClaim_ age como uma reserva de volume persistente
 caso, cria um volume com tamanho específico dinamicamente.
 
 - `postgresql-pvc`: PersistentVolumeClaim para o PostgreSQL. Solicita 1GB
-  de armazenamento e criação dinâmica.
+  de armazenamento e criação dinâmica;
 - `mongodb-pvc`: PersistentVolumeClaim para o MongoDB. Solicita 1GB de
+  armazenamento e criação dinâmica;
+- `redis-pvc`: PersistentVolumeClaim para o Redis. Solicita 500MB de
   armazenamento e criação dinâmica.
   
 Para aplicar todos os _PersistentVolumeClaims_, execute:
@@ -175,6 +180,23 @@ Para aplicar todos os _Deployments_, execute:
 for f in `ls deploy/*-deployment.yml`; do kubectl apply -f $f; done
 ```
 
+### _StatefulSets_
+
+Um _StatefulSet_ é exatamente igual a um _Deployment_, porém seus _pods_
+são criados com nomes ordinais em vez de aleatórios, de forma que possam
+ser individualmente identificados. Além disso, _StatefulSets_ devem ser
+utilizados quando o estado interno da aplicação importa.
+
+- `redis-statefulset`: StatefulSet para o cluster do serviço de
+  cache do Redis. A réplica `redis-0` será sempre um _Master_, enquanto
+  as demais réplicas serão sempre _Slaves_.
+
+Para aplicar todos os _StatefulSets_, execute:
+
+```bash
+for f in `ls deploy/*-statefulset.yml`; do kubectl apply -f $f; done
+```
+
 ### _Services_
 
 Um _Service_ determina a conexão de um ou mais _pods_ com o restante do
@@ -199,6 +221,8 @@ _NodePort_, e estes agem também retroativamente como _ClusterIP_.
   aos pods do Front-End Web do sistema. Exposto na porta `30001`.
 - `rest-svc` (_LoadBalancer_): Serviço para acesso interno e externo aos
   pods do gateway REST do sistema. Exposto na porta `30000`.
+- `redis-svc` (_ClusterIP_): Serviço para acesso interno aos pods do
+  Redis.
 
 Para aplicar todos os _Services_, execute:
 
@@ -230,6 +254,9 @@ for f in `ls deploy/*-job.yml`; do kubectl apply -f $f; done
 - `session-hpa`: Escalonador horizontal do microsserviço SESSION. Mantém
   entre 2 e 6 réplicas para `session-deployment` com uso médio de 65%
   do CPU alocado.
+- `redis-hpa`: Escalonador horizontal do Redis. Mantém entre 2 e 15
+  réplicas para `redis-statefulset` com uso médio de 50% do CPU alocado e
+  60% da memória alocada.
 
 Para aplicar todos os _HorizontalPodAutoscalers_, execute:
 
