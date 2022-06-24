@@ -69,7 +69,6 @@
 <span id="64">64</span>
 <span id="65">65</span>
 <span id="66">66</span>
-<span id="67">67</span>
 </pre><pre class="rust"><code><span class="doccomment">//! # Minerva System: USER Service</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## About this service</span>
@@ -86,7 +85,7 @@
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">diesel</span>;
 
 <span class="kw">use</span> <span class="ident">dotenv::dotenv</span>;
-<span class="kw">use</span> <span class="ident">minerva_data</span>::{<span class="ident">db</span>, <span class="ident">encryption</span>};
+<span class="kw">use</span> <span class="ident">minerva_data::db</span>;
 <span class="kw">use</span> <span class="ident">minerva_rpc::user::user_server::UserServer</span>;
 <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 <span class="kw">use</span> <span class="ident">std::env</span>;
@@ -124,7 +123,6 @@
 
     <span class="kw">let</span> <span class="ident">port</span> <span class="op">=</span> <span class="ident">env::var</span>(<span class="string">&quot;USER_SERVICE_PORT&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Unable to read USER_SERVICE_PORT&quot;</span>);
     <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;0.0.0.0:{}&quot;</span>, <span class="ident">port</span>).<span class="ident">parse</span>()<span class="question-mark">?</span>;
-    <span class="ident">encryption::init_hasher</span>();
 
     <span class="macro">println!</span>(<span class="string">&quot;Starting USER on {}...&quot;</span>, <span class="ident">addr</span>);
 
