@@ -1,6 +1,6 @@
 [package]
 name = "minerva-cache"
-version = "0.0.0"
+version = "0.1.0"
 edition = "2021"
 description = "Cache library for the Minerva System"
 authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
@@ -9,3 +9,5 @@ authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
 path = "src/lib.rs"
 
 [dependencies]
+redis = {version = "0.21.5", features = ["tokio-comp", "aio"]}
+futures = "0.3"
