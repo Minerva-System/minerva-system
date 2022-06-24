@@ -10,6 +10,7 @@ use minerva_data::user::User;
 use mongodb::bson::doc;
 use mongodb::bson::oid::ObjectId;
 use mongodb::Database;
+use std::str;
 use tonic::Status;
 
 /// Creates a new session for a user. Given the data for a new session, checks
@@ -35,7 +36,9 @@ pub async fn create_session(
     .map_err(|_| Status::unauthenticated("Invalid login or password"))?;
 
     // Check for correct password
-    if !encryption::check_hash(&data.password, &usr.pwhash) {
+    let pwhash = str::from_utf8(&usr.pwhash)
+        .map_err(|e| Status::internal(format!("Error while performing authentication: {}", e)))?;
+    if !encryption::check_hash(&data.password, pwhash) {
         return Err(Status::unauthenticated("Invalid login or password"));
     }
 
