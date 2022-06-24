@@ -12,7 +12,6 @@
 #![warn(missing_docs)]
 
 use dotenv::dotenv;
-use minerva_data::encryption;
 use minerva_rpc::products::products_server::ProductsServer;
 use std::env;
 use tonic::transport::Server;
@@ -29,7 +28,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv().ok();
     let port = env::var("PRODUCT_SERVICE_PORT").expect("Unable to read PRODUCT_SERVICE_PORT");
     let addr = format!("0.0.0.0:{}", port).parse()?;
-    encryption::init_hasher();
 
     println!("Starting PRODUCT on {}...", addr);
 

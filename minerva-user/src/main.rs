@@ -14,7 +14,7 @@ extern crate bb8_diesel;
 extern crate diesel;
 
 use dotenv::dotenv;
-use minerva_data::{db, encryption};
+use minerva_data::db;
 use minerva_rpc::user::user_server::UserServer;
 use std::collections::HashMap;
 use std::env;
@@ -52,7 +52,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let port = env::var("USER_SERVICE_PORT").expect("Unable to read USER_SERVICE_PORT");
     let addr = format!("0.0.0.0:{}", port).parse()?;
-    encryption::init_hasher();
 
     println!("Starting USER on {}...", addr);
 

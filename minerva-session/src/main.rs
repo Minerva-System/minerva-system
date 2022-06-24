@@ -14,7 +14,7 @@
 #![warn(missing_docs)]
 
 use dotenv::dotenv;
-use minerva_data::{db, encryption, mongo};
+use minerva_data::{db, mongo};
 use minerva_rpc::session::session_server::SessionServer;
 use std::collections::HashMap;
 use std::env;
@@ -33,7 +33,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!();
 
     dotenv().ok();
-    encryption::init_hasher();
 
     let port = env::var("SESSION_SERVICE_PORT").expect("Unable to read SESSION_SERVICE_PORT");
     let dbserver =

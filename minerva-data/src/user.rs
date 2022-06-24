@@ -4,6 +4,7 @@
 use crate::encryption;
 use crate::schema::user;
 use minerva_rpc::messages;
+use std::str;
 
 /// DTO representing a single entry on the `user` table.
 #[derive(Queryable, Serialize, Deserialize, Clone, Debug)]
@@ -148,11 +149,10 @@ pub fn vec_to_message(v: Vec<User>) -> messages::UserList {
 mod unit_tests {
     use super::*;
     use crate::encryption;
+    use std::str;
 
     #[test]
     fn convert_message_to_user() {
-        encryption::init_hasher();
-
         let user = User {
             id: 0,
             login: "teste".into(),
@@ -172,14 +172,18 @@ mod unit_tests {
         let msg_user: User = msg.into();
 
         assert_eq!(user, msg_user);
-        assert!(encryption::check_hash("senha", &user.pwhash));
-        assert!(encryption::check_hash("senha", &msg_user.pwhash));
+        assert!(encryption::check_hash(
+            "senha",
+            str::from_utf8(&user.pwhash).unwrap()
+        ));
+        assert!(encryption::check_hash(
+            "senha",
+            str::from_utf8(&msg_user.pwhash).unwrap()
+        ));
     }
 
     #[test]
     fn convert_user_to_message() {
-        encryption::init_hasher();
-
         let msg = messages::User {
             id: Some(0),
             login: "ciclano".into(),
@@ -202,14 +206,15 @@ mod unit_tests {
         assert_eq!(msg.login, expected_msg.login);
         assert_eq!(msg.name, expected_msg.name);
         assert_eq!(msg.email, expected_msg.email);
-        assert!(encryption::check_hash("senha123", &expected.pwhash));
+        assert!(encryption::check_hash(
+            "senha123",
+            str::from_utf8(&expected.pwhash).unwrap()
+        ));
         assert!(expected_msg.password.is_none());
     }
 
     #[test]
     fn convert_message_to_newuser() {
-        encryption::init_hasher();
-
         let newuser = NewUser {
             login: "teste".into(),
             name: "Fulano da Silva".into(),
@@ -228,8 +233,14 @@ mod unit_tests {
         let msg_user: NewUser = msg.into();
 
         assert_eq!(newuser, msg_user);
-        assert!(encryption::check_hash("senha", &newuser.pwhash));
-        assert!(encryption::check_hash("senha", &msg_user.pwhash));
+        assert!(encryption::check_hash(
+            "senha",
+            str::from_utf8(&newuser.pwhash).unwrap()
+        ));
+        assert!(encryption::check_hash(
+            "senha",
+            str::from_utf8(&msg_user.pwhash).unwrap()
+        ));
     }
 
     #[test]
@@ -290,8 +301,6 @@ mod unit_tests {
 
     #[test]
     fn convert_userlist_message_to_user_vec() {
-        encryption::init_hasher();
-
         let mut msg = messages::UserList {
             users: vec![
                 messages::User {
@@ -351,19 +360,17 @@ mod unit_tests {
             assert_eq!(converted, expected);
             assert!(encryption::check_hash(
                 message.password.as_ref().unwrap(),
-                &expected.pwhash
+                str::from_utf8(&expected.pwhash).unwrap()
             ));
             assert!(encryption::check_hash(
                 message.password.as_ref().unwrap(),
-                &converted.pwhash
+                str::from_utf8(&converted.pwhash).unwrap()
             ));
         }
     }
 
     #[test]
     fn convert_user_vec_to_userlist_message() {
-        encryption::init_hasher();
-
         let users: Vec<User> = vec![
             User {
                 id: 1,
