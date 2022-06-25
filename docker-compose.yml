@@ -64,6 +64,7 @@ services:
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
+      - REDIS_SERVICE_SERVER=redis
     networks:
       - minerva_system
     deploy:

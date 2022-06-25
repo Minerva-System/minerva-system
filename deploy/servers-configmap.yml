@@ -8,3 +8,4 @@ data:
   DATABASE_SERVICE_SERVER: postgresql-svc
   MONGO_SERVICE_SERVER: mongodb-svc
   REST_SERVICE_SERVER: rest-svc
+  REDIS_SERVICE_SERVER: redis-svc
