@@ -62,7 +62,7 @@ pub async fn create_session(
 
     // Write token to cache. Outcome doesn't matter at this point
     let _ = serde_json::to_string(&session)
-        .map(|json| cache::auth::save_session(&redis, tenant, &token, &json));
+        .map(|json| cache::auth::save_session(redis, tenant, &token, &json));
 
     // Try writing session log. Outcome doesn't matter
     let _ = {

@@ -12,7 +12,7 @@ const EXPIRATION: usize = 24 * 60 * 60;
 /// manipulation occurs mostly to avoid conflicts in multi-tenant scenarios.
 /// The output has a format such as `<TENANT>$SESSION:<TOKEN>`.
 fn gen_session_key(tenant: &str, token: &str) -> String {
-    let clean_info = |info: &str| info.replace("$", "-").replace(":", "_");
+    let clean_info = |info: &str| info.replace('$', "-").replace(':', "_");
     format!("{}$SESSION:{}", clean_info(tenant), clean_info(token))
 }
 
