@@ -3,7 +3,7 @@
 # Base container for compilation
 FROM rust:1.61.0-alpine3.15 AS rust_base
 WORKDIR /
-RUN apk add --no-cache cmake make musl-dev file build-base libpq libpq-dev
+RUN apk add --no-cache cmake make musl-dev file build-base libpq libpq-dev openssl-dev postgresql-dev
 RUN cargo install cargo-chef
 
 # Cargo Chef recipe generation
@@ -20,12 +20,18 @@ WORKDIR /minerva
 COPY --from=chef /minerva/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 COPY . .
+ENV RUSTFLAGS="-C target-feature=-crt-static"
 RUN cargo build --release
 
 # Base container for deploying services
 FROM alpine:3.15 AS deploy
 ARG APP=/usr/src/app
 RUN apk add --no-cache ca-certificates tzdata libpq
+COPY --from=builder /usr/lib/libgcc_s.so.1 /usr/lib/
+COPY --from=builder /usr/lib/libgcc_s.so /usr/lib/
+COPY --from=builder /usr/lib/libstdc++.so.6.0.28 /usr/lib/
+COPY --from=builder /usr/lib/libstdc++.so.6 /usr/lib/
+COPY --from=builder /usr/lib/libstdc++.so /usr/lib/
 ENV TZ=Etc/UTC \
     APP_USER=appuser
 RUN addgroup -g 1000 $APP_USER \
