@@ -1,6 +1,7 @@
 use crate::service;
 use dotenv::dotenv;
 use futures_util::FutureExt;
+use minerva_cache as cache;
 use minerva_data::{
     db, mongo,
     session::{NewSession, Session},
@@ -34,6 +35,7 @@ async fn make_test_server(
     let endpoint = format!("http://127.0.0.1:{}", port);
     let dbserver = env::var("DATABASE_SERVICE_SERVER").unwrap();
     let mongoserver = env::var("MONGO_SERVICE_SERVER").unwrap();
+    let redisserver = env::var("REDIS_SERVICE_SERVER").unwrap();
 
     let mut pools = HashMap::new();
     pools.insert(
@@ -41,6 +43,7 @@ async fn make_test_server(
         (
             db::make_connection_pool("minerva", &dbserver, 1).await,
             mongo::make_client(&mongoserver).await,
+            cache::build_client(&redisserver).unwrap(),
         ),
     );
 
