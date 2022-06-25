@@ -1,0 +1,94 @@
+# coding: utf-8
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Start: vagrant up
+# Stop: vagrant suspend
+# Remove: vagrant destroy -f
+# Access: vagrant ssh <name>
+
+# Docker installation script
+$install_docker_script = <<SCRIPT
+echo "Instalando dependências..."
+sudo apk add --update docker
+sudo addgroup vagrant docker
+sudo rc-update add docker boot
+sudo service docker start
+SCRIPT
+
+
+# Extract manager IP
+$extract_manager_ip_script = <<SCRIPT
+ip addr | grep "inet 172.20.20.1" | awk '{print $2}' | cut -d'/' -f 1 | awk '{print$1":2377"}' > /vagrant/managerip
+SCRIPT
+
+$start_minerva_system = <<SCRIPT
+vagrant ssh -c 'docker stack deploy --compose-file /vagrant/docker-stack.yml minerva' manager01
+SCRIPT
+
+# Defaults
+BOX_NAME = "boxomatic/alpine-3.14"
+MEMORY = "512"
+CPUS = 2
+MANAGERS = 3
+MANAGER_IP = "172.20.20.1"
+WORKERS = 4
+WORKER_IP = "172.20.20.10"
+VAGRANTFILE_API_VERSION = "2"
+
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # Basic configuration
+  config.vm.box = BOX_NAME
+  config.vm.provision "shell", inline: $install_docker_script, privileged: true
+  config.vm.synced_folder ".", "/vagrant", id: "vagrant-root",
+                          owner: "vagrant",
+                          mount_options: ["dmode=775,fmode=664"]
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = MEMORY
+    vb.cpus = CPUS
+  end
+
+  # Configuring managers
+  (1..MANAGERS).each do |i|
+    config.vm.define "manager0#{i}" do |manager|
+      manager.vm.network :private_network, ip: "#{MANAGER_IP}#{i}"
+      manager.vm.hostname = "manager0#{i}"
+      if i == 1
+        # Only configure port to host for Manager01
+        manager.vm.network :forwarded_port, guest: 8080, host: 8080
+        manager.vm.network :forwarded_port, guest: 5000, host: 5000
+        manager.vm.network :forwarded_port, guest: 9000, host: 9000
+
+        # Initialize Docker Swarm
+        manager.vm.provision "shell", inline: $extract_manager_ip_script
+        manager.vm.provision "shell", inline: "docker swarm init --listen-addr `cat /vagrant/managerip` --advertise-addr `cat /vagrant/managerip`"
+        manager.vm.provision "shell", inline: "docker swarm join-token manager -q > /vagrant/managertoken"
+        manager.vm.provision "shell", inline: "docker swarm join-token worker -q > /vagrant/workertoken"
+      else
+        # Join cluster as manager
+        manager.vm.provision "shell", inline: "docker swarm join --token `cat /vagrant/managertoken` `cat /vagrant/managerip`"
+      end
+    end
+  end
+
+  # Configuring workers
+  (1..WORKERS).each do |i|
+    config.vm.define "worker0#{i}" do |worker|
+      worker.vm.network :private_network, ip: "#{WORKER_IP}#{i}"
+      worker.vm.hostname = "worker0#{i}"
+
+      # Join cluster as worker
+      worker.vm.provision "shell", inline: "docker swarm join --token `cat /vagrant/workertoken` `cat /vagrant/managerip`"
+
+      # After adding last worker, run Docker Stack
+      worker.trigger.after :up do |trigger|
+        if(i == WORKERS) then
+          # Starting Minerva System
+          trigger.info = "Iniciando Minerva System..."
+          trigger.run = {inline: $start_minerva_system}
+        end
+      end
+    end
+  end
+end

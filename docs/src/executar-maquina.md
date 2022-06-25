@@ -58,8 +58,6 @@ com as instruções que podem ser encontradas no site do mesmo.
 
 ## Estrutura do projeto
 
-<!-- workspaces com projetos individuais, etc -->
-
 O repositório do projeto é um *monorepo*, isto é, engloba todas as
 partes do sistema inteiro. Por isso, as partes relacionadas a *back-end*
 estão dispostas em um *Workspace*, configurável através das próprias
@@ -98,14 +96,14 @@ para a criação do banco de dados. Este script executa o seguinte
 comando:
 
 ```bash
-docker run --name minerva-micro \
+docker run --name minerva-postgres \
        -e POSTGRES_USER=postgres \
        -e POSTGRES_PASSWORD=postgres \
        -p 5432:5432 \
-       -d postgres:14
+       -d postgres:14-alpine
 ```
 
-Este comando criará um contêiner chamado `minerva-micro`, a partir
+Este comando criará um contêiner chamado `minerva-postgres`, a partir
 da imagem Docker do PostgreSQL 14, com usuário e senhas padrão
 `postgres`, e também servindo na porta `5432` da máquina atual (padrão
 do PostgreSQL).
@@ -117,7 +115,7 @@ como um banco de dados de um ambiente exclusivo de testes.**
 Caso você precise encerrar o contêiner, use:
 
 ```bash
-docker stop minerva-micro
+docker stop minerva-postgres
 ```
 
 Da mesma forma, não será necessário executar novamente o `RUNONCE` para
@@ -126,7 +124,7 @@ Nesse caso, cada vez que for necessário reutilizar o banco para testes,
 use o comando a seguir para reiniciar o BD:
 
 ```bash
-docker start minerva-micro
+docker start minerva-postgres
 ```
 
 

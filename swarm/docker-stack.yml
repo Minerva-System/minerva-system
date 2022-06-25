@@ -76,10 +76,11 @@ services:
 
   # SESSION service
   session:
-    image: luksamuk/minerva_session:0.1.1
+    image: luksamuk/minerva_session:0.1.2
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
+      - REDIS_SERVICE_SERVER=redis
     networks:
       - minerva_system
     deploy:
@@ -94,7 +95,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    image: postgres:14
+    image: postgres:14-alpine
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
@@ -136,13 +137,26 @@ services:
   visualizer:
     image: dockersamples/visualizer:stable
     ports:
-      - 8080:8585
+      - "8585:8080"
     stop_grace_period: 1m30s
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     deploy:
       placement:
         constraints: [node.role == manager]
+
+  # Redis 7
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis-data:/data
+    networks:
+      - minerva_system
+    deploy:
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: [node.role == worker]
         
 networks:
   minerva_system:
@@ -150,4 +164,5 @@ networks:
 volumes:
   db-data:
   mongodb-data:
+  redis-data:
 

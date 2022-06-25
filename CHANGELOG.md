@@ -14,7 +14,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.
 Relação de versões de microsserviços:
 
 - `USER` - v0.2.2
-- `SESSION` - v0.1.1
+- `SESSION` - v0.1.2
 - `RUNONCE` - v0.2.1
 - `REST` - v0.2.2
 - Front-End - v0.1.1 (pré-alfa)
@@ -23,6 +23,11 @@ Relação de versões de microsserviços:
 
 - Adição de diagramas iniciais de caso de uso e sequência;
 - Adição de CHANGELOG e regras de versionamento semântico.
+
+#### Modificado
+
+- Imagens Docker agora são geradas usando Alpine Linux como base, reduzindo
+  tamanho e _footprint_ em _deploys_ no Compose/Swarm/Kubernetes.
 
 #### Consertado
 
@@ -53,6 +58,11 @@ Relação de versões de microsserviços:
 - Alteração do nome do serviço de `USERS` para `USER`, evitando maiores
   enganos.
 
+### `SESSION` - v0.1.2
+
+#### Modificado
+
+- Alteração do serviço para abrigar uso de _cache_ via Redis.
 
 
 ## [v1] - 2022-06-17

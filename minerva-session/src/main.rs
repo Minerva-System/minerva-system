@@ -14,6 +14,7 @@
 #![warn(missing_docs)]
 
 use dotenv::dotenv;
+use minerva_cache as cache;
 use minerva_data::{db, mongo};
 use minerva_rpc::session::session_server::SessionServer;
 use std::collections::HashMap;
@@ -39,14 +40,20 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         env::var("DATABASE_SERVICE_SERVER").expect("Unable to read DATABASE_SERVICE_SERVER");
     let mongoserver =
         env::var("MONGO_SERVICE_SERVER").expect("Unable to read MONGO_SERVICE_SERVER");
+    let redisserver =
+        env::var("REDIS_SERVICE_SERVER").expect("Unable to read REDIS_SERVICE_SERVER");
 
     let mut pools = HashMap::new();
     let mongo = mongo::make_client(&mongoserver).await;
+    let redis = cache::build_client(&redisserver).expect("Unable to create Redis client");
     for tenant in minerva_data::tenancy::get_tenants("tenancy.toml") {
         let pool = db::make_connection_pool(&tenant.database, &dbserver, tenant.connections).await;
-        pools.insert(tenant.database.clone(), (pool, mongo.clone()));
+        pools.insert(
+            tenant.database.clone(),
+            (pool, mongo.clone(), redis.clone()),
+        );
         println!(
-            "Added database connections for tenant {} ({} connections + 1 MongoDB client).",
+            "Added database connections for tenant {} ({} connections + 1 MongoDB client + 1 Redis client).",
             tenant.name, tenant.connections
         );
     }

@@ -15,7 +15,7 @@ use tonic::{Request, Response, Status};
 pub struct SessionService {
     /// Holds database (relational and non-relational) connection pools for
     /// all tenants.
-    pub pools: HashMap<String, (DBPool, mongodb::Client)>,
+    pub pools: HashMap<String, (DBPool, mongodb::Client, redis::Client)>,
 }
 
 #[tonic::async_trait]
@@ -40,9 +40,10 @@ impl Session for SessionService {
         let data = req.into_inner().into();
 
         let token = {
-            let (postgres, mongodb) = self.pools.get(&tenant).expect("Unable to find tenant");
+            let (postgres, mongodb, redis) =
+                self.pools.get(&tenant).expect("Unable to find tenant");
             let mongo = mongodb.database(&tenant);
-            repository::create_session(data, postgres.clone(), mongo).await
+            repository::create_session(&tenant, data, postgres.clone(), mongo, redis).await
         }?;
 
         Ok(Response::new(messages::SessionToken { token }))
@@ -66,9 +67,9 @@ impl Session for SessionService {
         );
 
         let token = req.into_inner().token;
-        let (_, mongodb) = self.pools.get(&tenant).expect("Unable to find tenant");
+        let (_, mongodb, redis) = self.pools.get(&tenant).expect("Unable to find tenant");
         let mongo = mongodb.database(&tenant);
-        let session = repository::recover_session(token, mongo).await?;
+        let session = repository::recover_session(&tenant, token, mongo, redis).await?;
         Ok(Response::new(session.into()))
     }
 
@@ -87,9 +88,9 @@ impl Session for SessionService {
         );
 
         let token = req.into_inner().token;
-        let (postgres, mongodb) = self.pools.get(&tenant).expect("Unable to find tenant");
+        let (postgres, mongodb, redis) = self.pools.get(&tenant).expect("Unable to find tenant");
         let mongo = mongodb.database(&tenant);
-        let _ = repository::remove_session(token, postgres.clone(), mongo).await?;
+        let _ = repository::remove_session(&tenant, token, postgres.clone(), mongo, redis).await?;
         Ok(Response::new(()))
     }
 }

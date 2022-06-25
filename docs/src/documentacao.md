@@ -49,7 +49,7 @@ Não se esqueça de consultar estes documentos com frequência.
   Biblioteca de manipulação de DTOs e conversões de dados.
 - [RPC](./doc/minerva_rpc/index.html) \
   Biblioteca de implementação de Protocol Buffers, mensagens gRPC e afins.
-- CACHE _(não implementado)_ \
+- [CACHE](./doc/minerva_cache/index.html) \
   Biblioteca para uso e acesso ao cache via serviço Redis.
 
 

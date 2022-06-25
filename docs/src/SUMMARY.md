@@ -64,5 +64,6 @@
   - [Gerando imagens via Docker](./gerando-imagens.md)
 - [Deploy](./deploy.md)
   - [Deploy via Docker Compose](./deploy-compose.md)
-  - [Deploy via Docker Swarm](./deploy-swarm.md)
+  - [Deploy via Docker Swarm + Vagrant](./deploy-swarm.md)
+	- [Deploy via Docker Swarm + Docker Machine](./deploy-swarm-machine.md)
   - [Deploy via Kubernetes](./deploy-kubernetes.md)

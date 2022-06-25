@@ -64,6 +64,7 @@ services:
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
+      - REDIS_SERVICE_SERVER=redis
     networks:
       - minerva_system
     deploy:
@@ -75,7 +76,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    image: postgres:14
+    image: postgres:14-alpine
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
@@ -104,10 +105,19 @@ services:
     networks:
       - minerva_system
 
+  # Redis 7
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis-data:/data
+    networks:
+      - minerva_system
+
 networks:
   minerva_system:
 
 volumes:
   db-data:
   mongodb-data:
+  redis-data:
 
