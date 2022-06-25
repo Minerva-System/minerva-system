@@ -12,6 +12,7 @@ spec:
       containers:
         - name: session-container
           image: luksamuk/minerva_session:0.1.1
+          imagePullPolicy: Always
           ports:
             - containerPort: 9011
           envFrom:

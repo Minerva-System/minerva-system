@@ -12,6 +12,7 @@ spec:
       containers:
         - name: rest-container
           image: luksamuk/minerva_rest:0.2.2
+          imagePullPolicy: Always
           ports:
             - containerPort: 9000
           envFrom:

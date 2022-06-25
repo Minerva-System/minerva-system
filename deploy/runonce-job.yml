@@ -12,6 +12,7 @@ spec:
       containers:
         - name: runonce
           image: luksamuk/minerva_runonce:0.2.1
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: runonce-configmap

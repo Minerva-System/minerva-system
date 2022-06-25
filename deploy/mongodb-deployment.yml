@@ -12,6 +12,7 @@ spec:
       containers:
         - name: mongodb-container
           image: mongo:5
+          imagePullPolicy: IfNotPresent
           volumeMounts:
             - mountPath: /data/db
               name: mongodb-pv
