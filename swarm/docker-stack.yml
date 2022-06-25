@@ -76,7 +76,7 @@ services:
 
   # SESSION service
   session:
-    image: luksamuk/minerva_session:0.1.1
+    image: luksamuk/minerva_session:0.1.2
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
