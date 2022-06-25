@@ -5,6 +5,7 @@ FROM rust:1.61.0-alpine3.15 AS rust_base
 WORKDIR /
 RUN apk add --no-cache cmake make musl-dev file build-base libpq libpq-dev openssl-dev postgresql-dev
 RUN cargo install cargo-chef
+ENV RUSTFLAGS="-C target-feature=-crt-static"
 
 # Cargo Chef recipe generation
 FROM rust_base AS chef
@@ -20,7 +21,6 @@ WORKDIR /minerva
 COPY --from=chef /minerva/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 COPY . .
-ENV RUSTFLAGS="-C target-feature=-crt-static"
 RUN cargo build --release
 
 # Base container for deploying services
