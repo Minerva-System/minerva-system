@@ -11,3 +11,4 @@ path = "src/lib.rs"
 [dependencies]
 redis = {version = "0.21.5", features = ["tokio-comp", "aio"]}
 futures = "0.3"
+tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync", "net"]}
