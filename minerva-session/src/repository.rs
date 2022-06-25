@@ -61,7 +61,7 @@ pub async fn create_session(
     let token = base64::encode(result);
 
     // Write token to cache. Outcome doesn't matter at this point
-    serde_json::to_string(&session)
+    let _ = serde_json::to_string(&session)
         .map(|json| cache::auth::save_session(&redis, tenant, &token, &json));
 
     // Try writing session log. Outcome doesn't matter
@@ -90,7 +90,22 @@ pub async fn create_session(
 /// previously generated token. The token must be the actual ID for the session
 /// object on the non-relational database, encoded as Base64. If it was found,
 /// returns the `Session` object with the session information that was stored.
-pub async fn recover_session(token: String, mongo: Database) -> Result<model::Session, Status> {
+pub async fn recover_session(
+    tenant: &str,
+    token: String,
+    mongo: MongoDatabase,
+    redis: &RedisClient,
+) -> Result<model::Session, Status> {
+    // Try to find object on Redis. If we do, return it
+    if let Ok(json) = cache::auth::get_session(redis, tenant, &token).await {
+        return serde_json::from_str(&json).map_err(|e| {
+            Status::internal(format!(
+                "Error while recovering session from cache: {:?}",
+                e
+            ))
+        });
+    }
+
     let collection = mongo.collection::<model::Session>("session");
 
     // Decode session token
@@ -101,12 +116,23 @@ pub async fn recover_session(token: String, mongo: Database) -> Result<model::Se
     let id =
         ObjectId::parse_str(&id).map_err(|_| Status::internal("Unable to decode session token"))?;
 
-    // Find session object
-    collection
+    // Otherwise, find session object on database
+    let session = collection
         .find_one(doc! { "_id": id }, None)
         .await
         .map_err(|e| Status::internal(format!("Error while trying to recover session: {}", e)))?
-        .ok_or_else(|| Status::not_found("Session does not exist"))
+        .ok_or_else(|| Status::not_found("Session does not exist"))?;
+
+    // Now cache the session object on Redis, in JSON format.
+    // When caching, we shouldn't really care about the outcome.
+    // Just log stuff to console on error.
+    if let Ok(json) = serde_json::to_string(&session) {
+        if let Err(e) = cache::auth::save_session(redis, tenant, &token, &json) {
+            println!("Error while caching recovered user session: {:#?}", e);
+        }
+    }
+
+    Ok(session)
 }
 
 /// Removes a user session from non-relational database, given a session token.
@@ -114,11 +140,17 @@ pub async fn recover_session(token: String, mongo: Database) -> Result<model::Se
 /// database, encoded as Base64. If it was found, remove it altogether from the
 /// non-relational database.
 pub async fn remove_session(
+    tenant: &str,
     token: String,
     pool: DBPool,
     mongo: MongoDatabase,
-    redis: RedisClient,
+    redis: &RedisClient,
 ) -> Result<(), Status> {
+    // Remove session from cache, forcibly.
+    cache::auth::remove_session(redis, tenant, &token)
+        .await
+        .map_err(|e| Status::internal(format!("Could not remove session from cache: {:?}", e)))?;
+
     let collection = mongo.collection::<model::Session>("session");
 
     // Decode session token

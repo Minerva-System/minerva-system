@@ -45,7 +45,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut pools = HashMap::new();
     let mongo = mongo::make_client(&mongoserver).await;
-    let redis = cache::build_client_string(&redisserver);
+    let redis = cache::build_client(&redisserver).expect("Unable to create Redis client");
     for tenant in minerva_data::tenancy::get_tenants("tenancy.toml") {
         let pool = db::make_connection_pool(&tenant.database, &dbserver, tenant.connections).await;
         pools.insert(
