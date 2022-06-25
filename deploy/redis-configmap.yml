@@ -4,8 +4,6 @@ metadata:
   name: redis-configmap
 data:
   redis.conf: |
-    masterauth a-very-complex-password-here
-    requirepass a-very-complex-password-here
     bind 0.0.0.0
     protected-mode no
     port 6379
@@ -29,7 +27,7 @@ data:
     rdb-del-sync-files no
     dir "/data"
     replica-serve-stale-data yes
-    replica-read-only yes
+    replica-read-only no
     repl-diskless-sync no
     repl-diskless-sync-delay 5
     repl-diskless-load disabled
