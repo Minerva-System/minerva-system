@@ -8,6 +8,7 @@ authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
 [dependencies]
 minerva-rpc = {path = "../minerva-rpc"}
 minerva-data = {path = "../minerva-data"}
+minerva-cache = {path = "../minerva-cache"}
 tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync"]}
 dotenv = "0.15.0"
 tonic = "0.7"
@@ -16,4 +17,5 @@ futures-util = "0.3"
 base64 = "0.13.0"
 diesel = { version = "1.4.4", features = ["postgres"] }
 chrono = {version = "0.4", features = ["serde"]}
-
+redis = {version = "0.21.5", features = ["tokio-comp", "aio"]}
+serde_json = "1.0"

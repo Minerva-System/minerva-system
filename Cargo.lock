@@ -1261,9 +1261,12 @@ dependencies = [
  "diesel",
  "dotenv",
  "futures-util",
+ "minerva-cache",
  "minerva-data",
  "minerva-rpc",
  "mongodb",
+ "redis",
+ "serde_json",
  "tokio",
  "tonic",
 ]
