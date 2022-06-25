@@ -154,9 +154,55 @@
 <span id="149">149</span>
 <span id="150">150</span>
 <span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This module wraps the repository which handles the session DTOs.</span>
 
 <span class="kw">use</span> <span class="ident">diesel::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">minerva_cache</span> <span class="kw">as</span> <span class="ident">cache</span>;
 <span class="kw">use</span> <span class="ident">minerva_data::db::DBPool</span>;
 <span class="kw">use</span> <span class="ident">minerva_data::encryption</span>;
 <span class="kw">use</span> <span class="ident">minerva_data::schema::syslog</span>;
@@ -165,7 +211,8 @@
 <span class="kw">use</span> <span class="ident">minerva_data::user::User</span>;
 <span class="kw">use</span> <span class="ident">mongodb::bson::doc</span>;
 <span class="kw">use</span> <span class="ident">mongodb::bson::oid::ObjectId</span>;
-<span class="kw">use</span> <span class="ident">mongodb::Database</span>;
+<span class="kw">use</span> <span class="ident">mongodb::Database</span> <span class="kw">as</span> <span class="ident">MongoDatabase</span>;
+<span class="kw">use</span> <span class="ident">redis::Client</span> <span class="kw">as</span> <span class="ident">RedisClient</span>;
 <span class="kw">use</span> <span class="ident">std::str</span>;
 <span class="kw">use</span> <span class="ident">tonic::Status</span>;
 
@@ -174,9 +221,11 @@
 <span class="doccomment">/// creates a new session on the non-relational database and returns its ID as a</span>
 <span class="doccomment">/// Base64 encoded string that should be stored on a cookie.</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_session</span>(
+    <span class="ident">tenant</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
     <span class="ident">data</span>: <span class="ident">model::NewSession</span>,
     <span class="ident">pool</span>: <span class="ident">DBPool</span>,
-    <span class="ident">mongo</span>: <span class="ident">Database</span>,
+    <span class="ident">mongo</span>: <span class="ident">MongoDatabase</span>,
+    <span class="ident">redis</span>: <span class="kw-2">&amp;</span><span class="ident">RedisClient</span>,
 ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Status</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">usr</span> <span class="op">=</span> {
         <span class="kw">use</span> <span class="ident">minerva_data::schema::user::dsl</span>::<span class="kw-2">*</span>;
@@ -212,6 +261,10 @@
         .<span class="ident">to_hex</span>();
     <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">base64::encode</span>(<span class="ident">result</span>);
 
+    <span class="comment">// Write token to cache. Outcome doesn&#39;t matter at this point</span>
+    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">session</span>)
+        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">json</span><span class="op">|</span> <span class="ident">cache::auth::save_session</span>(<span class="ident">redis</span>, <span class="ident">tenant</span>, <span class="kw-2">&amp;</span><span class="ident">token</span>, <span class="kw-2">&amp;</span><span class="ident">json</span>));
+
     <span class="comment">// Try writing session log. Outcome doesn&#39;t matter</span>
     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> {
         <span class="kw">let</span> <span class="ident">connection</span> <span class="op">=</span> <span class="ident">pool</span>
@@ -238,7 +291,22 @@
 <span class="doccomment">/// previously generated token. The token must be the actual ID for the session</span>
 <span class="doccomment">/// object on the non-relational database, encoded as Base64. If it was found,</span>
 <span class="doccomment">/// returns the `Session` object with the session information that was stored.</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recover_session</span>(<span class="ident">token</span>: <span class="ident">String</span>, <span class="ident">mongo</span>: <span class="ident">Database</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">model::Session</span>, <span class="ident">Status</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recover_session</span>(
+    <span class="ident">tenant</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+    <span class="ident">token</span>: <span class="ident">String</span>,
+    <span class="ident">mongo</span>: <span class="ident">MongoDatabase</span>,
+    <span class="ident">redis</span>: <span class="kw-2">&amp;</span><span class="ident">RedisClient</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">model::Session</span>, <span class="ident">Status</span><span class="op">&gt;</span> {
+    <span class="comment">// Try to find object on Redis. If we do, return it</span>
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">json</span>) <span class="op">=</span> <span class="ident">cache::auth::get_session</span>(<span class="ident">redis</span>, <span class="ident">tenant</span>, <span class="kw-2">&amp;</span><span class="ident">token</span>).<span class="kw">await</span> {
+        <span class="kw">return</span> <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">json</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+            <span class="ident">Status::internal</span>(<span class="macro">format!</span>(
+                <span class="string">&quot;Error while recovering session from cache: {:?}&quot;</span>,
+                <span class="ident">e</span>
+            ))
+        });
+    }
+
     <span class="kw">let</span> <span class="ident">collection</span> <span class="op">=</span> <span class="ident">mongo</span>.<span class="ident">collection</span>::<span class="op">&lt;</span><span class="ident">model::Session</span><span class="op">&gt;</span>(<span class="string">&quot;session&quot;</span>);
 
     <span class="comment">// Decode session token</span>
@@ -249,19 +317,41 @@
     <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span>
         <span class="ident">ObjectId::parse_str</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="string">&quot;Unable to decode session token&quot;</span>))<span class="question-mark">?</span>;
 
-    <span class="comment">// Find session object</span>
-    <span class="ident">collection</span>
+    <span class="comment">// Otherwise, find session object on database</span>
+    <span class="kw">let</span> <span class="ident">session</span> <span class="op">=</span> <span class="ident">collection</span>
         .<span class="ident">find_one</span>(<span class="macro">doc!</span> { <span class="string">&quot;_id&quot;</span>: <span class="ident">id</span> }, <span class="prelude-val">None</span>)
         .<span class="kw">await</span>
         .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="macro">format!</span>(<span class="string">&quot;Error while trying to recover session: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>
-        .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::not_found</span>(<span class="string">&quot;Session does not exist&quot;</span>))
+        .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::not_found</span>(<span class="string">&quot;Session does not exist&quot;</span>))<span class="question-mark">?</span>;
+
+    <span class="comment">// Now cache the session object on Redis, in JSON format.</span>
+    <span class="comment">// When caching, we shouldn&#39;t really care about the outcome.</span>
+    <span class="comment">// Just log stuff to console on error.</span>
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">json</span>) <span class="op">=</span> <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">session</span>) {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">cache::auth::save_session</span>(<span class="ident">redis</span>, <span class="ident">tenant</span>, <span class="kw-2">&amp;</span><span class="ident">token</span>, <span class="kw-2">&amp;</span><span class="ident">json</span>) {
+            <span class="macro">println!</span>(<span class="string">&quot;Error while caching recovered user session: {:#?}&quot;</span>, <span class="ident">e</span>);
+        }
+    }
+
+    <span class="prelude-val">Ok</span>(<span class="ident">session</span>)
 }
 
 <span class="doccomment">/// Removes a user session from non-relational database, given a session token.</span>
 <span class="doccomment">/// The token must be the actual ID for the session object on the non-relational</span>
 <span class="doccomment">/// database, encoded as Base64. If it was found, remove it altogether from the</span>
 <span class="doccomment">/// non-relational database.</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">remove_session</span>(<span class="ident">token</span>: <span class="ident">String</span>, <span class="ident">pool</span>: <span class="ident">DBPool</span>, <span class="ident">mongo</span>: <span class="ident">Database</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Status</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">remove_session</span>(
+    <span class="ident">tenant</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+    <span class="ident">token</span>: <span class="ident">String</span>,
+    <span class="ident">pool</span>: <span class="ident">DBPool</span>,
+    <span class="ident">mongo</span>: <span class="ident">MongoDatabase</span>,
+    <span class="ident">redis</span>: <span class="kw-2">&amp;</span><span class="ident">RedisClient</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Status</span><span class="op">&gt;</span> {
+    <span class="comment">// Remove session from cache, forcibly.</span>
+    <span class="ident">cache::auth::remove_session</span>(<span class="ident">redis</span>, <span class="ident">tenant</span>, <span class="kw-2">&amp;</span><span class="ident">token</span>)
+        .<span class="kw">await</span>
+        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="macro">format!</span>(<span class="string">&quot;Could not remove session from cache: {:?}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+
     <span class="kw">let</span> <span class="ident">collection</span> <span class="op">=</span> <span class="ident">mongo</span>.<span class="ident">collection</span>::<span class="op">&lt;</span><span class="ident">model::Session</span><span class="op">&gt;</span>(<span class="string">&quot;session&quot;</span>);
 
     <span class="comment">// Decode session token</span>
