@@ -1,15 +1,19 @@
-FROM rust:1.61.0 AS rust_base
+## Compilation and preparation
+
+# Base container for compilation
+FROM rust:1.61.0-alpine3.15 AS rust_base
 WORKDIR /
-RUN apt update && apt install -y cmake
+RUN apk add --no-cache cmake make musl-dev file build-base libpq libpq-dev
 RUN cargo install cargo-chef
 
+# Cargo Chef recipe generation
 FROM rust_base AS chef
 RUN mkdir /minerva
 WORKDIR /minerva
 COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 
-
+# Build all modules
 FROM rust_base AS builder
 RUN mkdir /minerva
 WORKDIR /minerva
@@ -18,16 +22,15 @@ RUN cargo chef cook --release --recipe-path recipe.json
 COPY . .
 RUN cargo build --release
 
-FROM debian:bullseye-slim AS deploy
+# Base container for deploying services
+FROM alpine:3.15 AS deploy
 ARG APP=/usr/src/app
-RUN apt update \
-    && apt install -y ca-certificates tzdata libpq5 \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache ca-certificates tzdata libpq
 ENV TZ=Etc/UTC \
     APP_USER=appuser
-RUN groupadd $APP_USER \
-    && useradd -g $APP_USER $APP_USER \
-    && mkdir -p ${APP}
+RUN addgroup -g 1000 $APP_USER \
+    && mkdir -p $APP \
+    && adduser -u 1000 -G $APP_USER -h $APP -D $APP_USER
 RUN chown -R $APP_USER:$APP_USER ${APP}
 USER $APP_USER
 ENV USER_SERVICE_PORT=9010
@@ -43,7 +46,7 @@ ENV ROCKET_KEEP_ALIVE=0
 ENV ROCKET_ENV=production
 WORKDIR ${APP}
 
-## Actual parts
+## Service containers
 
 # REST
 FROM deploy AS minerva_rest
