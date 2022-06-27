@@ -10,10 +10,6 @@ graph_attr = {
 }
 
 with Diagram("Minerva System", show=False, outformat="png", graph_attr=graph_attr, filename="kubernetes"):
-    #postgres_data = PV("postgresql_pv")
-    #mongodb_data  = PV("mongodb_pv")
-    #redis_data    = PV("redis-data")
-    
     with Cluster("Ingress"):
         frontend_ing = Ingress("minerva-system.io/")
         rest_ing = Ingress("minerva-system.io/api")
@@ -23,9 +19,6 @@ with Diagram("Minerva System", show=False, outformat="png", graph_attr=graph_att
         rest_svc = rest_ing >> Service("rest-svc")
 
     with Cluster("ClusterIP"):
-        #ports_cm = ConfigMap("ports-configmap")
-        #servers_cm = ConfigMap("servers-configmap")
-        
         with Cluster("Front-End"):
             frontend_dp = frontend_svc >> Deployment("frontend-deployment")
             with Cluster(""):
@@ -103,10 +96,40 @@ with Diagram("Minerva System", show=False, outformat="png", graph_attr=graph_att
             redis_config_pv << ConfigMap("redis-configmap")
             redis_pvc << PV("redis-data")
 
+        with Cluster("PgAdmin 4"):
+            pgadmin_svc = Service("pgadmin-svc")
+            pgadmin_sts = pgadmin_svc >> StatefulSet("pgadmin-statefulset")
+            with Cluster(""):
+                pgadmin_pod0 = Pod("pgadmin-0")
+            pgadmin_sts >> [pgadmin_pod0]
+            pgadmin_pvc = pgadmin_sts - PVC("pgadmin-pvc")
+            pgadmin_pod0 - ConfigMap("pgadmin-configmap")
+            pgadmin_pod0 - Secret("pgadmin-secret")
+
+        with Cluster("Mongo Express"):
+            mongoexpress_svc = Service("mongoexpress-svc")
+            mongoexpress_dp = mongoexpress_svc >> Deployment("mongoexpress-deployment")
+            with Cluster(""):
+                mongoexpress_pod0 = Pod("mongoexpress-0")
+            mongoexpress_dp >> [mongoexpress_pod0]
+            mongoexpress_pod0 - ConfigMap("mongoexpress-configmap")
+
+        with Cluster("Redis Commander"):
+            rediscommander_svc = Service("rediscommander-svc")
+            rediscommander_dp = rediscommander_svc >> Deployment("rediscommander-deployment")
+            with Cluster(""):
+                rediscommander_pod0 = Pod("rediscommander-0")
+            rediscommander_dp >> [rediscommander_pod0]
+            rediscommander_pod0 - ConfigMap("rediscommander-configmap")
+
         # Conexões externas a cada serviço
-        frontend_dp >> rest_svc
-        user_dp     >> postgresql_svc
-        session_dp  >> [redis_svc, postgresql_svc, mongodb_svc]
-        rest_dp     >> [user_svc, session_svc]
-        runonce_job >> [postgresql_svc, mongodb_svc]
+        frontend_dp       >> rest_svc
+        user_dp           >> postgresql_svc
+        session_dp        >> [redis_svc, postgresql_svc, mongodb_svc]
+        rest_dp           >> [user_svc, session_svc]
+        runonce_job       >> [postgresql_svc, mongodb_svc]
+        pgadmin_sts       >> postgresql_svc
+        mongoexpress_dp   >> mongodb_svc
+        rediscommander_dp >> redis_svc
+        
  
