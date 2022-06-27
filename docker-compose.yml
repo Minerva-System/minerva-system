@@ -12,9 +12,7 @@ services:
       - "rest"
     networks:
       - minerva_system
-    deploy:
-      restart_policy:
-        condition: on-failure
+    restart: always
   
   # REST service
   rest:
@@ -28,9 +26,7 @@ services:
       - "user"
     networks:
       - minerva_system
-    deploy:
-      restart_policy:
-        condition: on-failure
+    restart: always
   
   # RUNONCE service
   runonce:
@@ -43,9 +39,7 @@ services:
       - "mongodb"
     networks:
       - minerva_system
-    deploy:
-      restart_policy:
-        condition: on-failure
+    restart: on-failure:5
   
   # USER service
   user:
@@ -54,9 +48,7 @@ services:
       - DATABASE_SERVICE_SERVER=postgresql
     networks:
       - minerva_system
-    deploy:
-      restart_policy:
-        condition: on-failure
+    restart: always
 
   # SESSION service
   session:
@@ -67,9 +59,7 @@ services:
       - REDIS_SERVICE_SERVER=redis
     networks:
       - minerva_system
-    deploy:
-      restart_policy:
-        condition: on-failure
+    restart: always
 
   # PostgreSQL 14
   postgresql:
@@ -81,6 +71,7 @@ services:
       - db-data:/var/lib/postgresql/data
     networks:
       - minerva_system
+    restart: always
 
   # pgAdmin 4
   pgadmin:
@@ -92,6 +83,7 @@ services:
       - "8484:80"
     networks:
       - minerva_system
+    restart: always
 
   # MongoDB 5
   mongodb:
@@ -104,14 +96,45 @@ services:
       - mongodb-data:/data/db
     networks:
       - minerva_system
+    restart: always
+
+  # Mongo Express
+  mongo-express:
+    image: mongo-express:latest
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=root
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=mongo
+      - ME_CONFIG_BASICAUTH_USERNAME=mongo
+      - ME_CONFIG_BASICAUTH_PASSWORD=mongo
+    ports:
+      - "8686:8081"
+    networks:
+      - minerva_system
+    restart: always
 
   # Redis 7
   redis:
     image: redis:7-alpine
     volumes:
       - redis-data:/data
+    ports:
+      - "6379:6379"
     networks:
       - minerva_system
+    restart: always
+
+  # Redis Commander
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "8787:8081"
+    networks:
+      - minerva_system
+    restart: always
 
 networks:
   minerva_system:
