@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rediscommander-deployment
+spec:
+  template:
+    metadata:
+      name: rediscommander
+      labels:
+        app: rediscommander
+    spec:
+      containers:
+        - name: rediscommander-container
+          image: rediscommander/redis-commander:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: rediscommander-configmap
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rediscommander
+

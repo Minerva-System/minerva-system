@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongoexpress-deployment
+spec:
+  template:
+    metadata:
+      name: mongoexpress
+      labels:
+        app: mongoexpress
+    spec:
+      containers:
+        - name: mongoexpress-container
+          image: mongo-express:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - configMapRef:
+                name: mongoexpress-configmap
+            - secretRef:
+                name: mongoexpress-secret
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongoexpress
