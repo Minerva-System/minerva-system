@@ -72,6 +72,8 @@ minikube start \
 	--extra-config=kubelet.housekeeping-interval=10s
 
 minikube addons enable metrics-server
+minikube addons enable ingress
+minikube addons enable ingress-dns
 ```
 
 Se você quiser parar o Minikube:
@@ -307,11 +309,7 @@ Outra forma de acessar envolve o uso dos objetos _Ingress_. Isso nos
 permitirá usar o endereço `http://minerva-system.io/` como URL base
 do sistema.
 
-Primeiramente, habilite o addon `ingress` no Minikube:
-
-```bash
-minikube addons enable ingress
-```
+Garanta que o addon `ingress` esteja habilitado.
 
 Agora, descubra o IP do Minikube na máquina:
 
@@ -332,14 +330,10 @@ e a API poderá ser acessada em `http://minerva-system.io/api`.
 ### Usando o DNS de Ingress do Minikube
 
 Você poderá também usar o Minikube como servidor DNS, evitando de inserir
-o URL diretamente em `/etc/hosts`. Para tanto, adicione os addons:
+o URL diretamente em `/etc/hosts`.
 
-```bash
-minikube addons enable ingress
-minikube addons enable ingress-dns
-```
-
-Descubra o IP do Minikube:
+Comece garantindo que os addons `ingress` e `ingress-dns` estejam
+habilitados. Em seguida, descubra o IP do Minikube:
 
 ```bash
 minikube ip

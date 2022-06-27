@@ -16,6 +16,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: runonce-configmap
+            - secretRef:
+                name: runonce-secret
       restartPolicy: OnFailure
   backoffLimit: 10
   ttlSecondsAfterFinished: 3000
