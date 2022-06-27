@@ -67,3 +67,4 @@
   - [Deploy via Docker Swarm + Vagrant](./deploy-swarm.md)
 	- [Deploy via Docker Swarm + Docker Machine](./deploy-swarm-machine.md)
   - [Deploy via Kubernetes](./deploy-kubernetes.md)
+	- [Estrutura geral do cluster](./diagramas/estrutura-kubernetes.md)
