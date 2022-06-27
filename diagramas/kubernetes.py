@@ -3,7 +3,7 @@ from diagrams.k8s.clusterconfig import HPA
 from diagrams.k8s.compute import Deployment, Pod, ReplicaSet, StatefulSet, Job
 from diagrams.k8s.network import Ingress, Service
 from diagrams.k8s.storage import PV, PVC
-from diagrams.k8s.podconfig import ConfigMap
+from diagrams.k8s.podconfig import ConfigMap, Secret
 
 graph_attr = {
     "bgcolor": "transparent"
@@ -38,6 +38,7 @@ with Diagram("Minerva System", show=False, outformat="png", graph_attr=graph_att
         with Cluster("RUNONCE"):
             runonce_job = Job("runonce-job")
             runonce_job - ConfigMap("runonce-configmap")
+            runonce_job - Secret("runonce-secret")
             
         with Cluster("REST"):
             rest_dp = rest_svc >> Deployment("rest-deployment")

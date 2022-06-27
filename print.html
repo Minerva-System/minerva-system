@@ -1442,6 +1442,8 @@ KVM2 como backend. Você poderá também usar os backends <code>docker</code> ou
 	--extra-config=kubelet.housekeeping-interval=10s
 
 minikube addons enable metrics-server
+minikube addons enable ingress
+minikube addons enable ingress-dns
 </code></pre>
 <p>Se você quiser parar o Minikube:</p>
 <pre><code class="language-bash">minikube stop
@@ -1615,9 +1617,7 @@ o endereço IP do cluster. Isso pode ser feito via Kubectl:</p>
 <p>Outra forma de acessar envolve o uso dos objetos <em>Ingress</em>. Isso nos
 permitirá usar o endereço <code>http://minerva-system.io/</code> como URL base
 do sistema.</p>
-<p>Primeiramente, habilite o addon <code>ingress</code> no Minikube:</p>
-<pre><code class="language-bash">minikube addons enable ingress
-</code></pre>
+<p>Garanta que o addon <code>ingress</code> esteja habilitado.</p>
 <p>Agora, descubra o IP do Minikube na máquina:</p>
 <pre><code class="language-bash">minikube ip
 </code></pre>
@@ -1628,11 +1628,9 @@ do sistema.</p>
 e a API poderá ser acessada em <code>http://minerva-system.io/api</code>.</p>
 <h3 id="usando-o-dns-de-ingress-do-minikube"><a class="header" href="#usando-o-dns-de-ingress-do-minikube">Usando o DNS de Ingress do Minikube</a></h3>
 <p>Você poderá também usar o Minikube como servidor DNS, evitando de inserir
-o URL diretamente em <code>/etc/hosts</code>. Para tanto, adicione os addons:</p>
-<pre><code class="language-bash">minikube addons enable ingress
-minikube addons enable ingress-dns
-</code></pre>
-<p>Descubra o IP do Minikube:</p>
+o URL diretamente em <code>/etc/hosts</code>.</p>
+<p>Comece garantindo que os addons <code>ingress</code> e <code>ingress-dns</code> estejam
+habilitados. Em seguida, descubra o IP do Minikube:</p>
 <pre><code class="language-bash">minikube ip
 </code></pre>
 <p>O Minikube possui uma vasta documentação a respeito de como configurar esse
