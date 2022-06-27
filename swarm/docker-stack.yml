@@ -73,6 +73,8 @@ services:
       labels: [APP = USER_SERVICE]
       restart_policy:
         condition: on-failure
+      placement:
+        constraints: [node.role == worker]
 
   # SESSION service
   session:
@@ -124,7 +126,6 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=mongo
     image: mongo:5
-    command: mongod --quiet --logpath /dev/null
     volumes:
       - mongodb-data:/data/db
     networks:
@@ -133,6 +134,23 @@ services:
       placement:
         constraints: [node.role == manager]
 
+  # Mongo Express
+  mongo-express:
+    image: mongo-express:latest
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=root
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=mongo
+      - ME_CONFIG_BASICAUTH_USERNAME=mongo
+      - ME_CONFIG_BASICAUTH_PASSWORD=mongo
+    ports:
+      - "8686:8081"
+    networks:
+      - minerva_system
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+        
   # Visualizer
   visualizer:
     image: dockersamples/visualizer:stable
@@ -150,6 +168,8 @@ services:
     image: redis:7-alpine
     volumes:
       - redis-data:/data
+    ports:
+      - "6379:6379"
     networks:
       - minerva_system
     deploy:
@@ -157,6 +177,20 @@ services:
         condition: on-failure
       placement:
         constraints: [node.role == worker]
+
+  # Redis Commander
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "8787:8081"
+    networks:
+      - minerva_system
+    deploy:
+      placement:
+        constraints: [node.role == manager]
         
 networks:
   minerva_system:
