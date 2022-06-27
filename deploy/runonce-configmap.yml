@@ -3,7 +3,6 @@ kind: ConfigMap
 metadata:
   name: runonce-configmap
 data:
-  ADMIN_PASSWORD: admin
   DATABASE_SERVICE_SERVER: postgresql-svc
   MONGO_SERVICE_SERVER: mongodb-svc
   DATABASE_PORT: "5432"
