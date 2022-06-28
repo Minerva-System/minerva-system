@@ -26,6 +26,8 @@ Relação de versões de microsserviços:
 
 #### Modificado
 
+- Dockerfile para gerar imagens agora foi unificado, incluindo compilação do
+  frontend também no script, e agora utiliza BuildKit por padrão;
 - Imagens Docker agora são geradas usando Alpine Linux como base, reduzindo
   tamanho e _footprint_ em _deploys_ no Compose/Swarm/Kubernetes.
 
@@ -38,6 +40,11 @@ Relação de versões de microsserviços:
 - Dependência da _crate_ `rustc-serialize` na configuração da _crate_
   `chrono` (em confirmidade com alerta Dependabot), para todos os módulos.
 
+#### Problemas conhecidos
+
+- O _target_ para ARM64 na criação das imagens Docker foi desabilitado até
+  que seja corrigido [um bug no BuildKit](https://github.com/docker/build-push-action/issues/621) que faz com que o Qemu consuma RAM
+  arbitrariamente ao realizar compilação via emulação de hardware.
 
 ### `REST` - v0.2.2
 
@@ -60,7 +67,7 @@ Relação de versões de microsserviços:
 
 ### `SESSION` - v0.1.2
 
-#### Modificado
+#### Adicionado
 
 - Alteração do serviço para abrigar uso de _cache_ via Redis.
 
