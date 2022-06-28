@@ -1,10 +1,16 @@
 #!/bin/bash
 declare -a TARGETS=(
+    "minerva_frontend"
     "minerva_rest"
     "minerva_runonce"
     "minerva_session"
     "minerva_user"
 )
+
+# Platforms to build. Currently, linux/arm64 is broken for buildx.
+# See https://github.com/docker/build-push-action/issues/621.
+#PLATFORMS=linux/amd64,linux/arm64
+PLATFORMS=linux/amd64
 
 # Rust language targets
 for TARGET in "${TARGETS[@]}"
@@ -12,30 +18,33 @@ do
     IMGNAME="luksamuk/${TARGET}"
 
     # Scrape version information and use as tag
-    DIRNAME=${TARGET/_/-}
-    IMGVERSION=`awk '/^version/{print $3}' ./$DIRNAME/Cargo.toml | tr -d '"'`;
+    if [ $TARGET != "minerva_frontend" ]; then
+    	DIRNAME=${TARGET/_/-}
+	IMGVERSION=`awk '/^version/{print $3}' ./$DIRNAME/Cargo.toml | tr -d '"'`;
+    else
+	DIRNAME=$TARGET
+	IMGVERSION=`awk '/^version/{print $2}' ./$DIRNAME/pubspec.yaml`
+    fi
+
     TAGGEDIMGNAME=$IMGNAME:$IMGVERSION
     
     # Generate image and tag it with "latest"
     echo "### Building $IMGNAME..."
-    docker image build \
-	    -f build/Dockerfile \
-	    --target $TARGET \
-	    -t $TAGGEDIMGNAME \
-	    -t $IMGNAME:latest \
-	    .
+    docker buildx build \
+	   -m 2g \
+	   -f build/Dockerfile \
+	   --platform=$PLATFORMS \
+	   --target $TARGET \
+	   -t $TAGGEDIMGNAME \
+	   -t $IMGNAME:latest \
+	   .
 done
 
-# FrontEnd target
-IMGVERSION=`awk '/^version/{print $2}' ./minerva_frontend/pubspec.yaml`
-echo "### Building luksamuk/minerva_frontend..."
-docker image build -f build/Dockerfile.frontend \
-       -t luksamuk/minerva_frontend:$IMGVERSION \
-       -t luksamuk/minerva_frontend:latest \
-       .
-
 # PgAdmin
-docker image build -f build/Dockerfile.pgadmin \
+docker buildx build \
+       -m 2g \
+       -f build/Dockerfile.pgadmin \
+       --platform=$PLATFORMS \
        -t luksamuk/minerva_pgadmin:latest \
        build
 
