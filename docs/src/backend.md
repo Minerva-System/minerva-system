@@ -114,6 +114,8 @@ graph {
 
 </center>
 
+<div>
+
 ```dot process
 graph {
 	bgcolor=transparent;
@@ -149,6 +151,8 @@ graph {
   }
 }
 ```
+
+</div>
 
 ## Bibliotecas
 
@@ -215,13 +219,14 @@ de acordo com o serviço em questão.
 | REST    | `ROCKET_PORT`          | 9000  |
 | USER    | `USER_SERVICE_PORT`    | 9010  |
 | SESSION | `SESSION_SERVICE_PORT` | 9011  |
-| PRODUCT | `PRODUCT_SERVICE_PORT` | 9012  |
-| STOCK   | `STOCK_SERVICE_PORT`   | 9013  |
-| REPORT  | `REPORT_SERVICE_PORT`  | 9014  |
-| TENANCY | `TENANCY_SERVICE_PORT` | 9015  |
-| CLIENT  | `CLIENT_SERVICE_PORT`  | 9016  |
-| AUDIT   | `AUDIT_SERVICE_PORT`   | 9017  |
-| COMM    | `COMM_SERVICE_PORT`    | 9018  |
+
+<!-- | PRODUCT | `PRODUCT_SERVICE_PORT` | 9012  | -->
+<!-- | STOCK   | `STOCK_SERVICE_PORT`   | 9013  | -->
+<!-- | REPORT  | `REPORT_SERVICE_PORT`  | 9014  | -->
+<!-- | TENANCY | `TENANCY_SERVICE_PORT` | 9015  | -->
+<!-- | CLIENT  | `CLIENT_SERVICE_PORT`  | 9016  | -->
+<!-- | AUDIT   | `AUDIT_SERVICE_PORT`   | 9017  | -->
+<!-- | COMM    | `COMM_SERVICE_PORT`    | 9018  | -->
 
 
 No caso do serviço REST, verifique o arquivo `Rocket.toml` para avaliar
@@ -244,19 +249,21 @@ variáveis de ambiente que determinam o nome do servidor devem ser definidas
 manualmente, de acordo com a forma como o deploy de cada serviço foi
 realizado.
 
-A seguir, temos uma tabela relacionando variáveis de ambiente com seus
-devidos valores, que serão resolvidos através do DNS da rede interna criada
-pelo orquestrador de contêineres.
+A seguir, temos uma tabela relacionando os sistemas com sas variáveis de
+ambiente. Os valores das variáveis serão definidos de acordo com o orquestrador
+de contêineres sendo utilizado.
 
 No caso do serviço REST, verifique o arquivo `Rocket.toml` para avaliar
 a configuração em desenvolvimento e em produção do mesmo.
 
-| Serviço                       | Variável                  | Valor em Produção |
-|-------------------------------|---------------------------|-------------------|
-| USER                          | `USER_SERVICE_SERVER`     | `user`            |
-| Banco de Dados Relacional     | `DATABASE_SERVICE_SERVER` | `postgresql`      |
-| Banco de Dados Não-Relacional | `MONGO_SERVICE_SERVER`    | `mongodb`         |
-| REST                          | nenhuma                   | `rest`            |
-| RUNONCE                       | nenhuma                   | `runonce`         |
-| SESSION                       | `SESSION_SERVICE_SERVER`  | `session`         |
+
+| Serviço              | Variável de ambiente      |
+|----------------------|---------------------------|
+| Banco de dados SQL   | `DATABASE_SERVICE_SERVER` |
+| Banco de dados NoSQL | `MONGO_SERVICE_SERVER`    |
+| Cache Redis          | `REDIS_SERVICE_SERVER`    |
+|----------------------|---------------------------|
+| REST                 | `REST_SERVICE_SERVER`     |
+| USER                 | `USER_SERVICE_SERVER`     |
+| SESSION              | `SESSION_SERVICE_SERVER`  |
 

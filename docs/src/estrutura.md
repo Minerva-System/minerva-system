@@ -30,6 +30,13 @@ Adicionalmente, será possível manter uma maleabilidade que permita a confecç�
 tipos de Front-Ends que se comuniquem diretamente com o Back-End da aplicação, como
 por exemplo, através de programas nativos para Desktop e Mobile.
 
+<style>
+svg:not(:root ) {
+      max-width: 100%;
+	  height: auto;
+}
+</style>
+
 <center>
 
 ```dot process

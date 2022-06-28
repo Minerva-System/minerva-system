@@ -133,15 +133,36 @@ variáveis de ambiente de um _pod_.
 - `rest-configmap`: Variáveis padrão para a API REST.
 - `ports-configmap`: Portas para acesso aos serviços no cluster.
 - `servers-configmap`: Nomes dos serviços a serem acessados. Geralmente
-  associados a cada Deployment ou StatefulSet;
+  associados a cada Deployment ou StatefulSet.
 - `redis-configmap`: Dados de configuração do Redis. Mais especificamente
   um arquivo `redis.conf` que será recuperado nos _pods_ do Redis através
   da montagem desse _ConfigMap_, como se fosse um volume mutável.
+- `mongoexpress-configmap`: Variáveis padrão para definições iniciais do
+  Mongo Express.
+- `pgadmin-configmap`: Arquivo padrão de configuração de acesso do PgAdmin4.
+- `rediscommander-configmap`: Variáveis padrão para definições iniciais do
+  Redis Commander.
 
 Para aplicar todos os _ConfigMaps_, execute:
 
 ```bash
 for f in `ls deploy/*-configmap.yml`; do kubectl apply -f $f; done
+```
+
+### _Secrets_
+
+Um _Secret_ é um objeto muito similar a um _ConfigMap_, porém feito
+especificamente para lidar com dados sensíveis.
+
+- `runonce-secret`: Dados de criação de campos padrão no banco de dados.
+- `pgadmin-secret`: Dados para autenticação no serviço PgAdmin 4.
+- `mongoexpress-secret`: Dados para autenticação no MongoDB e no Mongo
+  Express.
+
+Para aplicar todos os _Secrets_, execute:
+
+```bash
+for f in `ls deploy/*-secret.yml`; do kubectl apply -f $f; done
 ```
 
 ### _PersistentVolumeClaims_
@@ -156,6 +177,8 @@ caso, cria um volume com tamanho específico dinamicamente.
   armazenamento e criação dinâmica;
 - `redis-pvc`: PersistentVolumeClaim para o Redis. Solicita 500MB de
   armazenamento e criação dinâmica.
+- `pgadmin-pvc`: PersistentVolumeClaim para as configurações do PgAdmin4.
+  Solicita 300MB de armazenamento e criação dinâmica.
   
 Para aplicar todos os _PersistentVolumeClaims_, execute:
 
@@ -175,6 +198,10 @@ a utilização de versionamento.
 - `rest-deployment`: Deployment para o gateway REST do sistema.
 - `user-deployment`: Deployment para o microsserviço `USER`.
 - `session-deployment`: Deployment para o microsserviço `SESSION`.
+- `mongoexpress-deployment`: Deployment para o serviço de monitoramento
+  Mongo Express.
+- `rediscommander-deployment`: Deployment para o serviço de monitoramento
+  Redis Commander.
 
 Para aplicar todos os _Deployments_, execute:
 
@@ -192,6 +219,9 @@ utilizados quando o estado interno da aplicação importa.
 - `redis-statefulset`: StatefulSet para o cluster do serviço de
   cache do Redis. A réplica `redis-0` será sempre um _Master_, enquanto
   as demais réplicas serão sempre _Slaves_.
+- `pgadmin-statefulset`: StatefulSet para o serviço de monitoramento
+  PgAdmin 4. Possui apenas uma réplica, e monta o arquivo `servers.json`
+  descrito em `pgadmin-configmap` como volume.
 
 Para aplicar todos os _StatefulSets_, execute:
 
@@ -220,11 +250,20 @@ _NodePort_, e estes agem também retroativamente como _ClusterIP_.
 - `session-svc` (_ClusterIP_): Serviço para acesso interno aos pods do
   microsserviço SESSION.
 - `frontend-svc` (_LoadBalancer_): Serviço para acesso interno e externo
-  aos pods do Front-End Web do sistema. Exposto na porta `30001`.
+  aos pods do Front-End Web do sistema.
 - `rest-svc` (_LoadBalancer_): Serviço para acesso interno e externo aos
-  pods do gateway REST do sistema. Exposto na porta `30000`.
+  pods do gateway REST do sistema.
 - `redis-svc` (_ClusterIP_): Serviço para acesso interno aos pods do
   Redis.
+- `mongoexpress-svc` (_NodePort_): Serviço para acesso interno e externo
+  aos pods do Mongo Express. Não interage com balanceador de carga.
+- `pgadmin-svc` (_NodePort_): Serviço para acesso interno e externo aos
+  pods do PgAdmin 4. Não interage com balanceador de carga.
+- `rediscommander-svc` (_NodePort_): Serviço para acesso interno e externo
+  aos pods do Redis Commander. Não interage com balanceador de carga.
+
+Caso queira informações sobre as portas exportas por esses serviços, veja
+a seção **"Acesso via _NodePort_"** a seguir.
 
 Para aplicar todos os _Services_, execute:
 
@@ -298,8 +337,16 @@ Isso pode também ser feito através do Minikube:
 minikube ip
 ```
 
-Você poderá acessar os serviços através deste mesmo IP, através das portas
-`30000` (API REST) ou `30001` (Front-End).
+A seguir, está discriminada uma tabela de todos os serviços acessíveis
+via _NodePort_ com suas respectivas portas.
+
+| Serviço         | Porta |
+|-----------------|-------|
+| API             | 30000 |
+| Front-End       | 30001 |
+| PgAdmin 4       | 31084 |
+| Mongo Express   | 31085 |
+| Redis Commander | 31086 |
 
 
 
