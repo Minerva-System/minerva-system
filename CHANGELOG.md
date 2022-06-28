@@ -37,6 +37,10 @@ Relação de versões de microsserviços:
 
 #### Removido
 
+- Dockerfile específico para PgAdmin4. A partir de agora, será usada a imagem
+  oficial do PgAdmin4, e o arquivo de configuração será montado como necessário
+  (via arquivos de configuração do Docker Compose e do Docker Stack, ou via
+  ConfigMap no Kubernetes);
 - Dependência da _crate_ `rustc-serialize` na configuração da _crate_
   `chrono` (em confirmidade com alerta Dependabot), para todos os módulos.
 

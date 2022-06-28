@@ -40,11 +40,3 @@ do
 	   .
 done
 
-# PgAdmin
-docker buildx build \
-       -m 2g \
-       -f build/Dockerfile.pgadmin \
-       --platform=$PLATFORMS \
-       -t luksamuk/minerva_pgadmin:latest \
-       build
-

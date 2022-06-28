@@ -75,12 +75,14 @@ services:
 
   # pgAdmin 4
   pgadmin:
-    image: luksamuk/minerva_pgadmin:latest
+    image: dpage/pgadmin4:latest
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com
       - PGADMIN_DEFAULT_PASSWORD=admin
     ports:
       - "8484:80"
+    volumes:
+      - ${PWD}/swarm/servers.json:/pgadmin4/servers.json
     networks:
       - minerva_system
     restart: always

@@ -1,3 +1,0 @@
-FROM dpage/pgadmin4 as minerva_pgadmin
-COPY pgadmin/servers.json /pgadmin4/servers.json
-ENV GUNICORN_ACCESS_LOGFILE=/dev/null
