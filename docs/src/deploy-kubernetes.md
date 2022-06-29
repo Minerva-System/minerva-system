@@ -109,13 +109,14 @@ A seguir, trataremos da estrutura do cluster como atualmente é definido.
 As seções a seguir tratam sempre de objetos específicos do Kubernetes,
 e são também uma sugestão de ordem de aplicação dos arquivos de configuração.
 
-Todos os arquivos serão encontrados de forma homônima no diretório `deploy`,
-com a extensão `yml`.
+Todos os arquivos serão encontrados de forma homônima no diretório
+`deploy/k8s`, com a extensão `yml`.
 
-Caso queira aplicar todos os arquivos enumerados abaixo, simplesmente execute:
+Caso queira aplicar todos os arquivos enumerados abaixo, simplesmente execute,
+a partir da raiz do projeto:
 
 ```bash
-kubectl apply -f deploy
+kubectl apply -f deploy/k8s
 ```
 
 ### _ConfigMaps_
@@ -146,7 +147,9 @@ variáveis de ambiente de um _pod_.
 Para aplicar todos os _ConfigMaps_, execute:
 
 ```bash
-for f in `ls deploy/*-configmap.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-configmap.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ### _Secrets_
@@ -162,7 +165,9 @@ especificamente para lidar com dados sensíveis.
 Para aplicar todos os _Secrets_, execute:
 
 ```bash
-for f in `ls deploy/*-secret.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-secret.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ### _PersistentVolumeClaims_
@@ -183,7 +188,9 @@ caso, cria um volume com tamanho específico dinamicamente.
 Para aplicar todos os _PersistentVolumeClaims_, execute:
 
 ```bash
-for f in `ls deploy/*-pvc.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-pvc.yml`; do
+	kubectl apply -f $f
+done
 ```
   
 ### _Deployments_
@@ -206,7 +213,9 @@ a utilização de versionamento.
 Para aplicar todos os _Deployments_, execute:
 
 ```bash
-for f in `ls deploy/*-deployment.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-deployment.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ### _StatefulSets_
@@ -226,7 +235,9 @@ utilizados quando o estado interno da aplicação importa.
 Para aplicar todos os _StatefulSets_, execute:
 
 ```bash
-for f in `ls deploy/*-statefulset.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-statefulset.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ### _Services_
@@ -268,7 +279,9 @@ a seção **"Acesso via _NodePort_"** a seguir.
 Para aplicar todos os _Services_, execute:
 
 ```bash
-for f in `ls deploy/*-svc.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-svc.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ### _Jobs_
@@ -283,7 +296,9 @@ seu completamento ser realizado com sucesso.
 Para aplicar todos os _ConfigMaps_, execute:
 
 ```bash
-for f in `ls deploy/*-job.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-job.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ### HorizontalPodAutoscalers
@@ -302,7 +317,9 @@ for f in `ls deploy/*-job.yml`; do kubectl apply -f $f; done
 Para aplicar todos os _HorizontalPodAutoscalers_, execute:
 
 ```bash
-for f in `ls deploy/*-hpa.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-hpa.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ### _Ingresses_
@@ -318,7 +335,9 @@ serviços no cluster, tipicamente via HTTP.
 Para aplicar todos os _Ingresses_, execute:
 
 ```bash
-for f in `ls deploy/*-ingress.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-ingress.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ## Acesso via NodePort
@@ -356,7 +375,9 @@ Outra forma de acessar envolve o uso dos objetos _Ingress_. Isso nos
 permitirá usar o endereço `http://minerva-system.io/` como URL base
 do sistema.
 
-Garanta que o addon `ingress` esteja habilitado.
+### Usando diretamente o `/etc/hosts`
+
+Comece garantindo que o addon `ingress` esteja habilitado.
 
 Agora, descubra o IP do Minikube na máquina:
 
@@ -391,8 +412,8 @@ DNS, mas mostrarei como fazê-lo caso você utiliza SystemD e tiver o ResolveD
 instalado (como é o caso de uma instalação pura com Fedora 36).
 
 Edite o arquivo `/etc/systemd/resolved.conf`. Supondo que você use o DNS
-do Google, por exemplo, insira o IP do Minikube no DNS e configure um FallbackDNS
-também:
+do Google, por exemplo, insira o IP do Minikube no DNS e configure um
+FallbackDNS também:
 
 ```conf
 [Resolve]
@@ -461,4 +482,5 @@ Você poderá testar cada sistema crucial usando um comando como este:
 ./deploy/stress_test.sh minerva-system.io/api user
 ```
 
-Para maiores informações, execute o script sem argumentos.
+Para maiores informações, execute o script sem argumentos e veja instruções
+rápidas de utilização.

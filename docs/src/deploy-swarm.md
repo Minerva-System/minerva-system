@@ -1,4 +1,4 @@
-# Deploy via Docker Swarm + HashCorp Vagrant
+# Deploy via Docker Swarm + HashiCorp Vagrant
 
 <center>
 <img src="./swarm-vagrant.png" alt="Docker Swarm + HashiCorp Vagrant" width="400"/>
@@ -23,22 +23,22 @@ inicializará o sistema no _cluster_.
 Você pode utilizar outro _provider_ além de VirtualBox (como `libvirt`), mas
 precisará alterar o arquivo `Vagrantfile`.
 
-**NOTA:** Qualquer comando do Vagrant deve ser executado no diretório `swarm`,
-para que o Vagrant tenha acesso ao `Vagrantfile`.
+**NOTA:** Qualquer comando do Vagrant deve ser executado no diretório
+`deploy/swarm`, para que o Vagrant tenha acesso ao `Vagrantfile`.
 
 ## Reinicializando o cluster
 
 Caso você já tenha iniciado o _cluster_ com Vagrant, basta ir até o diretório
-`swarm` e executar `vagrant up`. Isso reiniciará as máquinas virtuais, mas
-também executará o `docker stack deploy` novamente para o arquivo de configuração,
-o que forçará uma atualização em todos os serviços.
+`deploy/swarm` e executar `vagrant up`. Isso reiniciará as máquinas virtuais,
+mas também executará o `docker stack deploy` novamente para o arquivo de
+configuração, o que forçará uma atualização em todos os serviços.
 
 ## Criando o cluster
 
-Para criar o cluster, vá até o diretório `swarm` e execute o Vagrant.
+Para criar o cluster, vá até o diretório `deploy/swarm` e execute o Vagrant.
 
 ```bash
-cd swarm
+cd deploy/swarm
 vagrant up
 ```
 
@@ -74,8 +74,8 @@ o primeiro _manager_:
 vagrant ssh manager01
 ```
 
-O diretório `swarm` fica montado dentro de todas as máquinas virtuais em
-`/vagrant` (que é mutável apenas durante a criação do _cluster_). Todavia,
+O diretório `deploy/swarm` fica montado dentro de todas as máquinas virtuais
+em `/vagrant` (que é mutável apenas durante a criação do _cluster_). Todavia,
 você ainda poderá modificar os arquivos no _host_ e terá acesso a eles.
 
 Para aplicar manualmente o arquivo `docker-stack.yml`:
@@ -118,8 +118,18 @@ normalmente assim como no Docker Compose, porém sob um IP diferente.
 Por padrão, todos os _managers_ possuem um IP começado com `172.20.20.1X`,
 algo definido através do `Vagrantfile`. Os _workers_ terão um IP
 iniciado com `172.20.20.10X`. A variável `X` será sempre um número
-contado a partir de `1`; por exemplo, o `manager01` possuirá um IP
-necessariamente igual a `172.20.20.11`.
+contado a partir de `1`.
+
+Seguindo essas regras, as VMs possuirão os seguintes IPs:
+
+| IP            | Hostname  |
+|---------------|-----------|
+| 172.20.20.11  | manager01 |
+| 172.20.20.12  | manager02 |
+| 172.20.20.13  | manager03 |
+| 172.20.20.101 | worker01  |
+| 172.20.20.102 | worker02  |
+| 172.20.20.103 | worker03  |
 
 Para acessar os serviços, use qualquer IP do _cluster_. A descoberta
 do serviço será realizada através do _routing mesh_ do Docker Swarm.
@@ -127,12 +137,14 @@ do serviço será realizada através do _routing mesh_ do Docker Swarm.
 Abaixo, temos uma relação das portas utilizadas para cada um dos serviços
 disponíveis no _cluster_.
 
-| Porta | Descrição               |
+| Porta | Serviço                 |
 |-------|-------------------------|
-| 80    | Front-end               |
+| 80    | Front-End               |
 | 9000  | API REST                |
 | 8484  | PgAdmin 4               |
 | 8585  | Visualizador do cluster |
+| 8686  | Mongo Express           |
+| 8787  | Redis Commander         |
 
 
 ## Encerrando o serviço
