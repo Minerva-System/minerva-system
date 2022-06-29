@@ -1,40 +1,5 @@
 # Back-End
 
-O back-end Minerva compõe-se de microsserviços, com uma interface comum de
-comunicação externa que seja simples de usar para os padrões atuais.
-
-O back-end compõe-se dos seguintes componentes:
-
-1. Componente de comunicação externa: um serviço composto de rotas, sendo
-   portanto uma API REST. Este serviço requisita dados sob demanda a cada
-   serviço, dependendo do recurso que foi requisitado por via externa. É
-   efetivamente o intermediário entre Minerva e o mundo externo. As
-   requisições entre este serviço e os outros deverão ser feito através da
-   abertura de uma requisição gRPC em que este módulo seja o cliente
-   requisitante; as respostas recebidas via gRPC são então retornadas
-   como resposta às requisições recebidas via REST, após tratamento para
-   serialização como JSON.
-2. Componente de usuários: Servidor gRPC responsável por realizar o CRUD
-   de usuários e por verificar as regras de negócio destas operações.
-3. Componente de sessão: Servidor gRPC responsável por realizar login,
-   logoff, verificação de senha e gerenciamento de sessão de usuários.
-4. Componente de produtos: Servidor gRPC responsável por realizar o CRUD
-   de produtos e por verificar as regras de negócio destas operações.
-5. Componente de estoque: Servidor gRPC responsável por realizar regras
-   de negócios relacionadas a estoque de produtos (início, baixa, lançamento,
-   etc).
-
-Os **serviços gRPC** supracitados tratam-se de servidores gRPC que podem
-receber conexões vindas do ponto de entrada REST ou mesmo entre si. Além
-disso, os serviços gRPC devem ser capazes de se comunicar com bancos de
-dados, que são recursos essenciais para os mesmos (exemplo: PostgreSQL,
-Redis). Além disso, **estes serviços devem gravar log de suas operações**,
-mais especificamente nas operações de inserção, atualização e exclusão.
-
-Esses componentes possuem análogos programados, mas não são todos os módulos
-da aplicação, que também constituem-se de bibliotecas que podem ser utilizadas
-e referenciadas entre si.
-
 <style>
 svg:not(:root ) {
       max-width: 100%;
@@ -51,7 +16,8 @@ graph {
 	compound=true;
 	node[style=filled; fillcolor="#999999"];
 	
-	frontend[label="FRONT-END", shape=note, color=darkorange, fontcolor=darkorange, fillcolor=transparent];
+	frontend[label="FRONT-END", shape=note, color=darkorange, fontcolor=darkorange, fillcolor=transparent, width=2, height=1];
+	rest[label="REST\n(API)", shape=box3d, color=green, fontcolor=green, width=1, height=0.75];
 	
 	subgraph cluster_db {
 		rankdir="LR";
@@ -65,49 +31,42 @@ graph {
 	}
 
 	subgraph cluster_backend {
-		label = "BACK-END";
 		fontcolor=darkred;
 		rankdir="LR";
 		color=darkred;
+		node[shape=hexagon; regular=true; fixedsize=true; width=1; height=1];
 		
-		rest[label="REST", shape=box3d, color=green, fontcolor=green];
-		
-		tenancy[label="TENANCY", shape=box3d, color=blue, fontcolor=blue];
-		user[label="USER", shape=box3d, color=blue, fontcolor=blue];
-		session[label="SESSION", shape=box3d, color=blue, fontcolor=blue];
-		product[label="PRODUCT", shape=box3d, color=blue, fontcolor=blue];
-		stock[label="STOCK", shape=box3d, color=blue, fontcolor=blue];
-		runonce[label="RUNONCE", shape=box, color=lightblue, fontcolor=blue];
-		report[label="REPORT", shape=box3d, color=blue, fontcolor=blue];
-		client[label="CLIENT", shape=box3d, color=blue, fontcolor=blue];
-		audit[label="AUDIT", shape=box3d, color=blue, fontcolor=blue];
-		comm[label="COMM", shape=box3d, color=blue, fontcolor=blue];
-		
-		user -- session [color=blue, fontcolor=blue, penwidth=2.0];
-		comm -- client [color=blue, fontcolor=blue, penwidth=2.0];
-		
-		rest -- tenancy[color=blue, fontcolor=blue, penwidth=2.0];
-		rest -- user[color=blue, fontcolor=blue, penwidth=2.0];
-		rest -- session[color=blue, fontcolor=blue, penwidth=2.0];
-		rest -- product[color=blue, fontcolor=blue, penwidth=2.0];
-		rest -- stock[color=blue, fontcolor=blue, penwidth=2.0];
-		rest -- client[color=blue, fontcolor=blue, penwidth=2.0];
-		rest -- audit[color=blue, fontcolor=blue, penwidth=2.0];
-		rest -- comm[color=blue, fontcolor=blue, penwidth=2.0];
-
-		rest -- report[color=blue, fontcolor=blue, penwidth=2.0];
-		
+		runonce[label="RUNONCE", fillcolor="#DDDDDD", shape=doublecircle, color=darkblue, fontcolor=darkblue];
+		report[label="REPORT", color=blue, fontcolor=blue];
+		tenancy[label="TENANCY", color=blue, fontcolor=blue];
+		user[label="USER", color=blue, fontcolor=blue];
+		session[label="SESSION", color=blue, fontcolor=blue];
+		product[label="PRODUCT", color=blue, fontcolor=blue];
+		stock[label="STOCK", color=blue, fontcolor=blue];
+		client[label="CLIENT", color=blue, fontcolor=blue];
+		audit[label="AUDIT", color=blue, fontcolor=blue];
+		comm[label="COMM", color=blue, fontcolor=blue];
+			
 		tenancy -- db1 [lhead=cluster_db, color=darkmagenta, fontcolor=darkmagenta, penwidth=2.0];
 		user -- db1 [lhead=cluster_db, color=darkmagenta, fontcolor=darkmagenta, penwidth=2.0];
 		session -- db1 [lhead=cluster_db, color=darkmagenta, fontcolor=darkmagenta, penwidth=2.0];
 		product -- db1 [lhead=cluster_db, color=darkmagenta, fontcolor=darkmagenta, penwidth=2.0];
 		stock -- db1 [lhead=cluster_db, color=darkmagenta, fontcolor=darkmagenta, penwidth=2.0];
-		runonce -- db1 [lhead=cluster_db, color=magenta, fontcolor=magenta, penwidth=2.0];
+		runonce -- db1 [lhead=cluster_db, color=magenta, fontcolor=darkmagenta, penwidth=2.0];
 		client -- db1 [lhead=cluster_db, color=darkmagenta, fontcolor=darkmagenta, penwidth=2.0];
 		audit -- db1 [lhead=cluster_db, color=darkmagenta, fontcolor=darkmagenta, penwidth=2.0];
 	}
-
+	
 	frontend -- rest[color=green, fontcolor=green, penwidth=2.0];
+	rest -- tenancy[color=blue, fontcolor=blue, penwidth=2.0];
+	rest -- user[color=blue, fontcolor=blue, penwidth=2.0];
+	rest -- session[color=blue, fontcolor=blue, penwidth=2.0];
+	rest -- product[color=blue, fontcolor=blue, penwidth=2.0];
+	rest -- stock[color=blue, fontcolor=blue, penwidth=2.0];
+	rest -- client[color=blue, fontcolor=blue, penwidth=2.0];
+	rest -- audit[color=blue, fontcolor=blue, penwidth=2.0];
+	rest -- comm[color=blue, fontcolor=blue, penwidth=2.0];
+	rest -- report[color=blue, fontcolor=blue, penwidth=2.0];
 	
 }
 ```
@@ -124,15 +83,14 @@ graph {
 	node[style=filled; fillcolor=transparent];
 	
 	subgraph cluster_legenda {
-		label = "Legenda: Tipos de Conexão";
+		label = "Legenda";
 		style = filled;
 		fillcolor = white;
 		key [label=<
 		  <table border="0" cellpadding="2" cellspacing="0" cellborder="0">
 			<tr><td align="right" port="i1">gRPC  </td></tr>
-            <tr><td align="right" port="i2">Banco de Dados via Pool  </td></tr>
-            <tr><td align="right" port="i3">Banco de Dados Avulsa  </td></tr>
-            <tr><td align="right" port="i4">HTTP via REST  </td></tr>
+            <tr><td align="right" port="i2">BD  </td></tr>
+            <tr><td align="right" port="i3">HTTP/REST  </td></tr>
           </table>
 		>; shape=plaintext]
         key2 [label=<
@@ -140,19 +98,70 @@ graph {
             <tr><td port="i1">&nbsp;</td></tr>
             <tr><td port="i2">&nbsp;</td></tr>
             <tr><td port="i3">&nbsp;</td></tr>
-            <tr><td port="i4">&nbsp;</td></tr>
           </table>
 	    >; shape=plaintext]
 		{rank=same; rankdir=LR; key; key2; }
 		key:i1:e -- key2:i1:w [color=blue; penwidth=2.0];
 		key:i2:e -- key2:i2:w [color=darkmagenta; penwidth=2.0];
-        key:i3:e -- key2:i3:w [color=magenta; penwidth=2.0];
-        key:i4:e -- key2:i4:w [color=green; penwidth=2.0];
+		key:i3:e -- key2:i3:w [color=green; penwidth=2.0];
   }
 }
 ```
 
 </div>
+
+O back-end Minerva compõe-se de microsserviços, com uma interface comum de
+comunicação externa que seja simples de usar para os padrões atuais.
+
+O back-end compõe-se dos seguintes componentes:
+
+1. **Componente de API:** um serviço composto de rotas HTTP, sendo
+   portanto uma API REST. Este serviço requisita dados sob demanda a cada
+   serviço, dependendo do recurso que foi requisitado por via externa. É
+   efetivamente o intermediário entre Minerva e o mundo externo. As
+   requisições entre este serviço e os outros deverão ser feito através da
+   abertura de uma requisição gRPC em que este módulo seja o cliente
+   requisitante; as respostas recebidas via gRPC são então retornadas
+   como resposta às requisições recebidas via REST, após tratamento para
+   serialização como JSON.
+2. **Componente de usuários:** Servidor gRPC responsável por realizar o CRUD
+   de usuários e por verificar as regras de negócio destas operações.
+3. **Componente de sessão:** Servidor gRPC responsável por realizar login,
+   logoff, verificação de senha e gerenciamento de sessão de usuários.
+4. **Componente de produtos:** Servidor gRPC responsável por realizar o CRUD
+   de produtos e por verificar as regras de negócio destas operações.
+5. **Componente de estoque:** Servidor gRPC responsável por realizar regras
+   de negócios relacionadas a estoque de produtos (início, baixa, lançamento,
+   etc).
+6. **Componente de inquilinos:** Servidor gRPC responsável por coordenar a
+   criação ou remoção de novos inquilinos no sistema. Cada inquilino
+   possuirá seu próprio conjunto de dados, e isso afetará diretamente na
+   infraestrutura reservada para o mesmo (criação ou remoção de bancos
+   de dados ou segmentos específicos em certos serviços).
+7. **Componente de relatórios:** Servidor gRPC responsável pela geração de
+   relatórios humanamente legíveis, envolvendo portanto agregação de dados
+   de acordo com o que for externamente requisitado.
+8. **Componente de clientes:** Servidor gRPC responsável por realizar o CRUD
+   e a coordenação de dados de clientes do inquilino em questão.
+9. **Componente de auditoria:** Servidor gRPC responsável por gerenciar a
+   consulta ao logs de auditoria do sistema.
+10. **Componente de comunicação instantânea:** Servidor gRPC para CRM através
+	de comunicação via canais de mensagens instantâneas.
+
+Os **serviços gRPC** supracitados tratam-se de servidores gRPC que podem
+receber conexões vindas do ponto de entrada REST ou mesmo entre si. Além
+disso, os serviços gRPC devem ser capazes de se comunicar com bancos de
+dados, que são recursos essenciais para os mesmos (exemplo: PostgreSQL,
+MongoDB, Redis). **Estes serviços devem gravar log de suas operações**,
+mais especificamente nas operações de inserção, atualização e exclusão.
+
+A API REST sempre se comunica diretamente com os serviços gRPC, e os mesmos
+são encorajados a se comunicarem entre si quando for necessário estabelecer
+comunicação bloqueante entre os mesmos. Todavia, quando for necessário
+estabelecer comunicação não-bloqueante entre os microsserviços (leia-se,
+quando o retorno para os usuários for desnecessário), será feito o uso
+de mensageria com despacho automático, sem comunicação gRPC direta.
+
 
 ## Bibliotecas
 

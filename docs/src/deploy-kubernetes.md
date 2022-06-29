@@ -303,6 +303,15 @@ done
 
 ### HorizontalPodAutoscalers
 
+Um _HorizontalPodAutoscaler_ é um objeto que interage diretamente com
+_Deployments_ e _StatefulSets_, de forma a escalar horizontalmente estes
+objetos, através da criação ou remoção de réplicas de seus _pods_.
+
+Estes objetos operam em associação com as especificações requisitadas pelo
+_Deployment_ ou _StatefulSet_  em termos de CPU e/ou memória, por exemplo,
+garantindo que os _pods_ cheguem no máximo a certa porcentagem de utilização
+desses recursos, de acordo com o que foi configurado.
+
 - `rest-hpa`: Escalonador horizontal do gateway REST. Mantém entre 1 e
   15 réplicas para `rest-deployment` com uso médio de 50% do CPU alocado.
 - `user-hpa`: Escalonador horizontal do microsserviço USER. Mantém entre
