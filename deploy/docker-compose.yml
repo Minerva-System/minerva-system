@@ -12,7 +12,7 @@ services:
       - "rest"
     networks:
       - minerva_system
-    restart: always
+    restart: on-failure:5
   
   # REST service
   rest:
@@ -26,7 +26,7 @@ services:
       - "user"
     networks:
       - minerva_system
-    restart: always
+    restart: on-failure:5
   
   # RUNONCE service
   runonce:
@@ -48,7 +48,7 @@ services:
       - DATABASE_SERVICE_SERVER=postgresql
     networks:
       - minerva_system
-    restart: always
+    restart: on-failure:5
 
   # SESSION service
   session:
@@ -59,7 +59,7 @@ services:
       - REDIS_SERVICE_SERVER=redis
     networks:
       - minerva_system
-    restart: always
+    restart: on-failure:5
 
   # PostgreSQL 14
   postgresql:
@@ -71,7 +71,7 @@ services:
       - db-data:/var/lib/postgresql/data
     networks:
       - minerva_system
-    restart: always
+    restart: on-failure:5
 
   # pgAdmin 4
   pgadmin:
@@ -85,7 +85,7 @@ services:
       - ${PWD}/swarm/servers.json:/pgadmin4/servers.json
     networks:
       - minerva_system
-    restart: always
+    restart: on-failure:5
 
   # MongoDB 5
   mongodb:
@@ -98,7 +98,7 @@ services:
       - mongodb-data:/data/db
     networks:
       - minerva_system
-    restart: always
+    restart: on-failure:5
 
   # Mongo Express
   mongo-express:
@@ -113,7 +113,7 @@ services:
       - "8686:8081"
     networks:
       - minerva_system
-    restart: always
+    restart: on-failure:5
 
   # Redis 7
   redis:
@@ -124,7 +124,7 @@ services:
       - "6379:6379"
     networks:
       - minerva_system
-    restart: always
+    restart: on-failure:5
 
   # Redis Commander
   redis-commander:
@@ -136,7 +136,7 @@ services:
       - "8787:8081"
     networks:
       - minerva_system
-    restart: always
+    restart: on-failure:5
 
 networks:
   minerva_system:
