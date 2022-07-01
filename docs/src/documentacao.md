@@ -1,6 +1,6 @@
-# Documentação do Projeto
+# Documentação do Software
 
-Esta seção contém links para a documentação das partes pertinentes ao código
+Este capítulo lista links para a documentação das partes pertinentes ao código
 do Minerva System.
 
 Por padrão, a documentação é escrita em Inglês, e pode ser muito pertinente
