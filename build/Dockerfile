@@ -1,7 +1,7 @@
 ## Compilation and preparation
 
 # Base container for compilation
-FROM rust:1.61.0-alpine3.15 AS rust_base
+FROM rust:1.62.0-alpine3.16 AS rust_base
 WORKDIR /
 RUN apk add --no-cache cmake make musl-dev file build-base libpq libpq-dev openssl-dev postgresql-dev
 RUN cargo install cargo-chef
@@ -24,12 +24,12 @@ COPY . .
 RUN cargo build --release
 
 # Base container for deploying services
-FROM alpine:3.15 AS deploy
+FROM alpine:3.16 AS deploy
 ARG APP=/usr/src/app
 RUN apk add --no-cache ca-certificates tzdata libpq
 COPY --from=builder /usr/lib/libgcc_s.so.1 /usr/lib/
 COPY --from=builder /usr/lib/libgcc_s.so /usr/lib/
-COPY --from=builder /usr/lib/libstdc++.so.6.0.28 /usr/lib/
+COPY --from=builder /usr/lib/libstdc++.so.6.0.29 /usr/lib/
 COPY --from=builder /usr/lib/libstdc++.so.6 /usr/lib/
 COPY --from=builder /usr/lib/libstdc++.so /usr/lib/
 ENV TZ=Etc/UTC \

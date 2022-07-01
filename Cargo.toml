@@ -1,8 +1,4 @@
 [workspace]
-version = "0.2.0"
-authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
-license = "GPLv3"
-edition = "2021"
 members = [
 	"minerva-rpc",
 	"minerva-data",
