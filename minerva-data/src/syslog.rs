@@ -4,6 +4,7 @@
 //! `syslog` holds information of insertions, updates and deletions from any
 //! table, and also describes which service did it and which user of this given
 //! tenance requested the operation.
+#![allow(clippy::extra_unused_lifetimes)]
 
 use crate::schema::syslog;
 use chrono::{DateTime, Utc};

@@ -1,5 +1,6 @@
 //! This module contains Data Transfer Objects for the `user` table, which
 //! represents the registered users for this tenancy.
+#![allow(clippy::extra_unused_lifetimes)]
 
 use crate::encryption;
 use crate::schema::user;
