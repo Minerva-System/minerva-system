@@ -4,6 +4,7 @@
 - [Changelog](./CHANGELOG.md)
 - [Estrutura geral do projeto](./estrutura.md)
   - [Front-End]()
+	- [Interface para Terminal](./interface-terminal.md)
   - [Back-End](./backend.md)
 - [Documentação do Software](./documentacao.md)
 - [Especificação do Projeto]()
