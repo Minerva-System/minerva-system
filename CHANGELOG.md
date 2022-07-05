@@ -5,9 +5,9 @@ Todas as mudanças notáveis neste projeto serão documentadas nesse arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+<!-- ## [Não-lançado] -->
 
-
-## [Não-lançado]
+## [v2] - 2022-06-05
 
 
 Relação de versões de microsserviços:
@@ -97,7 +97,8 @@ Relação de versões de microsserviços:
   via GitHub Pages.
 
 
-[Não-lançado]: https://github.com/luksamuk/minerva-system/compare/v1...HEAD
+<!-- [Não-lançado]: https://github.com/luksamuk/minerva-system/compare/v2...HEAD -->
+[v2]: https://github.com/luksamuk/minerva-system/releases/tag/v2
 [v1]: https://github.com/luksamuk/minerva-system/releases/tag/v1
 
 <!-- ==== Exemplo ==== -->
