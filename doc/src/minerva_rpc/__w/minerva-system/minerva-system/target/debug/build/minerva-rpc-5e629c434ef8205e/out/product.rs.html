@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/__w/minerva-system/minerva-system/target/debug/build/minerva-rpc-f5954ba3aa0a7c6f/out/user.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>user.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../../../../../storage.js"></script><script src="../../../../../../../../../../crates.js"></script><script defer src="../../../../../../../../../../main.js"></script><script defer src="../../../../../../../../../../source-script.js"></script><script defer src="../../../../../../../../../../source-files.js"></script>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/__w/minerva-system/minerva-system/target/debug/build/minerva-rpc-5e629c434ef8205e/out/product.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>product.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../../../../../storage.js"></script><script src="../../../../../../../../../../crates.js"></script><script defer src="../../../../../../../../../../main.js"></script><script defer src="../../../../../../../../../../source-script.js"></script><script defer src="../../../../../../../../../../source-files.js"></script>
     <noscript><link rel="stylesheet" href="../../../../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../../../../../../minerva_rpc/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../../../../rust-logo.svg" alt="logo"></div>
         </a><h2 class="location"></h2>
     </nav>
@@ -468,15 +468,18 @@
 <span id="463">463</span>
 <span id="464">464</span>
 <span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
 </pre><pre class="rust"><code><span class="doccomment">/// Generated client implementations.</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">user_client</span> {
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">products_client</span> {
     <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">unused_variables</span>, <span class="ident">dead_code</span>, <span class="ident">missing_docs</span>, <span class="ident">clippy::let_unit_value</span>)]</span>
     <span class="kw">use</span> <span class="ident">tonic::codegen</span>::<span class="kw-2">*</span>;
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UserClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ProductsClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">inner</span>: <span class="ident">tonic::client::Grpc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
     }
-    <span class="kw">impl</span> <span class="ident">UserClient</span><span class="op">&lt;</span><span class="ident">tonic::transport::Channel</span><span class="op">&gt;</span> {
+    <span class="kw">impl</span> <span class="ident">ProductsClient</span><span class="op">&lt;</span><span class="ident">tonic::transport::Channel</span><span class="op">&gt;</span> {
         <span class="doccomment">/// Attempt to create a new client by connecting to a given endpoint.</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">connect</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="ident">D</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">tonic::transport::Error</span><span class="op">&gt;</span>
         <span class="kw">where</span>
@@ -487,7 +490,7 @@
             <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">conn</span>))
         }
     }
-    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">UserClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
+    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">ProductsClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
@@ -501,7 +504,7 @@
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_interceptor</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
             <span class="ident">inner</span>: <span class="ident">T</span>,
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
-        ) -&gt; <span class="ident">UserClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
+        ) -&gt; <span class="ident">ProductsClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
             <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T::ResponseBody</span>: <span class="ident">Default</span>,
@@ -515,7 +518,7 @@
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
             <span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>,
         {
-            <span class="ident">UserClient::new</span>(<span class="ident">InterceptedService::new</span>(<span class="ident">inner</span>, <span class="ident">interceptor</span>))
+            <span class="ident">ProductsClient::new</span>(<span class="ident">InterceptedService::new</span>(<span class="ident">inner</span>, <span class="ident">interceptor</span>))
         }
         <span class="doccomment">/// Compress requests with `gzip`.</span>
         <span class="doccomment">///</span>
@@ -532,11 +535,14 @@
             <span class="self">self</span>.<span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">accept_gzip</span>();
             <span class="self">self</span>
         }
-        <span class="doccomment">/// List all users, given a page index.</span>
+        <span class="doccomment">/// List all products, given a page index.</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">index</span>(
             <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
             <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::PageIndex</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::UserList</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>
+                <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::ProductList</span><span class="op">&gt;</span>,
+                <span class="ident">tonic::Status</span>,
+            <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>
                 .<span class="ident">ready</span>()
                 .<span class="kw">await</span>
@@ -547,14 +553,14 @@
                     )
                 })<span class="question-mark">?</span>;
             <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
-            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(<span class="string">&quot;/User.User/index&quot;</span>);
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(<span class="string">&quot;/Product.Products/index&quot;</span>);
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
         }
-        <span class="doccomment">/// Show a specific user, given its index.</span>
+        <span class="doccomment">/// Show a specific product, given its index.</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">show</span>(
             <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
             <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::EntityIndex</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>
                 .<span class="ident">ready</span>()
                 .<span class="kw">await</span>
@@ -565,14 +571,14 @@
                     )
                 })<span class="question-mark">?</span>;
             <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
-            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(<span class="string">&quot;/User.User/show&quot;</span>);
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(<span class="string">&quot;/Product.Products/show&quot;</span>);
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
         }
-        <span class="doccomment">/// Include a new user and return it.</span>
+        <span class="doccomment">/// Include a new product and return it.</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">store</span>(
             <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span><span class="op">&gt;</span>,
+        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>
                 .<span class="ident">ready</span>()
                 .<span class="kw">await</span>
@@ -583,14 +589,14 @@
                     )
                 })<span class="question-mark">?</span>;
             <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
-            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(<span class="string">&quot;/User.User/store&quot;</span>);
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(<span class="string">&quot;/Product.Products/store&quot;</span>);
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
         }
-        <span class="doccomment">/// Update a user and return it.</span>
+        <span class="doccomment">/// Update a product and return it.</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update</span>(
             <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span><span class="op">&gt;</span>,
+        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>
                 .<span class="ident">ready</span>()
                 .<span class="kw">await</span>
@@ -601,10 +607,10 @@
                     )
                 })<span class="question-mark">?</span>;
             <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
-            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(<span class="string">&quot;/User.User/update&quot;</span>);
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(<span class="string">&quot;/Product.Products/update&quot;</span>);
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
         }
-        <span class="doccomment">/// Delete a user.</span>
+        <span class="doccomment">/// Delete a product.</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete</span>(
             <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
             <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::EntityIndex</span><span class="op">&gt;</span>,
@@ -619,52 +625,52 @@
                     )
                 })<span class="question-mark">?</span>;
             <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
-            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(<span class="string">&quot;/User.User/delete&quot;</span>);
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(<span class="string">&quot;/Product.Products/delete&quot;</span>);
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
         }
     }
 }
 <span class="doccomment">/// Generated server implementations.</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">user_server</span> {
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">products_server</span> {
     <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">unused_variables</span>, <span class="ident">dead_code</span>, <span class="ident">missing_docs</span>, <span class="ident">clippy::let_unit_value</span>)]</span>
     <span class="kw">use</span> <span class="ident">tonic::codegen</span>::<span class="kw-2">*</span>;
-    <span class="doccomment">///Generated trait containing gRPC methods that should be implemented for use with UserServer.</span>
+    <span class="doccomment">///Generated trait containing gRPC methods that should be implemented for use with ProductsServer.</span>
     <span class="attribute">#[<span class="ident">async_trait</span>]</span>
-    <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">User</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> {
-        <span class="doccomment">/// List all users, given a page index.</span>
+    <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Products</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> {
+        <span class="doccomment">/// List all products, given a page index.</span>
         <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">index</span>(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
             <span class="ident">request</span>: <span class="ident">tonic::Request</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::PageIndex</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::UserList</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>;
-        <span class="doccomment">/// Show a specific user, given its index.</span>
+        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::ProductList</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>;
+        <span class="doccomment">/// Show a specific product, given its index.</span>
         <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">show</span>(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
             <span class="ident">request</span>: <span class="ident">tonic::Request</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::EntityIndex</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>;
-        <span class="doccomment">/// Include a new user and return it.</span>
+        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>;
+        <span class="doccomment">/// Include a new product and return it.</span>
         <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">store</span>(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
-            <span class="ident">request</span>: <span class="ident">tonic::Request</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>;
-        <span class="doccomment">/// Update a user and return it.</span>
+            <span class="ident">request</span>: <span class="ident">tonic::Request</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span><span class="op">&gt;</span>,
+        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>;
+        <span class="doccomment">/// Update a product and return it.</span>
         <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update</span>(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
-            <span class="ident">request</span>: <span class="ident">tonic::Request</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>;
-        <span class="doccomment">/// Delete a user.</span>
+            <span class="ident">request</span>: <span class="ident">tonic::Request</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span><span class="op">&gt;</span>,
+        ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>;
+        <span class="doccomment">/// Delete a product.</span>
         <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete</span>(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
             <span class="ident">request</span>: <span class="ident">tonic::Request</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::EntityIndex</span><span class="op">&gt;</span>,
         ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>;
     }
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UserServer</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">User</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ProductsServer</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Products</span><span class="op">&gt;</span> {
         <span class="ident">inner</span>: <span class="ident">_Inner</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
         <span class="ident">accept_compression_encodings</span>: (),
         <span class="ident">send_compression_encodings</span>: (),
     }
     <span class="kw">struct</span> <span class="ident">_Inner</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">User</span><span class="op">&gt;</span> <span class="ident">UserServer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Products</span><span class="op">&gt;</span> <span class="ident">ProductsServer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">inner</span>: <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
             <span class="ident"><span class="self">Self</span>::from_arc</span>(<span class="ident">Arc::new</span>(<span class="ident">inner</span>))
         }
@@ -686,9 +692,9 @@
             <span class="ident">InterceptedService::new</span>(<span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">inner</span>), <span class="ident">interceptor</span>)
         }
     }
-    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">B</span><span class="op">&gt;</span> <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span><span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">UserServer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
+    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">B</span><span class="op">&gt;</span> <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span><span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ProductsServer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">User</span>,
+        <span class="ident">T</span>: <span class="ident">Products</span>,
         <span class="ident">B</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">B::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     {
@@ -704,14 +710,14 @@
         <span class="kw">fn</span> <span class="ident">call</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">req</span>: <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>) -&gt; <span class="ident"><span class="self">Self</span>::Future</span> {
             <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">clone</span>();
             <span class="kw">match</span> <span class="ident">req</span>.<span class="ident">uri</span>().<span class="ident">path</span>() {
-                <span class="string">&quot;/User.User/index&quot;</span> =&gt; {
+                <span class="string">&quot;/Product.Products/index&quot;</span> =&gt; {
                     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
-                    <span class="kw">struct</span> <span class="ident">indexSvc</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">User</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
+                    <span class="kw">struct</span> <span class="ident">indexSvc</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Products</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
                     <span class="kw">impl</span><span class="op">&lt;</span>
-                        <span class="ident">T</span>: <span class="ident">User</span>,
+                        <span class="ident">T</span>: <span class="ident">Products</span>,
                     <span class="op">&gt;</span> <span class="ident">tonic::server::UnaryService</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::PageIndex</span><span class="op">&gt;</span>
                     <span class="kw">for</span> <span class="ident">indexSvc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-                        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::UserList</span>;
+                        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::ProductList</span>;
                         <span class="kw">type</span> <span class="ident">Future</span> <span class="op">=</span> <span class="ident">BoxFuture</span><span class="op">&lt;</span>
                             <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Response</span><span class="op">&gt;</span>,
                             <span class="ident">tonic::Status</span>,
@@ -742,14 +748,14 @@
                     };
                     <span class="ident">Box::pin</span>(<span class="ident">fut</span>)
                 }
-                <span class="string">&quot;/User.User/show&quot;</span> =&gt; {
+                <span class="string">&quot;/Product.Products/show&quot;</span> =&gt; {
                     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
-                    <span class="kw">struct</span> <span class="ident">showSvc</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">User</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
+                    <span class="kw">struct</span> <span class="ident">showSvc</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Products</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
                     <span class="kw">impl</span><span class="op">&lt;</span>
-                        <span class="ident">T</span>: <span class="ident">User</span>,
+                        <span class="ident">T</span>: <span class="ident">Products</span>,
                     <span class="op">&gt;</span> <span class="ident">tonic::server::UnaryService</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::EntityIndex</span><span class="op">&gt;</span>
                     <span class="kw">for</span> <span class="ident">showSvc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-                        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span>;
+                        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span>;
                         <span class="kw">type</span> <span class="ident">Future</span> <span class="op">=</span> <span class="ident">BoxFuture</span><span class="op">&lt;</span>
                             <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Response</span><span class="op">&gt;</span>,
                             <span class="ident">tonic::Status</span>,
@@ -780,21 +786,21 @@
                     };
                     <span class="ident">Box::pin</span>(<span class="ident">fut</span>)
                 }
-                <span class="string">&quot;/User.User/store&quot;</span> =&gt; {
+                <span class="string">&quot;/Product.Products/store&quot;</span> =&gt; {
                     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
-                    <span class="kw">struct</span> <span class="ident">storeSvc</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">User</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
+                    <span class="kw">struct</span> <span class="ident">storeSvc</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Products</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
                     <span class="kw">impl</span><span class="op">&lt;</span>
-                        <span class="ident">T</span>: <span class="ident">User</span>,
-                    <span class="op">&gt;</span> <span class="ident">tonic::server::UnaryService</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span><span class="op">&gt;</span>
+                        <span class="ident">T</span>: <span class="ident">Products</span>,
+                    <span class="op">&gt;</span> <span class="ident">tonic::server::UnaryService</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span><span class="op">&gt;</span>
                     <span class="kw">for</span> <span class="ident">storeSvc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-                        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span>;
+                        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span>;
                         <span class="kw">type</span> <span class="ident">Future</span> <span class="op">=</span> <span class="ident">BoxFuture</span><span class="op">&lt;</span>
                             <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Response</span><span class="op">&gt;</span>,
                             <span class="ident">tonic::Status</span>,
                         <span class="op">&gt;</span>;
                         <span class="kw">fn</span> <span class="ident">call</span>(
                             <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-                            <span class="ident">request</span>: <span class="ident">tonic::Request</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span><span class="op">&gt;</span>,
+                            <span class="ident">request</span>: <span class="ident">tonic::Request</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span><span class="op">&gt;</span>,
                         ) -&gt; <span class="ident"><span class="self">Self</span>::Future</span> {
                             <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">clone</span>();
                             <span class="kw">let</span> <span class="ident">fut</span> <span class="op">=</span> <span class="kw">async</span> <span class="kw">move</span> { (<span class="kw-2">*</span><span class="ident">inner</span>).<span class="ident">store</span>(<span class="ident">request</span>).<span class="kw">await</span> };
@@ -818,21 +824,21 @@
                     };
                     <span class="ident">Box::pin</span>(<span class="ident">fut</span>)
                 }
-                <span class="string">&quot;/User.User/update&quot;</span> =&gt; {
+                <span class="string">&quot;/Product.Products/update&quot;</span> =&gt; {
                     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
-                    <span class="kw">struct</span> <span class="ident">updateSvc</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">User</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
+                    <span class="kw">struct</span> <span class="ident">updateSvc</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Products</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
                     <span class="kw">impl</span><span class="op">&lt;</span>
-                        <span class="ident">T</span>: <span class="ident">User</span>,
-                    <span class="op">&gt;</span> <span class="ident">tonic::server::UnaryService</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span><span class="op">&gt;</span>
+                        <span class="ident">T</span>: <span class="ident">Products</span>,
+                    <span class="op">&gt;</span> <span class="ident">tonic::server::UnaryService</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span><span class="op">&gt;</span>
                     <span class="kw">for</span> <span class="ident">updateSvc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-                        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span>;
+                        <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span>;
                         <span class="kw">type</span> <span class="ident">Future</span> <span class="op">=</span> <span class="ident">BoxFuture</span><span class="op">&lt;</span>
                             <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Response</span><span class="op">&gt;</span>,
                             <span class="ident">tonic::Status</span>,
                         <span class="op">&gt;</span>;
                         <span class="kw">fn</span> <span class="ident">call</span>(
                             <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-                            <span class="ident">request</span>: <span class="ident">tonic::Request</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::User</span><span class="op">&gt;</span>,
+                            <span class="ident">request</span>: <span class="ident">tonic::Request</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::Product</span><span class="op">&gt;</span>,
                         ) -&gt; <span class="ident"><span class="self">Self</span>::Future</span> {
                             <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">clone</span>();
                             <span class="kw">let</span> <span class="ident">fut</span> <span class="op">=</span> <span class="kw">async</span> <span class="kw">move</span> { (<span class="kw-2">*</span><span class="ident">inner</span>).<span class="ident">update</span>(<span class="ident">request</span>).<span class="kw">await</span> };
@@ -856,11 +862,11 @@
                     };
                     <span class="ident">Box::pin</span>(<span class="ident">fut</span>)
                 }
-                <span class="string">&quot;/User.User/delete&quot;</span> =&gt; {
+                <span class="string">&quot;/Product.Products/delete&quot;</span> =&gt; {
                     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
-                    <span class="kw">struct</span> <span class="ident">deleteSvc</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">User</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
+                    <span class="kw">struct</span> <span class="ident">deleteSvc</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Products</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
                     <span class="kw">impl</span><span class="op">&lt;</span>
-                        <span class="ident">T</span>: <span class="ident">User</span>,
+                        <span class="ident">T</span>: <span class="ident">Products</span>,
                     <span class="op">&gt;</span> <span class="ident">tonic::server::UnaryService</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::messages::EntityIndex</span><span class="op">&gt;</span>
                     <span class="kw">for</span> <span class="ident">deleteSvc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
                         <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> ();
@@ -909,7 +915,7 @@
             }
         }
     }
-    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">User</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">UserServer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Products</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">ProductsServer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
             <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">clone</span>();
             <span class="self">Self</span> {
@@ -919,7 +925,7 @@
             }
         }
     }
-    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">User</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">_Inner</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Products</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">_Inner</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
             <span class="self">Self</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">clone</span>())
         }
@@ -929,10 +935,10 @@
             <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{:?}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
         }
     }
-    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">User</span><span class="op">&gt;</span> <span class="ident">tonic::transport::NamedService</span> <span class="kw">for</span> <span class="ident">UserServer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="kw">const</span> <span class="ident">NAME</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;User.User&quot;</span>;
+    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Products</span><span class="op">&gt;</span> <span class="ident">tonic::transport::NamedService</span> <span class="kw">for</span> <span class="ident">ProductsServer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="kw">const</span> <span class="ident">NAME</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;Product.Products&quot;</span>;
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../../../../../" data-current-crate="minerva_rpc" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0 (fe5b13d68 2022-05-18)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../../../../../" data-current-crate="minerva_rpc" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
 </body></html>

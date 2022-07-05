@@ -1,4 +1,4 @@
-var N = null;var sourcesIndex = {};
+var sourcesIndex = {};
 sourcesIndex["minerva_cache"] = {"name":"","files":["auth.rs","lib.rs"]};
 sourcesIndex["minerva_data"] = {"name":"","dirs":[{"name":"db","files":["create.rs","mod.rs"]}],"files":["encryption.rs","file.rs","lib.rs","log.rs","mongo.rs","schema.rs","session.rs","syslog.rs","tenancy.rs","user.rs"]};
 sourcesIndex["minerva_product"] = {"name":"","files":["main.rs","service.rs"]};
