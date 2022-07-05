@@ -1,7 +1,7 @@
 {
     "Servers": {
 	"1": {
-	    "Name": "minerva",
+	    "Name": "PostgreSQL",
 	    "Group": "Servers",
 	    "Host": "postgresql",
 	    "Port": 5432,

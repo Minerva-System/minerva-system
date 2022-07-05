@@ -20,30 +20,18 @@ através da linha de comando.
 
 Caso seja necessário, você poderá gerar uma imagem em específico de um projeto.
 
-### Projetos Rust
-
-Para qualquer projeto feito em Rust, poderá executar o seguinte comando a partir
+Para qualquer projeto, poderá executar o seguinte comando a partir
 da raiz do repositório:
 
 ```bash
-docker image build -f build/Dockerfile \
+docker buildx build \
+	-f build/Dockerfile \
 	--target minerva_<projeto> \
 	-t seu_username/minerva_<projeto>:latest \
 	.
 ```
 
 Lembre-se de substituir `<projeto>` pelo projeto em questão.
-
-### Front-End
-
-Para gerar o front-end da aplicação, feito com Flutter, teremos que usar um
-Dockerfile diferente:
-
-```bash
-docker image build -f build/Dockerfile.frontend \
-	-t seu_username/minerva_frontend:latest \
-	.
-```
 
 ### Criando uma tag para a imagem
 
@@ -58,20 +46,6 @@ no exemplo a seguir:
 docker image tag \
 	seu_username/minerva_user \
 	seu_username/minerva_user:0.2.0
-```
-
-
-### PgAdmin 4
-
-A imagem com PgAdmin 4 é customizada com meros arquivos de configuração para
-monitoramento do PostgreSQL. Por isso, também usa um Dockerfile diferente.
-
-Veja também que ela é construída no diretório `build`.
-
-```bash
-docker image build -f build/Dockerfile.pgadmin \
-	-t seu_username/minerva_pgadmin:latest \
-	build
 ```
 
 
@@ -90,16 +64,17 @@ A seguir, temos uma tabela relacionando os serviços com os nomes e tags
 das imagens geradas. Veja que elas se relacionam, inclusive, com a forma
 como essas imagens encontram-se no DockerHub (sob o _username_ `luksamuk`):
 
-| Serviço      | Nome e tag da imagem               |
-|--------------|------------------------------------|
-| `frontend`   | `luksamuk/minerva_frontend:latest` |
-| `rest`       | `luksamuk/minerva_rest:latest`     |
-| `runonce`    | `luksamuk/minerva_runonce:latest`  |
-| `user`       | `luksamuk/minerva_user:latest`     |
-| `session`    | `luksamuk/minerva_session:latest`  |
-| `pgadmin`    | `luksamuk/minerva_pgadmin:latest`  |
-| `postgresql` | `postgres:14` (Não gerado)         |
-| `mongodb`    | `mongo:5` (Não gerado)             |
+| Serviço      | Nome e tag da imagem                 |
+|--------------|--------------------------------------|
+| `frontend`   | `luksamuk/minerva_frontend:latest`   |
+| `rest`       | `luksamuk/minerva_rest:latest`       |
+| `runonce`    | `luksamuk/minerva_runonce:latest`    |
+| `user`       | `luksamuk/minerva_user:latest`       |
+| `session`    | `luksamuk/minerva_session:latest`    |
+|--------------|--------------------------------------|
+| `pgadmin`    | `dpage/pgadmin4:latest` (Não gerado) |
+| `postgresql` | `postgres:14` (Não gerado)           |
+| `mongodb`    | `mongo:5` (Não gerado)               |
 
 
 
@@ -116,5 +91,14 @@ docker image push -a luksamuk/minerva_rest
 docker image push -a luksamuk/minerva_runonce
 docker image push -a luksamuk/minerva_user
 docker image push -a luksamuk/minerva_session
-docker image push -a luksamuk/minerva_pgadmin
 ```
+
+## Geração de imagens cross-platform
+
+O script `generate_and_push.sh` gera imagens _cross-platform_ e de forma
+otimizada, sendo o script preerido a ser executado para enviar imagens para
+o DockerHub.
+
+Use esse script se a intenção for compilar para mais arquiteturas ou gerar
+versão oficial, de forma otimizada.
+

@@ -3,7 +3,7 @@ version: "3"
 services:
   # Front-End service
   frontend:
-    image: luksamuk/minerva_frontend:0.1.1
+    image: luksamuk/minerva_frontend:latest
     environment:
       - NGINX_PORT=80
     ports:
@@ -12,16 +12,11 @@ services:
       - "rest"
     networks:
       - minerva_system
-    deploy:
-      replicas: 2
-      restart_policy:
-        condition: on-failure
-      placement:
-        constraints: [node.role == worker]
+    restart: on-failure:5
   
   # REST service
   rest:
-    image: luksamuk/minerva_rest:0.2.2
+    image: luksamuk/minerva_rest:latest
     environment:
       - USER_SERVICE_SERVER=user
       - SESSION_SERVICE_SERVER=session
@@ -31,18 +26,11 @@ services:
       - "user"
     networks:
       - minerva_system
-    deploy:
-      mode: replicated
-      replicas: 2
-      labels: [APP = REST_SERVICE]
-      restart_policy:
-        condition: on-failure
-      placement:
-        constraints: [node.role == worker]
+    restart: on-failure:5
   
   # RUNONCE service
   runonce:
-    image: luksamuk/minerva_runonce:0.2.1
+    image: luksamuk/minerva_runonce:latest
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
@@ -51,46 +39,27 @@ services:
       - "mongodb"
     networks:
       - minerva_system
-    deploy:
-      mode: replicated
-      replicas: 1
-      labels: [APP = RUNONCE_SERVICE]
-      restart_policy:
-        condition: on-failure
-      placement:
-        constraints: [node.role == manager]
+    restart: on-failure:5
   
   # USER service
   user:
-    image: luksamuk/minerva_user:0.2.2
+    image: luksamuk/minerva_user:latest
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
     networks:
       - minerva_system
-    deploy:
-      mode: replicated
-      replicas: 2
-      labels: [APP = USER_SERVICE]
-      restart_policy:
-        condition: on-failure
-      placement:
-        constraints: [node.role == worker]
+    restart: on-failure:5
 
   # SESSION service
   session:
-    image: luksamuk/minerva_session:0.1.2
+    image: luksamuk/minerva_session:latest
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
       - REDIS_SERVICE_SERVER=redis
     networks:
       - minerva_system
-    deploy:
-      mode: replicated
-      replicas: 2
-      labels: [APP = SESSION_SERVICE]
-      restart_policy:
-        condition: on-failure
+    restart: on-failure:5
 
   # PostgreSQL 14
   postgresql:
@@ -102,23 +71,21 @@ services:
       - db-data:/var/lib/postgresql/data
     networks:
       - minerva_system
-    deploy:
-      placement:
-        constraints: [node.role == manager]
+    restart: on-failure:5
 
   # pgAdmin 4
   pgadmin:
-    image: luksamuk/minerva_pgadmin:latest
+    image: dpage/pgadmin4:latest
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@admin.com
       - PGADMIN_DEFAULT_PASSWORD=admin
     ports:
       - "8484:80"
+    volumes:
+      - ${PWD}/swarm/servers.json:/pgadmin4/servers.json
     networks:
       - minerva_system
-    deploy:
-      placement:
-        constraints: [node.role == manager]
+    restart: on-failure:5
 
   # MongoDB 5
   mongodb:
@@ -126,13 +93,12 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=mongo
     image: mongo:5
+    command: mongod --quiet --logpath /dev/null
     volumes:
       - mongodb-data:/data/db
     networks:
       - minerva_system
-    deploy:
-      placement:
-        constraints: [node.role == manager]
+    restart: on-failure:5
 
   # Mongo Express
   mongo-express:
@@ -147,21 +113,7 @@ services:
       - "8686:8081"
     networks:
       - minerva_system
-    deploy:
-      placement:
-        constraints: [node.role == manager]
-        
-  # Visualizer
-  visualizer:
-    image: dockersamples/visualizer:stable
-    ports:
-      - "8585:8080"
-    stop_grace_period: 1m30s
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    deploy:
-      placement:
-        constraints: [node.role == manager]
+    restart: on-failure:5
 
   # Redis 7
   redis:
@@ -172,11 +124,7 @@ services:
       - "6379:6379"
     networks:
       - minerva_system
-    deploy:
-      restart_policy:
-        condition: on-failure
-      placement:
-        constraints: [node.role == worker]
+    restart: on-failure:5
 
   # Redis Commander
   redis-commander:
@@ -188,10 +136,8 @@ services:
       - "8787:8081"
     networks:
       - minerva_system
-    deploy:
-      placement:
-        constraints: [node.role == manager]
-        
+    restart: on-failure:5
+
 networks:
   minerva_system:
 

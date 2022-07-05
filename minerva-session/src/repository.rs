@@ -65,23 +65,21 @@ pub async fn create_session(
         .map(|json| cache::auth::save_session(redis, tenant, &token, &json));
 
     // Try writing session log. Outcome doesn't matter
-    let _ = {
-        let connection = pool
-            .get()
-            .await
-            .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
+    let connection = pool
+        .get()
+        .await
+        .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-        let _ = diesel::insert_into(syslog::table)
-            .values(&NewLog {
-                service: "SESSION".to_string(),
-                requestor: session.login.clone(),
-                entity: "session".to_string(),
-                operation: OpType::Insert,
-                datetime: chrono::offset::Utc::now(),
-                description: Some(format!("Create user session. Token: {}", token)),
-            })
-            .execute(&*connection);
-    };
+    let _ = diesel::insert_into(syslog::table)
+        .values(&NewLog {
+            service: "SESSION".to_string(),
+            requestor: session.login.clone(),
+            entity: "session".to_string(),
+            operation: OpType::Insert,
+            datetime: chrono::offset::Utc::now(),
+            description: Some(format!("Create user session. Token: {}", token)),
+        })
+        .execute(&*connection);
 
     Ok(token)
 }
@@ -170,25 +168,23 @@ pub async fn remove_session(
             .map_err(|e| Status::internal(format!("Error while deleting session data: {}", e)))?;
 
         // Try writing session log. Outcome doesn't matter
-        let _ = {
-            let connection = pool
-                .get()
-                .await
-                .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
+        let connection = pool
+            .get()
+            .await
+            .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            let _ = diesel::insert_into(syslog::table)
-                .values(&NewLog {
-                    service: "SESSION".to_string(),
-                    requestor: session
-                        .map(|s| s.login)
-                        .unwrap_or_else(|| "unknown".to_string()),
-                    entity: "session".to_string(),
-                    operation: OpType::Delete,
-                    datetime: chrono::offset::Utc::now(),
-                    description: Some(format!("Remove user session. Token: {}", token)),
-                })
-                .execute(&*connection);
-        };
+        let _ = diesel::insert_into(syslog::table)
+            .values(&NewLog {
+                service: "SESSION".to_string(),
+                requestor: session
+                    .map(|s| s.login)
+                    .unwrap_or_else(|| "unknown".to_string()),
+                entity: "session".to_string(),
+                operation: OpType::Delete,
+                datetime: chrono::offset::Utc::now(),
+                description: Some(format!("Remove user session. Token: {}", token)),
+            })
+            .execute(&*connection);
     }
 
     // If session was not found, return success anyway

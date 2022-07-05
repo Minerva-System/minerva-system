@@ -42,7 +42,7 @@ Você precisará ter:
   serão baixadas).
 
 Além disso, **todos os comandos a seguir devem ser executados no
-diretório raiz deste projeto**.
+diretório `deploy` deste projeto**.
 
 
 
@@ -65,11 +65,13 @@ docker compose up -d
 Neste caso em específico, para `localhost`, estarão abertas as
 seguintes portas para acesso:
 
-| Porta  | Serviço   |
-|--------|-----------|
-| `80`   | Front-End |
-| `9000` | API REST  |
-| `8484` | pgAdmin4  |
+| Porta | Serviço         |
+|-------|-----------------|
+| 80    | Front-End       |
+| 9000  | API REST        |
+| 8484  | PgAdmin 4       |
+| 8686  | Mongo Express   |
+| 8787  | Redis Commander |
 
 
 

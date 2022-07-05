@@ -1,6 +1,6 @@
 # Multi-Tenancy
 
-O Sistema Minerva é um sistema *multi-tenant*. Isso significa que é
+O Minerva System é um sistema *multi-tenant*. Isso significa que é
 capaz de gerenciar bancos de dados diferentes dependendo do *tenant*
 (cliente do serviço) atual. No Sistema Minerva, isso é gerenciado de
 acordo com a forma como as requisições são recebidas.

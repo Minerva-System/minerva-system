@@ -5,11 +5,10 @@ Todas as mudanças notáveis neste projeto serão documentadas nesse arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+<!-- ## [Não-lançado] -->
 
+## [v2] - 2022-06-05
 
-## [Não-lançado]
-
-### Geral
 
 Relação de versões de microsserviços:
 
@@ -19,55 +18,53 @@ Relação de versões de microsserviços:
 - `REST` - v0.2.2
 - Front-End - v0.1.1 (pré-alfa)
 
-#### Adicionado
+### Adicionado
 
-- Adição de diagramas iniciais de caso de uso e sequência;
-- Adição de CHANGELOG e regras de versionamento semântico.
+- *`SESSION`:* Alteração do serviço para abrigar uso de _cache_ via Redis;
+- *`REST`:* _Catchers_ para tipos de retorno comuns e retorno genérico padrão;
+- *Documentação:* Adição de diagramas iniciais de caso de uso e sequência;
+- *Projeto:* Adição de CHANGELOG e regras de versionamento semântico.
 
-#### Modificado
+### Modificado
 
-- Imagens Docker agora são geradas usando Alpine Linux como base, reduzindo
-  tamanho e _footprint_ em _deploys_ no Compose/Swarm/Kubernetes.
+- *`USER`:* Alteração do nome do serviço de `USERS` para `USER`, evitando
+  maiores enganos;
+- *Geração de Imagens:* Dockerfile para gerar imagens agora foi unificado,
+  incluindo compilação do frontend também no script, e agora utiliza
+  BuildKit por padrão;
+- *Geração de Imagens:* Imagens Docker agora são geradas usando Alpine Linux
+  como base, reduzindo tamanho e _footprint_ em _deploys_ no Compose/Swarm/K8s.
 
-#### Consertado
+### Consertado
 
-- Problema na exportação de diagramas usando PlantUML no Github Pages.
+- *`REST`:* Erros na conexão com um microsserviço agora retornam um erro 503
+  (Recurso Indisponível);
+- *Documentação:* Problema na exportação de diagramas usando PlantUML no Github
+  Pages.
 
-#### Removido
+### Removido
 
-- Dependência da _crate_ `rustc-serialize` na configuração da _crate_
-  `chrono` (em confirmidade com alerta Dependabot), para todos os módulos.
+- *Documentação:* Removido o Dockerfile específico para PgAdmin4. A partir de
+  agora, será usada a imagem oficial do PgAdmin4, e o arquivo de configuração
+  será montado como necessário (via arquivos de configuração do Docker Compose
+  e do Docker Stack, ou via ConfigMap no K8s).
 
+### Segurança
 
-### `REST` - v0.2.2
+- *Geral:* Removida a dependência da _crate_ `rustc-serialize` na configuração
+  da _crate_ `chrono` (em confirmidade com alerta Dependabot), para todos os
+  módulos.
 
-#### Adicionado
+### Problemas conhecidos
 
-- _Catchers_ para tipos de retorno comuns e retorno genérico padrão.
-
-#### Consertado
-
-- Erros na conexão com um microsserviço agora retornam um erro 503 (Recurso
-  Indisponível).
-
-
-### `USER` - v0.2.2
-
-#### Modificado
-
-- Alteração do nome do serviço de `USERS` para `USER`, evitando maiores
-  enganos.
-
-### `SESSION` - v0.1.2
-
-#### Modificado
-
-- Alteração do serviço para abrigar uso de _cache_ via Redis.
+- *Geração de Imagens:* O _target_ para ARM64 na criação das imagens Docker foi
+  desabilitado até que seja corrigido
+  [um bug no BuildKit](https://github.com/docker/build-push-action/issues/621)
+  que faz com que o Qemu consuma RAM arbitrariamente ao realizar compilação
+  via emulação de hardware.
 
 
 ## [v1] - 2022-06-17
-
-### Geral
 
 Relação de versões de microsserviços:
 
@@ -77,7 +74,7 @@ Relação de versões de microsserviços:
 - `REST` - v0.2.0
 - Front-End - v0.0.1 (pré-alfa)
 
-#### Adicionado
+### Adicionado
 
 - Criação de schemas do banco de dados relacional (PostgreSQL 14);
 - Criação das coleções do banco de dados não-relacional (MongoDB 5);
@@ -100,42 +97,15 @@ Relação de versões de microsserviços:
   via GitHub Pages.
 
 
-[Não-lançado]: https://github.com/luksamuk/minerva-system/compare/v1...HEAD
+<!-- [Não-lançado]: https://github.com/luksamuk/minerva-system/compare/v2...HEAD -->
+[v2]: https://github.com/luksamuk/minerva-system/releases/tag/v2
 [v1]: https://github.com/luksamuk/minerva-system/releases/tag/v1
 
 <!-- ==== Exemplo ==== -->
-<!-- ## [v1] - 2022-06-17 -->
-<!-- #### Adicionado -->
-<!-- #### Modificado -->
-<!-- #### Consertado -->
-<!-- #### Removido -->
-
-<!-- ### `USERS` - [v0.2.1] -->
-<!-- #### Adicionado -->
-<!-- #### Modificado -->
-<!-- #### Consertado -->
-<!-- #### Removido -->
-
-<!-- ### `SESSION` - [v0.1.1] -->
-<!-- #### Adicionado -->
-<!-- #### Modificado -->
-<!-- #### Consertado -->
-<!-- #### Removido -->
-
-<!-- ### `RUNONCE` - [v0.2.0] -->
-<!-- #### Adicionado -->
-<!-- #### Modificado -->
-<!-- #### Consertado -->
-<!-- #### Removido -->
-
-<!-- ### `REST` - [v0.2.0] -->
-<!-- #### Adicionado -->
-<!-- #### Modificado -->
-<!-- #### Consertado -->
-<!-- #### Removido -->
-
-<!-- ### Front-End - [v0.0.1] - (pré-alfa) -->
-<!-- #### Adicionado -->
-<!-- #### Modificado -->
-<!-- #### Consertado -->
-<!-- #### Removido -->
+<!-- ## [v1] - 20XX-XX-XX -->
+<!-- ### Adicionado -->
+<!-- ### Modificado -->
+<!-- ### Consertado -->
+<!-- ### Removido -->
+<!-- ### Segurança  -->
+<!-- ### Problemas conhecidos  -->

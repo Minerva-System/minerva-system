@@ -109,13 +109,14 @@ A seguir, trataremos da estrutura do cluster como atualmente é definido.
 As seções a seguir tratam sempre de objetos específicos do Kubernetes,
 e são também uma sugestão de ordem de aplicação dos arquivos de configuração.
 
-Todos os arquivos serão encontrados de forma homônima no diretório `deploy`,
-com a extensão `yml`.
+Todos os arquivos serão encontrados de forma homônima no diretório
+`deploy/k8s`, com a extensão `yml`.
 
-Caso queira aplicar todos os arquivos enumerados abaixo, simplesmente execute:
+Caso queira aplicar todos os arquivos enumerados abaixo, simplesmente execute,
+a partir da raiz do projeto:
 
 ```bash
-kubectl apply -f deploy
+kubectl apply -f deploy/k8s
 ```
 
 ### _ConfigMaps_
@@ -133,15 +134,40 @@ variáveis de ambiente de um _pod_.
 - `rest-configmap`: Variáveis padrão para a API REST.
 - `ports-configmap`: Portas para acesso aos serviços no cluster.
 - `servers-configmap`: Nomes dos serviços a serem acessados. Geralmente
-  associados a cada Deployment ou StatefulSet;
+  associados a cada Deployment ou StatefulSet.
 - `redis-configmap`: Dados de configuração do Redis. Mais especificamente
   um arquivo `redis.conf` que será recuperado nos _pods_ do Redis através
   da montagem desse _ConfigMap_, como se fosse um volume mutável.
+- `mongoexpress-configmap`: Variáveis padrão para definições iniciais do
+  Mongo Express.
+- `pgadmin-configmap`: Arquivo padrão de configuração de acesso do PgAdmin4.
+- `rediscommander-configmap`: Variáveis padrão para definições iniciais do
+  Redis Commander.
 
 Para aplicar todos os _ConfigMaps_, execute:
 
 ```bash
-for f in `ls deploy/*-configmap.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-configmap.yml`; do
+	kubectl apply -f $f
+done
+```
+
+### _Secrets_
+
+Um _Secret_ é um objeto muito similar a um _ConfigMap_, porém feito
+especificamente para lidar com dados sensíveis.
+
+- `runonce-secret`: Dados de criação de campos padrão no banco de dados.
+- `pgadmin-secret`: Dados para autenticação no serviço PgAdmin 4.
+- `mongoexpress-secret`: Dados para autenticação no MongoDB e no Mongo
+  Express.
+
+Para aplicar todos os _Secrets_, execute:
+
+```bash
+for f in `ls deploy/k8s/*-secret.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ### _PersistentVolumeClaims_
@@ -156,11 +182,15 @@ caso, cria um volume com tamanho específico dinamicamente.
   armazenamento e criação dinâmica;
 - `redis-pvc`: PersistentVolumeClaim para o Redis. Solicita 500MB de
   armazenamento e criação dinâmica.
+- `pgadmin-pvc`: PersistentVolumeClaim para as configurações do PgAdmin4.
+  Solicita 300MB de armazenamento e criação dinâmica.
   
 Para aplicar todos os _PersistentVolumeClaims_, execute:
 
 ```bash
-for f in `ls deploy/*-pvc.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-pvc.yml`; do
+	kubectl apply -f $f
+done
 ```
   
 ### _Deployments_
@@ -175,11 +205,17 @@ a utilização de versionamento.
 - `rest-deployment`: Deployment para o gateway REST do sistema.
 - `user-deployment`: Deployment para o microsserviço `USER`.
 - `session-deployment`: Deployment para o microsserviço `SESSION`.
+- `mongoexpress-deployment`: Deployment para o serviço de monitoramento
+  Mongo Express.
+- `rediscommander-deployment`: Deployment para o serviço de monitoramento
+  Redis Commander.
 
 Para aplicar todos os _Deployments_, execute:
 
 ```bash
-for f in `ls deploy/*-deployment.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-deployment.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ### _StatefulSets_
@@ -192,11 +228,16 @@ utilizados quando o estado interno da aplicação importa.
 - `redis-statefulset`: StatefulSet para o cluster do serviço de
   cache do Redis. A réplica `redis-0` será sempre um _Master_, enquanto
   as demais réplicas serão sempre _Slaves_.
+- `pgadmin-statefulset`: StatefulSet para o serviço de monitoramento
+  PgAdmin 4. Possui apenas uma réplica, e monta o arquivo `servers.json`
+  descrito em `pgadmin-configmap` como volume.
 
 Para aplicar todos os _StatefulSets_, execute:
 
 ```bash
-for f in `ls deploy/*-statefulset.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-statefulset.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ### _Services_
@@ -220,16 +261,27 @@ _NodePort_, e estes agem também retroativamente como _ClusterIP_.
 - `session-svc` (_ClusterIP_): Serviço para acesso interno aos pods do
   microsserviço SESSION.
 - `frontend-svc` (_LoadBalancer_): Serviço para acesso interno e externo
-  aos pods do Front-End Web do sistema. Exposto na porta `30001`.
+  aos pods do Front-End Web do sistema.
 - `rest-svc` (_LoadBalancer_): Serviço para acesso interno e externo aos
-  pods do gateway REST do sistema. Exposto na porta `30000`.
+  pods do gateway REST do sistema.
 - `redis-svc` (_ClusterIP_): Serviço para acesso interno aos pods do
   Redis.
+- `mongoexpress-svc` (_NodePort_): Serviço para acesso interno e externo
+  aos pods do Mongo Express. Não interage com balanceador de carga.
+- `pgadmin-svc` (_NodePort_): Serviço para acesso interno e externo aos
+  pods do PgAdmin 4. Não interage com balanceador de carga.
+- `rediscommander-svc` (_NodePort_): Serviço para acesso interno e externo
+  aos pods do Redis Commander. Não interage com balanceador de carga.
+
+Caso queira informações sobre as portas exportas por esses serviços, veja
+a seção **"Acesso via _NodePort_"** a seguir.
 
 Para aplicar todos os _Services_, execute:
 
 ```bash
-for f in `ls deploy/*-svc.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-svc.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ### _Jobs_
@@ -244,10 +296,21 @@ seu completamento ser realizado com sucesso.
 Para aplicar todos os _ConfigMaps_, execute:
 
 ```bash
-for f in `ls deploy/*-job.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-job.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ### HorizontalPodAutoscalers
+
+Um _HorizontalPodAutoscaler_ é um objeto que interage diretamente com
+_Deployments_ e _StatefulSets_, de forma a escalar horizontalmente estes
+objetos, através da criação ou remoção de réplicas de seus _pods_.
+
+Estes objetos operam em associação com as especificações requisitadas pelo
+_Deployment_ ou _StatefulSet_  em termos de CPU e/ou memória, por exemplo,
+garantindo que os _pods_ cheguem no máximo a certa porcentagem de utilização
+desses recursos, de acordo com o que foi configurado.
 
 - `rest-hpa`: Escalonador horizontal do gateway REST. Mantém entre 1 e
   15 réplicas para `rest-deployment` com uso médio de 50% do CPU alocado.
@@ -263,7 +326,9 @@ for f in `ls deploy/*-job.yml`; do kubectl apply -f $f; done
 Para aplicar todos os _HorizontalPodAutoscalers_, execute:
 
 ```bash
-for f in `ls deploy/*-hpa.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-hpa.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ### _Ingresses_
@@ -279,7 +344,9 @@ serviços no cluster, tipicamente via HTTP.
 Para aplicar todos os _Ingresses_, execute:
 
 ```bash
-for f in `ls deploy/*-ingress.yml`; do kubectl apply -f $f; done
+for f in `ls deploy/k8s/*-ingress.yml`; do
+	kubectl apply -f $f
+done
 ```
 
 ## Acesso via NodePort
@@ -298,8 +365,16 @@ Isso pode também ser feito através do Minikube:
 minikube ip
 ```
 
-Você poderá acessar os serviços através deste mesmo IP, através das portas
-`30000` (API REST) ou `30001` (Front-End).
+A seguir, está discriminada uma tabela de todos os serviços acessíveis
+via _NodePort_ com suas respectivas portas.
+
+| Serviço         | Porta |
+|-----------------|-------|
+| API             | 30000 |
+| Front-End       | 30001 |
+| PgAdmin 4       | 31084 |
+| Mongo Express   | 31085 |
+| Redis Commander | 31086 |
 
 
 
@@ -309,7 +384,9 @@ Outra forma de acessar envolve o uso dos objetos _Ingress_. Isso nos
 permitirá usar o endereço `http://minerva-system.io/` como URL base
 do sistema.
 
-Garanta que o addon `ingress` esteja habilitado.
+### Usando diretamente o `/etc/hosts`
+
+Comece garantindo que o addon `ingress` esteja habilitado.
 
 Agora, descubra o IP do Minikube na máquina:
 
@@ -344,8 +421,8 @@ DNS, mas mostrarei como fazê-lo caso você utiliza SystemD e tiver o ResolveD
 instalado (como é o caso de uma instalação pura com Fedora 36).
 
 Edite o arquivo `/etc/systemd/resolved.conf`. Supondo que você use o DNS
-do Google, por exemplo, insira o IP do Minikube no DNS e configure um FallbackDNS
-também:
+do Google, por exemplo, insira o IP do Minikube no DNS e configure um
+FallbackDNS também:
 
 ```conf
 [Resolve]
@@ -414,4 +491,5 @@ Você poderá testar cada sistema crucial usando um comando como este:
 ./deploy/stress_test.sh minerva-system.io/api user
 ```
 
-Para maiores informações, execute o script sem argumentos.
+Para maiores informações, execute o script sem argumentos e veja instruções
+rápidas de utilização.

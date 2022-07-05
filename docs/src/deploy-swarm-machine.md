@@ -202,7 +202,7 @@ reutilizar o arquivo preparado para isso no repositório do Sistema Minerva.
 Copiamos o arquivo para dentro da VM principal e então realizamos deploy:
 
 ```bash
-docker-machine scp localhost:./swarm/docker-stack.yml minerva-vm1:/home/docker/docker-stack.yml
+docker-machine scp localhost:./deploy/swarm/docker-stack.yml minerva-vm1:/home/docker/docker-stack.yml
 
 # Em minerva-vm1
 docker stack deploy --compose-file docker-stack.yml minerva
@@ -244,13 +244,14 @@ docker-machine ls
 É possível usar o IP de qualquer Docker Machine, neste ponto. Basta utilizar
 as portas certas:
 
-| Porta | Descrição               |
+| Porta | Serviço                 |
 |-------|-------------------------|
 | 80    | Front-end               |
 | 9000  | API REST                |
 | 8484  | PgAdmin 4               |
 | 8585  | Visualizador do cluster |
-
+| 8686  | Mongo Express           |
+| 8787  | Redis Commander         |
 
 ## Encerrando o serviço
 
