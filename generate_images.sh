@@ -7,11 +7,6 @@ declare -a TARGETS=(
     "minerva_user"
 )
 
-# Platforms to build. Currently, linux/arm64 is broken for buildx.
-# See https://github.com/docker/build-push-action/issues/621.
-#PLATFORMS=linux/amd64,linux/arm64
-PLATFORMS=linux/amd64
-
 # Rust language targets
 for TARGET in "${TARGETS[@]}"
 do
@@ -30,10 +25,8 @@ do
     
     # Generate image and tag it with "latest"
     echo "### Building $IMGNAME..."
-    docker buildx build \
-	   -m 2g \
+    docker image build \
 	   -f build/Dockerfile \
-	   --platform=$PLATFORMS \
 	   --target $TARGET \
 	   -t $TAGGEDIMGNAME \
 	   -t $IMGNAME:latest \

@@ -31,7 +31,6 @@ do
     # Generate image and tag it with "latest"
     echo "### Building $IMGNAME..."
     docker buildx build \
-	   -m 2g \
 	   -f build/Dockerfile \
 	   --platform=$PLATFORMS \
 	   --target $TARGET \

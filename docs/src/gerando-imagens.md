@@ -92,3 +92,13 @@ docker image push -a luksamuk/minerva_runonce
 docker image push -a luksamuk/minerva_user
 docker image push -a luksamuk/minerva_session
 ```
+
+## Geração de imagens cross-platform
+
+O script `generate_and_push.sh` gera imagens _cross-platform_ e de forma
+otimizada, sendo o script preerido a ser executado para enviar imagens para
+o DockerHub.
+
+Use esse script se a intenção for compilar para mais arquiteturas ou gerar
+versão oficial, de forma otimizada.
+
