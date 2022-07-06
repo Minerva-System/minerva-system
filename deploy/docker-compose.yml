@@ -138,6 +138,19 @@ services:
       - minerva_system
     restart: on-failure:5
 
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_PASS=minerva
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - minerva_system
+    restart: on-failure:5
+    
 networks:
   minerva_system:
 
