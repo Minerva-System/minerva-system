@@ -1,10 +1,13 @@
 #![warn(clippy::all)]
 #![warn(missing_docs)]
 
+use bb8_lapin::{bb8::Pool, LapinConnectionManager};
 use lapin::{Connection, ConnectionProperties, Error};
 
 const AUTH_USER: &str = "rabbitmq";
 const AUTH_PASS: Option<&str> = Some("minerva");
+
+pub type LapinPool = Pool<LapinConnectionManager>;
 
 fn make_vhost_url(host: &str, vhost: &str) -> String {
     format!("http://{}:15672/api/vhosts/{}", host, vhost)
@@ -26,6 +29,24 @@ pub async fn make_connection(host: &str, vhost: Option<&str>) -> Result<Connecti
         .with_executor(tokio_executor_trait::Tokio::current())
         .with_reactor(tokio_reactor_trait::Tokio);
     Connection::connect(&uri, options).await
+}
+
+pub async fn make_connection_pool(
+    host: &str,
+    vhost: Option<&str>,
+    max_connections: u32,
+) -> LapinPool {
+    let uri = build_broker_uri(host, vhost.unwrap_or(""));
+    let options = ConnectionProperties::default()
+        .with_executor(tokio_executor_trait::Tokio::current())
+        .with_reactor(tokio_reactor_trait::Tokio);
+    let manager = LapinConnectionManager::new(&uri, options);
+    Pool::builder()
+        .max_size(max_connections)
+        .build(manager)
+        .await
+        .map_err(|e| panic!("Error creating RabbitMQ connection pool: {}", e))
+        .unwrap()
 }
 
 pub async fn check_virtual_host(host: &str) -> Result<bool, reqwest::Error> {
