@@ -34,6 +34,7 @@ services:
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
+      - RABBITMQ_SERVICE_SERVER=rabbitmq
     depends_on:
       - "postgresql"
       - "mongodb"
@@ -46,6 +47,7 @@ services:
     image: luksamuk/minerva_user:latest
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
+      - RABBITMQ_SERVICE_SERVER=rabbitmq
     networks:
       - minerva_system
     restart: on-failure:5
@@ -57,6 +59,7 @@ services:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
       - REDIS_SERVICE_SERVER=redis
+      - RABBITMQ_SERVICE_SERVER=rabbitmq
     networks:
       - minerva_system
     restart: on-failure:5
