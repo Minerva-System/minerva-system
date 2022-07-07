@@ -14,3 +14,4 @@ dotenv = "0.15.0"
 tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync", "time"]}
 chrono = {version = "0.4", features = ["serde"]}
 mongodb = "2.2.1"
+lapin = "2.1.1"

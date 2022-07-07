@@ -79,6 +79,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         database::create_admin_user(&tenant.database, &dbserver);
         mongo::prepare_database(&tenant.database, &mongoserver).await?;
         rabbitmq::create_virtual_host(&tenant.database, &rmqserver).await?;
+        rabbitmq::create_default_queues(&tenant.database, &rmqserver).await?;
     }
 
     println!("All runs were successful.");

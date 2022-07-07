@@ -1,4 +1,7 @@
+use lapin::{options::QueueDeclareOptions, types::FieldTable};
 use minerva_broker as broker;
+
+const DEFAULT_QUEUES: &'static [&str] = &["session_management"];
 
 pub async fn create_virtual_host(
     tenant: &str,
@@ -28,4 +31,23 @@ pub async fn broker_spinlock(host: &str) {
     {
         tokio::time::sleep(tokio::time::Duration::from_millis(2000)).await;
     }
+}
+
+pub async fn create_default_queues(
+    tenant: &str,
+    host: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
+    println!("{}: Creating default RabbitMQ queues...", tenant);
+
+    let connection = broker::make_connection(host, Some(tenant)).await?;
+    let channel = connection.create_channel().await?;
+
+    for queue in DEFAULT_QUEUES {
+        let _ = channel
+            .queue_declare(queue, QueueDeclareOptions::default(), FieldTable::default())
+            .await?;
+        println!("{}: Queue \"{}\" created.", tenant, queue);
+    }
+
+    Ok(())
 }

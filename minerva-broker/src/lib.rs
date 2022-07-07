@@ -1,11 +1,31 @@
 #![warn(clippy::all)]
 #![warn(missing_docs)]
 
+use lapin::{Connection, ConnectionProperties, Error};
+
 const AUTH_USER: &str = "rabbitmq";
 const AUTH_PASS: Option<&str> = Some("minerva");
 
 fn make_vhost_url(host: &str, vhost: &str) -> String {
     format!("http://{}:15672/api/vhosts/{}", host, vhost)
+}
+
+pub fn build_broker_uri(host: &str, vhost: &str) -> String {
+    format!(
+        "amqp://{}:{}@{}:5672/{}",
+        AUTH_USER,
+        AUTH_PASS.unwrap(),
+        host,
+        if vhost == "" { "%2f" } else { vhost }
+    )
+}
+
+pub async fn make_connection(host: &str, vhost: Option<&str>) -> Result<Connection, Error> {
+    let uri = build_broker_uri(host, vhost.unwrap_or(""));
+    let options = ConnectionProperties::default()
+        .with_executor(tokio_executor_trait::Tokio::current())
+        .with_reactor(tokio_reactor_trait::Tokio);
+    Connection::connect(&uri, options).await
 }
 
 pub async fn check_virtual_host(host: &str) -> Result<bool, reqwest::Error> {

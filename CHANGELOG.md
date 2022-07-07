@@ -16,6 +16,10 @@ Relação de versões de microsserviços:
 - Front-End - v0.1.1 (pré-alfa)
 
 ### Adicionado
+
+- `RUNONCE`: Estruturas para preparação de message broker (virtual hosts e filas
+  fixas).
+
 ### Modificado
 
 - `RUNONCE`: Spinlocks de aguardo de disponibilidade de serviços agora realizam

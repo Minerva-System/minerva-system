@@ -1607,6 +1607,7 @@ dependencies = [
  "diesel",
  "diesel_migrations",
  "dotenv",
+ "lapin",
  "minerva-broker",
  "minerva-data",
  "mongodb",
