@@ -3,6 +3,7 @@ members = [
 	"minerva-rpc",
 	"minerva-data",
 	"minerva-cache",
+        "minerva-broker",
 	"minerva-user",
 	"minerva-session",
 	"minerva-product",
