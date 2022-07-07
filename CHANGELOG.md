@@ -20,6 +20,7 @@ Relação de versões de microsserviços:
 
 - `RUNONCE`: Spinlocks de aguardo de disponibilidade de serviços agora realizam
   _sleep_ assíncrono de dois segundos após cada falha.
+- `RUNONCE`: Spinlocks de disponibilidade agora também operam de forma assíncrona.
 
 ### Consertado
 ### Removido

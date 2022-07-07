@@ -44,15 +44,32 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let rmqserver =
         env::var("RABBITMQ_SERVICE_SERVER").expect("Unable to read RABBITMQ_SERVICE_SERVER");
 
-    println!("Await for relational database on spinlock...");
-    database::database_spinlock(&dbserver).await;
+    let init_handle = {
+        let dbserver = dbserver.clone();
+        let mongoserver = mongoserver.clone();
+        let rmqserver = rmqserver.clone();
+        tokio::spawn(async move {
+            println!("Awaiting services:");
 
-    println!("Await for non-relational database on spinlock...");
-    mongo::database_spinlock(&mongoserver).await;
+            let pg_task = database::database_spinlock(&dbserver);
+            println!("- PostgreSQL");
+            let mongo_task = mongo::database_spinlock(&mongoserver);
+            println!("- MongoDB");
+            let broker_task = rabbitmq::broker_spinlock(&rmqserver);
+            println!("- RabbitMQ");
 
-    println!("Await for message broker on spinlock...");
-    rabbitmq::broker_spinlock(&rmqserver).await;
+            pg_task.await;
+            println!("PostgreSQL is ready.");
 
+            mongo_task.await;
+            println!("MongoDB is ready.");
+
+            broker_task.await;
+            println!("RabbitMQ is ready.");
+        })
+    };
+
+    init_handle.await?;
     println!("Running preparation...");
 
     for tenant in minerva_data::tenancy::get_tenants("tenancy.toml") {
