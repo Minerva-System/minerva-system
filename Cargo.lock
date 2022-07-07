@@ -353,15 +353,39 @@ dependencies = [
 ]
 
 [[package]]
+name = "bb8"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1627eccf3aa91405435ba240be23513eeca466b5dc33866422672264de061582"
+dependencies = [
+ "async-trait",
+ "futures-channel",
+ "futures-util",
+ "parking_lot 0.12.0",
+ "tokio",
+]
+
+[[package]]
 name = "bb8-diesel"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "79c87e12b0086ff7850d98a19d2a70f5fd901b463412d499514d8e2e16ad0826"
 dependencies = [
  "async-trait",
- "bb8",
+ "bb8 0.7.1",
  "diesel",
  "tokio",
+]
+
+[[package]]
+name = "bb8-lapin"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5441692a6e0820dd92853f61ab61dd3a44681d3606a4fbefe67cfdad7093a0c9"
+dependencies = [
+ "async-trait",
+ "bb8 0.8.0",
+ "lapin",
 ]
 
 [[package]]
@@ -1509,6 +1533,7 @@ checksum = "2a60c7ce501c71e03a9c9c0d35b861413ae925bd979cc7a4e30d060069aaac8d"
 name = "minerva-broker"
 version = "0.1.0"
 dependencies = [
+ "bb8-lapin",
  "futures",
  "lapin",
  "reqwest",
@@ -1531,7 +1556,7 @@ name = "minerva-data"
 version = "0.2.1"
 dependencies = [
  "argon2",
- "bb8",
+ "bb8 0.7.1",
  "bb8-diesel",
  "bigdecimal",
  "chrono",
@@ -1649,12 +1674,14 @@ dependencies = [
 name = "minerva-user"
 version = "0.2.2"
 dependencies = [
- "bb8",
+ "bb8 0.7.1",
  "bb8-diesel",
  "chrono",
  "diesel",
  "dotenv",
  "futures-util",
+ "lapin",
+ "minerva-broker",
  "minerva-data",
  "minerva-rpc",
  "tokio",

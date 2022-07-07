@@ -1,6 +1,7 @@
 use crate::service;
 use dotenv::dotenv;
 use futures_util::FutureExt;
+use minerva_broker as broker;
 use minerva_data::db;
 use minerva_data::user as model;
 use minerva_rpc::messages;
@@ -30,12 +31,17 @@ async fn make_test_server(
     let endpoint = format!("http://127.0.0.1:{}", port);
     let dbserver =
         env::var("DATABASE_SERVICE_SERVER").expect("Unable to read DATABASE_SERVICE_SERVER");
+    let rmqserver =
+        env::var("RABBITMQ_SERVICE_SERVER").expect("Unable to read RABBITMQ_SERVICE_SERVER");
 
     // Create database connection pool with a single connection
     let mut pools = HashMap::new();
     pools.insert(
         "minerva".into(),
-        db::make_connection_pool("minerva", &dbserver, 1).await,
+        (
+            db::make_connection_pool("minerva", &dbserver, 1).await,
+            broker::make_connection_pool(&rmqserver, Some("minerva"), 1).await,
+        ),
     );
 
     // Create single-time channel for shutdown signal passing
