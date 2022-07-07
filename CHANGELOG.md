@@ -5,7 +5,27 @@ Todas as mudanças notáveis neste projeto serão documentadas nesse arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
-<!-- ## [Não-lançado] -->
+## [Não-lançado]
+
+Relação de versões de microsserviços:
+
+- `USER` - v0.2.2
+- `SESSION` - v0.1.2
+- `RUNONCE` - v0.3.0
+- `REST` - v0.2.2
+- Front-End - v0.1.1 (pré-alfa)
+
+### Adicionado
+### Modificado
+
+- `RUNONCE`: Spinlocks de aguardo de disponibilidade de serviços agora realizam
+  _sleep_ assíncrono de dois segundos após cada falha.
+
+### Consertado
+### Removido
+### Segurança
+### Problemas conhecidos
+
 
 ## [v2] - 2022-06-05
 
@@ -97,7 +117,7 @@ Relação de versões de microsserviços:
   via GitHub Pages.
 
 
-<!-- [Não-lançado]: https://github.com/luksamuk/minerva-system/compare/v2...HEAD -->
+[Não-lançado]: https://github.com/luksamuk/minerva-system/compare/v2...HEAD
 [v2]: https://github.com/luksamuk/minerva-system/releases/tag/v2
 [v1]: https://github.com/luksamuk/minerva-system/releases/tag/v1
 
