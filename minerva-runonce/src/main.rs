@@ -23,6 +23,7 @@ embed_migrations!();
 
 mod database;
 mod mongo;
+mod rabbitmq;
 
 /// Entry point for this service.
 #[tokio::main]
