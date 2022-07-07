@@ -143,6 +143,8 @@ variáveis de ambiente de um _pod_.
 - `pgadmin-configmap`: Arquivo padrão de configuração de acesso do PgAdmin4.
 - `rediscommander-configmap`: Variáveis padrão para definições iniciais do
   Redis Commander.
+- `prometheus-configmap`: Arquivo padrão de configuração do Prometheus
+  para coleta de métricas nos diversos serviços do sistema.
 
 Para aplicar todos os _ConfigMaps_, execute:
 
@@ -184,6 +186,8 @@ caso, cria um volume com tamanho específico dinamicamente.
   armazenamento e criação dinâmica.
 - `pgadmin-pvc`: PersistentVolumeClaim para as configurações do PgAdmin4.
   Solicita 300MB de armazenamento e criação dinâmica.
+- `grafana-pvc`: PersistentVolumeClaim para os dados do Grafana.
+  Solicita 1GB de armazenamento e criação dinâmica.
   
 Para aplicar todos os _PersistentVolumeClaims_, execute:
 
@@ -209,6 +213,10 @@ a utilização de versionamento.
   Mongo Express.
 - `rediscommander-deployment`: Deployment para o serviço de monitoramento
   Redis Commander.
+- `prometheus-deployment`: Deployment para o serviço de agregação de
+  métricas Prometheus.
+- `grafana-deployment`: Deployment para o serviço de visualização de métricas
+  Grafana.
 
 Para aplicar todos os _Deployments_, execute:
 
@@ -272,6 +280,10 @@ _NodePort_, e estes agem também retroativamente como _ClusterIP_.
   pods do PgAdmin 4. Não interage com balanceador de carga.
 - `rediscommander-svc` (_NodePort_): Serviço para acesso interno e externo
   aos pods do Redis Commander. Não interage com balanceador de carga.
+- `prometheus-svc` (_LoadBalancer_): Serviço para acesso interno e externo
+  aos pods do Prometheus.
+- `grafana-svc` (_LoadBalancer_): Serviço para acesso interno e externo
+  aos pods do Grafana.
 
 Caso queira informações sobre as portas exportas por esses serviços, veja
 a seção **"Acesso via _NodePort_"** a seguir.
@@ -301,7 +313,7 @@ for f in `ls deploy/k8s/*-job.yml`; do
 done
 ```
 
-### HorizontalPodAutoscalers
+### _HorizontalPodAutoscalers_
 
 Um _HorizontalPodAutoscaler_ é um objeto que interage diretamente com
 _Deployments_ e _StatefulSets_, de forma a escalar horizontalmente estes
@@ -349,6 +361,89 @@ for f in `ls deploy/k8s/*-ingress.yml`; do
 done
 ```
 
+### _ClusterRole_
+
+Um ClusterRole (ou RBAC Role) é um método de regulação de acesso de
+recursos baseado nos papéis dos usuários individuais de uma organização.
+
+O objeto _ClusterRole_ em si representa apenas as regras que representam
+um conjunto de permissões, e são puramente aditivas (não possuem regras
+de negação de recurso). A sua diferença para um _Role_ é que o mesmo pode
+ser usado para instituir regras no escopo do cluster (como acesso a pods
+em outros namespaces, endpoints sem recurso atrelado ou acesso a nodes,
+que não estão associados a nenhum namespace).
+
+- `prometheus-clusterrole`: Regras de acesso a pods e serviços do
+  Prometheus.
+  
+Para aplicar todos os _ClusterRoles_, execute:
+
+```bash
+for f in `ls deploy/k8s/*-clusterrole.yml`; do
+	kubectl apply -f $f
+done
+```
+
+### _ClusterRoleBinding_
+
+Um _ClusterRoleBinding_ nada mais é que a aplicação das regras de um
+_ClusterRole_ a um ou mais usuários, ou a um conjunto dos mesmos.
+
+- `prometheus-clusterrolebinding`: Aplicação das regras de
+  _ClusterRole_ do Prometheus à _ServiceAccount_ do Prometheus.
+
+Para aplicar todos os _ClusterRoleBindings_, execute:
+
+```bash
+for f in `ls deploy/k8s/*-clusterrolebinding.yml`; do
+	kubectl apply -f $f
+done
+```
+
+### _ServiceAccount_
+
+Uma _ServiceAccount_ representa uma conta capaz de acessar a API do
+Kubernetes, porém atrelada a um serviço, e não a um usuário.
+
+- `prometheus-serviceaccount`: ServiceAccount relacionada ao
+  Prometheus.
+  
+Para aplicar todas as _ServiceAccounts_, execute:
+
+```bash
+for f in `ls deploy/k8s/*-serviceaccount.yml`; do
+	kubectl apply -f $f
+done
+```
+
+### RabbitMQ
+
+O serviço RabbitMQ, na verdade, envolve dois arquivos específicos que dizem
+respeito a seu deployment. Todas as estruturas a ele relacionadas são
+gerenciadas por um objeto que existe em seu próprio _namespace_
+(`rabbitmq-system`), e então temos um _Deployment_ específico criado a
+partir de uma classe do Kubernetes que existe com o propósito único de
+instanciar um cluster do RabbitMQ.
+
+Os arquivos envolvidos são:
+
+- `rabbitmq-cluster-operator`: Junção de vários arquivos YML que criam
+  o operador do cluster e a classe `RabbitmqCluster`.
+- `broker-rabbitmqcluster`: Instância do cluster RabbitMQ, já instanciado
+  com um serviço de tipo _LoadBalancer_.
+
+O arquivo `rabbitmq-cluster-operator.yml` é reproduzido na íntegra a
+partir do [repositório](https://github.com/rabbitmq/cluster-operator/)
+onde pode ser encontrado, sob a Mozilla Public License 2.0. Para maiores
+informações, veja `rabbitmq-cluster-operator.LICENSE`.
+
+Para aplicar estes arquivos, execute:
+
+```bash
+kubectl apply -f deploy/k8s/rabbitmq-cluster-operator.yml
+kubectl apply -f deploy/k8s/broker-rabbitmqcluster.yml
+```
+
 ## Acesso via NodePort
 
 Para acessar os serviços expostos via _NodePort_ (ou _LoadBalancer_) no
@@ -368,13 +463,16 @@ minikube ip
 A seguir, está discriminada uma tabela de todos os serviços acessíveis
 via _NodePort_ com suas respectivas portas.
 
-| Serviço         | Porta |
-|-----------------|-------|
-| API             | 30000 |
-| Front-End       | 30001 |
-| PgAdmin 4       | 31084 |
-| Mongo Express   | 31085 |
-| Redis Commander | 31086 |
+| Serviço             | Porta |
+|---------------------|-------|
+| API                 | 30000 |
+| Front-End           | 30001 |
+| PgAdmin 4           | 31084 |
+| Mongo Express       | 31085 |
+| Redis Commander     | 31086 |
+| RabbitMQ Management | 31184 |
+| Prometheus          | 31088 |
+| Grafana             | 31087 |
 
 
 
