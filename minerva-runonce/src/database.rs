@@ -10,12 +10,14 @@ use minerva_data::{
 use std::env;
 
 /// Awaits for database availability on a spinlock.
-pub fn database_spinlock(server: &str) {
+pub async fn database_spinlock(server: &str) {
     let mut lock = true;
     while lock {
         let conn = db::try_make_single_connection("postgres", server);
         if conn.is_ok() {
             lock = false;
+        } else {
+            tokio::time::sleep(tokio::time::Duration::from_millis(2000)).await;
         }
     }
 }

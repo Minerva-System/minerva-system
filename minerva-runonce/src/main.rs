@@ -14,6 +14,7 @@
 
 #[macro_use]
 extern crate diesel_migrations;
+extern crate minerva_broker;
 extern crate minerva_data;
 
 use dotenv::dotenv;
@@ -40,11 +41,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mongoserver =
         env::var("MONGO_SERVICE_SERVER").expect("Unable to read MONGO_SERVICE_SERVER");
 
+    let rmqserver =
+        env::var("RABBITMQ_SERVICE_SERVER").expect("Unable to read RABBITMQ_SERVICE_SERVER");
+
     println!("Await for relational database on spinlock...");
-    database::database_spinlock(&dbserver);
+    database::database_spinlock(&dbserver).await;
 
     println!("Await for non-relational database on spinlock...");
     mongo::database_spinlock(&mongoserver).await;
+
+    println!("Await for message broker on spinlock...");
+    rabbitmq::broker_spinlock(&rmqserver).await;
 
     println!("Running preparation...");
 
@@ -54,6 +61,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         database::run_migrations(&tenant.database, &dbserver);
         database::create_admin_user(&tenant.database, &dbserver);
         mongo::prepare_database(&tenant.database, &mongoserver).await?;
+        rabbitmq::create_virtual_host(&tenant.database, &rmqserver).await?;
     }
 
     println!("All runs were successful.");

@@ -1,6 +1,6 @@
 [package]
 name = "minerva-runonce"
-version = "0.2.1"
+version = "0.3.0"
 edition = "2021"
 description = "Startup job for deploying the Minerva System"
 authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
@@ -9,7 +9,8 @@ authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
 diesel_migrations = "1.4.0"
 diesel = {version = "1.4.8", features = ["postgres", "extras", "numeric", "chrono"]}
 minerva-data = {path = "../minerva-data"}
+minerva-broker = {path = "../minerva-broker"}
 dotenv = "0.15.0"
-tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync"]}
+tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync", "time"]}
 chrono = {version = "0.4", features = ["serde"]}
 mongodb = "2.2.1"
