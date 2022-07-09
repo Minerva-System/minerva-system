@@ -1,0 +1,18 @@
+[package]
+name = "minerva-dispatch"
+version = "0.1.0"
+edition = "2021"
+description = "Message broker dispatcher microservice for the Minerva System"
+authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
+
+[dependencies]
+minerva-data = {path = "../minerva-data"}
+minerva-cache = {path = "../minerva-cache"}
+minerva-broker = {path = "../minerva-broker"}
+tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync", "time"]}
+dotenv = "0.15.0"
+mongodb = "2.2.1"
+diesel = { version = "1.4.4", features = ["postgres"] }
+redis = {version = "0.21.5", features = ["tokio-comp", "aio"]}
+lapin = "2.1.1"
+futures = "0.3"

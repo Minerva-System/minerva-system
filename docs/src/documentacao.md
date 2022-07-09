@@ -28,6 +28,8 @@ Não se esqueça de consultar estes documentos com frequência.
   Serviço de gerenciamento de sessão de usuário.
 - [USER](./doc/minerva_user/index.html) \
   Serviço de gerenciamento de usuários.
+- DISPATCH \
+  Serviço de consumo de filas do RabbitMQ e despacho de operações.
 - PRODUCT _(não implementado)_ \
   Serviço de gerenciamento de produtos.
 - REPORT _(não implementado)_ \

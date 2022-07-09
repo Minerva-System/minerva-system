@@ -64,6 +64,18 @@ services:
       - minerva_system
     restart: on-failure:5
 
+    # DISPATCH service
+  session:
+    image: luksamuk/minerva_dispatch:latest
+    environment:
+      - DATABASE_SERVICE_SERVER=postgresql
+      - MONGO_SERVICE_SERVER=mongodb
+      - REDIS_SERVICE_SERVER=redis
+      - RABBITMQ_SERVICE_SERVER=rabbitmq
+    networks:
+      - minerva_system
+    restart: on-failure:5
+
   # PostgreSQL 14
   postgresql:
     environment:

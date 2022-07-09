@@ -5,6 +5,7 @@ declare -a TARGETS=(
     "minerva_runonce"
     "minerva_session"
     "minerva_user"
+    "minerva_dispatch"
 )
 
 # Rust language targets

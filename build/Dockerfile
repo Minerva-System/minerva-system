@@ -88,6 +88,13 @@ COPY --from=builder /minerva/target/release/minerva-user ./minerva-user
 CMD ["./minerva-user"]
 
 
+# DISPATCH
+FROM deploy AS minerva_dispatch
+EXPOSE 9010
+COPY ./tenancy.toml ./tenancy.toml
+COPY --from=builder /minerva/target/release/minerva-dispatch ./minerva-dispatch
+CMD ["./minerva-dispatch"]
+
 # Front-End
 FROM ubuntu:22.04 AS frontend_builder
 RUN apt update \

@@ -1577,6 +1577,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "minerva-dispatch"
+version = "0.1.0"
+dependencies = [
+ "diesel",
+ "dotenv",
+ "futures",
+ "lapin",
+ "minerva-broker",
+ "minerva-cache",
+ "minerva-data",
+ "mongodb",
+ "redis",
+ "tokio",
+]
+
+[[package]]
 name = "minerva-product"
 version = "0.0.2"
 dependencies = [

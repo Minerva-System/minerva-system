@@ -11,5 +11,6 @@ members = [
 	"minerva-rest",
 	"minerva-runonce",
         "minerva-report",
+        "minerva-dispatch",
 ]
 
