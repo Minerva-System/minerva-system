@@ -217,6 +217,8 @@ a utilização de versionamento.
   métricas Prometheus.
 - `grafana-deployment`: Deployment para o serviço de visualização de métricas
   Grafana.
+- `dispatch-deployment`: Deployment para o serviço de despacho de mensagens
+  do RabbitMQ.
 
 Para aplicar todos os _Deployments_, execute:
 
@@ -334,6 +336,9 @@ desses recursos, de acordo com o que foi configurado.
 - `redis-hpa`: Escalonador horizontal do Redis. Mantém entre 2 e 15
   réplicas para `redis-statefulset` com uso médio de 50% do CPU alocado e
   60% da memória alocada.
+- `dispatch-hpa`: Escalonador horizontal do microsserviço DISPATCH. Mantém
+  entre 3 a 9 réplicas para `dispatch-deployment` com uso médio de 65%
+  do CPU alocado.
 
 Para aplicar todos os _HorizontalPodAutoscalers_, execute:
 

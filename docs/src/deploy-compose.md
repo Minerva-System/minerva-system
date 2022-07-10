@@ -65,14 +65,15 @@ docker compose up -d
 Neste caso em específico, para `localhost`, estarão abertas as
 seguintes portas para acesso:
 
-| Porta | Serviço         |
-|-------|-----------------|
-| 80    | Front-End       |
-| 9000  | API REST        |
-| 8484  | PgAdmin 4       |
-| 8686  | Mongo Express   |
-| 8787  | Redis Commander |
-
+| Porta | Serviço                |
+|-------|------------------------|
+| 80    | Front-End              |
+| 9000  | API REST               |
+| 8484  | PgAdmin 4              |
+| 8686  | Mongo Express          |
+| 8787  | Redis Commander        |
+| 5672  | RabbitMQ (Serviço)     |
+| 15672 | RabbitMQ (Gerenciador) |
 
 
 ## Acompanhando logs
