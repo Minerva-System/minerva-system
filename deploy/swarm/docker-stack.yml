@@ -50,6 +50,7 @@ services:
     depends_on:
       - "postgresql"
       - "mongodb"
+      - "rabbitmq"
     networks:
       - minerva_system
     deploy:
@@ -105,6 +106,8 @@ services:
       - RABBITMQ_SERVICE_SERVER=rabbitmq
       - SESSION_SERVICE_SERVER=session
       - SESSION_SERVICE_PORT=9011
+    depends_on:
+      - "rabbitmq"
     networks:
       - minerva_system
     deploy:
