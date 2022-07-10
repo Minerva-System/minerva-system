@@ -42,7 +42,7 @@ services:
   
   # RUNONCE service
   runonce:
-    image: luksamuk/minerva_runonce:0.2.1
+    image: luksamuk/minerva_runonce:0.3.0
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
@@ -63,7 +63,7 @@ services:
   
   # USER service
   user:
-    image: luksamuk/minerva_user:0.2.2
+    image: luksamuk/minerva_user:0.3.0
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - RABBITMQ_SERVICE_SERVER=rabbitmq
@@ -92,6 +92,25 @@ services:
       mode: replicated
       replicas: 2
       labels: [APP = SESSION_SERVICE]
+      restart_policy:
+        condition: on-failure
+
+  # DISPATCH service
+  session:
+    image: luksamuk/minerva_dispatch:0.1.0
+    environment:
+      - DATABASE_SERVICE_SERVER=postgresql
+      - MONGO_SERVICE_SERVER=mongodb
+      - REDIS_SERVICE_SERVER=redis
+      - RABBITMQ_SERVICE_SERVER=rabbitmq
+      - SESSION_SERVICE_SERVER=session
+      - SESSION_SERVICE_PORT=9011
+    networks:
+      - minerva_system
+    deploy:
+      mode: replicated
+      replicas: 3
+      labels: [APP = DISPATCH_SERVICE]
       restart_policy:
         condition: on-failure
 

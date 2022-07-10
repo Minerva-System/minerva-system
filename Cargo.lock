@@ -1693,7 +1693,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-user"
-version = "0.2.2"
+version = "0.3.0"
 dependencies = [
  "bb8 0.7.1",
  "bb8-diesel",

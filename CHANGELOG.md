@@ -9,24 +9,30 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.
 
 Relação de versões de microsserviços:
 
-- `USER` - v0.2.2
+- `USER` - v0.3.0
 - `SESSION` - v0.1.2
 - `RUNONCE` - v0.3.0
 - `REST` - v0.2.2
+- `DISPATCH`- v0.1.0
 - Front-End - v0.1.1 (pré-alfa)
 
 ### Adicionado
 
-- `RUNONCE`: Estruturas para preparação de message broker (virtual hosts e filas
+- *`RUNONCE`:* Estruturas para preparação de message broker (virtual hosts e filas
   fixas).
+- *`DISPATCH`:* Criação do microsserviço.
 
 ### Modificado
 
-- `RUNONCE`: Spinlocks de aguardo de disponibilidade de serviços agora realizam
+- *`RUNONCE`:* Spinlocks de aguardo de disponibilidade de serviços agora realizam
   _sleep_ assíncrono de dois segundos após cada falha.
-- `RUNONCE`: Spinlocks de disponibilidade agora também operam de forma assíncrona.
+- *`RUNONCE`:* Spinlocks de disponibilidade agora também operam de forma assíncrona.
 
 ### Consertado
+
+- *`USER`:* Ao remover um usuário, envia mensagem requisitando remoção das sessões
+  do mesmo (cache e coleção de sessões).
+
 ### Removido
 ### Segurança
 ### Problemas conhecidos

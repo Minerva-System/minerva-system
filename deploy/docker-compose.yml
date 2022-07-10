@@ -64,7 +64,7 @@ services:
       - minerva_system
     restart: on-failure:5
 
-    # DISPATCH service
+  # DISPATCH service
   session:
     image: luksamuk/minerva_dispatch:latest
     environment:
@@ -72,6 +72,8 @@ services:
       - MONGO_SERVICE_SERVER=mongodb
       - REDIS_SERVICE_SERVER=redis
       - RABBITMQ_SERVICE_SERVER=rabbitmq
+      - SESSION_SERVICE_SERVER=session
+      - SESSION_SERVICE_PORT=9011
     networks:
       - minerva_system
     restart: on-failure:5

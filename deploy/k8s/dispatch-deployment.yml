@@ -1,20 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-deployment
+  name: dispatch-deployment
 spec:
   template:
     metadata:
-      name: user
+      name: dispatch
       labels:
-        app: user
+        app: dispatch
     spec:
       containers:
-        - name: user-container
-          image: luksamuk/minerva_user:0.3.0
+        - name: dispatch-container
+          image: luksamuk/minerva_dispatch:0.1.0
           imagePullPolicy: Always
-          ports:
-            - containerPort: 9010
           envFrom:
             - configMapRef:
                 name: ports-configmap
@@ -23,8 +21,7 @@ spec:
           resources:
             requests:
               cpu: 10m
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
-      app: user
-
+      app: dispatch
