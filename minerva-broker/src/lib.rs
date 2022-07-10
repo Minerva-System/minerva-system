@@ -7,6 +7,8 @@ use lapin::{Connection, ConnectionProperties, Error};
 const AUTH_USER: &str = "rabbitmq";
 const AUTH_PASS: Option<&str> = Some("minerva");
 
+pub mod model;
+
 pub type LapinPool = Pool<LapinConnectionManager>;
 
 fn make_vhost_url(host: &str, vhost: &str) -> String {

@@ -156,7 +156,7 @@ pub async fn delete_user(
                 .execute(&*connection)?;
 
             Ok(entity)
-        });
+        })?;
 
     // Queue message on RabbitMQ so that the session service
     // asynchronously deletes the user's sessions.
@@ -166,7 +166,7 @@ pub async fn delete_user(
         .await
         .expect("Could not create RabbitMQ channel");
 
-    let json = "Test Message!"; // TODO
+    let json = broker::model::SessionMessage::Remove { user: result.login }.to_json();
 
     // TODO: Improve error handling here
     channel

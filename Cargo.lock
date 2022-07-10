@@ -1537,6 +1537,8 @@ dependencies = [
  "futures",
  "lapin",
  "reqwest",
+ "serde",
+ "serde_json",
  "tokio",
  "tokio-executor-trait",
  "tokio-reactor-trait",
@@ -1580,6 +1582,7 @@ dependencies = [
 name = "minerva-dispatch"
 version = "0.1.0"
 dependencies = [
+ "base64",
  "diesel",
  "dotenv",
  "futures",
@@ -1587,9 +1590,11 @@ dependencies = [
  "minerva-broker",
  "minerva-cache",
  "minerva-data",
+ "minerva-rpc",
  "mongodb",
  "redis",
  "tokio",
+ "tonic",
 ]
 
 [[package]]
