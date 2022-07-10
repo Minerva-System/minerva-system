@@ -1,4 +1,4 @@
-use futures::future::FutureExt;
+use crate::error::DispatchError;
 use futures::stream::{StreamExt, TryStreamExt};
 use lapin::{
     options::{BasicAckOptions, BasicConsumeOptions},
@@ -24,7 +24,7 @@ pub async fn queue_consume(
     _postgresql: DBPool,
     mongodb: MongoClient,
     _redis: RedisClient,
-) {
+) -> Result<(), Box<dyn std::error::Error>> {
     let mut handlers = vec![];
     for queue in QUEUES {
         let tenant = tenant.clone();
@@ -32,15 +32,26 @@ pub async fn queue_consume(
         let mongodb = mongodb.clone();
         handlers.push(tokio::spawn(async move {
             loop {
-                let consumer_name = format!("{}_{}_consumer", tenant, queue);
-                let conn = rabbitmq.get().await.expect(&format!(
-                    "{}: Unable to retrieve RabbitMQ connection",
-                    consumer_name
-                ));
-                let channel = conn.create_channel().await.expect(&format!(
-                    "{}: Unable to open RabbitMQ channel",
-                    consumer_name
-                ));
+                let consumer_name = format!("{}.{}.consumer", tenant, queue);
+
+                let conn = rabbitmq
+                    .get()
+                    .await
+                    .map_err(|_| DispatchError::ConnectionError {
+                        consumer_name: consumer_name.clone(),
+                        service_name: "RabbitMQ".to_string(),
+                    })
+                    .unwrap();
+
+                let channel = conn
+                    .create_channel()
+                    .await
+                    .map_err(|_| DispatchError::ConnectionError {
+                        consumer_name: consumer_name.clone(),
+                        service_name: "RabbitMQ channel".to_string(),
+                    })
+                    .unwrap();
+
                 let mut consumer = channel
                     .basic_consume(
                         queue,
@@ -49,16 +60,18 @@ pub async fn queue_consume(
                         FieldTable::default(),
                     )
                     .await
-                    .expect(&format!(
-                        "{}: Unable to create queue consumer",
-                        consumer_name
-                    ));
+                    .map_err(|_| DispatchError::ConnectionError {
+                        consumer_name: consumer_name.clone(),
+                        service_name: "queue using a new consumer".to_string(),
+                    })
+                    .unwrap();
 
                 while let Some(delivery) = consumer.next().await {
-                    let delivery = delivery.expect(&format!(
-                        "{}: Error while delivering message",
-                        consumer_name
-                    ));
+                    let delivery = delivery
+                        .map_err(|_| DispatchError::DeliveryError {
+                            consumer_name: consumer_name.clone(),
+                        })
+                        .unwrap();
 
                     match queue {
                         &"session_management" => {
@@ -85,14 +98,18 @@ pub async fn queue_consume(
                                         &tenant,
                                         &user,
                                     )
-                                    .await;
+                                    .await
+                                    .unwrap();
                                 }
                             }
 
                             delivery
                                 .ack(BasicAckOptions::default())
                                 .await
-                                .expect(&format!("{}: Unable to ACK delivery", consumer_name));
+                                .map_err(|_| DispatchError::AckError {
+                                    consumer_name: consumer_name.clone(),
+                                })
+                                .unwrap();
                         }
                         _ => {}
                     }
@@ -106,20 +123,23 @@ pub async fn queue_consume(
     }
 
     for handle in handlers {
-        let _ = handle.catch_unwind().await;
+        handle.await?;
     }
+
+    Ok(())
 }
 
-pub async fn remove_user_sessions(mongodb: &MongoDatabase, tenant: &str, username: &str) {
+pub async fn remove_user_sessions(
+    mongodb: &MongoDatabase,
+    tenant: &str,
+    username: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
     use tonic::Request;
 
     // 1. Fetch all sessions from the given user;
     let collection = mongodb.collection::<Document>("session");
     let filter = doc! { "login": username };
-    let mut cursor = collection
-        .find(filter, None)
-        .await
-        .expect("Error while fetching documents");
+    let mut cursor = collection.find(filter, None).await?;
 
     let mut sessions = vec![];
     while let Some(document) = cursor.try_next().await.unwrap() {
@@ -148,6 +168,8 @@ pub async fn remove_user_sessions(mongodb: &MongoDatabase, tenant: &str, usernam
         .expect("Unable to connect to `SESSION` service");
 
     for session in sessions {
-        client.remove(Request::new(session)).await.unwrap();
+        client.remove(Request::new(session)).await?;
     }
+
+    Ok(())
 }

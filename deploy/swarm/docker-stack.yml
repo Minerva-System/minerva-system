@@ -96,7 +96,7 @@ services:
         condition: on-failure
 
   # DISPATCH service
-  session:
+  dispatch:
     image: luksamuk/minerva_dispatch:0.1.0
     environment:
       - DATABASE_SERVICE_SERVER=postgresql

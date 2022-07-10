@@ -65,7 +65,7 @@ services:
     restart: on-failure:5
 
   # DISPATCH service
-  session:
+  dispatch:
     image: luksamuk/minerva_dispatch:latest
     environment:
       - DATABASE_SERVICE_SERVER=postgresql

@@ -12,33 +12,30 @@ use std::collections::HashMap;
 use std::env;
 
 mod controller;
+mod error;
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Minerva System: DISPATCH");
     println!("Copyright (c) 2022 Lucas S. Vieira");
     println!();
 
     dotenv().ok();
 
-    let dbserver =
-        env::var("DATABASE_SERVICE_SERVER").expect("Unable to read DATABASE_SERVICE_SERVER");
+    let dbserver = env::var("DATABASE_SERVICE_SERVER")?;
 
-    let mongoserver =
-        env::var("MONGO_SERVICE_SERVER").expect("Unable to read MONGO_SERVICE_SERVER");
+    let mongoserver = env::var("MONGO_SERVICE_SERVER")?;
 
-    let redisserver =
-        env::var("REDIS_SERVICE_SERVER").expect("Unable to read REDIS_SERVICE_SERVER");
+    let redisserver = env::var("REDIS_SERVICE_SERVER")?;
 
-    let rmqserver =
-        env::var("RABBITMQ_SERVICE_SERVER").expect("Unable to read RABBITMQ_SERVICE_SERVER");
+    let rmqserver = env::var("RABBITMQ_SERVICE_SERVER")?;
 
     println!("Loading tenant configuration...");
     let tenant_config = data::tenancy::get_tenants("tenancy.toml");
 
     println!("Creating service connections...");
     let mongo_client = data::mongo::make_client(&mongoserver).await;
-    let redis_client = cache::build_client(&redisserver).expect("Unable to create Redis client");
+    let redis_client = cache::build_client(&redisserver)?;
     let mut tenant_clients: HashMap<String, (DBPool, LapinPool)> = HashMap::new();
 
     for tenant in tenant_config.clone() {
@@ -67,11 +64,14 @@ async fn main() {
         handlers.push(tokio::spawn(async move {
             println!("Running queue listener for {}.", tenant);
             controller::queue_consume(tenant, rabbitmq, postgres, mongo.clone(), redis.clone())
-                .await;
+                .await
+                .unwrap();
         }))
     }
 
     for handler in handlers {
-        handler.await.unwrap();
+        handler.await?;
     }
+
+    Ok(())
 }
