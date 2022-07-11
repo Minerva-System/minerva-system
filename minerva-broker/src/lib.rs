@@ -1,16 +1,24 @@
+//! This is a library for working with routines related to the message broker,
+//! or more specifically, messages sent and received to/from RabbitMQ.
+
 #![warn(clippy::all)]
 #![warn(missing_docs)]
 
 use bb8_lapin::{bb8::Pool, LapinConnectionManager};
 use lapin::{Connection, ConnectionProperties, Error};
 
+/// Default user for authentication on RabbitMQ.
 const AUTH_USER: &str = "rabbitmq";
+
+/// Default password for authentication on RabbitMQ.
 const AUTH_PASS: Option<&str> = Some("minerva");
 
 pub mod model;
 
+/// Represents a pool of connections to RabbitMQ.
 pub type LapinPool = Pool<LapinConnectionManager>;
 
+/// Generate connection URL to a vhost configuration API.
 fn make_vhost_url(host: &str, vhost: &str) -> String {
     format!("http://{}:15672/api/vhosts/{}", host, vhost)
 }
