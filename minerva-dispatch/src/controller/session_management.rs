@@ -11,7 +11,7 @@ pub async fn dispatch(
     consumer_name: &str,
     mongodb: &MongoClient,
     data: &[u8],
-) -> Result<(), Box<dyn std::error::Error>> {
+) -> Result<bool, Box<dyn std::error::Error>> {
     match SessionMessage::from(std::str::from_utf8(data).unwrap().to_string()) {
         SessionMessage::Remove { user } => {
             // `SESSION` already implements session removal, including
@@ -22,9 +22,13 @@ pub async fn dispatch(
             // clients are asynchronous in nature and will only open
             // connections on demand.
             println!("{}: Remove session from user \"{}\"", consumer_name, user);
-            remove_user_sessions(consumer_name, &mongodb.database(tenant), tenant, &user).await
+            remove_user_sessions(consumer_name, &mongodb.database(tenant), tenant, &user).await?;
+            Ok(true)
         }
-        _ => Ok(()),
+        _ => {
+            // Unknown message
+            Ok(false)
+        }
     }
 }
 

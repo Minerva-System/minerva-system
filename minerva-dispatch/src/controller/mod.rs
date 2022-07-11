@@ -72,22 +72,26 @@ pub async fn queue_consume(
 
                     match queue {
                         &"session_management" => {
-                            session_management::dispatch(
+                            if session_management::dispatch(
                                 &tenant,
                                 &consumer_name,
                                 &mongodb,
                                 &delivery.data,
                             )
                             .await
-                            .unwrap();
-
-                            delivery
-                                .ack(BasicAckOptions::default())
-                                .await
-                                .map_err(|_| DispatchError::AckError {
-                                    consumer_name: consumer_name.clone(),
-                                })
-                                .unwrap();
+                            .unwrap()
+                            {
+                                // If message is known, then we send back an
+                                // ack signal. If not, well... leave it to
+                                // another consumer
+                                delivery
+                                    .ack(BasicAckOptions::default())
+                                    .await
+                                    .map_err(|_| DispatchError::AckError {
+                                        consumer_name: consumer_name.clone(),
+                                    })
+                                    .unwrap();
+                            }
                         }
                         _ => {}
                     }
