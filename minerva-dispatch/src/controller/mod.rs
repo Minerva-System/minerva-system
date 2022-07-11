@@ -1,22 +1,17 @@
 use crate::error::DispatchError;
-use futures::stream::{StreamExt, TryStreamExt};
+use futures::stream::StreamExt;
 use lapin::{
     options::{BasicAckOptions, BasicConsumeOptions},
     types::FieldTable,
 };
-use minerva_broker::model::SessionMessage;
+use minerva_broker as broker;
 use minerva_broker::LapinPool;
 use minerva_data::db::DBPool;
-use minerva_rpc as rpc;
-use mongodb::bson::{doc, Document};
 use mongodb::Client as MongoClient;
-use mongodb::Database as MongoDatabase;
 use redis::Client as RedisClient;
 use tokio::time::Duration;
 
 mod session_management;
-
-const QUEUES: &'static [&str] = &["session_management"];
 
 const QUEUE_PROCESSING_WAIT_SECS: u64 = 3;
 
@@ -28,7 +23,7 @@ pub async fn queue_consume(
     _redis: RedisClient,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let mut handlers = vec![];
-    for queue in QUEUES {
+    for queue in broker::QUEUES {
         let tenant = tenant.clone();
         let rabbitmq = rabbitmq.clone();
         let mongodb = mongodb.clone();

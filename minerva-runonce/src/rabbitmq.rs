@@ -1,8 +1,6 @@
 use lapin::{options::QueueDeclareOptions, types::FieldTable};
 use minerva_broker as broker;
 
-const DEFAULT_QUEUES: &'static [&str] = &["session_management"];
-
 pub async fn create_virtual_host(
     tenant: &str,
     host: &str,
@@ -42,7 +40,7 @@ pub async fn create_default_queues(
     let connection = broker::make_connection(host, Some(tenant)).await?;
     let channel = connection.create_channel().await?;
 
-    for queue in DEFAULT_QUEUES {
+    for queue in broker::QUEUES {
         let _ = channel
             .queue_declare(queue, QueueDeclareOptions::default(), FieldTable::default())
             .await?;

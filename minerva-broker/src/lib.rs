@@ -13,6 +13,8 @@ const AUTH_USER: &str = "rabbitmq";
 /// Default password for authentication on RabbitMQ.
 const AUTH_PASS: Option<&str> = Some("minerva");
 
+pub const QUEUES: &'static [&str] = &["session_management"];
+
 pub mod model;
 
 /// Represents a pool of connections to RabbitMQ.
