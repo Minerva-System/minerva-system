@@ -53,5 +53,7 @@ Não se esqueça de consultar estes documentos com frequência.
   Biblioteca de implementação de Protocol Buffers, mensagens gRPC e afins.
 - [CACHE](./doc/minerva_cache/index.html) \
   Biblioteca para uso e acesso ao cache via serviço Redis.
+- [BROKER](./doc/minerva_broker/index.html) \
+  Biblioteca para uso, acesso e configuração do serviço RabbitMQ e mensageria.
 
 
