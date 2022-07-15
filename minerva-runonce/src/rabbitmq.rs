@@ -41,10 +41,15 @@ pub async fn create_default_queues(
     let channel = connection.create_channel().await?;
 
     for queue in broker::QUEUES {
+        let options = QueueDeclareOptions {
+            durable: true,
+            ..QueueDeclareOptions::default()
+        };
+
         let _ = channel
-            .queue_declare(queue, QueueDeclareOptions::default(), FieldTable::default())
+            .queue_declare(queue, options, FieldTable::default())
             .await?;
-        println!("{}: Queue \"{}\" created.", tenant, queue);
+        println!("{}: Durable queue \"{}\" created.", tenant, queue);
     }
 
     Ok(())
