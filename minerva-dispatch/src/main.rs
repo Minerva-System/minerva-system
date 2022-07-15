@@ -1,3 +1,14 @@
+//! # Minerva System: DISPATCH Service
+//!
+//! ## About this service
+//! This service is responsible for dispatching messages from the message broker
+//! (RabbitMQ) to other parts of the system, and sometimes interacting with other
+//! third-party services as well.
+//!
+//! Though this service is not created with the intention of managing data
+//! directly, that may still happen, though it is not desired since specific
+//! microservices may manage business rules in an intended way.
+
 #![warn(clippy::all)]
 #![warn(missing_docs)]
 
@@ -14,6 +25,9 @@ use std::env;
 mod controller;
 mod error;
 
+// TODO: Add unit tests
+
+/// Entry point for this module.
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Minerva System: DISPATCH");
@@ -63,7 +77,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         handlers.push(tokio::spawn(async move {
             println!("Running queue listener for {}.", tenant);
-            controller::queue_consume(tenant, rabbitmq, postgres, mongo.clone(), redis.clone())
+            controller::queue_consume(tenant, rabbitmq, postgres, mongo, redis)
                 .await
                 .unwrap();
         }))

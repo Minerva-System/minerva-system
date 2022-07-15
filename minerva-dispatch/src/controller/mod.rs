@@ -13,8 +13,10 @@ use tokio::time::Duration;
 
 mod session_management;
 
+/// Number of seconds to wait for each task to reprocess
 const QUEUE_PROCESSING_WAIT_SECS: u64 = 3;
 
+/// Primary entry point for the consuming of messages from the message broker.
 pub async fn queue_consume(
     tenant: String,
     rabbitmq: LapinPool,

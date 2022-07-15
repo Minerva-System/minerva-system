@@ -27,6 +27,7 @@ mod service;
 #[cfg(test)]
 mod tests;
 
+/// Entry point for this module.
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Minerva System: SESSION service");
