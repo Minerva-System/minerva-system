@@ -1,0 +1,71 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.241.1/containers/rust
+{
+	"name": "Rust",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspace",
+	"customizations": {
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": { 
+				"lldb.executable": "/usr/bin/lldb",
+				// VS Code don't watch files under ./target
+				"files.watcherExclude": {
+					"**/target/**": true
+				},
+				"rust-analyzer.checkOnSave.command": "clippy"
+			},
+			
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"vadimcn.vscode-lldb",
+				"mutantdino.resourcemonitor",
+				"rust-lang.rust-analyzer",
+				"tamasfe.even-better-toml",
+				"serayuzgur.crates"
+			]
+		}
+	},
+
+	"forwardPorts": [
+		// API
+		9000,
+		// PostgreSQL
+		5432,
+		// MongoDB
+		27017,
+		// RabbitMQ Service
+		5672,
+		// RabbitMQ Management
+		15672
+	],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "rustc --version",
+
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode",
+	"features": {
+		"docker-in-docker": "latest",
+		"git": "os-provided",
+		"github-cli": "latest"
+	},
+	"portsAttributes": {
+		"5432": {
+			"label": "PostgreSQL"
+		},
+		"5672": {
+			"label": "RabbitMQ"
+		},
+		"9000": {
+			"label": "Minerva API"
+		},
+		"15672": {
+			"label": "RabbitMQ Management"
+		},
+		"27017": {
+			"label": "MongoDB"
+		}
+	}
+}

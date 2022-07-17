@@ -10,4 +10,4 @@
 docker-compose.yml
 docker-stack.yml
 *.sh
-
+.devcontainer
