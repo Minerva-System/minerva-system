@@ -18,6 +18,7 @@ Relação de versões de microsserviços:
 
 ### Adicionado
 
+- *Geração de imagens:* Reabilitado target de compilação para ARM64.
 - *`RUNONCE`:* Estruturas para preparação de message broker (virtual hosts e filas
   fixas).
 - *`DISPATCH`:* Criação do microsserviço.
