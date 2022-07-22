@@ -14,7 +14,7 @@ const AUTH_USER: &str = "rabbitmq";
 const AUTH_PASS: Option<&str> = Some("minerva");
 
 /// Names of default queues that should be present on RabbitMQ, for each tenant.
-pub const QUEUES: &'static [&str] = &["session_management"];
+pub const QUEUES: &[&str] = &["session_management"];
 
 pub mod model;
 
@@ -35,7 +35,7 @@ pub fn build_broker_uri(host: &str, vhost: &str) -> String {
         AUTH_USER,
         AUTH_PASS.unwrap(),
         host,
-        if vhost == "" { "%2f" } else { vhost }
+        if vhost.is_empty() { "%2f" } else { vhost }
     )
 }
 
