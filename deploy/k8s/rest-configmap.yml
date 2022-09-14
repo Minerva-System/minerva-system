@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: rest-configmap
-data:
-  ROCKET_KEEP_ALIVE: "0"
-  ROCKET_ENV: production

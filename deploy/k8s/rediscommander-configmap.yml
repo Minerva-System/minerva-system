@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: rediscommander-configmap
-data:
-  REDIS_HOST: redis-svc
-  REDIS_PORT: "6379"

@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: mongoexpress-configmap
-data:
-  ME_CONFIG_MONGODB_SERVER: mongodb-svc

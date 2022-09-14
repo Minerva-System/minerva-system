@@ -1,9 +1,25 @@
+---
+# Grafana: Persistent Volume Claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-pvc
+  namespace: minerva
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+# Grafana: Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app: grafana
   name: grafana-deployment
+  namespace: minerva
 spec:
   selector:
     matchLabels:
@@ -54,3 +70,20 @@ spec:
         - name: grafana-pv
           persistentVolumeClaim:
             claimName: grafana-pvc
+---
+# Grafana: Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: minerva
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 3000
+      protocol: TCP
+      targetPort: http-grafana
+      nodePort: 31087
+  selector:
+    app: grafana
+  sessionAffinity: None

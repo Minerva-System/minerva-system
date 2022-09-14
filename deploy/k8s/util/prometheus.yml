@@ -1,0 +1,104 @@
+---
+# Prometheus: Cluster Role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: prometheus-clusterrole
+  namespace: minerva
+rules:
+  - apiGroups: [""]
+    resources:
+      - nodes
+      - services
+      - endpoints
+      - pods
+    verbs: ["get", "list", "watch"]
+  - apiGroups:
+      - extensions
+    resources:
+      - ingresses
+    verbs: ["get", "list", "watch"]
+---
+# Prometheus: Cluster Role Binding
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheus-clusterrolebinding
+  namespace: minerva
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-clusterrole
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-serviceaccount
+    namespace: default
+---
+# Prometheus: Service Account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus-serviceaccount
+  namespace: minerva
+---
+# Prometheus: Config Map
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-configmap
+  namespace: minerva
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 10s
+      evaluation_interval: 5s
+    scrape_configs:
+      - job_name: 'rabbitmq'
+        static_configs:
+          - targets: ['broker-rabbitmqcluster:15692']
+---
+# Prometheus: Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-deployment
+  namespace: minerva
+spec:
+  selector:
+    matchLabels:
+      app: prometheus
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      serviceAccountName: prometheus-serviceaccount
+      containers:
+        - name: prometheus-container
+          image: prom/prometheus:v2.36.2
+          ports:
+            - containerPort: 9090
+              name: default
+          volumeMounts:
+            - name: config
+              mountPath: /etc/prometheus
+      volumes:
+        - name: config
+          configMap:
+            name: prometheus-configmap
+---
+# Prometheus: Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-svc
+  namespace: minerva
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 9090
+      protocol: TCP
+      nodePort: 31088
+  selector:
+    app: prometheus

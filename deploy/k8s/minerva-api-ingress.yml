@@ -4,7 +4,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: api-ingress-middleware
-  namespace: default
+  namespace: minerva
 spec:
   stripPrefix:
     forceSlash: false
@@ -16,9 +16,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: api-ingress
+  namespace: minerva
   annotations:
     kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/router.middlewares: default-api-ingress-middleware@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: minerva-api-ingress-middleware@kubernetescrd
 spec:
   rules:
     - http:
