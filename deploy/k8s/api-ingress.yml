@@ -1,18 +1,33 @@
+---
+# Prefix stripping middleware
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: api-ingress-middleware
+  namespace: default
+spec:
+  stripPrefix:
+    forceSlash: false
+    prefixes:
+      - /api
+---
+# API Ingress
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: api-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.middlewares: default-api-ingress-middleware@kubernetescrd
 spec:
   rules:
-    - host: minerva-system.io
-      http:
+    - http:
         paths:
-          - path: /api(.*)
+          - path: /api
             pathType: Prefix
             backend:
               service:
                 name: rest-svc
                 port:
                   number: 9000
+
