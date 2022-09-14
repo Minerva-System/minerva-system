@@ -1,0 +1,66 @@
+---
+# API prefix middleware
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: api-ingress-middleware
+  namespace: minerva
+spec:
+  replacePathRegex:
+    regex: ^/api/(.*)
+    replacement: /$1
+---
+# Grafana prefix middleware
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: grafana-ingress-middleware
+  namespace: minerva
+spec:
+  replacePathRegex:
+    regex: ^/grafana/(.*)
+    replacement: /$1
+---
+# API Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ingress
+  namespace: minerva
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.middlewares: minerva-api-ingress-middleware@kubernetescrd
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: rest-svc
+                port:
+                  number: 9000
+---
+# Grafana Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: minerva
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.middlewares: minerva-grafana-ingress-middleware@kubernetescrd
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /grafana
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 3000
+
+
