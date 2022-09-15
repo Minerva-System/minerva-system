@@ -70,6 +70,9 @@ spec:
           envFrom:
             - secretRef:
                 name: pgadmin-secret
+          env:
+            - name: SCRIPT_NAME
+              value: "/pgadmin"
           volumeMounts:
             - name: pgadmin-config
               mountPath: /pgadmin4/servers.json

@@ -20,4 +20,4 @@ spec:
                   default_pass = minerva
                   default_user_tags.administrator = true
   service:
-    type: LoadBalancer
+    type: ClusterIP

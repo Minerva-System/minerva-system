@@ -62,5 +62,43 @@ spec:
                 name: grafana
                 port:
                   number: 3000
-
-
+---
+# PgAdmin4 Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pgadmin-ingress
+  namespace: minerva
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /pgadmin
+            pathType: Prefix
+            backend:
+              service:
+                name: pgadmin-svc
+                port:
+                  number: 80
+---
+# Mongo Express Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mongoexpress-ingress
+  namespace: minerva
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /mongoexpress
+            pathType: Prefix
+            backend:
+              service:
+                name: mongoexpress-svc
+                port:
+                  number: 8081
