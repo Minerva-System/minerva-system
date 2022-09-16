@@ -79,8 +79,14 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/grafana
               name: grafana-pv
-            - mountPath: /etc/grafana/
+            - mountPath: /etc/grafana
               name: grafana-config
+            - mountPath: /etc/grafana/provisioning/datasources
+              name: datasources-config
+            - mountPath: /etc/grafana/provisioning/dashboards
+              name: dashboards-config
+            - mountPath: /var/lib/grafana/dashboards
+              name: dashboards
       volumes:
         - name: grafana-pv
           persistentVolumeClaim:
@@ -88,6 +94,15 @@ spec:
         - name: grafana-config
           configMap:
             name: grafana-configmap
+        - name: datasources-config
+          configMap:
+            name: grafana-provisioning-datasources-configmap
+        - name: dashboards-config
+          configMap:
+            name: grafana-provisioning-dashboards-configmap
+        - name: dashboards
+          configMap:
+            name: grafana-dashboards-configmap
 ---
 # Grafana: Service
 apiVersion: v1
