@@ -22,12 +22,20 @@ Relação de versões de microsserviços:
 - *`RUNONCE`:* Estruturas para preparação de message broker (virtual hosts e filas
   fixas).
 - *`DISPATCH`:* Criação do microsserviço.
+- *Devcontainers do VSCode:* Adicionada configuração inicial (ainda instável).
+- *Kubernetes:* Exposição dos serviços e ferramentas `REST`, Grafana e PgAdmin4
+  nas rotas `/api`, `/grafana` e `/pgadmin`, respectivamente, através do uso
+  de Ingresses.
 
 ### Modificado
 
 - *`RUNONCE`:* Spinlocks de aguardo de disponibilidade de serviços agora realizam
   _sleep_ assíncrono de dois segundos após cada falha.
 - *`RUNONCE`:* Spinlocks de disponibilidade agora também operam de forma assíncrona.
+- *Kubernetes:* Ajustes nos Ingresses existentes para que funcionem adequadamente,
+  através de Traefik.
+- *Kubernetes:* Ajustes nas configurações de deploy para que haja menos arquivos.
+- *Grafana:* Atualizado para versão 9.1.5.
 
 ### Consertado
 
@@ -37,6 +45,16 @@ Relação de versões de microsserviços:
 ### Removido
 ### Segurança
 ### Problemas conhecidos
+
+- A ferramenta *Redis Commander* conhecidamente funciona apenas em arquitetura
+  AMD64, o que inviabiliza seu deploy no Kubernetes em ambientes ARM. Isso
+  significa que clusters com o Minerva que sejam totalmente configurados em
+  arquitetura ARM perderão alguma observabilidade quanto ao Redis. Adicionalmente,
+  essa limitação também foi refletida na configuração da ferramenta via k8s.
+- As configurações atuais para os Ingresses estão muito relacionadas ao que é
+  necessário para realizar deploy em K3s, com Traefik sendo utilizado como
+  backend para Ingresses. Isso inviabiliza um pouco o uso de Minikube e
+  Microk8s.
 
 
 ## [v2] - 2022-06-05
