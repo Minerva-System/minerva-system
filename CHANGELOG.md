@@ -26,6 +26,8 @@ Relação de versões de microsserviços:
 - *Kubernetes:* Exposição dos serviços e ferramentas `REST`, Grafana e PgAdmin4
   nas rotas `/api`, `/grafana` e `/pgadmin`, respectivamente, através do uso
   de Ingresses.
+- *Kubernetes:* Adicionados serviços Prometheus e Grafana, com alguns dashboards
+  padronizados.
 
 ### Modificado
 
@@ -35,7 +37,6 @@ Relação de versões de microsserviços:
 - *Kubernetes:* Ajustes nos Ingresses existentes para que funcionem adequadamente,
   através de Traefik.
 - *Kubernetes:* Ajustes nas configurações de deploy para que haja menos arquivos.
-- *Grafana:* Atualizado para versão 9.1.5.
 
 ### Consertado
 
