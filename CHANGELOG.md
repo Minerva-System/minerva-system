@@ -28,6 +28,7 @@ Relação de versões de microsserviços:
   de Ingresses.
 - *Kubernetes:* Adicionados serviços Prometheus e Grafana, com alguns dashboards
   padronizados.
+- *Minerva9:* Adicionada documentação para o MVC e repositório do projeto.
 
 ### Modificado
 
