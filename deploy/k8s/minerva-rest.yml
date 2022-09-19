@@ -35,7 +35,7 @@ spec:
                 name: ports-configmap
           resources:
             requests:
-              cpu: 15m
+              cpu: 50m
   replicas: 2
   selector:
     matchLabels:

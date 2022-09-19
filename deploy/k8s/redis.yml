@@ -190,8 +190,8 @@ spec:
     apiVersion: apps/v1
     kind: StatefulSet
     name: redis
-  minReplicas: 2
-  maxReplicas: 15
+  minReplicas: 3
+  maxReplicas: 9
   metrics:
     - type: Resource
       resource:

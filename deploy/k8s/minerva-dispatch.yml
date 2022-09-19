@@ -23,7 +23,7 @@ spec:
                 name: servers-configmap
           resources:
             requests:
-              cpu: 10m
+              cpu: 50m
   replicas: 3
   selector:
     matchLabels:

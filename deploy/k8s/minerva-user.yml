@@ -25,7 +25,7 @@ spec:
                 name: servers-configmap
           resources:
             requests:
-              cpu: 10m
+              cpu: 150m
   replicas: 2
   selector:
     matchLabels:
@@ -56,7 +56,7 @@ spec:
     kind: Deployment
     name: user-deployment
   minReplicas: 2
-  maxReplicas: 6
+  maxReplicas: 8
   metrics:
     - type: Resource
       resource:
