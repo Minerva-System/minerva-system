@@ -461,11 +461,44 @@ no site oficial da Rancher.
 
 ### Testes de Stress
 
-Para realizar testes de stress, use o script `deploy/stress_test.sh`.
+Há alguns testes de stress para o Minerva System. Estes testes servem principalmente para
+testar os limites e o comportamento do sistema quando o mesmo estiver sob uma grande carga
+de operações.
+
+#### Testes de spike com K6
+
+Os testes padrão são realizados através da ferramenta [K6](https://k6.io/), porém essa
+ferramenta demanda a extensão Faker para que funcione adequadamente. Você poderá
+encontrar as instruções de instalação dessa extensão
+[no repositório da mesma](https://github.com/szkiba/xk6-faker).
+
+No diretório `deploy/tests/k6`, você poderá executar o `k6` compilado com a extensão
+referida. O host do cluster deverá ser informado através da variável de ambiente
+`MINERVA_HOST`.
+
+O exemplo a seguir mostra como executar os spike tests para stress de operações de
+sessão e de usuários.
+
+```bash
+# Testes de sessão
+MINERVA_HOST=http://$IP_DO_CLUSTER k6 run session_spike.js
+
+# Testes de usuários
+MINERVA_HOST=http://$IP_DO_CLUSTER k6 run users_spike.js
+```
+
+A execução dos testes gerará um arquivo `html` ao final, que mostra um formato
+interativo para inspeção dos resultados de testes.
+
+#### Testes de stress legados (via Bash)
+
+Para realizar testes de stress com o formato legado, use o script
+`deploy/tests/legacy/stress_test.sh`.
+
 Você poderá testar cada sistema crucial usando um comando como este:
 
 ```bash
-./deploy/stress_test.sh $IP_DO_CLUSTER/api user
+./deploy/tests/legacy/stress_test.sh $IP_DO_CLUSTER/api user
 ```
 
 Para maiores informações, execute o script sem argumentos e veja instruções
