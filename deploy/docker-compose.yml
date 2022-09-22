@@ -107,12 +107,12 @@ services:
       - minerva_system
     restart: on-failure:5
 
-  # MongoDB 5
+  # MongoDB 6
   mongodb:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=mongo
-    image: mongo:5
+    image: mongo:6
     command: mongod --quiet --logpath /dev/null
     volumes:
       - mongodb-data:/data/db

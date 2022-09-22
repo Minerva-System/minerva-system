@@ -147,12 +147,12 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  # MongoDB 5
+  # MongoDB 6
   mongodb:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=mongo
-    image: mongo:5
+    image: mongo:6
     volumes:
       - mongodb-data:/data/db
     networks:

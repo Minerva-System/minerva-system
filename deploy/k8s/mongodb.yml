@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
         - name: mongodb-container
-          image: mongo:5
+          image: mongo:6
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - mountPath: /data/db
@@ -48,6 +48,8 @@ spec:
           envFrom:
             - secretRef:
                 name: mongodb-secret
+      nodeSelector:
+        kubernetes.io/arch: "amd64"
       volumes:
         - name: mongodb-pv
           persistentVolumeClaim:

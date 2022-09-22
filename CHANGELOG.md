@@ -40,6 +40,7 @@ Relação de versões de microsserviços:
 - *Kubernetes:* Ajustes nas configurações de deploy para que haja menos arquivos.
 - *Kubernetes:* Ajustes nos limites de réplicas e de recursos requisitados para alguns
   serviços.
+- *MongoDB:* Atualizado para versão 6.
 
 ### Consertado
 
