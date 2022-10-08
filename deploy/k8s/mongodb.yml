@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
         - name: mongodb-container
-          image: mongo:6
+          image: mongo:4
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - mountPath: /data/db

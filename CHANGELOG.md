@@ -29,6 +29,7 @@ Relação de versões de microsserviços:
 - *Kubernetes:* Adicionados serviços Prometheus e Grafana, com alguns dashboards
   padronizados.
 - *Minerva9:* Adicionada documentação para o MVC e repositório do projeto.
+- *Kubernetes:* Adição de configurações para deploy em ambientes IoT.
 
 ### Modificado
 
@@ -40,7 +41,7 @@ Relação de versões de microsserviços:
 - *Kubernetes:* Ajustes nas configurações de deploy para que haja menos arquivos.
 - *Kubernetes:* Ajustes nos limites de réplicas e de recursos requisitados para alguns
   serviços.
-- *MongoDB:* Atualizado para versão 6.
+- *MongoDB:* Downgrade para versão 4.
 
 ### Consertado
 
