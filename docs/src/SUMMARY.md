@@ -15,7 +15,7 @@
   - [Banco de Dados Não-Relacional](./banco-nao-relacional.md)
     - [Coleções](./colecoes.md)
   - [Cache via Redis](./cache-redis.md)
-  - [Mensageria via RabbitMQ]()
+  - [Mensageria via RabbitMQ](./mensageria-rabbitmq.md)
   - [Diagramas]()
     - [Diagramas de Caso de Uso](./diagramas/casos-de-uso.md)
     - [Diagramas de Sequência](./diagramas-sequencia.md)
