@@ -68,7 +68,7 @@ async fn remove_user_sessions(
 
     let mut client = rpc::session::make_client(endpoint, tenant.into(), "DISPATCH".into())
         .await
-        .map_err(|_| DispatchError::ConnectionError {
+        .map_err(|_| DispatchError::Connection {
             consumer_name: consumer_name.to_owned(),
             service_name: "SESSION service".to_string(),
         })?;

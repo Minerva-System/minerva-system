@@ -36,7 +36,7 @@ pub async fn queue_consume(
                 let conn = rabbitmq
                     .get()
                     .await
-                    .map_err(|_| DispatchError::ConnectionError {
+                    .map_err(|_| DispatchError::Connection {
                         consumer_name: consumer_name.clone(),
                         service_name: "RabbitMQ".to_string(),
                     })
@@ -45,7 +45,7 @@ pub async fn queue_consume(
                 let channel = conn
                     .create_channel()
                     .await
-                    .map_err(|_| DispatchError::ConnectionError {
+                    .map_err(|_| DispatchError::Connection {
                         consumer_name: consumer_name.clone(),
                         service_name: "RabbitMQ channel".to_string(),
                     })
@@ -59,7 +59,7 @@ pub async fn queue_consume(
                         FieldTable::default(),
                     )
                     .await
-                    .map_err(|_| DispatchError::ConnectionError {
+                    .map_err(|_| DispatchError::Connection {
                         consumer_name: consumer_name.clone(),
                         service_name: "queue using a new consumer".to_string(),
                     })
@@ -67,35 +67,31 @@ pub async fn queue_consume(
 
                 while let Some(delivery) = consumer.next().await {
                     let delivery = delivery
-                        .map_err(|_| DispatchError::DeliveryError {
+                        .map_err(|_| DispatchError::Delivery {
                             consumer_name: consumer_name.clone(),
                         })
                         .unwrap();
 
-                    match queue {
-                        &"session_management" => {
-                            if session_management::dispatch(
-                                &tenant,
-                                &consumer_name,
-                                &mongodb,
-                                &delivery.data,
-                            )
+                    if (queue == &"session_management")
+                        && session_management::dispatch(
+                            &tenant,
+                            &consumer_name,
+                            &mongodb,
+                            &delivery.data,
+                        )
+                        .await
+                        .unwrap()
+                    {
+                        // If message is known, then we send back an
+                        // ack signal. If not, well... leave it to
+                        // another consumer
+                        delivery
+                            .ack(BasicAckOptions::default())
                             .await
-                            .unwrap()
-                            {
-                                // If message is known, then we send back an
-                                // ack signal. If not, well... leave it to
-                                // another consumer
-                                delivery
-                                    .ack(BasicAckOptions::default())
-                                    .await
-                                    .map_err(|_| DispatchError::AckError {
-                                        consumer_name: consumer_name.clone(),
-                                    })
-                                    .unwrap();
-                            }
-                        }
-                        _ => {}
+                            .map_err(|_| DispatchError::Ack {
+                                consumer_name: consumer_name.clone(),
+                            })
+                            .unwrap();
                     }
                 }
 

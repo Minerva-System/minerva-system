@@ -22,7 +22,7 @@ pub enum OpType {
 }
 
 /// DTO representing a single entry on the `syslog` table.
-#[derive(Queryable, Serialize, Clone, Debug, PartialEq)]
+#[derive(Queryable, Serialize, Clone, Debug, PartialEq, Eq)]
 pub struct Syslog {
     /// ID of the entry on the table.
     pub id: i32,
@@ -41,7 +41,7 @@ pub struct Syslog {
 }
 
 /// DTO for adding a new entry on the `syslog` table.
-#[derive(Insertable, Clone, Debug, PartialEq)]
+#[derive(Insertable, Clone, Debug, PartialEq, Eq)]
 #[table_name = "syslog"]
 pub struct NewLog {
     /// Name of the service performing the operation.
