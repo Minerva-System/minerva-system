@@ -42,10 +42,10 @@ jobs:
           - 15672:15672
 
     steps:
-      - name: Install PostgreSQL dependencies
+      - name: Install PostgreSQL and Protobuf dependencies
         run: |
           sudo apt update
-          sudo apt install -y libpq5
+          sudo apt install -y libpq5 protobuf-compiler
 
       - name: Checkout repository
         uses: actions/checkout@v2
