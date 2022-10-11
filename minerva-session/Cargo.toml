@@ -11,7 +11,7 @@ minerva-data = {path = "../minerva-data"}
 minerva-cache = {path = "../minerva-cache"}
 tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync"]}
 dotenv = "0.15.0"
-tonic = "0.7"
+tonic = "0.8.2"
 mongodb = "2.2.1"
 futures-util = "0.3"
 base64 = "0.13.0"

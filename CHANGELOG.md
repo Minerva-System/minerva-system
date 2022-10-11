@@ -42,6 +42,8 @@ Relação de versões de microsserviços:
 - *Kubernetes:* Ajustes nos limites de réplicas e de recursos requisitados para alguns
   serviços.
 - *MongoDB:* Downgrade para versão 4.
+- Tonic atualizado para v0.8.2.
+- Prost atualizado para v0.11.
 
 ### Consertado
 

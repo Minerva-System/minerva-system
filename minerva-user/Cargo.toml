@@ -11,7 +11,7 @@ minerva-data = {path = "../minerva-data"}
 minerva-broker = {path = "../minerva-broker"}
 tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync", "net"]}
 dotenv = "0.15.0"
-tonic = "0.7"
+tonic = "0.8.2"
 diesel = { version = "1.4.4", features = ["postgres"] }
 bb8 = "0.7.1"
 bb8-diesel = "0.2.1"
