@@ -34,9 +34,9 @@ jobs:
 
       rabbitmq:
         image: rabbitmq:3-management-alpine
-        environment:
-          - RABBITMQ_DEFAULT_USER=rabbitmq
-          - RABBITMQ_DEFAULT_PASS=minerva
+        env:
+          RABBITMQ_DEFAULT_USER: rabbitmq
+          RABBITMQ_DEFAULT_PASS: minerva
         ports:
           - 5672:5672
           - 15672:15672
