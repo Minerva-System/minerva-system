@@ -42,11 +42,21 @@ jobs:
           - 15672:15672
 
     steps:
-      - name: Install PostgreSQL and Protobuf dependencies
+      - name: Install misc dependencies
         run: |
           sudo apt update
-          sudo apt install -y libpq5 protobuf-compiler
+          sudo apt install -y libpq5 unzip
 
+      - name: Install Protocol Buffers compiler
+        run: |
+          wget https://github.com/protocolbuffers/protobuf/releases/download/v21.7/protoc-21.7-linux-x86_64.zip
+          mv protoc-*.zip protoc.zip
+          unzip protoc.zip && rm -r protoc.zip readme.txt
+          sudo mv bin/protoc /usr/local/bin/protoc
+          sudo mv include/* /usr/local/include
+          rm -r bin
+          protoc --version
+          
       - name: Checkout repository
         uses: actions/checkout@v2
 
