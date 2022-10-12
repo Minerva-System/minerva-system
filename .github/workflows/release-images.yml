@@ -1,8 +1,7 @@
 name: Release images
 
-# TODO: Change this to a merge.
 on:
-  pull_request:
+  push:
     branches: [master]
   workflow_dispatch:
 
