@@ -21,6 +21,7 @@ WORKDIR /minerva
 COPY --from=chef /minerva/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 COPY . .
+RUN apk add --no-cache protobuf protobuf-dev
 RUN cargo build --release
 
 # Base container for deploying services

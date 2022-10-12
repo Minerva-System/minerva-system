@@ -54,7 +54,7 @@ jobs:
           unzip protoc.zip && rm -r protoc.zip readme.txt
           sudo mv bin/protoc /usr/local/bin/protoc
           sudo mv include/* /usr/local/include
-          rm -r bin
+          rm -r bin include
           protoc --version
           
       - name: Checkout repository
