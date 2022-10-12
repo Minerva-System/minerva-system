@@ -44,6 +44,14 @@ Relação de versões de microsserviços:
 - *MongoDB:* Downgrade para versão 4.
 - Tonic atualizado para v0.8.2.
 - Prost atualizado para v0.11.
+- *CI/CD:* Adicionada dependência do compilador de Protocol Buffers (`protoc`),
+  no _build_ via Docker e no ambiente de testes do GitHub Actions.
+- *Compose/Swarm:* Exposição das portas do PostgreSQL e do MongoDB para acesso remoto.
+- *Compose/Swarm:* Removidas as ferramentas Mongo Express, Redis Commander e
+  pgAdmin4, já que essas configurações são pensadas primariamente como debug.
+  Para monitorar e inspecionar o MongoDB, o Redis e o PostgreSQL, veja ferramentas
+  ad-hoc como MongoDB Compass, RESP.app ou DBeaver, respectivamente.
+
 
 ### Consertado
 

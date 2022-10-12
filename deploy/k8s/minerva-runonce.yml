@@ -10,7 +10,7 @@ data:
   MONGO_SERVICE_SERVER: mongodb-svc
   DATABASE_PORT: "5432"
   MONGO_PORT: "27017"
-  RABBITMQ_SERVICE_SERVER: broker-rabbitmqcluster
+  RABBITMQ_SERVICE_SERVER: rabbitmq
 ---
 # Minerva System -- RUNONCE: Secret
 apiVersion: v1
