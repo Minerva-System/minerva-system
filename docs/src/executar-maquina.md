@@ -117,7 +117,12 @@ qualquer.
 #### Banco de dados não-relacional
 
 Recomenda-se também criar o banco de dados não-relacional via Docker.
-Igualmente, é possível instalar o MongoDB 6 por métodos convencionais.
+Igualmente, é possível instalar o MongoDB 4 por métodos convencionais.
+
+Veja que o MongoDB é usado aqui em sua versão 4 especialmente por ser
+mais compatível com ambientes IoT, em especial K3s executando em um
+Raspberry Pi 4 Model B, que foi utilizado para testar o deploy em
+um cluster Kubernetes.
 
 Para subir o banco de dados não-relacional, execute o script
 `make_mongo_db.sh` no diretório `minerva-runonce`, ou execute:
@@ -127,7 +132,7 @@ docker run --name minerva-mongo \
        -e MONGO_INITDB_ROOT_USERNAME=root \
        -e MONGO_INITDB_ROOT_PASSWORD=mongo \
        -p 27017:27017 \
-       -d mongo:6
+       -d mongo:4
 ```
 
 Como esperado, o contêiner pode ser gerenciado normalmente através do Docker.

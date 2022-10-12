@@ -48,8 +48,6 @@ spec:
           envFrom:
             - secretRef:
                 name: mongodb-secret
-      nodeSelector:
-        kubernetes.io/arch: "amd64"
       volumes:
         - name: mongodb-pv
           persistentVolumeClaim:

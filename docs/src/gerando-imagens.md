@@ -74,7 +74,7 @@ como essas imagens encontram-se no DockerHub (sob o _username_ `luksamuk`):
 |--------------|--------------------------------------|
 | `pgadmin`    | `dpage/pgadmin4:latest` (Não gerado) |
 | `postgresql` | `postgres:14` (Não gerado)           |
-| `mongodb`    | `mongo:6` (Não gerado)               |
+| `mongodb`    | `mongo:4` (Não gerado)               |
 
 
 

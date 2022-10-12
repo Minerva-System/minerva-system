@@ -191,7 +191,7 @@ spec:
     kind: StatefulSet
     name: redis
   minReplicas: 3
-  maxReplicas: 9
+  maxReplicas: 5
   metrics:
     - type: Resource
       resource:

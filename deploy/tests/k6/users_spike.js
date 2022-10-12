@@ -6,14 +6,14 @@ import { textSummary } from "https://jslib.k6.io/k6-summary/0.0.1/index.js";
 
 export const options = {
     stages: [
-        { duration: '2m', target: 100 }, // below normal load
-        { duration: '5m', target: 100 },
-        { duration: '2m', target: 200 }, // normal load
-        { duration: '5m', target: 200 },
-        { duration: '2m', target: 300 }, // around the breaking point
-        { duration: '5m', target: 300 },
-        { duration: '2m', target: 400 }, // beyond the breaking point
-        { duration: '5m', target: 400 },
+        { duration: '2m', target: 10 }, // below normal load
+        { duration: '5m', target: 10 },
+        { duration: '2m', target: 20 }, // normal load
+        { duration: '5m', target: 20 },
+        { duration: '2m', target: 30 }, // around the breaking point
+        { duration: '5m', target: 30 },
+        { duration: '2m', target: 40 }, // beyond the breaking point
+        { duration: '5m', target: 40 },
         { duration: '10m', target: 0 }, // scale down. Recovery stage.
     ],
 };

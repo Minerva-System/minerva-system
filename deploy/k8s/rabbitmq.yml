@@ -41,7 +41,7 @@ spec:
     spec:
       containers:
         - name: rabbitmq-container
-          image: arm64v8/rabbitmq:3.11-management-alpine
+          image: rabbitmq:3.11-management-alpine
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - mountPath: /var/lib/rabbitmq
