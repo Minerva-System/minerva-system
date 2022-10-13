@@ -1,3 +1,6 @@
+//! This controller contains routines related to dispatching session management
+//! messages, normally to a SESSION module.
+
 use crate::error::DispatchError;
 use futures::stream::TryStreamExt;
 use minerva_broker::model::SessionMessage;
@@ -6,6 +9,7 @@ use mongodb::bson::{doc, Document};
 use mongodb::Client as MongoClient;
 use mongodb::Database as MongoDatabase;
 
+/// Dispatches a user session message.
 pub async fn dispatch(
     tenant: &str,
     consumer_name: &str,
@@ -32,6 +36,8 @@ pub async fn dispatch(
     }
 }
 
+/// Dispatches requests to SESSION so that all sessions for a given user are
+/// removed.
 async fn remove_user_sessions(
     consumer_name: &str,
     mongodb: &MongoDatabase,
