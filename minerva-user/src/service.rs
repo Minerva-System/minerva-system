@@ -184,8 +184,6 @@ impl User for UserService {
             repository::delete_user(req.get_ref().index, requestor, dbpool, &rabbitmq).await
         };
 
-        result
-            .map(|_| Response::new(()))
-            .map_err(|e| Status::internal(format!("Cannot recover user: {}", e)))
+        result.map(|_| Response::new(()))
     }
 }

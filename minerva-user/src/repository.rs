@@ -8,6 +8,7 @@ use minerva_data::db::DBConnection;
 use minerva_data::db::DBPool;
 use minerva_data::syslog::{NewLog, OpType};
 use minerva_data::user as model;
+use tonic::Status;
 
 /// Default page size of a user list.
 const USER_PAGE_SIZE: i64 = 20;
@@ -127,12 +128,14 @@ pub async fn delete_user(
     requestor: String,
     dbpool: &DBPool,
     rabbitmq: &lapin::Connection,
-) -> Result<(), Error> {
+) -> Result<(), Status> {
     use minerva_data::schema::syslog;
     use minerva_data::schema::user::dsl::*;
 
-    let connection = dbpool.get().await.unwrap();
-    //.map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
+    let connection = dbpool
+        .get()
+        .await
+        .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
     let result = connection
         .build_transaction()
@@ -156,7 +159,8 @@ pub async fn delete_user(
                 .execute(&*connection)?;
 
             Ok(entity)
-        })?;
+        })
+        .map_err(|e| Status::internal(format!("Database error: {}", e)))?;
 
     // Queue message on RabbitMQ so that the session service
     // asynchronously deletes the user's sessions.
@@ -168,7 +172,6 @@ pub async fn delete_user(
 
     let json = broker::model::SessionMessage::Remove { user: result.login }.to_json();
 
-    // TODO: Improve error handling here
     channel
         .basic_publish(
             "",
@@ -178,9 +181,11 @@ pub async fn delete_user(
             BasicProperties::default(),
         )
         .await
-        .unwrap()
+        .map_err(|e| Status::internal(format!("Session removal publishing failed: {}", e)))?
         .await
-        .unwrap();
+        .map_err(|e| {
+            Status::internal(format!("Session removal publishing not confirmed: {}", e))
+        })?;
 
     Ok(())
 }
