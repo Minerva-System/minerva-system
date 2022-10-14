@@ -17,6 +17,12 @@ mod session_management;
 const QUEUE_PROCESSING_WAIT_SECS: u64 = 3;
 
 /// Primary entry point for the consuming of messages from the message broker.
+///
+/// # Note
+/// This procedure contain A LOT of `unwrap`'s. This is by design. This procedure
+/// is supposed to run asynchronously for each queue that is supposed to be listened
+/// to by the DISPATCH service, and by tenant as well. If any step on this fails,
+/// the listener should also fail, and maybe be restarted.
 pub async fn queue_consume(
     tenant: String,
     rabbitmq: LapinPool,
