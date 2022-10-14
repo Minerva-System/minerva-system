@@ -474,7 +474,8 @@ encontrar as instruções de instalação dessa extensão
 
 No diretório `deploy/tests/k6`, você poderá executar o `k6` compilado com a extensão
 referida. O host do cluster deverá ser informado através da variável de ambiente
-`MINERVA_HOST`.
+`MINERVA_HOST`. Note que o `k6` assume que o host informado possua uma rota `/api`,
+então você deverá garantir que o Ingress do cluster esteja funcionando.
 
 O exemplo a seguir mostra como executar os spike tests para stress de operações de
 sessão e de usuários.
