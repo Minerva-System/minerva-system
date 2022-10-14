@@ -63,6 +63,7 @@ spec:
           ports:
             - containerPort: 5672
             - containerPort: 15672
+            - containerPort: 15692
       volumes:
         - name: rabbitmq-pv
           persistentVolumeClaim:
@@ -91,5 +92,7 @@ spec:
   ports:
     - name: "amqp"
       port: 5672
-    - name: "management"
+    - name: "vhost"
       port: 15672
+    - name: "management"
+      port: 15692
