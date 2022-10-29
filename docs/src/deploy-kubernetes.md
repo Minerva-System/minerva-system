@@ -333,15 +333,8 @@ kubectl apply -f --server-side=true util/grafana-data.yml
 kubectl apply -f util/grafana.yml
 ```
 
-##### Dashboards úteis
-
-Os dashboards a seguir são úteis para monitoramento do cluster Kubernetes
-através dos dados obtidos pelo Prometheus através do scraping das várias
-rotas de métricas do K8s, e podem ser importados diretamente pelo Grafana.
-
-- [Kubernetes Cluster Monitoring (via Prometheus)](https://grafana.com/grafana/dashboards/315-kubernetes-cluster-monitoring-via-prometheus/)
-- [Kubernetes apiserver](https://grafana.com/grafana/dashboards/12006-kubernetes-apiserver/)
-- [1 K8S for Prometheus Dashboard 20211010 EN](https://grafana.com/grafana/dashboards/15661-1-k8s-for-prometheus-dashboard-20211010/)
+Para mais detalhes da configuração do Grafana, veja a página de
+[Ferramentas para monitoramento externo.](./ferramentas-monitoramento-externas.md)
 
 ### Ingresses (via Traefik)
 
