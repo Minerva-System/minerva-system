@@ -6,10 +6,12 @@ Kubernetes.
 
 A maioria dos serviços a seguir pode ser acessado através de _port-forward_.
 
+
+
 ## MongoDB Compass (para MongoDB)
 
 <center>
-<img src="./mongodb-logo.png" alt="MongoDB" width="400"/>
+<img src="./mongodb-logo.png" alt="MongoDB" height="150"/>
 </center>
 
 O MongoDB Compass é uma ferramenta para desktop que permite inspecionar
@@ -35,7 +37,7 @@ com usuários e senha padrão `root` e `mongo`.
 ## RESP.app (para Redis)
 
 <center>
-<img src="./redis-logo.png" alt="Redis" width="200"/>
+<img src="./redis-logo.png" alt="Redis" height="150"/>
 </center>
 
 O RESP.app é uma ferramenta para desktop que permite inspecionar dados em cache
@@ -64,7 +66,7 @@ segurança ou autenticação.
 ## DBeaver Community Edition (para PostgreSQL)
 
 <center>
-<img src="./postgresql-logo.png" alt="PostgreSQL" width="200"/>
+<img src="./postgresql-logo.png" alt="PostgreSQL" height="150"/>
 </center>
 
 O DBeaver é um cliente universal para banco de dados que permite inspecionar tabelas,
@@ -107,13 +109,44 @@ desejar, e poderá também fazer outras operações com o banco.
 
 ## RabbitMQ
 
-<!-- Mencionar port-forward -->
-<!-- Mencionar acesso web -->
+<center>
+<img src="./rabbitmq-logo.png" alt="RabbitMQ" height="150"/>
+</center>
+
+O serviço de mensageria RabbitMQ já provê um painel de monitoramento e configuração
+em seu _deployment_. Esse painel não fica normalmente exposto pelo Minerva System,
+mas pode ser acessado através de _port-forward_.
+
+O RabbitMQ expõe três portas:
+
+- `5672` (porta `amqp`, para conexões com filas);
+- `15672` (porta `management`, para gerenciamento da aplicação);
+- `15692` (porta `vhost`, para gerenciamento de hosts virtuais, em especial usado
+  para _multi-tenant_).
+
+Para acessar o painel do RabbitMQ, vamos expor localmente, através de _port-forward_,
+a porta `management` (`15672`). Mas caso seja necessário realizar alguma operação
+extra, você poderá expor as portas anteriores também.
+
+```bash
+kubectl port-forward -n minerva deployment/rabbitmq-deployment 15672:15672
+```
+
+Em seguida, acesse o painel do RabbitMQ pelo navegador, em `http://localhost:15672`.
+Para realizar login, use o usuário padrão `rabbitmq` e a senha `minerva`.
+
+<center>
+<img src="./rabbitmq-config.png" alt="Painel do RabbitMQ" width="600"/>
+</center>
 
 
 
 
 ## Grafana
+
+<center>
+<img src="./grafana-logo.png" alt="Grafana" height="150"/>
+</center>
 
 <!-- Mencionar ingress -->
 <!-- Migrar dashboards úteis para cá -->
