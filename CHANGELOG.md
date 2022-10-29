@@ -51,7 +51,7 @@ Relação de versões de microsserviços:
   pgAdmin4, já que essas configurações são pensadas primariamente como debug.
   Para monitorar e inspecionar o MongoDB, o Redis e o PostgreSQL, veja ferramentas
   ad-hoc como MongoDB Compass, RESP.app ou DBeaver, respectivamente.
-
+- *PostgreSQL*: Atualizado para versão 15.
 
 ### Consertado
 

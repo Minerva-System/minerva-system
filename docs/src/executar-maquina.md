@@ -97,7 +97,7 @@ finalidade de testes.
 #### Banco de dados relacional
 
 Como primeira dependência, recomenda-se criar o banco de dados relacional
-via Docker. Também seria possível instalar o PostgreSQL 14 na máquina local,
+via Docker. Também seria possível instalar o PostgreSQL 15 na máquina local,
 mas o Docker provê a comodidade necessária para o BD.
 
 Para subir o banco de dados relacional, execute o script `make_postgres_db.sh`
@@ -108,7 +108,7 @@ docker run --name minerva-postgres \
        -e POSTGRES_USER=postgres \
        -e POSTGRES_PASSWORD=postgres \
        -p 5432:5432 \
-       -d postgres:14-alpine
+       -d postgres:15-alpine
 ```
 
 O contêiner poderá então ser gerenciado através do Docker, como um contêiner

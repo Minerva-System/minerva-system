@@ -49,7 +49,7 @@ Para começar, crie um contêiner Docker para cada um dos bancos de dados:
 ./make_redis_db.sh
 ```
 
-Isso criará contêineres executando PostgreSQL 14, MongoDB 4 e Redis 7.
+Isso criará contêineres executando PostgreSQL 15, MongoDB 4 e Redis 7.
 
 Após a criação dos contêineres, o processo de preparação dos bancos de dados
 pode ser um pouco demorado. Acompanhe este processo observando os logs:

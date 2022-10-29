@@ -117,12 +117,12 @@ services:
       restart_policy:
         condition: on-failure
 
-  # PostgreSQL 14
+  # PostgreSQL 15
   postgresql:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    image: postgres:14-alpine
+    image: postgres:15-alpine
     ports:
       - "5432:5432"
     volumes:
