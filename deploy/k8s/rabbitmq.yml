@@ -92,7 +92,7 @@ spec:
   ports:
     - name: "amqp"
       port: 5672
-    - name: "vhost"
-      port: 15672
     - name: "management"
+      port: 15672
+    - name: "vhost"
       port: 15692
