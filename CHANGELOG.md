@@ -52,6 +52,8 @@ Relação de versões de microsserviços:
   Para monitorar e inspecionar o MongoDB, o Redis e o PostgreSQL, veja ferramentas
   ad-hoc como MongoDB Compass, RESP.app ou DBeaver, respectivamente.
 - *PostgreSQL*: Atualizado para versão 15.
+- *Documentação*: Adicionados diagramas separados para cada _deployment_ no Kubernetes,
+  bem como um diagrama geral da arquitetura do mesmo.
 
 ### Consertado
 
