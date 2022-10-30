@@ -1,7 +1,7 @@
 # Deploy usando Kubernetes
 
 <center>
-<img src="./kubernetes-logo.webp" alt="Kubernetes" width="200"/>
+<img src="./kubernetes-logo.png" alt="Kubernetes" width="200"/>
 </center>
 
 

@@ -1,7 +1,7 @@
 # Mensageria via RabbitMQ
 
 <center>
-<img src="./rabbitmq.png" alt="RabbitMQ" width="200"/>
+<img src="./rabbitmq-logo.png" alt="RabbitMQ" height="150"/>
 </center>
 
 O Minerva System utiliza o RabbitMQ para operações de mensageria. Essas

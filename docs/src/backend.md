@@ -177,9 +177,13 @@ As bibliotecas planejadas para o sistema são:
   importado em todos os módulos, exceto na comunicação REST. Os DTOs também
   devem implementar traits e utilitários para conversão das mensagens
   implementadas em `minerva-rpc` para os DTOs desta biblioteca.
-- [ ] `minerva-cache`: Implementação de utilitários de comunicação com
-  cache, message brokers e armazenamento temporário _in-memory_ (Redis).
-  Deve ser importado principalmente no módulo de sessão.
+- [x] `minerva-cache`: Implementação de utilitários de comunicação com
+  cache e armazenamento temporário _in-memory_ (Redis). Deve ser importado
+  principalmente no módulo de sessão.
+- [x] `minerva-broker`: Implementação de utilitários de comunicação com
+  message brokers (RabbitMQ). Deve ser importado em qualquer módulo que
+  envolva processamento assíncrono, mas principalmente no módulo de despacho
+  de mensagens.
 
 ## Módulos
 
@@ -213,6 +217,8 @@ Os módulos planejados para o sistema são:
   Possibilita a consulta aos logs de auditoria do sistema.
 - [ ] `minerva-comm`: Servidor gRPC para comunicação externa com clientes
   via mensagens instantâneas.
+- [x] `minerva-dispatch`: Serviço de escuta de message broker e despacho de
+  mensagens para demais serviços.
 
 ## Portas
 

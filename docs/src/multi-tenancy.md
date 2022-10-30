@@ -49,5 +49,7 @@ O sistema `RUNONCE` deverá, para cada tenant listado em `tenancy.toml`:
    deverá criá-los;
 2. Executar as migrations (no BD relacional) para aquele *tenant*;
 3. Criar as coleções e índices (no BD não-relacional) para aquele *tenant*;
-3. Criar o usuário `admin` (no BD relacional) para aquele *tenant*.
+3. Criar o usuário `admin` (no BD relacional) para aquele *tenant*;
+4. Criar as devidas filas de despacho de mensagens (no message broker) para
+   aquele tenant.
 
