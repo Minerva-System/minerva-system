@@ -182,20 +182,18 @@ with Diagram("Provisionamento do banco de dados MongoDB", show=False, outformat=
 with Diagram("Provisionamento do banco de dados in-memory Redis", show=False, outformat="png", graph_attr=graph_attr, filename="redis_diagram"):
     with Cluster("Redis"):
         configmap = ConfigMap("redis-configmap\n(mounted as volume)")
-        pvc = PVC("redis-pvc")
-        volume = PV("500Mi volume\n(dynamic)")
         statefulset = StatefulSet("redis")
         service = Service("redis-svc\n(ClusterIP)")
         hpa = HPA("redis-hpa")
 
-        service >> statefulset
-        hpa >> statefulset
-        statefulset << pvc
+        service >> statefulset << hpa
         with Cluster("ReplicaSet"):
-            pods = [Pod("redis-0\n(master)"), Pod("redis-1")]
-            statefulset - Edge(style="dashed") - pods
-            pods << configmap
-            pods - Edge(style="dotted") - volume
+            pod0 = Pod("redis-0\n(master)")
+            pod1 = Pod("redis-1")
+            pods = [pod0, pod1]
+            pod0 - Edge(style="dotted") - PVC("redis-data-redis-0\n(dynamic)") - Edge(style="dotted") - PV("500Mi volume\n(dynamic)")
+            pod1 - Edge(style="dotted") - PVC("redis-data-redis-1\n(dynamic)") - Edge(style="dotted") - PV("500Mi volume\n(dynamic)")
+            statefulset - Edge(style="dashed") - pods << configmap
             
             
 # Prometheus

@@ -75,19 +75,6 @@ data:
     rdb-save-incremental-fsync yes
     jemalloc-bg-thread yes
 ---
-# Redis: Persistent Volume Claim
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: redis-pvc
-  namespace: minerva
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 500Mi
----
 # Redis: Stateful Set
 apiVersion: apps/v1
 kind: StatefulSet
@@ -161,9 +148,15 @@ spec:
         - name: redis-initial-config
           configMap:
             name: redis-configmap
-        - name: redis-data
-          persistentVolumeClaim:
-            claimName: redis-pvc
+  volumeClaimTemplates:
+    - metadata:
+        name: redis-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 500Mi
 ---
 # Redis: Service
 apiVersion: v1
