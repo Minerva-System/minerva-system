@@ -8,7 +8,7 @@ jobs:
   build-docs:
     runs-on: ubuntu-latest
     container:
-      image: fedora:36
+      image: fedora:37
     steps:
       - name: Adjust locale
         continue-on-error: true
@@ -22,7 +22,8 @@ jobs:
         run: |
           dnf install -y curl dnf-plugins-core openssl \
           openssl-devel cmake gcc clang make git unzip \
-          libpq libpq-devel rsync graphviz plantuml
+          libpq libpq-devel rsync graphviz plantuml \
+          protobuf-devel protobuf-compiler
         
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1.0.6
