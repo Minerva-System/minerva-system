@@ -26,8 +26,11 @@ jobs:
         
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1.0.6
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
         with:
           toolchain: stable
+          profile: minimal
 
       - name: Install Flutter
         uses: britannio/action-install-flutter@v1.1
