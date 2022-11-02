@@ -252,6 +252,8 @@ as portas certas:
 | 8585  | Visualizador do cluster |
 | 8686  | Mongo Express           |
 | 8787  | Redis Commander         |
+| 5672  | RabbitMQ (Serviço)      |
+| 15672 | RabbitMQ (Gerenciador)  |
 
 ## Encerrando o serviço
 

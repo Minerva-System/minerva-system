@@ -34,9 +34,11 @@ services:
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
+      - RABBITMQ_SERVICE_SERVER=rabbitmq
     depends_on:
       - "postgresql"
       - "mongodb"
+      - "rabbitmq"
     networks:
       - minerva_system
     restart: on-failure:5
@@ -46,6 +48,7 @@ services:
     image: luksamuk/minerva_user:latest
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
+      - RABBITMQ_SERVICE_SERVER=rabbitmq
     networks:
       - minerva_system
     restart: on-failure:5
@@ -57,60 +60,52 @@ services:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
       - REDIS_SERVICE_SERVER=redis
+      - RABBITMQ_SERVICE_SERVER=rabbitmq
     networks:
       - minerva_system
     restart: on-failure:5
 
-  # PostgreSQL 14
+  # DISPATCH service
+  dispatch:
+    image: luksamuk/minerva_dispatch:latest
+    environment:
+      - DATABASE_SERVICE_SERVER=postgresql
+      - MONGO_SERVICE_SERVER=mongodb
+      - REDIS_SERVICE_SERVER=redis
+      - RABBITMQ_SERVICE_SERVER=rabbitmq
+      - SESSION_SERVICE_SERVER=session
+      - SESSION_SERVICE_PORT=9011
+    depends_on:
+      - "rabbitmq"
+    networks:
+      - minerva_system
+    restart: on-failure:5
+
+  # PostgreSQL 15
   postgresql:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    image: postgres:14-alpine
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
       - minerva_system
     restart: on-failure:5
 
-  # pgAdmin 4
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=admin
-    ports:
-      - "8484:80"
-    volumes:
-      - ${PWD}/swarm/servers.json:/pgadmin4/servers.json
-    networks:
-      - minerva_system
-    restart: on-failure:5
-
-  # MongoDB 5
+  # MongoDB 4
   mongodb:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=mongo
-    image: mongo:5
+    image: mongo:4
     command: mongod --quiet --logpath /dev/null
     volumes:
       - mongodb-data:/data/db
-    networks:
-      - minerva_system
-    restart: on-failure:5
-
-  # Mongo Express
-  mongo-express:
-    image: mongo-express:latest
-    environment:
-      - ME_CONFIG_MONGODB_SERVER=mongodb
-      - ME_CONFIG_MONGODB_AUTH_USERNAME=root
-      - ME_CONFIG_MONGODB_AUTH_PASSWORD=mongo
-      - ME_CONFIG_BASICAUTH_USERNAME=mongo
-      - ME_CONFIG_BASICAUTH_PASSWORD=mongo
     ports:
-      - "8686:8081"
+      - "27017:27017"
     networks:
       - minerva_system
     restart: on-failure:5
@@ -126,18 +121,19 @@ services:
       - minerva_system
     restart: on-failure:5
 
-  # Redis Commander
-  redis-commander:
-    image: rediscommander/redis-commander:latest
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
     environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_PASS=minerva
     ports:
-      - "8787:8081"
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - minerva_system
     restart: on-failure:5
-
+    
 networks:
   minerva_system:
 

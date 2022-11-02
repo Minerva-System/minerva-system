@@ -1,6 +1,7 @@
 //! This module contains the actual implementation for the `User` gRPC service.
 
 use crate::repository;
+use minerva_broker as broker;
 use minerva_data as lib_data;
 use minerva_data::db::DBPool;
 use minerva_rpc as lib_rpc;
@@ -13,7 +14,7 @@ use tonic::{Request, Response, Status};
 #[derive(Clone)]
 pub struct UserService {
     /// Holds database connection pools for all tenants.
-    pub pools: HashMap<String, DBPool>,
+    pub pools: HashMap<String, (DBPool, broker::LapinPool)>,
 }
 
 #[tonic::async_trait]
@@ -38,10 +39,9 @@ impl User for UserService {
         let page = req.into_inner().index.unwrap_or(0);
 
         let result = {
-            let connection = self
-                .pools
-                .get(&tenant)
-                .expect("Unable to find tenant")
+            let (dbpool, _rmqpool) = self.pools.get(&tenant).expect("Unable to find tenant");
+
+            let connection = dbpool
                 .get()
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
@@ -71,10 +71,9 @@ impl User for UserService {
         );
 
         let result = {
-            let connection = self
-                .pools
-                .get(&tenant)
-                .expect("Unable to find tenant")
+            let (dbpool, _rmqpool) = self.pools.get(&tenant).expect("Unable to find tenant");
+
+            let connection = dbpool
                 .get()
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
@@ -110,10 +109,9 @@ impl User for UserService {
         let result = {
             let data = req.into_inner().into();
 
-            let connection = self
-                .pools
-                .get(&tenant)
-                .expect("Unable to find tenant")
+            let (dbpool, _rmqserver) = self.pools.get(&tenant).expect("Unable to find tenant");
+
+            let connection = dbpool
                 .get()
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
@@ -146,10 +144,9 @@ impl User for UserService {
         let result = {
             let data = req.into_inner().into();
 
-            let connection = self
-                .pools
-                .get(&tenant)
-                .expect("Unable to find tenant")
+            let (dbpool, _rmqpool) = self.pools.get(&tenant).expect("Unable to find tenant");
+
+            let connection = dbpool
                 .get()
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
@@ -177,19 +174,16 @@ impl User for UserService {
         );
 
         let result = {
-            let connection = self
-                .pools
-                .get(&tenant)
-                .expect("Unable to find tenant")
+            let (dbpool, rmqpool) = self.pools.get(&tenant).expect("Unable to find tenant");
+
+            let rabbitmq = rmqpool
                 .get()
                 .await
-                .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
+                .map_err(|e| Status::internal(format!("Could not connect to RabbitMQ: {}", e)))?;
 
-            repository::delete_user(req.get_ref().index, requestor, &*connection)
+            repository::delete_user(req.get_ref().index, requestor, dbpool, &rabbitmq).await
         };
 
-        result
-            .map(|_| Response::new(()))
-            .map_err(|e| Status::internal(format!("Cannot recover user: {}", e)))
+        result.map(|_| Response::new(()))
     }
 }

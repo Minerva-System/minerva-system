@@ -2,9 +2,13 @@
 
 use diesel::prelude::*;
 use diesel::result::Error;
+use lapin::{options::BasicPublishOptions, BasicProperties};
+use minerva_broker as broker;
 use minerva_data::db::DBConnection;
+use minerva_data::db::DBPool;
 use minerva_data::syslog::{NewLog, OpType};
 use minerva_data::user as model;
+use tonic::Status;
 
 /// Default page size of a user list.
 const USER_PAGE_SIZE: i64 = 20;
@@ -119,21 +123,29 @@ pub fn update_user(
 }
 
 /// Deletes a user, for a given requestor, which shall also be a user.
-pub fn delete_user(
+pub async fn delete_user(
     user_id: i32,
     requestor: String,
-    connection: &DBConnection,
-) -> Result<(), Error> {
+    dbpool: &DBPool,
+    rabbitmq: &lapin::Connection,
+) -> Result<(), Status> {
     use minerva_data::schema::syslog;
     use minerva_data::schema::user::dsl::*;
 
-    connection
+    let connection = dbpool
+        .get()
+        .await
+        .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
+
+    let result = connection
         .build_transaction()
         .read_write()
-        .run::<(), Error, _>(|| {
+        .run::<model::User, Error, _>(|| {
             let target = user.filter(id.eq(user_id));
 
-            diesel::delete(target).execute(connection)?;
+            let entity = target.get_result::<model::User>(&*connection)?;
+
+            diesel::delete(target).execute(&*connection)?;
 
             diesel::insert_into(syslog::table)
                 .values(&NewLog {
@@ -144,8 +156,36 @@ pub fn delete_user(
                     datetime: chrono::offset::Utc::now(),
                     description: Some(format!("Delete user ID {}", user_id)),
                 })
-                .execute(connection)?;
+                .execute(&*connection)?;
 
-            Ok(())
+            Ok(entity)
         })
+        .map_err(|e| Status::internal(format!("Database error: {}", e)))?;
+
+    // Queue message on RabbitMQ so that the session service
+    // asynchronously deletes the user's sessions.
+    // We can just inform the tenant and the login and that should be it
+    let channel = rabbitmq
+        .create_channel()
+        .await
+        .expect("Could not create RabbitMQ channel");
+
+    let json = broker::model::SessionMessage::Remove { user: result.login }.to_json();
+
+    channel
+        .basic_publish(
+            "",
+            "session_management",
+            BasicPublishOptions::default(),
+            json.as_bytes(),
+            BasicProperties::default(),
+        )
+        .await
+        .map_err(|e| Status::internal(format!("Session removal publishing failed: {}", e)))?
+        .await
+        .map_err(|e| {
+            Status::internal(format!("Session removal publishing not confirmed: {}", e))
+        })?;
+
+    Ok(())
 }

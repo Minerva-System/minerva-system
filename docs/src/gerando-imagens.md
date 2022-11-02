@@ -73,8 +73,8 @@ como essas imagens encontram-se no DockerHub (sob o _username_ `luksamuk`):
 | `session`    | `luksamuk/minerva_session:latest`    |
 |--------------|--------------------------------------|
 | `pgadmin`    | `dpage/pgadmin4:latest` (Não gerado) |
-| `postgresql` | `postgres:14` (Não gerado)           |
-| `mongodb`    | `mongo:5` (Não gerado)               |
+| `postgresql` | `postgres:15` (Não gerado)           |
+| `mongodb`    | `mongo:4` (Não gerado)               |
 
 
 

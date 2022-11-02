@@ -19,6 +19,9 @@ pub async fn database_spinlock(server: &str) {
             .run_command(doc! { "ping": 1 }, None)
             .await
             .is_err();
+        if lock {
+            tokio::time::sleep(tokio::time::Duration::from_millis(2000)).await;
+        }
     }
 }
 

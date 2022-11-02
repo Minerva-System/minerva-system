@@ -28,6 +28,8 @@ Não se esqueça de consultar estes documentos com frequência.
   Serviço de gerenciamento de sessão de usuário.
 - [USER](./doc/minerva_user/index.html) \
   Serviço de gerenciamento de usuários.
+- [DISPATCH](./doc/minerva_dispatch/index.html) \
+  Serviço de consumo de filas do RabbitMQ e despacho de operações.
 - PRODUCT _(não implementado)_ \
   Serviço de gerenciamento de produtos.
 - REPORT _(não implementado)_ \
@@ -51,5 +53,7 @@ Não se esqueça de consultar estes documentos com frequência.
   Biblioteca de implementação de Protocol Buffers, mensagens gRPC e afins.
 - [CACHE](./doc/minerva_cache/index.html) \
   Biblioteca para uso e acesso ao cache via serviço Redis.
+- [BROKER](./doc/minerva_broker/index.html) \
+  Biblioteca para uso, acesso e configuração do serviço RabbitMQ e mensageria.
 
 

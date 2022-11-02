@@ -32,23 +32,42 @@ jobs:
         ports:
           - 6379:6379
 
+      rabbitmq:
+        image: rabbitmq:3-management-alpine
+        env:
+          RABBITMQ_DEFAULT_USER: rabbitmq
+          RABBITMQ_DEFAULT_PASS: minerva
+        ports:
+          - 5672:5672
+          - 15672:15672
+
     steps:
-      - name: Install PostgreSQL dependencies
+      - name: Install misc dependencies
         run: |
           sudo apt update
-          sudo apt install -y libpq5
+          sudo apt install -y libpq5 unzip
 
+      - name: Install Protocol Buffers compiler
+        run: |
+          wget https://github.com/protocolbuffers/protobuf/releases/download/v21.7/protoc-21.7-linux-x86_64.zip
+          mv protoc-*.zip protoc.zip
+          unzip protoc.zip && rm -r protoc.zip readme.txt
+          sudo mv bin/protoc /usr/local/bin/protoc
+          sudo mv include/* /usr/local/include
+          rm -r bin include
+          protoc --version
+          
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install Rust toolchain
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@v1.0.6
         with:
           toolchain: stable
           components: clippy, rustfmt
 
       - name: Rust build cache
-        uses: Swatinem/rust-cache@v1
+        uses: Swatinem/rust-cache@v2
 
       - name: Linter
         run: cargo fmt -- --check

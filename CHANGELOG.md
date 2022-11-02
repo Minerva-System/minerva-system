@@ -5,7 +5,75 @@ Todas as mudanças notáveis neste projeto serão documentadas nesse arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
-<!-- ## [Não-lançado] -->
+## [Não-lançado]
+
+Relação de versões de microsserviços:
+
+- `USER` - v0.3.0
+- `SESSION` - v0.1.2
+- `RUNONCE` - v0.3.0
+- `REST` - v0.2.2
+- `DISPATCH`- v0.1.0
+- Front-End - v0.1.1 (pré-alfa)
+
+### Adicionado
+
+- *Geração de imagens:* Reabilitado target de compilação para ARM64.
+- *`RUNONCE`:* Estruturas para preparação de message broker (virtual hosts e filas
+  fixas).
+- *`DISPATCH`:* Criação do microsserviço.
+- *Devcontainers do VSCode:* Adicionada configuração inicial (ainda instável).
+- *Kubernetes:* Exposição dos serviços e ferramentas `REST`, Grafana e PgAdmin4
+  nas rotas `/api`, `/grafana` e `/pgadmin`, respectivamente, através do uso
+  de Ingresses.
+- *Kubernetes:* Adicionados serviços Prometheus e Grafana, com alguns dashboards
+  padronizados.
+- *Minerva9:* Adicionada documentação para o MVC e repositório do projeto.
+- *Kubernetes:* Adição de configurações para deploy em ambientes IoT.
+
+### Modificado
+
+- *`RUNONCE`:* Spinlocks de aguardo de disponibilidade de serviços agora realizam
+  _sleep_ assíncrono de dois segundos após cada falha.
+- *`RUNONCE`:* Spinlocks de disponibilidade agora também operam de forma assíncrona.
+- *Kubernetes:* Ajustes nos Ingresses existentes para que funcionem adequadamente,
+  através de Traefik.
+- *Kubernetes:* Ajustes nas configurações de deploy para que haja menos arquivos.
+- *Kubernetes:* Ajustes nos limites de réplicas e de recursos requisitados para alguns
+  serviços.
+- *MongoDB:* Downgrade para versão 4.
+- Tonic atualizado para v0.8.2.
+- Prost atualizado para v0.11.
+- *CI/CD:* Adicionada dependência do compilador de Protocol Buffers (`protoc`),
+  no _build_ via Docker e no ambiente de testes do GitHub Actions.
+- *Compose/Swarm:* Exposição das portas do PostgreSQL e do MongoDB para acesso remoto.
+- *Compose/Swarm:* Removidas as ferramentas Mongo Express, Redis Commander e
+  pgAdmin4, já que essas configurações são pensadas primariamente como debug.
+  Para monitorar e inspecionar o MongoDB, o Redis e o PostgreSQL, veja ferramentas
+  ad-hoc como MongoDB Compass, RESP.app ou DBeaver, respectivamente.
+- *PostgreSQL*: Atualizado para versão 15.
+- *Documentação*: Adicionados diagramas separados para cada _deployment_ no Kubernetes,
+  bem como um diagrama geral da arquitetura do mesmo.
+
+### Consertado
+
+- *`USER`:* Ao remover um usuário, envia mensagem requisitando remoção das sessões
+  do mesmo (cache e coleção de sessões).
+
+### Removido
+### Segurança
+### Problemas conhecidos
+
+- A ferramenta *Redis Commander* conhecidamente funciona apenas em arquitetura
+  AMD64, o que inviabiliza seu deploy no Kubernetes em ambientes ARM. Isso
+  significa que clusters com o Minerva que sejam totalmente configurados em
+  arquitetura ARM perderão alguma observabilidade quanto ao Redis. Adicionalmente,
+  essa limitação também foi refletida na configuração da ferramenta via k8s.
+- As configurações atuais para os Ingresses estão muito relacionadas ao que é
+  necessário para realizar deploy em K3s, com Traefik sendo utilizado como
+  backend para Ingresses. Isso inviabiliza um pouco o uso de Minikube e
+  Microk8s.
+
 
 ## [v2] - 2022-06-05
 
@@ -97,7 +165,7 @@ Relação de versões de microsserviços:
   via GitHub Pages.
 
 
-<!-- [Não-lançado]: https://github.com/luksamuk/minerva-system/compare/v2...HEAD -->
+[Não-lançado]: https://github.com/luksamuk/minerva-system/compare/v2...HEAD
 [v2]: https://github.com/luksamuk/minerva-system/releases/tag/v2
 [v1]: https://github.com/luksamuk/minerva-system/releases/tag/v1
 

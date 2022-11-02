@@ -42,13 +42,15 @@ services:
   
   # RUNONCE service
   runonce:
-    image: luksamuk/minerva_runonce:0.2.1
+    image: luksamuk/minerva_runonce:0.3.0
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
+      - RABBITMQ_SERVICE_SERVER=rabbitmq
     depends_on:
       - "postgresql"
       - "mongodb"
+      - "rabbitmq"
     networks:
       - minerva_system
     deploy:
@@ -62,9 +64,10 @@ services:
   
   # USER service
   user:
-    image: luksamuk/minerva_user:0.2.2
+    image: luksamuk/minerva_user:0.3.0
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
+      - RABBITMQ_SERVICE_SERVER=rabbitmq
     networks:
       - minerva_system
     deploy:
@@ -83,6 +86,7 @@ services:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
       - REDIS_SERVICE_SERVER=redis
+      - RABBITMQ_SERVICE_SERVER=rabbitmq
     networks:
       - minerva_system
     deploy:
@@ -92,12 +96,35 @@ services:
       restart_policy:
         condition: on-failure
 
-  # PostgreSQL 14
+  # DISPATCH service
+  dispatch:
+    image: luksamuk/minerva_dispatch:0.1.0
+    environment:
+      - DATABASE_SERVICE_SERVER=postgresql
+      - MONGO_SERVICE_SERVER=mongodb
+      - REDIS_SERVICE_SERVER=redis
+      - RABBITMQ_SERVICE_SERVER=rabbitmq
+      - SESSION_SERVICE_SERVER=session
+      - SESSION_SERVICE_PORT=9011
+    depends_on:
+      - "rabbitmq"
+    networks:
+      - minerva_system
+    deploy:
+      mode: replicated
+      replicas: 3
+      labels: [APP = DISPATCH_SERVICE]
+      restart_policy:
+        condition: on-failure
+
+  # PostgreSQL 15
   postgresql:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    image: postgres:14-alpine
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
@@ -106,53 +133,22 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  # pgAdmin 4
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=admin
-    ports:
-      - "8484:80"
-    volumes:
-      - /vagrant/servers.json:/pgadmin4/servers.json
-    networks:
-      - minerva_system
-    deploy:
-      placement:
-        constraints: [node.role == manager]
-
-  # MongoDB 5
+  # MongoDB 4
   mongodb:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=mongo
-    image: mongo:5
+    image: mongo:4
     volumes:
       - mongodb-data:/data/db
+    ports:
+      - "27017:27017"
     networks:
       - minerva_system
     deploy:
       placement:
         constraints: [node.role == manager]
 
-  # Mongo Express
-  mongo-express:
-    image: mongo-express:latest
-    environment:
-      - ME_CONFIG_MONGODB_SERVER=mongodb
-      - ME_CONFIG_MONGODB_AUTH_USERNAME=root
-      - ME_CONFIG_MONGODB_AUTH_PASSWORD=mongo
-      - ME_CONFIG_BASICAUTH_USERNAME=mongo
-      - ME_CONFIG_BASICAUTH_PASSWORD=mongo
-    ports:
-      - "8686:8081"
-    networks:
-      - minerva_system
-    deploy:
-      placement:
-        constraints: [node.role == manager]
-        
   # Visualizer
   visualizer:
     image: dockersamples/visualizer:stable
@@ -180,19 +176,23 @@ services:
       placement:
         constraints: [node.role == worker]
 
-  # Redis Commander
-  redis-commander:
-    image: rediscommander/redis-commander:latest
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
     environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_PASS=minerva
     ports:
-      - "8787:8081"
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - minerva_system
     deploy:
+      restart_policy:
+        condition: on-failure
       placement:
-        constraints: [node.role == manager]
+        constraints: [node.role == worker]
+        
         
 networks:
   minerva_system:

@@ -85,55 +85,95 @@ do *back-end*, mas realizaremos uma configuração rápida nesta seção.
 
 
 
-### Criando o banco de dados
+### Criando recursos locais com Docker
 
-Como primeira dependência, recomenda-se criar o banco de dados via
-Docker. Também seria possível instalar o PostgreSQL 14 na máquina local,
+Para executar localmente, o sistema precisa que alguns serviços sejam
+instanciados antes de sua execução.
+
+É importante lembrar que os métodos a seguir não são considerados
+seguros para persistência de dados. Por isso, use-os apenas com a
+finalidade de testes.
+
+#### Banco de dados relacional
+
+Como primeira dependência, recomenda-se criar o banco de dados relacional
+via Docker. Também seria possível instalar o PostgreSQL 15 na máquina local,
 mas o Docker provê a comodidade necessária para o BD.
 
-O diretório `minerva-runonce` possui um script que pode ser executado
-para a criação do banco de dados. Este script executa o seguinte
-comando:
+Para subir o banco de dados relacional, execute o script `make_postgres_db.sh`
+no diretório `minerva-runonce`, ou execute:
 
 ```bash
 docker run --name minerva-postgres \
        -e POSTGRES_USER=postgres \
        -e POSTGRES_PASSWORD=postgres \
        -p 5432:5432 \
-       -d postgres:14-alpine
+       -d postgres:15-alpine
 ```
 
-Este comando criará um contêiner chamado `minerva-postgres`, a partir
-da imagem Docker do PostgreSQL 14, com usuário e senhas padrão
-`postgres`, e também servindo na porta `5432` da máquina atual (padrão
-do PostgreSQL).
+O contêiner poderá então ser gerenciado através do Docker, como um contêiner
+qualquer.
 
-É importante lembrar que **usar o contêiner dessa forma não é muito
-seguro para persistência de dados**. Por isso, **pense neste contêiner
-como um banco de dados de um ambiente exclusivo de testes.**
+#### Banco de dados não-relacional
 
-Caso você precise encerrar o contêiner, use:
+Recomenda-se também criar o banco de dados não-relacional via Docker.
+Igualmente, é possível instalar o MongoDB 4 por métodos convencionais.
+
+Veja que o MongoDB é usado aqui em sua versão 4 especialmente por ser
+mais compatível com ambientes IoT, em especial K3s executando em um
+Raspberry Pi 4 Model B, que foi utilizado para testar o deploy em
+um cluster Kubernetes.
+
+Para subir o banco de dados não-relacional, execute o script
+`make_mongo_db.sh` no diretório `minerva-runonce`, ou execute:
 
 ```bash
-docker stop minerva-postgres
+docker run --name minerva-mongo \
+       -e MONGO_INITDB_ROOT_USERNAME=root \
+       -e MONGO_INITDB_ROOT_PASSWORD=mongo \
+       -p 27017:27017 \
+       -d mongo:4
 ```
 
-Da mesma forma, não será necessário executar novamente o `RUNONCE` para
-configuração, a não ser que o schema do banco de dados seja alterado.
-Nesse caso, cada vez que for necessário reutilizar o banco para testes,
-use o comando a seguir para reiniciar o BD:
+Como esperado, o contêiner pode ser gerenciado normalmente através do Docker.
+
+#### Banco de dados _in-memory_ (cache)
+
+Para o uso do serviço de cache, recomenda-se usar diretamente o Redis através
+do Docker. Para tanto, execute o script `make_redis_db.sh` no diretório
+`minerva-runonce`, ou execute:
 
 ```bash
-docker start minerva-postgres
+docker run --name minerva-redis \
+       -p 6379:6379 \
+       -d redis:7-alpine
 ```
 
+Assim como antes, gerencie o contêiner criado usando o Docker.
 
+#### Broker de mensagens (com gerenciador)
+
+O _message broker_ RabbitMQ deverá também ser executado através do Docker.
+Para a execução do mesmo, todavia, atente-se para o uso de memória elevado
+que essa ferramenta possui.
+
+Você poderá executar o script `make_rabbitmq.sh` no diretório
+`minerva_runonce`, ou simplesmente executar:
+
+```bash
+docker run --name minerva-rabbitmq \
+       -e RABBITMQ_DEFAULT_USER=rabbitmq \
+       -e RABBITMQ_DEFAULT_PASS=minerva \
+       -p 15672:15672 \
+       -p 5672:5672 \
+       -d rabbitmq:3-management-alpine
+```
 
 ### Executando configuração inicial (módulo `RUNONCE`)
 
 A seguir, execute o módulo `RUNONCE` para preparar todos os bancos de
-dados de *tenants*, executar as migrations e criar o usuário `admin`
-em cada banco.
+dados de *tenants*, executar as migrations, criar o usuário `admin`
+em cada banco e outras operações em outros serviços também.
 
 Você poderá executar o módulo diretamente a partir da raiz do projeto:
 

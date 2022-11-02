@@ -77,7 +77,7 @@ pub async fn create_session(
             entity: "session".to_string(),
             operation: OpType::Insert,
             datetime: chrono::offset::Utc::now(),
-            description: Some(format!("Create user session. Token: {}", token)),
+            description: Some("Create user session".to_string()),
         })
         .execute(&*connection);
 
@@ -182,7 +182,7 @@ pub async fn remove_session(
                 entity: "session".to_string(),
                 operation: OpType::Delete,
                 datetime: chrono::offset::Utc::now(),
-                description: Some(format!("Remove user session. Token: {}", token)),
+                description: Some("Remove user session".to_string()),
             })
             .execute(&*connection);
     }

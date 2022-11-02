@@ -21,6 +21,7 @@ WORKDIR /minerva
 COPY --from=chef /minerva/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 COPY . .
+RUN apk add --no-cache protobuf protobuf-dev
 RUN cargo build --release
 
 # Base container for deploying services
@@ -87,6 +88,13 @@ COPY ./tenancy.toml ./tenancy.toml
 COPY --from=builder /minerva/target/release/minerva-user ./minerva-user
 CMD ["./minerva-user"]
 
+
+# DISPATCH
+FROM deploy AS minerva_dispatch
+EXPOSE 9010
+COPY ./tenancy.toml ./tenancy.toml
+COPY --from=builder /minerva/target/release/minerva-dispatch ./minerva-dispatch
+CMD ["./minerva-dispatch"]
 
 # Front-End
 FROM ubuntu:22.04 AS frontend_builder

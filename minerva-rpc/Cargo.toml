@@ -9,10 +9,10 @@ authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
 path = "src/lib.rs"
 
 [dependencies]
-tonic = "0.7"
+tonic = "0.8.2"
 tokio-stream = {version = "0.1", features = ["net"]}
-prost = "0.10"
+prost = "0.11"
 dotenv = "0.15.0"
 
 [build-dependencies]
-tonic-build = "0.7"
+tonic-build = "0.8.2"

@@ -19,7 +19,7 @@ SCRIPT
 
 # Extract manager IP
 $extract_manager_ip_script = <<SCRIPT
-ip addr | grep "inet 172.20.20.1" | awk '{print $2}' | cut -d'/' -f 1 | awk '{print$1":2377"}' > /vagrant/managerip
+ip addr | grep "inet " | awk '{print $2}' | cut -d'/' -f 1 | awk '{print$1":2377"}' | grep "192." > /vagrant/managerip
 SCRIPT
 
 $start_minerva_system = <<SCRIPT
@@ -31,9 +31,9 @@ BOX_NAME = "boxomatic/alpine-3.14"
 MEMORY = "512"
 CPUS = 2
 MANAGERS = 3
-MANAGER_IP = "172.20.20.1"
+MANAGER_IP = "192.168.56.1"
 WORKERS = 4
-WORKER_IP = "172.20.20.10"
+WORKER_IP = "192.168.56.2"
 VAGRANTFILE_API_VERSION = "2"
 
 

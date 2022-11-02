@@ -14,6 +14,7 @@ extern crate bb8_diesel;
 extern crate diesel;
 
 use dotenv::dotenv;
+use minerva_broker as broker;
 use minerva_data::db;
 use minerva_rpc::user::user_server::UserServer;
 use std::collections::HashMap;
@@ -37,12 +38,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let dbserver =
         env::var("DATABASE_SERVICE_SERVER").expect("Unable to read DATABASE_SERVICE_SERVER");
+    let rmqserver =
+        env::var("RABBITMQ_SERVICE_SERVER").expect("Unable to read RABBITMQ_SERVICE_SERVER");
 
     let mut pools = HashMap::new();
     for tenant in minerva_data::tenancy::get_tenants("tenancy.toml") {
         pools.insert(
             tenant.database.clone(),
-            db::make_connection_pool(&tenant.database, &dbserver, tenant.connections).await,
+            (
+                db::make_connection_pool(&tenant.database, &dbserver, tenant.connections).await,
+                broker::make_connection_pool(
+                    &rmqserver,
+                    Some(&tenant.database),
+                    tenant.connections,
+                )
+                .await,
+            ),
         );
         println!(
             "Added pool for tenant {} ({} connections).",

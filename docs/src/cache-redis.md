@@ -1,5 +1,9 @@
 # Cache via Redis
 
+<center>
+<img src="./redis-logo.png" alt="Redis" height="150"/>
+</center>
+
 A ferramenta Redis é extensamente usada no Minerva System para armazenamento de
 informações em _cache_. Este capítulo descreve algumas das situações e entidades
 para as quais o _cache_ é feito, e as regras de negócio envolvidas.

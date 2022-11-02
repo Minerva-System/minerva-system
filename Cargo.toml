@@ -1,14 +1,16 @@
 [workspace]
 members = [
-	"minerva-rpc",
-	"minerva-data",
-	"minerva-cache",
-	"minerva-user",
-	"minerva-session",
-	"minerva-product",
-	"minerva-stock",
-	"minerva-rest",
-	"minerva-runonce",
+        "minerva-rpc",
+        "minerva-data",
+        "minerva-cache",
+        "minerva-broker",
+        "minerva-user",
+        "minerva-session",
+        "minerva-product",
+        "minerva-stock",
+        "minerva-rest",
+        "minerva-runonce",
         "minerva-report",
+        "minerva-dispatch",
 ]
 

@@ -1,19 +1,16 @@
-# Deploy usando Kubernetes (e Minikube)
+# Deploy usando Kubernetes
 
 <center>
-<img src="./kubernetes-logo.webp" alt="Kubernetes" width="200"/>
+<img src="./kubernetes-logo.png" alt="Kubernetes" width="200"/>
 </center>
 
+
 Você pode realizar deploy do projeto usando Kubernetes. Nos passos a
-seguir, será mostrado como realizar um deploy usando a ferramenta
-Minikube, para instalação do Kubernetes localmente.
+seguir, será mostrado como realizar deploy em um ambiente Kubernetes.
 
-**ATENÇÃO:** Para detalhes não dispostos nesta página, veja a
-[documentação oficial do Kubernetes](https://kubernetes.io/docs/home/).
-
-
-
-
+É importante salientar também que o deploy do Minerva System geralmente
+é feito em um ambiente **K3s**, o que pode impactar em algumas formas
+de configuração.
 
 ## Introdução
 
@@ -21,432 +18,396 @@ Kubernetes é uma ferramenta sofisticada de orquestração de contêineres.
 O Minerva System é planejado para que seu deploy seja feito utilizando
 o Kubernetes.
 
-Para realizar a configuração localmente, fui utilizada a ferramenta
-Minikube. Portanto, os comandos aqui abordados partem do pressuposto
-de uma instalação local do Kubernetes via Minikube, e podem ser 
-
-
-
-
-
 ## Objetivo
 
 O deploy usando Kubernetes é planejado desde o início do projeto, sendo
-uma das formas de estado da arte de deploy de aplicações web. Para
-simular este cenário, utilizamos uma instalação local do Kubernetes
-via Minikube.
-
-Ainda que Minikube não seja exatamente um servidor do Kubernetes em
-produção, boa parte do que será aqui discutido poderá ser utilizado
-no momento do deploy para produção.
-
-
-
+uma das formas de estado da arte de *deploy* de aplicações web. Para
+simular este cenário, utilizamos uma instalação em um cluster local com
+K3s, em computadores cuja arquitetura seja *x86_64* ou *ARM64*.
 
 ## Dependências
 
-Você precisará ter instalado:
-- Docker versão 20.10 ou superior;
-- Docker Compose versão 2.2.3 ou superior;
-- Kubectl versão 1.23.3 ou superior;
-- [Minikube](https://minikube.sigs.k8s.io/docs/) versão 1.24.0 ou
-  superior;
-- [k9s](k9scli.io) versão 0.25.18 ou superior (opcional).
+As configurações de *deploy* são preparadas de forma a utilizar o próprio
+*registry* do DockerHub como fonte para as imagens previamente geradas.
+Assim, é necessário apenas ter acesso a um cluster com Kubernetes instalado,
+algo que pode ser simulado através da ferramenta [K3s](https://k3s.io/).
 
-A instalação do k9s é opcional, sendo uma ferramenta de monitoramento
-e gerencialmento do Kubernetes via linha de comando.
+Para monitoramento e configuração, use as ferramentas a seguir:
+
+- Kubectl v 1.23.3 ou superior, de acordo com o compatível com seu cluster;
+- [k9s](k9scli.io) versão 0.25.18 ou superior, para monitoramento (opcional);
+- [kubernetes-el](https://kubernetes-el.github.io/kubernetes-el/), pacote do
+  editor de texto Emacs que permite monitorar um cluster Kubernetes.
+
+A instalação local do K3s é opcional, e poderia ser substituída pelo
+[Minikube](https://minikube.sigs.k8s.io/docs/), porém essa substituição pode
+ser impactante na configuração de alguns recursos, especialmente em Ingresses.
 
 
-### Iniciando o Minikube
+## Realizando deploy de serviços
 
-Caso você esteja testando localmente, comece executando o Minikube.
+Nos passos a seguir, será mostrado como realizar deploy de cada um dos serviços
+e objetos k8s que fazem parte do Minerva System. Recomenda-se seguir os tópicos
+em ordem.
 
-As configurações a seguir iniciam um cluster local via Minikube, usando
-KVM2 como backend. Você poderá também usar os backends `docker` ou
-`virtualbox`, à escolha.
+Os passos também assumem que a ferramenta `kubectl` esteja configurada
+localmente e que tenha acesso ao cluster.
 
-```bash
-minikube start \
-	--vm-driver=kvm2 \
-	--disable-optimizations=false \
-	--extra-config=kubelet.housekeeping-interval=10s
+Geralmente, o `kubectl` lê a configuração em `~/.kube/config` por padrão;
+caso sua máquina não possua esse arquivo, verifique se consegue obter a
+configuração do Kubernetes para substituí-lo. No caso do K3s, esse arquivo
+está em `/etc/rancher/k3s/k3s.yaml`, e pode ser copiado, de forma
+paliativa, para uma outra máquina, desde que o host do cluster seja adequado
+na chave `server`.
 
-minikube addons enable metrics-server
-minikube addons enable ingress
-minikube addons enable ingress-dns
-```
+### Dependências iniciais
 
-Se você quiser parar o Minikube:
+Para realizar o deploy do Minerva System, primeiramente precisaremos
+provisionar as dependências iniciais, software externos que são utilizados
+pelo resto do sistema.
 
-```bash
-minikube stop
-```
+#### Namespace do sistema
 
-Igualmente, se quiser remover o cluster:
-
-```bash
-minikube delete --all
-```
-
-### Problemas com Libvirt e AppArmor
-
-Caso você tenha problemas para inicializar a máquina virtual com KVM2,
-pode ser que sua instalação local do AppArmor esteja interferindo com
-o `libvirt`.
-
-Como ferramenta paliativa à configuração do AppArmor para o `libvirt`,
-você poderá colocar os utilitários usados pelo Minikube no modo _complain_.
-Lembre-se de que isso é necessariamente detrimental à segurança do sistema.
+O *namespace* deve ser aplicado para que todos os objetos do sistema existam
+dentro do mesmo. Assim, temos uma forma de encapsular o sistema inteiro com
+a maior parte de suas dependências.
 
 ```bash
-sudo aa-complain /usr/sbin/libvirtd
-sudo aa-complain /usr/libexec/virt-aa-helper
+kubectl apply -f minerva-namespace.yml
 ```
 
-## Estrutura do Cluster
+#### PostgreSQL
 
-A seguir, trataremos da estrutura do cluster como atualmente é definido.
-As seções a seguir tratam sempre de objetos específicos do Kubernetes,
-e são também uma sugestão de ordem de aplicação dos arquivos de configuração.
-
-Todos os arquivos serão encontrados de forma homônima no diretório
-`deploy/k8s`, com a extensão `yml`.
-
-Caso queira aplicar todos os arquivos enumerados abaixo, simplesmente execute,
-a partir da raiz do projeto:
+O próximo passo é realizar o deploy do banco de dados relacional.
+O Minerva System usa PostgreSQL para tanto. A configuração envolve um
+*Secret*, um *PersistentVolumeClaim*, um *Deployment*, e um *Service* de
+tipo ClusterIP para garantir que o mesmo só possa ser acessado dentro do
+cluster.
 
 ```bash
-kubectl apply -f deploy/k8s
+kubectl apply -f postgresql.yml
 ```
 
-### _ConfigMaps_
+#### MongoDB
 
-Um _ConfigMap_ é um objeto que armazena dados que serão utilizados como
-variáveis de ambiente de um _pod_.
-
-- `postgresql-configmap`: Variáveis padrão para definições iniciais do
-  PostgreSQL 14.
-- `mongodb-configmap`: Variáveis padrão para definições iniciais do
-  MongoDB 5.
-- `runonce-configmap`: Variáveis padrão para definições iniciais do
-  Job RUNONCE.
-- `frontend-configmap`: Variáveis padrão para uso do Front-End.
-- `rest-configmap`: Variáveis padrão para a API REST.
-- `ports-configmap`: Portas para acesso aos serviços no cluster.
-- `servers-configmap`: Nomes dos serviços a serem acessados. Geralmente
-  associados a cada Deployment ou StatefulSet.
-- `redis-configmap`: Dados de configuração do Redis. Mais especificamente
-  um arquivo `redis.conf` que será recuperado nos _pods_ do Redis através
-  da montagem desse _ConfigMap_, como se fosse um volume mutável.
-- `mongoexpress-configmap`: Variáveis padrão para definições iniciais do
-  Mongo Express.
-- `pgadmin-configmap`: Arquivo padrão de configuração de acesso do PgAdmin4.
-- `rediscommander-configmap`: Variáveis padrão para definições iniciais do
-  Redis Commander.
-
-Para aplicar todos os _ConfigMaps_, execute:
+Para banco de dados não-relacional, utilizaremos o MongoDB.
+O Minerva System usa o MongoDB principalmente para armazenamento de dados
+de seção do usuário. A configuração envolve um *Secret*, um
+*PersistentVolumeClaim*, um *Deployment*, e um *Service* de tipo ClusterIP,
+para que o MongoDB só possa ser acessado dentro do cluster.
 
 ```bash
-for f in `ls deploy/k8s/*-configmap.yml`; do
-	kubectl apply -f $f
-done
+kubectl apply -f mongodb.yml
 ```
 
-### _Secrets_
+#### Redis
 
-Um _Secret_ é um objeto muito similar a um _ConfigMap_, porém feito
-especificamente para lidar com dados sensíveis.
+Como serviço de cache, usamos um cluster Redis configurado manualmente.
+Esse cluster levanta um mínimo de duas instâncias do Redis, de forma
+que uma instância seja mestre e as demais sejam instâncias que operam
+como meras réplicas.
 
-- `runonce-secret`: Dados de criação de campos padrão no banco de dados.
-- `pgadmin-secret`: Dados para autenticação no serviço PgAdmin 4.
-- `mongoexpress-secret`: Dados para autenticação no MongoDB e no Mongo
-  Express.
-
-Para aplicar todos os _Secrets_, execute:
+O Redis possui um *ConfigMap* que define um arquivo de configuração
+para o cluster. Além disso, temos um *PersistentVolumeClaim*, e o cluster
+definido através de um *StatefulSet* Temos também um *Service* de tipo
+ClusterIP para que ele possa ser acessado, e um *HorizontalPodAutoscaler*
+que adiciona ou remove réplicas sob demanda.
 
 ```bash
-for f in `ls deploy/k8s/*-secret.yml`; do
-	kubectl apply -f $f
-done
+kubectl apply -f redis.yml
 ```
 
-### _PersistentVolumeClaims_
+#### RabbitMQ
 
-Um _PersistentVolumeClaim_ age como uma reserva de volume persistente
-(_PersistentVolume_). Pode associar-se a um volume que exista ou, neste
-caso, cria um volume com tamanho específico dinamicamente.
+O Minerva System usa o RabbitMQ para serviços de mensageria.
 
-- `postgresql-pvc`: PersistentVolumeClaim para o PostgreSQL. Solicita 1GB
-  de armazenamento e criação dinâmica;
-- `mongodb-pvc`: PersistentVolumeClaim para o MongoDB. Solicita 1GB de
-  armazenamento e criação dinâmica;
-- `redis-pvc`: PersistentVolumeClaim para o Redis. Solicita 500MB de
-  armazenamento e criação dinâmica.
-- `pgadmin-pvc`: PersistentVolumeClaim para as configurações do PgAdmin4.
-  Solicita 300MB de armazenamento e criação dinâmica.
-  
-Para aplicar todos os _PersistentVolumeClaims_, execute:
+O RabbitMQ é utilizado majoritariamente para abrigar mensagens de
+operações que possam ser despachadas de forma assíncrona, sem uma
+interferência direta do usuário, ou que sejam efeito colateral de outras
+operações no sistema.
+
+Para provisionar o RabbitMQ, precisamos provisionar um operador de
+cluster para RabbitMQ, e então criar uma instância de cluster do
+RabbitMQ, que criará réplicas do serviço de forma eficiente.
+
+##### Operador de cluster
+
+Para realizarmos o deploy de um operador de cluster, utilizaremos o projeto
+[RabbitMQ Cluster Operator](https://github.com/rabbitmq/cluster-operator).
+O arquivo para deploy do cluster está reproduzido no repositório; igualmente,
+sua licença pode ser encontrada em `rabbitmq-cluster-operator.LICENSE`.
 
 ```bash
-for f in `ls deploy/k8s/*-pvc.yml`; do
-	kubectl apply -f $f
-done
+kubectl apply -f rabbitmq-cluster-operator.yml
 ```
-  
-### _Deployments_
 
-Um _Deployment_ é uma forma de gerenciar _pods_ e suas réplicas. Mais
-especificamente, trata-se de uma evolução de um _ReplicaSet_ que permite
-a utilização de versionamento.
+##### Instância do cluster
 
-- `postgresql-deployment`: Deployment para o banco de dados PostgreSQL.
-- `mongodb-deployment`: Deployment para o banco de dados MongoDB.
-- `frontend-deployment`: Deployment para o Front-End Web do sistema.
-- `rest-deployment`: Deployment para o gateway REST do sistema.
-- `user-deployment`: Deployment para o microsserviço `USER`.
-- `session-deployment`: Deployment para o microsserviço `SESSION`.
-- `mongoexpress-deployment`: Deployment para o serviço de monitoramento
-  Mongo Express.
-- `rediscommander-deployment`: Deployment para o serviço de monitoramento
-  Redis Commander.
-
-Para aplicar todos os _Deployments_, execute:
+Agora, para criarmos uma instância do cluster RabbitMQ com três réplicas,
+podemos aplicar a configuração criada para o Minerva System. Isso criará
+um *StatefulSet* e um *Service* de tipo ClusterIP para o nosso cluster
+RabbitMQ.
 
 ```bash
-for f in `ls deploy/k8s/*-deployment.yml`; do
-	kubectl apply -f $f
-done
+kubectl apply -f broker-rabbitmqcluster
 ```
 
-### _StatefulSets_
+### Configuração das dependências
 
-Um _StatefulSet_ é exatamente igual a um _Deployment_, porém seus _pods_
-são criados com nomes ordinais em vez de aleatórios, de forma que possam
-ser individualmente identificados. Além disso, _StatefulSets_ devem ser
-utilizados quando o estado interno da aplicação importa.
+Uma vez que as dependências iniciais estejam preparadas, poderemos configurar
+os bancos de dados, criar filas de mensagens e preparar *tenants*.
 
-- `redis-statefulset`: StatefulSet para o cluster do serviço de
-  cache do Redis. A réplica `redis-0` será sempre um _Master_, enquanto
-  as demais réplicas serão sempre _Slaves_.
-- `pgadmin-statefulset`: StatefulSet para o serviço de monitoramento
-  PgAdmin 4. Possui apenas uma réplica, e monta o arquivo `servers.json`
-  descrito em `pgadmin-configmap` como volume.
+#### Configuração geral de Servers e Portas
 
-Para aplicar todos os _StatefulSets_, execute:
+Inicialmente, precisaremos criar dois *ConfigMaps*, que registram os hosts
+e portas dos serviços que serão criados. Essas configurações são compartilhadas
+pela maioria dos serviços.
 
 ```bash
-for f in `ls deploy/k8s/*-statefulset.yml`; do
-	kubectl apply -f $f
-done
+kubectl apply -f servers-configmap.yml
+kubectl apply -f ports-configmap.yml
 ```
 
-### _Services_
+#### Serviço de preparação
 
-Um _Service_ determina a conexão de um ou mais _pods_ com o restante do
-cluster ou com a internet. _Services_ podem ser do tipo _ClusterIP_,
-_NodePort_ ou _LoadBalancer_. O primeiro tipo expõe os _pods_ apenas para
-outros _pods_ do cluster; o segundo e o terceiro expõem para a internet,
-com a diferença que um _LoadBalancer_ é a maneira padrão de exposição por
-integrar-se com o balanceador de recursos do provedor do cluster.
-
-Além disso, serviços do tipo _LoadBalancer_ agem retroativamente como
-_NodePort_, e estes agem também retroativamente como _ClusterIP_.
-
-- `postgresql-svc` (_ClusterIP_): Serviço para acesso interno aos pods
-  PostgreSQL.
-- `mongodb-svc` (_ClusterIP_): Serviço para acesso interno aos pods
-  MongoDB.
-- `user-svc` (_ClusterIP_): Serviço para acesso interno aos pods do
-  microsserviço USER.
-- `session-svc` (_ClusterIP_): Serviço para acesso interno aos pods do
-  microsserviço SESSION.
-- `frontend-svc` (_LoadBalancer_): Serviço para acesso interno e externo
-  aos pods do Front-End Web do sistema.
-- `rest-svc` (_LoadBalancer_): Serviço para acesso interno e externo aos
-  pods do gateway REST do sistema.
-- `redis-svc` (_ClusterIP_): Serviço para acesso interno aos pods do
-  Redis.
-- `mongoexpress-svc` (_NodePort_): Serviço para acesso interno e externo
-  aos pods do Mongo Express. Não interage com balanceador de carga.
-- `pgadmin-svc` (_NodePort_): Serviço para acesso interno e externo aos
-  pods do PgAdmin 4. Não interage com balanceador de carga.
-- `rediscommander-svc` (_NodePort_): Serviço para acesso interno e externo
-  aos pods do Redis Commander. Não interage com balanceador de carga.
-
-Caso queira informações sobre as portas exportas por esses serviços, veja
-a seção **"Acesso via _NodePort_"** a seguir.
-
-Para aplicar todos os _Services_, execute:
+Isso pode ser feito através do módulo RUNONCE, composto de um *ConfigMap*, um
+*Secret* e um *Job*. Ao aplicar sua configuração, o *Job* será executado e
+preparará as dependências.
 
 ```bash
-for f in `ls deploy/k8s/*-svc.yml`; do
-	kubectl apply -f $f
-done
+kubectl apply -f minerva-runonce.yml
 ```
 
-### _Jobs_
+### Módulos do Minerva System
 
-Um _Job_ é responsável por criar um _pod_ que executará alguma ação, até
-seu completamento ser realizado com sucesso.
+A partir desse momento, podemos começar o deploy dos módulos do Minerva System.
+Cada um dos módulos é basicamente uma aplicação *stateless*, sendo geralmente
+composto de um *Deployment*, um *Service* de tipo ClusterIP, e um
+*HorizontalPodAutoscaler* que criará ou destruirá réplicas dos *Pods* sob demanda.
+Alguns módulos também possuem o próprio *ConfigMap* para definir algumas
+variáveis de ambiente necessárias.
 
-- `runonce-job`: Job a ser executado no início do deploy do cluster, para
-  configuração inicial. Reiniciará o _pod_ em caso de falhas dez vezes e,
-  após sucesso, será removido junto com o _pod_ após cinco minutos.
+#### USER
 
-Para aplicar todos os _ConfigMaps_, execute:
+O serviço gRPC de gerenciamento de usuários.
 
 ```bash
-for f in `ls deploy/k8s/*-job.yml`; do
-	kubectl apply -f $f
-done
+kubectl apply -f minerva-user.yml
 ```
 
-### HorizontalPodAutoscalers
+#### SESSION
 
-Um _HorizontalPodAutoscaler_ é um objeto que interage diretamente com
-_Deployments_ e _StatefulSets_, de forma a escalar horizontalmente estes
-objetos, através da criação ou remoção de réplicas de seus _pods_.
-
-Estes objetos operam em associação com as especificações requisitadas pelo
-_Deployment_ ou _StatefulSet_  em termos de CPU e/ou memória, por exemplo,
-garantindo que os _pods_ cheguem no máximo a certa porcentagem de utilização
-desses recursos, de acordo com o que foi configurado.
-
-- `rest-hpa`: Escalonador horizontal do gateway REST. Mantém entre 1 e
-  15 réplicas para `rest-deployment` com uso médio de 50% do CPU alocado.
-- `user-hpa`: Escalonador horizontal do microsserviço USER. Mantém entre
-  2 e 6 réplicas para `user-deployment` com uso médio de 65% do CPU alocado.
-- `session-hpa`: Escalonador horizontal do microsserviço SESSION. Mantém
-  entre 2 e 6 réplicas para `session-deployment` com uso médio de 65%
-  do CPU alocado.
-- `redis-hpa`: Escalonador horizontal do Redis. Mantém entre 2 e 15
-  réplicas para `redis-statefulset` com uso médio de 50% do CPU alocado e
-  60% da memória alocada.
-
-Para aplicar todos os _HorizontalPodAutoscalers_, execute:
+O serviço gRPC de gerenciamento de sessões de usuários.
 
 ```bash
-for f in `ls deploy/k8s/*-hpa.yml`; do
-	kubectl apply -f $f
-done
+kubectl apply -f minerva-session.yml
 ```
 
-### _Ingresses_
+#### DISPATCH
 
-Um _Ingress_ é um objeto responsável por gerenciar acesso externo a
-serviços no cluster, tipicamente via HTTP.
+O serviço de despacho de mensagens vindas do RabbitMQ.
 
-- `api-ingress`: Ponto de entrada para a API através do URL
-  `http://minerva-system.io`. Expõe a API em `/api`.
-- `frontend-ingress`: Ponto de entrada para o Front-End através do URL
-  `http://minerva-system.io`. Expõe o Front-End em `/`.
-
-Para aplicar todos os _Ingresses_, execute:
+Esse serviço não possui um *Service*, já que não pode ser acessado diretamente;
+seu único objetivo é despachar mensagens para outros serviços, de acordo com o
+que for requisitado através de mensagens via filas no RabbitMQ.
 
 ```bash
-for f in `ls deploy/k8s/*-ingress.yml`; do
-	kubectl apply -f $f
-done
+kubectl apply -f minerva-dispatch.yml
 ```
 
-## Acesso via NodePort
+#### REST (Gateway)
 
-Para acessar os serviços expostos via _NodePort_ (ou _LoadBalancer_) no
-cluster, diretamente através do IP do Minikube, primeiramente verifique
-o endereço IP do cluster. Isso pode ser feito via Kubectl:
+O serviço REST funciona como um gateway para o back-end do Minerva System.
+Através desse serviço, a API poderá ser acessada, e as operações serão
+redirecionadas para outros serviços, de acordo com o domínio da regra de
+negócio em questão.
+
+REST é o único módulo cujo *Service* possui um tipo diferente, sendo um
+tipo LoadBalancer, que fornece acesso direto à API através da porta 30000.
 
 ```bash
-kubectl get node -o wide
+kubectl apply -f minerva-rest.yml
 ```
 
-Isso pode também ser feito através do Minikube:
+### Utilitários de monitoramento
+
+Com o deploy do sistema feito, poderemos também provisionar algumas ferramentas
+para ajudar no monitoramento do mesmo.
+
+#### Prometheus
+
+O Prometheus é um serviço que realiza scraping de informações expostas em endpoints
+de métricas. Através dele, é possível recuperar dados que podem ser posteriormente
+trabalhados para analisar a saúde de serviços ou até mesmo do cluster Kubernetes.
+
+##### Configurando o k3s
+
+Primeiramente, configure a sua instância do K3s, como orienta
+[esse link](https://fabianlee.org/2022/07/02/prometheus-installing-kube-prometheus-stack-on-k3s-cluster/);
+basta apenas, no seu nó *master* do cluster, criar o arquivo
+`/etc/rancher/k3s/config.yaml` com o conteúdo:
+
+```yaml
+etcd-expose-metrics: true
+```
+
+Em seguida, reinicie o serviço do K3s.
+
+##### Instalando o Kube-State-Metrics
+
+O serviço kube-state-metrics provê algumas métricas coletadas através dos serviços
+no cluster Kubernetes. Voce pôderá instalar uma configuração padrão, como colocado
+[neste link](https://chrisedrego.medium.com/kubernetes-monitoring-kube-state-metrics-df6546aea324),
+clonando o repositório do projeto e aplicando essa configuração:
 
 ```bash
-minikube ip
+git clone https://github.com/kubernetes/kube-state-metrics
+kubectl apply -f kube-state-metrics/examples/standard/
 ```
 
-A seguir, está discriminada uma tabela de todos os serviços acessíveis
-via _NodePort_ com suas respectivas portas.
+##### Provisionando o Prometheus
 
-| Serviço         | Porta |
-|-----------------|-------|
-| API             | 30000 |
-| Front-End       | 30001 |
-| PgAdmin 4       | 31084 |
-| Mongo Express   | 31085 |
-| Redis Commander | 31086 |
-
-
-
-## Acesso via Ingress
-
-Outra forma de acessar envolve o uso dos objetos _Ingress_. Isso nos
-permitirá usar o endereço `http://minerva-system.io/` como URL base
-do sistema.
-
-### Usando diretamente o `/etc/hosts`
-
-Comece garantindo que o addon `ingress` esteja habilitado.
-
-Agora, descubra o IP do Minikube na máquina:
+Como o Prometheus realiza scraping de dados nos serviços do Kubernetes e até mesmo
+em outros serviços, ele necessita de configurações de RBAC, o que implica na
+criação de objetos como *ClusterRoles*, *ClusterRoleBindings* e *ServiceAccounts*.
+Além disso, o Prometheus possui arquivos de configuração em um *ConfigMap*,
+um *Deployment* e um *Service*.
 
 ```bash
-minikube ip
+kubectl apply -f util/prometheus.yml
 ```
 
-Finalmente, edite o arquivo `/etc/hosts` e adicione o seguinte:
+#### Mongo Express
 
-```
-<ip-do-minikube>	minerva-system.io
-```
+O Mongo Express é uma ferramenta para explorar e editar o conteúdo do
+banco de dados não-relacional MongoDB. Esse serviço é exposto através de
+um *Service* de tipo NodePort, na porta `31085`.
 
-O Front-End agora poderá ser acessado em `http://minerva-system.io/`,
-e a API poderá ser acessada em `http://minerva-system.io/api`.
+O Mongo Express do Minerva já vem configurado com configuração de acesso
+ao MongoDB. Caso sejam requisitadas credenciais para abrir o aplicativo,
+utilize o usuário `mongo` e a senha `mongo`.
 
-
-### Usando o DNS de Ingress do Minikube
-
-Você poderá também usar o Minikube como servidor DNS, evitando de inserir
-o URL diretamente em `/etc/hosts`.
-
-Comece garantindo que os addons `ingress` e `ingress-dns` estejam
-habilitados. Em seguida, descubra o IP do Minikube:
+**ATENÇÃO:** Caso seja necessário usar uma ferramenta mais específica, como
+MongoDB Compass, você poderá realizar port-forward do *Deployment* do MongoDB
+e conectar-se à porta via `localhost`.
 
 ```bash
-minikube ip
+kubectl apply -f util/mongoexpress.yml
 ```
 
-O Minikube possui uma vasta documentação a respeito de como configurar esse
-DNS, mas mostrarei como fazê-lo caso você utiliza SystemD e tiver o ResolveD
-instalado (como é o caso de uma instalação pura com Fedora 36).
+#### PgAdmin4
 
-Edite o arquivo `/etc/systemd/resolved.conf`. Supondo que você use o DNS
-do Google, por exemplo, insira o IP do Minikube no DNS e configure um
-FallbackDNS também:
+O PgAdmin4 é uma ferramenta para explorar e editar o conteúdo do banco de
+dados relacional PostgreSQL. Esse serviço é exposto através de um *Service*
+de tipo NodePort, na porta `31084`.
 
-```conf
-[Resolve]
-DNS=192.168.39.97 8.8.8.8
-FallbackDNS=8.8.4.4
-```
+O PgAdmin4 do Minerva já vem configurado com dados de acesso ao PostgreSQL.
+Para efetuar login, use o usuário `admin@admin.com` e a senha `admin`.
+Para acessar o PostgreSQL, você precisará do usuário e senha padrão do
+mesmo também (`postgres` para ambos, por padrão).
 
-Em seguida, reinicie o ResolveD:
+**ATENÇÃO:** Caso seja necessário usar uma ferramenta mais específica, como
+DBeaver, você poderá realizar port-forward do *Deployment* do PostgreSQL
+e conectar-se à porta via `localhost`.
 
 ```bash
-sudo systemctl restart systemd-resolved
+kubectl apply -f util/pgadmin.yml
 ```
 
-Pode ser que a conexão com os demais serviços da internet fiquem ligeiramente
-instáveis, _enquanto o Minikube estiver em execução_.
+#### Grafana
 
-Você poderá verificar se funciona adequadamente com o comando:
+O Grafana é um serviço para criação e mostra de dashboards que operam
+a partir de métricas coletadas em serviços variados. No caso do Minerva,
+esses dados vêm principalmente do serviço Prometheus, previamente configurado.
+
+Para o Grafana, provisionaremos alguns *ConfigMaps* com configuração
+inicial e alguns dashboards padrão para o cluster RabbitMQ. Como essa
+configuração inicial produz um arquivo relativamente grande, é necessário
+forçá-lo a ser processado de forma *server-side*.
+
+As credenciais padrão do Grafana são o usuário `admin` e senha `admin`.
+Durante o primeiro login, você poderá alterar a senha inicial.
 
 ```bash
-nslookup minerva-system.io
+kubectl apply -f --server-side=true util/grafana-data.yml
+kubectl apply -f util/grafana.yml
 ```
 
+Para mais detalhes da configuração do Grafana, veja a página de
+[Ferramentas para monitoramento externo.](./ferramentas-monitoramento-externas.md)
 
-## Monitorando via k9s
+### Ingresses (via Traefik)
+
+Os Ingresses são formas mais explícitas de acesso a alguns serviços
+do cluster, pois abrem rotas propriamente ditas que "camuflam" requisições
+nas mesmas e realizam forwarding para serviços específicos.
+
+Os Ingresses atualmente preparados são compatíveis com a infraestrutura
+padrão do K3s, que utiliza Traefik como proxy reverso de Ingresses padrão.
+
+Atualmente, os ingresses exportam as seguintes rotas:
+
+- `/api`, para a API do Minerva System;
+- `/pgadmin`, para o PgAdmin4;
+- `/mongoexpress`, para o Mongo Express;
+- `/grafana`, para o Grafana.
+
+```bash
+kubectl apply -f minerva-ingress.yml
+```
+
+## Acessando serviços externamente
+
+Pode ser necessário acessar, de forma externa, algum serviço
+que esteja no cluster, especialmente se o mesmo possuir um
+*Service* do tipo ClusterIP, que não permite acesso externo
+diretamente.
+
+O Kubernetes provê algumas formas de realizar este acesso.
+
+### Acessando com Port Forward
+
+Uma forma muito útil de acesso externo é o *port forwarding*,
+que realiza *bind* de uma porta da máquina local a uma porta
+específica de um *pod* específico. Também é possível referenciar
+um conjunto inteiro de réplicas através de um *Deployment*,
+*ReplicaSet* ou *StatefulSet*.
+
+Para tanto, basta ter o `kubectl` instalado na sua máquina e
+a configuração correta de acesso ao cluster.
+
+O exemplo a seguir realiza *port forwarding* do MongoDB para
+a máquina local, de forma que a porta `27017` do *pod*
+esteja acessível localmente através da porta `9050`. Esse
+tipo de manobra será útil especialmente para acesso externo,
+por exemplo, au usar o MongoDB Compass.
+
+```bash
+kubectl port-forward deployment/mongodb-deployment 9050:27017
+```
+
+### Acesso via NodePort
+
+Esse tipo de acesso envolve acessar alguns *Services* que
+possuam um tipo NodePort ou LoadBalancer, estando expostos
+sob uma porta em qualquer IP do cluster. A tabela a seguir
+mostra uma relação dessas portas.
+
+| Serviço             | Porta |
+|---------------------|-------|
+| API                 | 30000 |
+| PgAdmin 4           | 31084 |
+| Mongo Express       | 31085 |
+| Redis Commander     | 31086 |
+| Grafana             | 31087 |
+
+
+## Monitoramento e testes
+
+A seguir, estão listadas algumas configurações relacionadas a
+utilitários de monitoramento e testes do Minerva no cluster.
+
+### k9s
 
 ![k9s](./k9s.png)
 
@@ -471,24 +432,67 @@ Você poderá usar o `k9s` para visualizar logs e também para modificar
 algumas propriedades mais avançadas também. É possível até mesmo acessar
 diretamente o console dos contêineres.
 
-## Monitorando via dashboard
+### kubernetes-el
 
-Você também pode acessar facilmente um dashboard web do Kubernetes,
-operando sob o Minikube, caso não queira usar o `k9s` posteriormente
-(lembre-se de que objetos como _HorizontalPodAutoscaler_ não são
-visíveis nesse Dashboard):
+![kubernetes-el](kubernetes-el.png)
+
+
+O `kubernetes-el` é um pacote para o editor de texto Emacs que
+permite inspecionar um cluster Kubernetes.
+
+Para mais informações, veja o
+[site oficial do pacote](https://kubernetes-el.github.io/kubernetes-el/).
+
+### Dashboard do Kubernetes
+
+É possível acessar o Dashboard padrão do Kubernetes para realizar
+gerenciamento e monitoramento, porém o K3s exige configuração extra.
+
+Para ter acesso ao Dashboard,
+[siga as orientações](https://rancher.com/docs/k3s/latest/en/installation/kube-dashboard/)
+no site oficial da Rancher.
+
+### Testes de Stress
+
+Há alguns testes de stress para o Minerva System. Estes testes servem principalmente para
+testar os limites e o comportamento do sistema quando o mesmo estiver sob uma grande carga
+de operações.
+
+#### Testes de spike com K6
+
+Os testes padrão são realizados através da ferramenta [K6](https://k6.io/), porém essa
+ferramenta demanda a extensão Faker para que funcione adequadamente. Você poderá
+encontrar as instruções de instalação dessa extensão
+[no repositório da mesma](https://github.com/szkiba/xk6-faker).
+
+No diretório `deploy/tests/k6`, você poderá executar o `k6` compilado com a extensão
+referida. O host do cluster deverá ser informado através da variável de ambiente
+`MINERVA_HOST`. Note que o `k6` assume que o host informado possua uma rota `/api`,
+então você deverá garantir que o Ingress do cluster esteja funcionando.
+
+O exemplo a seguir mostra como executar os spike tests para stress de operações de
+sessão e de usuários.
 
 ```bash
-minikube dashboard
+# Testes de sessão
+MINERVA_HOST=http://$IP_DO_CLUSTER k6 run session_spike.js
+
+# Testes de usuários
+MINERVA_HOST=http://$IP_DO_CLUSTER k6 run users_spike.js
 ```
 
-## Testes de Stress
+A execução dos testes gerará um arquivo `html` ao final, que mostra um formato
+interativo para inspeção dos resultados de testes.
 
-Para realizar testes de stress, use o script `deploy/stress_test.sh`.
+#### Testes de stress legados (via Bash)
+
+Para realizar testes de stress com o formato legado, use o script
+`deploy/tests/legacy/stress_test.sh`.
+
 Você poderá testar cada sistema crucial usando um comando como este:
 
 ```bash
-./deploy/stress_test.sh minerva-system.io/api user
+./deploy/tests/legacy/stress_test.sh $IP_DO_CLUSTER/api user
 ```
 
 Para maiores informações, execute o script sem argumentos e veja instruções
