@@ -37,7 +37,7 @@ deactivate session
 
 == Retorno da API ==
 
-frontend <--  api:      Resposta de sucesso + remoção de cookies
+frontend <--  api:      Resposta de sucesso
 deactivate api
 ator     <--  frontend: Redirecionamento
 
