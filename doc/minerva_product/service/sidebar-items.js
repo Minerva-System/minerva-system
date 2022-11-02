@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ProductsService","Represents the PRODUCTS service that will be attached to the server."]]});
+window.SIDEBAR_ITEMS = {"struct":[["ProductsService","Represents the PRODUCTS service that will be attached to the server."]]};

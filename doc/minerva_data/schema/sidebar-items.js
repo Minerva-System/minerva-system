@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["address",""],["client",""],["product",""],["stock",""],["stock_mov",""],["syslog",""],["user",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["address",""],["client",""],["product",""],["stock",""],["stock_mov",""],["syslog",""],["user",""]]};

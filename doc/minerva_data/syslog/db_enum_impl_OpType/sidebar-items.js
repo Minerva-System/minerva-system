@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["pg_impl",""]],"struct":[["Op_type",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["pg_impl",""]],"struct":[["Op_type",""]]};

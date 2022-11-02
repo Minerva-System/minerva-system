@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["broker_spinlock","Awaits for message broker availability on a spinlock."],["create_default_queues","Create default queues for a given virtual host on the message broker."],["create_virtual_host","Creates a virtual host for the current tenant on the message broker."]]};

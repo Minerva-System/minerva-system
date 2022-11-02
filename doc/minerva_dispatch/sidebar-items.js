@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["main","Entry point for this module."]],"mod":[["controller",""],["error","This module describes errors that could arise in this module."]]};

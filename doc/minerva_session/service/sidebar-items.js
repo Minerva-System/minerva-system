@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SessionService","Represents a gRPC service for session."]]});
+window.SIDEBAR_ITEMS = {"struct":[["SessionService","Represents a gRPC service for session."]]};

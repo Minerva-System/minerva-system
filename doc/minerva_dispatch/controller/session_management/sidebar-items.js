@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["dispatch","Dispatches a user session message."],["remove_user_sessions","Dispatches requests to SESSION so that all sessions for a given user are removed."]]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["SessionMessage","Represents a message for the `session_management` queue, more specifically related to managing user sessions."]]};

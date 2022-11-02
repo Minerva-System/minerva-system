@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main",""]],"mod":[["repository","This module wraps the repository which handles the session DTOs."],["service","This module contains the actual implementation for the `Session` gRPC service."]]});
+window.SIDEBAR_ITEMS = {"fn":[["main","Entry point for this module."]],"mod":[["repository","This module wraps the repository which handles the session DTOs."],["service","This module contains the actual implementation for the `Session` gRPC service."]]};

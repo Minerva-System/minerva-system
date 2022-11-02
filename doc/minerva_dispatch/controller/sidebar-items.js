@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":[["QUEUE_PROCESSING_WAIT_SECS","Number of seconds to wait for each task to reprocess"]],"fn":[["queue_consume","Primary entry point for the consuming of messages from the message broker."]],"mod":[["session_management","This controller contains routines related to dispatching session management messages, normally to a SESSION module."]]};

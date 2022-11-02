@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["get_tenants","Get a list of tenant configuration from a given configuration file, usually `tenancy.toml`."]],"struct":[["Tenant","Tenant data for a single entry of a table in the TOML file. Each entry is prepended by a `[[tenants]]` line."]]});
+window.SIDEBAR_ITEMS = {"fn":[["get_tenants","Get a list of tenant configuration from a given configuration file, usually `tenancy.toml`."]],"struct":[["Tenant","Tenant data for a single entry of a table in the TOML file. Each entry is prepended by a `[[tenants]]` line."]]};

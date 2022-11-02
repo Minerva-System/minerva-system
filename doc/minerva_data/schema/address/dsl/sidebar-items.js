@@ -1,1 +1,1 @@
-initSidebarItems({"macro":[["__static_cond",""]]});
+window.SIDEBAR_ITEMS = {"macro":[["__static_cond",""]]};

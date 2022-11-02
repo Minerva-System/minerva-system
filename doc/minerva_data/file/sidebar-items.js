@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["slurp","Slurp an entire text file into memory, as a string. If the file cannot be found, panics."]]});
+window.SIDEBAR_ITEMS = {"fn":[["slurp","Slurp an entire text file into memory, as a string. If the file cannot be found, panics."]]};

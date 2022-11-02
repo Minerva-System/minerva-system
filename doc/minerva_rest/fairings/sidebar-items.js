@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["auth","This submodule contains the implementation of an authentication fairing."]]});
+window.SIDEBAR_ITEMS = {"mod":[["auth","This submodule contains the implementation of an authentication fairing."]]};
