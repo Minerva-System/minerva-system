@@ -272,13 +272,14 @@ No caso do serviço REST, verifique o arquivo `Rocket.toml` para avaliar
 a configuração em desenvolvimento e em produção do mesmo.
 
 
-| Serviço              | Variável de ambiente      |
-|----------------------|---------------------------|
-| Banco de dados SQL   | `DATABASE_SERVICE_SERVER` |
-| Banco de dados NoSQL | `MONGO_SERVICE_SERVER`    |
-| Cache Redis          | `REDIS_SERVICE_SERVER`    |
-|----------------------|---------------------------|
-| REST                 | `REST_SERVICE_SERVER`     |
-| USER                 | `USER_SERVICE_SERVER`     |
-| SESSION              | `SESSION_SERVICE_SERVER`  |
+| Serviço                 | Variável de ambiente      |
+|-------------------------|---------------------------|
+| Banco de dados SQL      | `DATABASE_SERVICE_SERVER` |
+| Banco de dados NoSQL    | `MONGO_SERVICE_SERVER`    |
+| Cache Redis             | `REDIS_SERVICE_SERVER`    |
+| Message Broker RabbitMQ | `RABBITMQ_SERVICE_SERVER` |
+|-------------------------|---------------------------|
+| REST                    | `REST_SERVICE_SERVER`     |
+| USER                    | `USER_SERVICE_SERVER`     |
+| SESSION                 | `SESSION_SERVICE_SERVER`  |
 
