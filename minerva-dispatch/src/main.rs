@@ -8,6 +8,13 @@
 //! Though this service is not created with the intention of managing data
 //! directly, that may still happen, though it is not desired since specific
 //! microservices may manage business rules in an intended way.
+//!
+//! ## Testing
+//! This module currently has no unit nor integration tests. This is because
+//! these kinds of tests are expensive and are not really needed for this
+//! module, since these only perform a dispatch -- if it is being deployed
+//! successfully, then it works. (I know this is not ideal, but hey, I need
+//! to release this...)
 
 #![warn(clippy::all)]
 #![warn(missing_docs)]
@@ -24,8 +31,6 @@ use std::env;
 
 mod controller;
 mod error;
-
-// TODO: Add unit tests
 
 /// Entry point for this module.
 #[tokio::main]
