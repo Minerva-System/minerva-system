@@ -16,12 +16,17 @@ use rocket::request::{FromRequest, Outcome, Request};
 pub struct SessionInfo {
     /// Session info for the authenticated user.
     pub info: Session,
+    /// Session token for the authenticated user.
+    pub token: String,
 }
 
 impl SessionInfo {
     /// Generates a new session info from a `SessionData` gRPC message.
-    pub fn from(info: rpc::messages::SessionData) -> Self {
-        Self { info: info.into() }
+    pub fn from(info: rpc::messages::SessionData, token: String) -> Self {
+        Self {
+            info: info.into(),
+            token,
+        }
     }
 }
 
@@ -39,41 +44,59 @@ pub enum SessionError {
     ServiceUnreachable,
 }
 
+/// Extracts bearer token from authorization header, if any.
+fn get_bearer_token(authorization: &str) -> Option<String> {
+    let prefix = "Bearer ";
+    if authorization.starts_with(prefix) {
+        Some(authorization.trim_start_matches(prefix).to_owned())
+    } else {
+        None
+    }
+}
+
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for SessionInfo {
     type Error = SessionError;
 
     async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
-        let tenant = match req.cookies().get(crate::controller::auth::TENANT_COOKIE) {
-            Some(cookie) => cookie.value().to_string(),
+        // Get tenant from first segment of uri, e.g. /<tenant>/...
+        let tenant = match req.uri().path().segments().get(0) {
+            Some(tenant) => tenant.to_owned(),
             None => return Outcome::Failure((Status::Unauthorized, SessionError::MissingTenant)),
         };
 
-        match req
-            .cookies()
-            .get_private(crate::controller::auth::AUTH_COOKIE)
-        {
-            Some(cookie) => {
-                let endpoint = crate::controller::auth::get_endpoint();
-                let token = rpc::messages::SessionToken {
-                    token: cookie.value().to_string(),
-                };
-                let requestor = "unknown".into();
-                let client = rpc::session::make_client(endpoint, tenant, requestor).await;
-                if client.is_err() {
-                    return Outcome::Failure((
-                        Status::ServiceUnavailable,
-                        SessionError::ServiceUnreachable,
-                    ));
-                }
-                let mut client = client.unwrap();
+        // Get auth token from request header
+        match req.headers().get_one("Authorization") {
+            None => Outcome::Failure((Status::BadRequest, SessionError::MissingAuth)),
+            Some(header) => match get_bearer_token(header) {
+                Some(token) => {
+                    // Request a connection to SESSION service
+                    let endpoint = crate::controller::auth::get_endpoint();
+                    let msg = rpc::messages::SessionToken {
+                        token: token.clone(),
+                    };
+                    let requestor = "unknown".into();
 
-                match client.retrieve(tonic::Request::new(token)).await {
-                    Ok(response) => Outcome::Success(SessionInfo::from(response.into_inner())),
-                    Err(_) => Outcome::Failure((Status::Unauthorized, SessionError::ExpiredAuth)),
+                    match rpc::session::make_client(endpoint, tenant, requestor).await {
+                        Err(_) => {
+                            return Outcome::Failure((
+                                Status::ServiceUnavailable,
+                                SessionError::ServiceUnreachable,
+                            ))
+                        }
+                        // Upon success, attempt to fetch session data
+                        Ok(mut client) => match client.retrieve(tonic::Request::new(msg)).await {
+                            Ok(response) => {
+                                Outcome::Success(SessionInfo::from(response.into_inner(), token))
+                            }
+                            Err(_) => {
+                                Outcome::Failure((Status::Unauthorized, SessionError::ExpiredAuth))
+                            }
+                        },
+                    }
                 }
-            }
-            None => Outcome::Failure((Status::Unauthorized, SessionError::MissingAuth)),
+                None => Outcome::Failure((Status::Unauthorized, SessionError::MissingAuth)),
+            },
         }
     }
 }
