@@ -12,7 +12,7 @@ Relação de versões de microsserviços:
 - `USER` - v0.3.0
 - `SESSION` - v0.1.2
 - `RUNONCE` - v0.3.0
-- `REST` - v0.2.2
+- `REST` - v0.3.0
 - `DISPATCH`- v0.1.0
 - Front-End - v0.1.1 (pré-alfa)
 
@@ -54,6 +54,8 @@ Relação de versões de microsserviços:
 - *PostgreSQL*: Atualizado para versão 15.
 - *Documentação*: Adicionados diagramas separados para cada _deployment_ no Kubernetes,
   bem como um diagrama geral da arquitetura do mesmo.
+- *`REST`*: Requisições agora exigem token através de Bearer Token.
+- *`REST`*: Requisições agora demandam _tenant_ no início das rotas.
 
 ### Consertado
 

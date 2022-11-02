@@ -44,7 +44,7 @@ pub fn get_endpoint() -> String {
 /// curl -X GET 'http://localhost:9000/minerva/user?page=0' \
 ///      -H 'Authorization: Bearer {token}'
 /// ```
-#[get("/?<page>")]
+#[get("/<_>/user?<page>")]
 async fn index(session: SessionInfo, page: Option<i64>) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
@@ -83,7 +83,7 @@ async fn index(session: SessionInfo, page: Option<i64>) -> Response {
 /// curl -X GET 'http://localhost:9000/user/1' \
 ///      -H 'Authorization: Bearer {token}'
 /// ```
-#[get("/<id>")]
+#[get("/<_>/user/<id>")]
 async fn show(session: SessionInfo, id: i32) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
@@ -126,7 +126,7 @@ async fn show(session: SessionInfo, id: i32) -> Response {
 ///      -H 'Authorization: Bearer {token}'
 ///      -d '{"login": "fulano", "name": "Fulano da Silva", "email": null, "password": "senha123"}'
 /// ```
-#[post("/", data = "<body>")]
+#[post("/<_>/user", data = "<body>")]
 async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
@@ -179,7 +179,7 @@ async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Respon
 ///      -H 'Authorization: Bearer {token}'
 ///      -d '{"login": "fulano", "name": "Fulano da Silva", "email": null, "password": null}'
 /// ```
-#[put("/<id>", data = "<body>")]
+#[put("/<_>/user/<id>", data = "<body>")]
 async fn update(session: SessionInfo, id: i32, body: Json<data::user::RecvUser>) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
@@ -220,7 +220,7 @@ async fn update(session: SessionInfo, id: i32, body: Json<data::user::RecvUser>)
 /// curl -X DELETE 'http://localhost:9000/user/2' \
 ///      -H 'Authorization: Bearer {token}'
 /// ```
-#[delete("/<index>")]
+#[delete("/<_>/user/<index>")]
 async fn delete(session: SessionInfo, index: i32) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();

@@ -79,7 +79,7 @@ async fn login(tenant: &str, body: Json<data::session::RecvSession>) -> Response
 ///
 /// # Request example
 /// ```bash
-/// curl -X POST http://localhost:9000/minerva/logoff \
+/// curl -X POST http://localhost:9000/minerva/logout \
 ///      -H 'Authorization: Bearer {token}'
 /// ```
 #[post("/<_>/logout")]
