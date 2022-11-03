@@ -1,4 +1,5 @@
 use super::launch;
+use minerva_data::session::SessionResponse;
 use rocket::http::{ContentType, Status};
 use rocket::local::blocking::{Client, LocalResponse};
 use serde::Deserialize;
@@ -130,25 +131,16 @@ fn login_logout() {
         .dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    assert!(response.cookies().get("tenant").is_some());
-    assert!(response.cookies().get_private("auth_token").is_some());
-
-    #[derive(Deserialize)]
-    struct LoginResponse {
-        pub token: String,
-        pub tenant: String,
-    }
 
     let data = response
-        .into_json::<LoginResponse>()
-        .expect("Deserialize login data");
+        .into_json::<SessionResponse>()
+        .expect("Deserialize session data");
 
     assert_eq!(data.tenant.trim(), "teste");
     assert!(!data.token.trim().is_empty());
 
     // Logout
-    // Reuses previous cookies
-    let response = client.post("/logout").dispatch();
+    let response = client.post("/teste/logout").dispatch();
     assert_eq!(response.status(), Status::Ok);
 
     svc.dispose();

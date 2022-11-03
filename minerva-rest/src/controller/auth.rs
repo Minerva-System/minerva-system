@@ -42,6 +42,7 @@ pub fn get_endpoint() -> String {
 /// ```
 #[post("/<tenant>/login", data = "<body>")]
 async fn login(tenant: &str, body: Json<data::session::RecvSession>) -> Response {
+    use data::session::SessionResponse;
     let endpoint = get_endpoint();
     let requestor = "unknown".to_string();
     let body = body.as_new(tenant);
@@ -65,7 +66,8 @@ async fn login(tenant: &str, body: Json<data::session::RecvSession>) -> Response
         .await
         .map(|msg| {
             let token = msg.into_inner().token;
-            json!({ "token": token, "tenant": tenant })
+
+            SessionResponse { token, tenant }
         });
 
     Response::respond(response)

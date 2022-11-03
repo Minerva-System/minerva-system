@@ -41,6 +41,16 @@ pub struct RecvSession {
     pub password: String,
 }
 
+/// DTO representing the data returned from the login route on the REST
+/// endpoint, which should have a token and the tenant name.
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SessionResponse {
+    /// Access token for the user.
+    pub token: String,
+    /// Tenant where the token is valid.
+    pub tenant: String,
+}
+
 impl RecvSession {
     /// Converts this DTO to another DTO that can be
     /// used by the gRPC service.
