@@ -67,7 +67,7 @@ impl<'r> FromRequest<'r> for SessionInfo {
 
         // Get auth token from request header
         match req.headers().get_one("Authorization") {
-            None => Outcome::Failure((Status::BadRequest, SessionError::MissingAuth)),
+            None => Outcome::Failure((Status::Unauthorized, SessionError::MissingAuth)),
             Some(header) => match get_bearer_token(header) {
                 Some(token) => {
                     // Request a connection to SESSION service
