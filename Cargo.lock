@@ -1548,7 +1548,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-data"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "argon2",
  "bb8 0.7.1",
