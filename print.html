@@ -184,7 +184,7 @@ e este projeto adere ao <a href="https://semver.org/spec/v2.0.0.html">Versioname
 <li><code>USER</code> - v0.3.0</li>
 <li><code>SESSION</code> - v0.1.2</li>
 <li><code>RUNONCE</code> - v0.3.0</li>
-<li><code>REST</code> - v0.2.2</li>
+<li><code>REST</code> - v0.3.0</li>
 <li><code>DISPATCH</code>- v0.1.0</li>
 <li>Front-End - v0.1.1 (pré-alfa)</li>
 </ul>
@@ -202,6 +202,7 @@ de Ingresses.</li>
 padronizados.</li>
 <li><em>Minerva9:</em> Adicionada documentação para o MVC e repositório do projeto.</li>
 <li><em>Kubernetes:</em> Adição de configurações para deploy em ambientes IoT.</li>
+<li><em><code>DATA</code></em>: Adicionado DTO fixo para retorno de dados de sessão durante login.</li>
 </ul>
 <h3 id="modificado"><a class="header" href="#modificado">Modificado</a></h3>
 <ul>
@@ -226,6 +227,8 @@ ad-hoc como MongoDB Compass, RESP.app ou DBeaver, respectivamente.</li>
 <li><em>PostgreSQL</em>: Atualizado para versão 15.</li>
 <li><em>Documentação</em>: Adicionados diagramas separados para cada <em>deployment</em> no Kubernetes,
 bem como um diagrama geral da arquitetura do mesmo.</li>
+<li><em><code>REST</code></em>: Requisições agora exigem token através de Bearer Token.</li>
+<li><em><code>REST</code></em>: Requisições agora demandam <em>tenant</em> no início das rotas.</li>
 </ul>
 <h3 id="consertado"><a class="header" href="#consertado">Consertado</a></h3>
 <ul>
@@ -934,11 +937,11 @@ encontrados no banco de dados. Dito isso, não é incumbência da sessão realiz
 operações CRUD como usuários, e sim com a entidade da sessão em si.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="login-do-usuário"><a class="header" href="#login-do-usuário">Login do usuário</a></h1>
 <center>
-<p><a href="diagramas/../mdbook-plantuml-img/4139e084da3642bfd94f94bad7f76674f84f4787.svg"><img src="diagramas/../mdbook-plantuml-img/4139e084da3642bfd94f94bad7f76674f84f4787.svg" alt="" /></a></p>
+<p><a href="diagramas/../mdbook-plantuml-img/58e04c2de144f8606b7aaa2b82a8fbe2f167d733.svg"><img src="diagramas/../mdbook-plantuml-img/58e04c2de144f8606b7aaa2b82a8fbe2f167d733.svg" alt="" /></a></p>
 </center>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="logoff-do-usuário"><a class="header" href="#logoff-do-usuário">Logoff do usuário</a></h1>
 <center>
-<p><a href="diagramas/../mdbook-plantuml-img/d6a1bcb8896e5ba1d0e92b09d259d3228a8f62ce.svg"><img src="diagramas/../mdbook-plantuml-img/d6a1bcb8896e5ba1d0e92b09d259d3228a8f62ce.svg" alt="" /></a></p>
+<p><a href="diagramas/../mdbook-plantuml-img/3131c4e0f86da4ba1a508cb5619d8c4261849b28.svg"><img src="diagramas/../mdbook-plantuml-img/3131c4e0f86da4ba1a508cb5619d8c4261849b28.svg" alt="" /></a></p>
 </center>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="diagramas-de-sequência-usuários"><a class="header" href="#diagramas-de-sequência-usuários">Diagramas de Sequência: Usuários</a></h1>
 <p>Os diagramas a seguir dizem respeito ao fluxo de gerenciamento de usuários no

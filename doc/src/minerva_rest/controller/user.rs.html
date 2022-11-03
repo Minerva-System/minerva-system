@@ -244,14 +244,6 @@
 <span id="244">244</span>
 <span id="245">245</span>
 <span id="246">246</span>
-<span id="247">247</span>
-<span id="248">248</span>
-<span id="249">249</span>
-<span id="250">250</span>
-<span id="251">251</span>
-<span id="252">252</span>
-<span id="253">253</span>
-<span id="254">254</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This submodule describes routes for managing the data for a `User` entity,</span>
 <span class="doccomment">//! particularly with respect to connecting to the `USER` gRPC service.</span>
 
@@ -289,17 +281,16 @@
 <span class="doccomment">/// Upon success, returns a list of users in JSON format, containing up to the</span>
 <span class="doccomment">/// number of users per page as defined in the `USER` microservice.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Furthermore, this route assumes that the authentication cookies are being</span>
-<span class="doccomment">/// passed as well.</span>
-<span class="doccomment">///</span>
 <span class="doccomment">/// # Request examples</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```bash</span>
-<span class="doccomment">/// curl -X GET &#39;http://localhost:9000/user&#39; -b cookies.txt</span>
+<span class="doccomment">/// curl -X GET &#39;http://localhost:9000/minerva/user&#39; \</span>
+<span class="doccomment">///      -H &#39;Authorization: Bearer {token}&#39;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// curl -X GET &#39;http://localhost:9000/user?page=0&#39; -b cookies.txt</span>
+<span class="doccomment">/// curl -X GET &#39;http://localhost:9000/minerva/user?page=0&#39; \</span>
+<span class="doccomment">///      -H &#39;Authorization: Bearer {token}&#39;</span>
 <span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/?&lt;page&gt;&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/&lt;_&gt;/user?&lt;page&gt;&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">index</span>(<span class="ident">session</span>: <span class="ident">SessionInfo</span>, <span class="ident">page</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>) -&gt; <span class="ident">Response</span> {
     <span class="kw">let</span> <span class="ident">endpoint</span> <span class="op">=</span> <span class="ident">get_endpoint</span>();
     <span class="kw">let</span> <span class="ident">tenant</span> <span class="op">=</span> <span class="ident">session</span>.<span class="ident">info</span>.<span class="ident">tenant</span>.<span class="ident">clone</span>();
@@ -332,15 +323,13 @@
 <span class="doccomment">/// Upon success, retrieves data for a single user of the given ID in JSON</span>
 <span class="doccomment">/// format.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Furthermore, this route assumes that the authentication cookies are being</span>
-<span class="doccomment">/// passed as well.</span>
-<span class="doccomment">///</span>
 <span class="doccomment">/// # Request example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```bash</span>
-<span class="doccomment">/// curl -X GET &#39;http://localhost:9000/user/1&#39; -b cookies.txt</span>
+<span class="doccomment">/// curl -X GET &#39;http://localhost:9000/user/1&#39; \</span>
+<span class="doccomment">///      -H &#39;Authorization: Bearer {token}&#39;</span>
 <span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/&lt;id&gt;&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/&lt;_&gt;/user/&lt;id&gt;&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">show</span>(<span class="ident">session</span>: <span class="ident">SessionInfo</span>, <span class="ident">id</span>: <span class="ident">i32</span>) -&gt; <span class="ident">Response</span> {
     <span class="kw">let</span> <span class="ident">endpoint</span> <span class="op">=</span> <span class="ident">get_endpoint</span>();
     <span class="kw">let</span> <span class="ident">tenant</span> <span class="op">=</span> <span class="ident">session</span>.<span class="ident">info</span>.<span class="ident">tenant</span>.<span class="ident">clone</span>();
@@ -375,17 +364,15 @@
 <span class="doccomment">/// Upon success, returns the data for the created user as if it were requested</span>
 <span class="doccomment">/// through the `show` method.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// This route assumes that the authentication cookies are being passed as well.</span>
-<span class="doccomment">///</span>
 <span class="doccomment">/// # Request example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```bash</span>
 <span class="doccomment">/// curl -X POST &#39;http://localhost:9000/user&#39; \</span>
 <span class="doccomment">///      -H &#39;Content-Type: application/json&#39; \</span>
-<span class="doccomment">///      -b cookies.txt</span>
+<span class="doccomment">///      -H &#39;Authorization: Bearer {token}&#39;</span>
 <span class="doccomment">///      -d &#39;{&quot;login&quot;: &quot;fulano&quot;, &quot;name&quot;: &quot;Fulano da Silva&quot;, &quot;email&quot;: null, &quot;password&quot;: &quot;senha123&quot;}&#39;</span>
 <span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;body&gt;&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/&lt;_&gt;/user&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;body&gt;&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">store</span>(<span class="ident">session</span>: <span class="ident">SessionInfo</span>, <span class="ident">body</span>: <span class="ident">Json</span><span class="op">&lt;</span><span class="ident">data::user::RecvUser</span><span class="op">&gt;</span>) -&gt; <span class="ident">Response</span> {
     <span class="kw">let</span> <span class="ident">endpoint</span> <span class="op">=</span> <span class="ident">get_endpoint</span>();
     <span class="kw">let</span> <span class="ident">tenant</span> <span class="op">=</span> <span class="ident">session</span>.<span class="ident">info</span>.<span class="ident">tenant</span>.<span class="ident">clone</span>();
@@ -430,17 +417,15 @@
 <span class="doccomment">/// Upon success, returns the data for the created user as if it were requested</span>
 <span class="doccomment">/// through the `show` method.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// This route assumes that the authentication cookies are being passed as well.</span>
-<span class="doccomment">///</span>
 <span class="doccomment">/// # Request example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```bash</span>
 <span class="doccomment">/// curl -X PUT &#39;http://localhost:9000/user/2&#39; \</span>
-<span class="doccomment">///      -H &#39;Content-Type: application/json&#39; \</span>
-<span class="doccomment">///      -b cookies.txt</span>
+<span class="doccomment">///      -H &#39;Content-Type: application/json&#39;  \</span>
+<span class="doccomment">///      -H &#39;Authorization: Bearer {token}&#39;</span>
 <span class="doccomment">///      -d &#39;{&quot;login&quot;: &quot;fulano&quot;, &quot;name&quot;: &quot;Fulano da Silva&quot;, &quot;email&quot;: null, &quot;password&quot;: null}&#39;</span>
 <span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">put</span>(<span class="string">&quot;/&lt;id&gt;&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;body&gt;&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">put</span>(<span class="string">&quot;/&lt;_&gt;/user/&lt;id&gt;&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;body&gt;&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update</span>(<span class="ident">session</span>: <span class="ident">SessionInfo</span>, <span class="ident">id</span>: <span class="ident">i32</span>, <span class="ident">body</span>: <span class="ident">Json</span><span class="op">&lt;</span><span class="ident">data::user::RecvUser</span><span class="op">&gt;</span>) -&gt; <span class="ident">Response</span> {
     <span class="kw">let</span> <span class="ident">endpoint</span> <span class="op">=</span> <span class="ident">get_endpoint</span>();
     <span class="kw">let</span> <span class="ident">tenant</span> <span class="op">=</span> <span class="ident">session</span>.<span class="ident">info</span>.<span class="ident">tenant</span>.<span class="ident">clone</span>();
@@ -475,14 +460,13 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// Upon success, returns an empty object.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// This route assumes that the authentication cookies are being passed as well.</span>
-<span class="doccomment">///</span>
 <span class="doccomment">/// # Request example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```bash</span>
-<span class="doccomment">/// curl -X DELETE &#39;http://localhost:9000/user/2&#39; -b cookies.txt</span>
+<span class="doccomment">/// curl -X DELETE &#39;http://localhost:9000/user/2&#39; \</span>
+<span class="doccomment">///      -H &#39;Authorization: Bearer {token}&#39;</span>
 <span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">delete</span>(<span class="string">&quot;/&lt;index&gt;&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">delete</span>(<span class="string">&quot;/&lt;_&gt;/user/&lt;index&gt;&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete</span>(<span class="ident">session</span>: <span class="ident">SessionInfo</span>, <span class="ident">index</span>: <span class="ident">i32</span>) -&gt; <span class="ident">Response</span> {
     <span class="kw">let</span> <span class="ident">endpoint</span> <span class="op">=</span> <span class="ident">get_endpoint</span>();
     <span class="kw">let</span> <span class="ident">tenant</span> <span class="op">=</span> <span class="ident">session</span>.<span class="ident">info</span>.<span class="ident">tenant</span>.<span class="ident">clone</span>();

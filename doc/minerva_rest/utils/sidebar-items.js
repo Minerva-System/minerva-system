@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["get_ip","Returns the IP address and port of this application, which is always `127.0.0.1:9000`."],["get_tenant","Get tenant information from the cookies jar. The jar must be obtained from a request."]]};
+window.SIDEBAR_ITEMS = {"fn":[["get_ip","Returns the IP address and port of this application, which is always `127.0.0.1:9000`."]]};

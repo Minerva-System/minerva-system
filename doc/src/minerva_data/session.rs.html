@@ -256,6 +256,16 @@
 <span id="256">256</span>
 <span id="257">257</span>
 <span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This module contains Data Transfer Objects for the user sessions on the</span>
 <span class="doccomment">//! system, representing a user&#39;s login session for a given tenant. These DTO&#39;s</span>
 <span class="doccomment">//! mostly relate to the `session` collecton on MongoDB database.</span>
@@ -297,6 +307,16 @@
     <span class="kw">pub</span> <span class="ident">login</span>: <span class="ident">String</span>,
     <span class="doccomment">/// Plain text password of the user attempting to log in.</span>
     <span class="kw">pub</span> <span class="ident">password</span>: <span class="ident">String</span>,
+}
+
+<span class="doccomment">/// DTO representing the data returned from the login route on the REST</span>
+<span class="doccomment">/// endpoint, which should have a token and the tenant name.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SessionResponse</span> {
+    <span class="doccomment">/// Access token for the user.</span>
+    <span class="kw">pub</span> <span class="ident">token</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Tenant where the token is valid.</span>
+    <span class="kw">pub</span> <span class="ident">tenant</span>: <span class="ident">String</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">RecvSession</span> {
