@@ -1,7 +1,7 @@
 use super::launch;
-use rocket::http::{ContentType, Status};
+use minerva_data::session::SessionResponse;
+use rocket::http::{ContentType, Header, Status};
 use rocket::local::blocking::{Client, LocalResponse};
-use serde::Deserialize;
 use serde_json::json;
 use serial_test::serial;
 use std::{
@@ -130,25 +130,22 @@ fn login_logout() {
         .dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    assert!(response.cookies().get("tenant").is_some());
-    assert!(response.cookies().get_private("auth_token").is_some());
 
-    #[derive(Deserialize)]
-    struct LoginResponse {
-        pub token: String,
-        pub tenant: String,
-    }
+    let session = response
+        .into_json::<SessionResponse>()
+        .expect("Deserialize session data");
 
-    let data = response
-        .into_json::<LoginResponse>()
-        .expect("Deserialize login data");
-
-    assert_eq!(data.tenant.trim(), "teste");
-    assert!(!data.token.trim().is_empty());
+    assert_eq!(session.tenant.trim(), "teste");
+    assert!(!session.token.trim().is_empty());
 
     // Logout
-    // Reuses previous cookies
-    let response = client.post("/logout").dispatch();
+    let response = client
+        .post("/teste/logout")
+        .header(Header::new(
+            "Authorization",
+            format!("Bearer {}", session.token),
+        ))
+        .dispatch();
     assert_eq!(response.status(), Status::Ok);
 
     svc.dispose();
@@ -177,8 +174,18 @@ fn get_user_data() {
         .dispatch();
     assert_eq!(response.status(), Status::Ok);
 
+    let session = response
+        .into_json::<SessionResponse>()
+        .expect("Deserialize session data");
+
     // Get users
-    let response: LocalResponse = client.get("/user").dispatch();
+    let response: LocalResponse = client
+        .get("/teste/user")
+        .header(Header::new(
+            "Authorization",
+            format!("Bearer {}", session.token),
+        ))
+        .dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
 
@@ -194,7 +201,13 @@ fn get_user_data() {
 
     // Get single user: the same administrator found before
     let id = user.id;
-    let response = client.get(format!("/user/{}", id)).dispatch();
+    let response = client
+        .get(format!("/teste/user/{}", id))
+        .header(Header::new(
+            "Authorization",
+            format!("Bearer {}", session.token),
+        ))
+        .dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
 
@@ -204,7 +217,13 @@ fn get_user_data() {
     assert_eq!(user.email, None);
 
     // Logout
-    let response = client.post("/logout").dispatch();
+    let response = client
+        .post("/teste/logout")
+        .header(Header::new(
+            "Authorization",
+            format!("Bearer {}", session.token),
+        ))
+        .dispatch();
     assert_eq!(response.status(), Status::Ok);
 
     svc.dispose();
@@ -231,9 +250,17 @@ fn crud_user() {
         .dispatch();
     assert_eq!(response.status(), Status::Ok);
 
+    let session = response
+        .into_json::<SessionResponse>()
+        .expect("Deserialize session data");
+
     // Create user
     let response = client
-        .post("/user")
+        .post("/teste/user")
+        .header(Header::new(
+            "Authorization",
+            format!("Bearer {}", session.token),
+        ))
         .body(
             json!({
             "login": "fulano_teste_rest",
@@ -254,7 +281,13 @@ fn crud_user() {
 
     // Fetch user as inserted
     let id = user.id;
-    let response = client.get(format!("/user/{}", id)).dispatch();
+    let response = client
+        .get(format!("/teste/user/{}", id))
+        .header(Header::new(
+            "Authorization",
+            format!("Bearer {}", session.token),
+        ))
+        .dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
 
@@ -265,7 +298,11 @@ fn crud_user() {
 
     // Update user data
     let response = client
-        .put(format!("/user/{}", id))
+        .put(format!("/teste/user/{}", id))
+        .header(Header::new(
+            "Authorization",
+            format!("Bearer {}", session.token),
+        ))
         .body(
             json!({
                 "login": user.login.clone(),
@@ -284,7 +321,13 @@ fn crud_user() {
     assert_eq!(user.email, Some("fulano@exemplo.com".into()));
 
     // Fetch modified user again
-    let response = client.get(format!("/user/{}", id)).dispatch();
+    let response = client
+        .get(format!("/teste/user/{}", id))
+        .header(Header::new(
+            "Authorization",
+            format!("Bearer {}", session.token),
+        ))
+        .dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
 
@@ -294,13 +337,25 @@ fn crud_user() {
     assert_eq!(user.email, Some("fulano@exemplo.com".into()));
 
     // Remove user
-    let response = client.delete(format!("/user/{}", id)).dispatch();
+    let response = client
+        .delete(format!("/teste/user/{}", id))
+        .header(Header::new(
+            "Authorization",
+            format!("Bearer {}", session.token),
+        ))
+        .dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
     assert_eq!(response.into_string(), Some("{}".into()));
 
     // Logout
-    let response = client.post("/logout").dispatch();
+    let response = client
+        .post("/teste/logout")
+        .header(Header::new(
+            "Authorization",
+            format!("Bearer {}", session.token),
+        ))
+        .dispatch();
     assert_eq!(response.status(), Status::Ok);
 
     svc.dispose();
@@ -351,7 +406,7 @@ fn failed_requests() {
     assert_eq!(response.content_type(), Some(ContentType::JSON));
 
     // 401 for attempting to list users without logging in
-    let response = client.get("/user").dispatch();
+    let response = client.get("/teste/user").dispatch();
     assert_eq!(response.status(), Status::Unauthorized);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
 
@@ -368,9 +423,17 @@ fn failed_requests() {
         .dispatch();
     assert_eq!(response.status(), Status::Ok);
 
+    let session = response
+        .into_json::<SessionResponse>()
+        .expect("Deserialize session data");
+
     // 422 for a malformed user creation request
     let response = client
-        .post("/user")
+        .post("/teste/user")
+        .header(Header::new(
+            "Authorization",
+            format!("Bearer {}", session.token),
+        ))
         .body(
             json!({
                 "name": "Fulano da Silva",
@@ -383,7 +446,13 @@ fn failed_requests() {
     assert_eq!(response.content_type(), Some(ContentType::JSON));
 
     // Logout
-    let response = client.post("/logout").dispatch();
+    let response = client
+        .post("/teste/logout")
+        .header(Header::new(
+            "Authorization",
+            format!("Bearer {}", session.token),
+        ))
+        .dispatch();
     assert_eq!(response.status(), Status::Ok);
 
     svc.dispose();
