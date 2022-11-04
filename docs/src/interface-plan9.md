@@ -32,10 +32,10 @@ funcionalidades do Plan 9, o que inclui:
 - Uso extensivo da biblioteca [`microui`](https://git.sr.ht/~ft/microui), uma biblioteca
   para construir aplicações gráficas no Plan 9, através da linguagem C;
 - Uso extensivo de [`webfs(4)`](http://man.9front.org/4/webfs), como forma de realizar
-  requisições REST à API do Minerva, e [`webcookies(4)`](http://man.9front.org/4/webcookies)
-  para gerenciar cookies de sessão. Isso está em conformidade com a ideia de utilizar arquivos
-  e sistemas de arquivos como recursos, em vez de importar novas bibliotecas, quando estas
-  não são realmente necessárias (ou existentes);
+  requisições REST à API do Minerva, com autenticação baseada em bearer token.
+  Isso está em conformidade com a ideia de utilizar arquivos e sistemas de arquivos como
+  recursos, em vez de importar novas bibliotecas, quando estas não são realmente
+  necessárias (ou existentes);
 - Desenvolvimento rápido de uma interface simples, similar à interface para terminal
   `minerva_tui` (também discutida nessa documentação), que não pode ser compilada no
   Plan 9, ainda que o sistema suporte a linguagem Go;
