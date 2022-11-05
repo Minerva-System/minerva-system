@@ -34,6 +34,7 @@ Relação de versões de microsserviços:
 
 ### Modificado
 
+- Rust: Define versão 1.65.0 para todo o projeto.
 - *`RUNONCE`:* Spinlocks de aguardo de disponibilidade de serviços agora realizam
   _sleep_ assíncrono de dois segundos após cada falha.
 - *`RUNONCE`:* Spinlocks de disponibilidade agora também operam de forma assíncrona.
@@ -76,6 +77,9 @@ Relação de versões de microsserviços:
   necessário para realizar deploy em K3s, com Traefik sendo utilizado como
   backend para Ingresses. Isso inviabiliza um pouco o uso de Minikube e
   Microk8s.
+- Builds de imagens Docker com Rust quebram o Qemu com uso excessivo de memória,
+  caso a variável de ambiente `CARGO_NET_GIT_FETCH_WITH_CLI` não esteja definida
+  como `true`.
 
 
 ## [v2] - 2022-06-05

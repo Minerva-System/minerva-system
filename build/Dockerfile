@@ -1,9 +1,10 @@
 ## Compilation and preparation
 
 # Base container for compilation
-FROM rust:1.62.0-alpine3.16 AS rust_base
+FROM rust:1.65.0-alpine3.16 AS rust_base
 WORKDIR /
-RUN apk add --no-cache cmake make musl-dev file build-base libpq libpq-dev openssl-dev postgresql-dev
+RUN apk add --no-cache cmake make musl-dev file build-base libpq libpq-dev openssl-dev postgresql-dev git
+ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
 RUN cargo install cargo-chef
 ENV RUSTFLAGS="-C target-feature=-crt-static"
 
@@ -14,12 +15,15 @@ WORKDIR /minerva
 COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 
-# Build all modules
-FROM rust_base AS builder
+# Cook cache
+FROM rust_base AS cook
 RUN mkdir /minerva
 WORKDIR /minerva
 COPY --from=chef /minerva/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
+
+# Build all modules
+FROM cook AS builder
 COPY . .
 RUN apk add --no-cache protobuf protobuf-dev
 RUN cargo build --release
