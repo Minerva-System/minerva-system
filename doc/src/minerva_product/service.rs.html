@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-product/src/service.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>service.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_product/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_product/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_product/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-product/src/service.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>service.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_product/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_product/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_product/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -110,112 +110,112 @@
 <span id="110">110</span>
 <span id="111">111</span>
 <span id="112">112</span>
-</pre><pre class="rust"><code><span class="doccomment">//! This module encloses the implementation of the PRODUCTS service and the</span>
-<span class="doccomment">//! implementation of its gRPC protocol.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! This module encloses the implementation of the PRODUCTS service and the
+//! implementation of its gRPC protocol.
 
-<span class="kw">use</span> <span class="ident">minerva_data</span> <span class="kw">as</span> <span class="ident">lib_data</span>;
-<span class="kw">use</span> <span class="ident">minerva_rpc</span> <span class="kw">as</span> <span class="ident">lib_rpc</span>;
-<span class="kw">use</span> <span class="ident">minerva_rpc::messages</span>;
-<span class="kw">use</span> <span class="ident">minerva_rpc::metadata</span>;
-<span class="kw">use</span> <span class="ident">minerva_rpc::products::products_server::Products</span>;
-<span class="kw">use</span> <span class="ident">tonic</span>::{<span class="ident">Request</span>, <span class="ident">Response</span>, <span class="ident">Status</span>};
+</span><span class="kw">use </span>minerva_data <span class="kw">as </span>lib_data;
+<span class="kw">use </span>minerva_rpc <span class="kw">as </span>lib_rpc;
+<span class="kw">use </span>minerva_rpc::messages;
+<span class="kw">use </span>minerva_rpc::metadata;
+<span class="kw">use </span>minerva_rpc::products::products_server::Products;
+<span class="kw">use </span>tonic::{Request, Response, Status};
 
-<span class="doccomment">/// Represents the PRODUCTS service that will be attached to the server.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ProductsService</span>;
+<span class="doccomment">/// Represents the PRODUCTS service that will be attached to the server.
+</span><span class="attribute">#[derive(Default, Clone)]
+</span><span class="kw">pub struct </span>ProductsService;
 
-<span class="attribute">#[<span class="ident">tonic::async_trait</span>]</span>
-<span class="kw">impl</span> <span class="ident">Products</span> <span class="kw">for</span> <span class="ident">ProductsService</span> {
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">index</span>(
+<span class="attribute">#[tonic::async_trait]
+</span><span class="kw">impl </span>Products <span class="kw">for </span>ProductsService {
+    <span class="kw">async fn </span>index(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">req</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">messages::PageIndex</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">messages::ProductList</span><span class="op">&gt;</span>, <span class="ident">Status</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">tenant</span> <span class="op">=</span> <span class="ident">metadata::get_value</span>(<span class="ident">req</span>.<span class="ident">metadata</span>(), <span class="string">&quot;tenant&quot;</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::failed_precondition</span>(<span class="string">&quot;Missing tenant on request metadata&quot;</span>))<span class="question-mark">?</span>;
+        req: Request&lt;messages::PageIndex&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;messages::ProductList&gt;, Status&gt; {
+        <span class="kw">let </span>tenant = metadata::get_value(req.metadata(), <span class="string">&quot;tenant&quot;</span>)
+            .ok_or_else(|| Status::failed_precondition(<span class="string">&quot;Missing tenant on request metadata&quot;</span>))<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">requestor</span> <span class="op">=</span> <span class="ident">metadata::get_value</span>(<span class="ident">req</span>.<span class="ident">metadata</span>(), <span class="string">&quot;requestor&quot;</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::failed_precondition</span>(<span class="string">&quot;Missing requestor on request metadata&quot;</span>))<span class="question-mark">?</span>;
+        <span class="kw">let </span>requestor = metadata::get_value(req.metadata(), <span class="string">&quot;requestor&quot;</span>)
+            .ok_or_else(|| Status::failed_precondition(<span class="string">&quot;Missing requestor on request metadata&quot;</span>))<span class="question-mark">?</span>;
 
-        <span class="ident">lib_data::log::print</span>(
-            <span class="ident">lib_rpc::get_address</span>(<span class="kw-2">&amp;</span><span class="ident">req</span>),
-            <span class="ident">requestor</span>,
-            <span class="ident">tenant</span>,
+        lib_data::log::print(
+            lib_rpc::get_address(<span class="kw-2">&amp;</span>req),
+            requestor,
+            tenant,
             <span class="string">&quot;PRODUCT::INDEX&quot;</span>,
         );
 
-        <span class="kw">let</span> <span class="ident">_page</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">into_inner</span>().<span class="ident">index</span>.<span class="ident">unwrap_or</span>(<span class="number">0</span>);
+        <span class="kw">let </span>_page = req.into_inner().index.unwrap_or(<span class="number">0</span>);
 
         <span class="macro">unimplemented!</span>();
     }
 
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">show</span>(
+    <span class="kw">async fn </span>show(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">req</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">messages::EntityIndex</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">messages::Product</span><span class="op">&gt;</span>, <span class="ident">Status</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">tenant</span> <span class="op">=</span> <span class="ident">metadata::get_value</span>(<span class="ident">req</span>.<span class="ident">metadata</span>(), <span class="string">&quot;tenant&quot;</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::failed_precondition</span>(<span class="string">&quot;Missing tenant on request metadata&quot;</span>))<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">requestor</span> <span class="op">=</span> <span class="ident">metadata::get_value</span>(<span class="ident">req</span>.<span class="ident">metadata</span>(), <span class="string">&quot;requestor&quot;</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::failed_precondition</span>(<span class="string">&quot;Missing requestor on request metadata&quot;</span>))<span class="question-mark">?</span>;
+        req: Request&lt;messages::EntityIndex&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;messages::Product&gt;, Status&gt; {
+        <span class="kw">let </span>tenant = metadata::get_value(req.metadata(), <span class="string">&quot;tenant&quot;</span>)
+            .ok_or_else(|| Status::failed_precondition(<span class="string">&quot;Missing tenant on request metadata&quot;</span>))<span class="question-mark">?</span>;
+        <span class="kw">let </span>requestor = metadata::get_value(req.metadata(), <span class="string">&quot;requestor&quot;</span>)
+            .ok_or_else(|| Status::failed_precondition(<span class="string">&quot;Missing requestor on request metadata&quot;</span>))<span class="question-mark">?</span>;
 
-        <span class="ident">lib_data::log::print</span>(
-            <span class="ident">lib_rpc::get_address</span>(<span class="kw-2">&amp;</span><span class="ident">req</span>),
-            <span class="ident">requestor</span>,
-            <span class="ident">tenant</span>,
+        lib_data::log::print(
+            lib_rpc::get_address(<span class="kw-2">&amp;</span>req),
+            requestor,
+            tenant,
             <span class="string">&quot;PRODUCT::SHOW&quot;</span>,
         );
 
         <span class="macro">unimplemented!</span>();
     }
 
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">store</span>(
+    <span class="kw">async fn </span>store(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">req</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">messages::Product</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">messages::Product</span><span class="op">&gt;</span>, <span class="ident">Status</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">tenant</span> <span class="op">=</span> <span class="ident">metadata::get_value</span>(<span class="ident">req</span>.<span class="ident">metadata</span>(), <span class="string">&quot;tenant&quot;</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::failed_precondition</span>(<span class="string">&quot;Missing tenant on request metadata&quot;</span>))<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">requestor</span> <span class="op">=</span> <span class="ident">metadata::get_value</span>(<span class="ident">req</span>.<span class="ident">metadata</span>(), <span class="string">&quot;requestor&quot;</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::failed_precondition</span>(<span class="string">&quot;Missing requestor on request metadata&quot;</span>))<span class="question-mark">?</span>;
+        req: Request&lt;messages::Product&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;messages::Product&gt;, Status&gt; {
+        <span class="kw">let </span>tenant = metadata::get_value(req.metadata(), <span class="string">&quot;tenant&quot;</span>)
+            .ok_or_else(|| Status::failed_precondition(<span class="string">&quot;Missing tenant on request metadata&quot;</span>))<span class="question-mark">?</span>;
+        <span class="kw">let </span>requestor = metadata::get_value(req.metadata(), <span class="string">&quot;requestor&quot;</span>)
+            .ok_or_else(|| Status::failed_precondition(<span class="string">&quot;Missing requestor on request metadata&quot;</span>))<span class="question-mark">?</span>;
 
-        <span class="ident">lib_data::log::print</span>(
-            <span class="ident">lib_rpc::get_address</span>(<span class="kw-2">&amp;</span><span class="ident">req</span>),
-            <span class="ident">requestor</span>,
-            <span class="ident">tenant</span>,
+        lib_data::log::print(
+            lib_rpc::get_address(<span class="kw-2">&amp;</span>req),
+            requestor,
+            tenant,
             <span class="string">&quot;PRODUCT::STORE&quot;</span>,
         );
 
         <span class="macro">unimplemented!</span>();
     }
 
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update</span>(
+    <span class="kw">async fn </span>update(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">req</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">messages::Product</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">messages::Product</span><span class="op">&gt;</span>, <span class="ident">Status</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">tenant</span> <span class="op">=</span> <span class="ident">metadata::get_value</span>(<span class="ident">req</span>.<span class="ident">metadata</span>(), <span class="string">&quot;tenant&quot;</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::failed_precondition</span>(<span class="string">&quot;Missing tenant on request metadata&quot;</span>))<span class="question-mark">?</span>;
+        req: Request&lt;messages::Product&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;messages::Product&gt;, Status&gt; {
+        <span class="kw">let </span>tenant = metadata::get_value(req.metadata(), <span class="string">&quot;tenant&quot;</span>)
+            .ok_or_else(|| Status::failed_precondition(<span class="string">&quot;Missing tenant on request metadata&quot;</span>))<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">requestor</span> <span class="op">=</span> <span class="ident">metadata::get_value</span>(<span class="ident">req</span>.<span class="ident">metadata</span>(), <span class="string">&quot;requestor&quot;</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::failed_precondition</span>(<span class="string">&quot;Missing requestor on request metadata&quot;</span>))<span class="question-mark">?</span>;
+        <span class="kw">let </span>requestor = metadata::get_value(req.metadata(), <span class="string">&quot;requestor&quot;</span>)
+            .ok_or_else(|| Status::failed_precondition(<span class="string">&quot;Missing requestor on request metadata&quot;</span>))<span class="question-mark">?</span>;
 
-        <span class="ident">lib_data::log::print</span>(
-            <span class="ident">lib_rpc::get_address</span>(<span class="kw-2">&amp;</span><span class="ident">req</span>),
-            <span class="ident">requestor</span>,
-            <span class="ident">tenant</span>,
+        lib_data::log::print(
+            lib_rpc::get_address(<span class="kw-2">&amp;</span>req),
+            requestor,
+            tenant,
             <span class="string">&quot;PRODUCT::UPDATE&quot;</span>,
         );
 
         <span class="macro">unimplemented!</span>();
     }
 
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">messages::EntityIndex</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">Status</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">tenant</span> <span class="op">=</span> <span class="ident">metadata::get_value</span>(<span class="ident">req</span>.<span class="ident">metadata</span>(), <span class="string">&quot;tenant&quot;</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::failed_precondition</span>(<span class="string">&quot;Missing tenant on request metadata&quot;</span>))<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">requestor</span> <span class="op">=</span> <span class="ident">metadata::get_value</span>(<span class="ident">req</span>.<span class="ident">metadata</span>(), <span class="string">&quot;requestor&quot;</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::failed_precondition</span>(<span class="string">&quot;Missing requestor on request metadata&quot;</span>))<span class="question-mark">?</span>;
+    <span class="kw">async fn </span>delete(<span class="kw-2">&amp;</span><span class="self">self</span>, req: Request&lt;messages::EntityIndex&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Response&lt;()&gt;, Status&gt; {
+        <span class="kw">let </span>tenant = metadata::get_value(req.metadata(), <span class="string">&quot;tenant&quot;</span>)
+            .ok_or_else(|| Status::failed_precondition(<span class="string">&quot;Missing tenant on request metadata&quot;</span>))<span class="question-mark">?</span>;
+        <span class="kw">let </span>requestor = metadata::get_value(req.metadata(), <span class="string">&quot;requestor&quot;</span>)
+            .ok_or_else(|| Status::failed_precondition(<span class="string">&quot;Missing requestor on request metadata&quot;</span>))<span class="question-mark">?</span>;
 
-        <span class="ident">lib_data::log::print</span>(
-            <span class="ident">lib_rpc::get_address</span>(<span class="kw-2">&amp;</span><span class="ident">req</span>),
-            <span class="ident">requestor</span>,
-            <span class="ident">tenant</span>,
+        lib_data::log::print(
+            lib_rpc::get_address(<span class="kw-2">&amp;</span>req),
+            requestor,
+            tenant,
             <span class="string">&quot;PRODUCT::DELETE&quot;</span>,
         );
 
@@ -223,4 +223,4 @@
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_product" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_product" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

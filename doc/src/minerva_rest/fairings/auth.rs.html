@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-rest/src/fairings/auth.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>auth.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../minerva_rest/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../minerva_rest/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../minerva_rest/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-rest/src/fairings/auth.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>auth.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../minerva_rest/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../minerva_rest/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../minerva_rest/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -100,107 +100,107 @@
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
-</pre><pre class="rust"><code><span class="doccomment">//! This submodule contains the implementation of an authentication fairing.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! This submodule contains the implementation of an authentication fairing.
 
-<span class="kw">use</span> <span class="ident">minerva_data::session::Session</span>;
-<span class="kw">use</span> <span class="ident">minerva_rpc</span> <span class="kw">as</span> <span class="ident">rpc</span>;
-<span class="kw">use</span> <span class="ident">rocket::http::Status</span>;
-<span class="kw">use</span> <span class="ident">rocket::request</span>::{<span class="ident">FromRequest</span>, <span class="ident">Outcome</span>, <span class="ident">Request</span>};
+</span><span class="kw">use </span>minerva_data::session::Session;
+<span class="kw">use </span>minerva_rpc <span class="kw">as </span>rpc;
+<span class="kw">use </span>rocket::http::Status;
+<span class="kw">use </span>rocket::request::{FromRequest, Outcome, Request};
 
-<span class="doccomment">/// Struct for session information that can be retrieved for every access to a</span>
-<span class="doccomment">/// route that explicitly retrieves it.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Adding a `State` containing a `SessionInfo` to a route function&#39;s parameters</span>
-<span class="doccomment">/// automatically means that the route will only be accessible by an</span>
-<span class="doccomment">/// authenticated user that passes its authentication info through cookies. If</span>
-<span class="doccomment">/// a `SessionInfo` can be retrieved given the cookies information, then the</span>
-<span class="doccomment">/// user is authenticated for using that route.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SessionInfo</span> {
-    <span class="doccomment">/// Session info for the authenticated user.</span>
-    <span class="kw">pub</span> <span class="ident">info</span>: <span class="ident">Session</span>,
-    <span class="doccomment">/// Session token for the authenticated user.</span>
-    <span class="kw">pub</span> <span class="ident">token</span>: <span class="ident">String</span>,
+<span class="doccomment">/// Struct for session information that can be retrieved for every access to a
+/// route that explicitly retrieves it.
+///
+/// Adding a `State` containing a `SessionInfo` to a route function&#39;s parameters
+/// automatically means that the route will only be accessible by an
+/// authenticated user that passes its authentication info through cookies. If
+/// a `SessionInfo` can be retrieved given the cookies information, then the
+/// user is authenticated for using that route.
+</span><span class="kw">pub struct </span>SessionInfo {
+    <span class="doccomment">/// Session info for the authenticated user.
+    </span><span class="kw">pub </span>info: Session,
+    <span class="doccomment">/// Session token for the authenticated user.
+    </span><span class="kw">pub </span>token: String,
 }
 
-<span class="kw">impl</span> <span class="ident">SessionInfo</span> {
-    <span class="doccomment">/// Generates a new session info from a `SessionData` gRPC message.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">info</span>: <span class="ident">rpc::messages::SessionData</span>, <span class="ident">token</span>: <span class="ident">String</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">info</span>: <span class="ident">info</span>.<span class="ident">into</span>(),
-            <span class="ident">token</span>,
+<span class="kw">impl </span>SessionInfo {
+    <span class="doccomment">/// Generates a new session info from a `SessionData` gRPC message.
+    </span><span class="kw">pub fn </span>from(info: rpc::messages::SessionData, token: String) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            info: info.into(),
+            token,
         }
     }
 }
 
-<span class="doccomment">/// Describes kinds of errors when attempting to retrieve a `SessionInfo`</span>
-<span class="doccomment">/// through the workings of its fairing.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SessionError</span> {
-    <span class="doccomment">/// The cookies did not contain information on the tenant.</span>
-    <span class="ident">MissingTenant</span>,
-    <span class="doccomment">/// There is no authentication data for that user&#39;s session.</span>
-    <span class="ident">MissingAuth</span>,
-    <span class="doccomment">/// The authentication data has expired.</span>
-    <span class="ident">ExpiredAuth</span>,
-    <span class="doccomment">/// The required microservice could not be reached.</span>
-    <span class="ident">ServiceUnreachable</span>,
+<span class="doccomment">/// Describes kinds of errors when attempting to retrieve a `SessionInfo`
+/// through the workings of its fairing.
+</span><span class="attribute">#[derive(Debug, Clone)]
+</span><span class="kw">pub enum </span>SessionError {
+    <span class="doccomment">/// The cookies did not contain information on the tenant.
+    </span>MissingTenant,
+    <span class="doccomment">/// There is no authentication data for that user&#39;s session.
+    </span>MissingAuth,
+    <span class="doccomment">/// The authentication data has expired.
+    </span>ExpiredAuth,
+    <span class="doccomment">/// The required microservice could not be reached.
+    </span>ServiceUnreachable,
 }
 
-<span class="doccomment">/// Extracts bearer token from authorization header, if any.</span>
-<span class="kw">fn</span> <span class="ident">get_bearer_token</span>(<span class="ident">authorization</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">prefix</span> <span class="op">=</span> <span class="string">&quot;Bearer &quot;</span>;
-    <span class="kw">if</span> <span class="ident">authorization</span>.<span class="ident">starts_with</span>(<span class="ident">prefix</span>) {
-        <span class="prelude-val">Some</span>(<span class="ident">authorization</span>.<span class="ident">trim_start_matches</span>(<span class="ident">prefix</span>).<span class="ident">to_owned</span>())
-    } <span class="kw">else</span> {
-        <span class="prelude-val">None</span>
-    }
+<span class="doccomment">/// Extracts bearer token from authorization header, if any.
+</span><span class="kw">fn </span>get_bearer_token(authorization: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
+    <span class="kw">let </span>prefix = <span class="string">&quot;Bearer &quot;</span>;
+    <span class="kw">if </span>authorization.starts_with(prefix) {
+        <span class="prelude-val">Some</span>(authorization.trim_start_matches(prefix).to_owned())
+    } <span class="kw">else </span>{
+        <span class="prelude-val">None
+    </span>}
 }
 
-<span class="attribute">#[<span class="ident">rocket::async_trait</span>]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="ident">FromRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SessionInfo</span> {
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">SessionError</span>;
+<span class="attribute">#[rocket::async_trait]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;r</span>&gt; FromRequest&lt;<span class="lifetime">&#39;r</span>&gt; <span class="kw">for </span>SessionInfo {
+    <span class="kw">type </span>Error = SessionError;
 
-    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">from_request</span>(<span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> <span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Outcome</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-        <span class="comment">// Get tenant from first segment of uri, e.g. /&lt;tenant&gt;/...</span>
-        <span class="kw">let</span> <span class="ident">tenant</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">req</span>.<span class="ident">uri</span>().<span class="ident">path</span>().<span class="ident">segments</span>().<span class="ident">get</span>(<span class="number">0</span>) {
-            <span class="prelude-val">Some</span>(<span class="ident">tenant</span>) =&gt; <span class="ident">tenant</span>.<span class="ident">to_owned</span>(),
-            <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="ident">Outcome::Failure</span>((<span class="ident">Status::Unauthorized</span>, <span class="ident">SessionError::MissingTenant</span>)),
+    <span class="kw">async fn </span>from_request(req: <span class="kw-2">&amp;</span><span class="lifetime">&#39;r </span>Request&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Outcome&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+        <span class="comment">// Get tenant from first segment of uri, e.g. /&lt;tenant&gt;/...
+        </span><span class="kw">let </span>tenant = <span class="kw">match </span>req.uri().path().segments().get(<span class="number">0</span>) {
+            <span class="prelude-val">Some</span>(tenant) =&gt; tenant.to_owned(),
+            <span class="prelude-val">None </span>=&gt; <span class="kw">return </span>Outcome::Failure((Status::Unauthorized, SessionError::MissingTenant)),
         };
 
-        <span class="comment">// Get auth token from request header</span>
-        <span class="kw">match</span> <span class="ident">req</span>.<span class="ident">headers</span>().<span class="ident">get_one</span>(<span class="string">&quot;Authorization&quot;</span>) {
-            <span class="prelude-val">None</span> =&gt; <span class="ident">Outcome::Failure</span>((<span class="ident">Status::Unauthorized</span>, <span class="ident">SessionError::MissingAuth</span>)),
-            <span class="prelude-val">Some</span>(<span class="ident">header</span>) =&gt; <span class="kw">match</span> <span class="ident">get_bearer_token</span>(<span class="ident">header</span>) {
-                <span class="prelude-val">Some</span>(<span class="ident">token</span>) =&gt; {
-                    <span class="comment">// Request a connection to SESSION service</span>
-                    <span class="kw">let</span> <span class="ident">endpoint</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::controller::auth::get_endpoint</span>();
-                    <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">rpc::messages::SessionToken</span> {
-                        <span class="ident">token</span>: <span class="ident">token</span>.<span class="ident">clone</span>(),
+        <span class="comment">// Get auth token from request header
+        </span><span class="kw">match </span>req.headers().get_one(<span class="string">&quot;Authorization&quot;</span>) {
+            <span class="prelude-val">None </span>=&gt; Outcome::Failure((Status::Unauthorized, SessionError::MissingAuth)),
+            <span class="prelude-val">Some</span>(header) =&gt; <span class="kw">match </span>get_bearer_token(header) {
+                <span class="prelude-val">Some</span>(token) =&gt; {
+                    <span class="comment">// Request a connection to SESSION service
+                    </span><span class="kw">let </span>endpoint = <span class="kw">crate</span>::controller::auth::get_endpoint();
+                    <span class="kw">let </span>msg = rpc::messages::SessionToken {
+                        token: token.clone(),
                     };
-                    <span class="kw">let</span> <span class="ident">requestor</span> <span class="op">=</span> <span class="string">&quot;unknown&quot;</span>.<span class="ident">into</span>();
+                    <span class="kw">let </span>requestor = <span class="string">&quot;unknown&quot;</span>.into();
 
-                    <span class="kw">match</span> <span class="ident">rpc::session::make_client</span>(<span class="ident">endpoint</span>, <span class="ident">tenant</span>, <span class="ident">requestor</span>).<span class="kw">await</span> {
+                    <span class="kw">match </span>rpc::session::make_client(endpoint, tenant, requestor).<span class="kw">await </span>{
                         <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
-                            <span class="kw">return</span> <span class="ident">Outcome::Failure</span>((
-                                <span class="ident">Status::ServiceUnavailable</span>,
-                                <span class="ident">SessionError::ServiceUnreachable</span>,
+                            <span class="kw">return </span>Outcome::Failure((
+                                Status::ServiceUnavailable,
+                                SessionError::ServiceUnreachable,
                             ))
                         }
-                        <span class="comment">// Upon success, attempt to fetch session data</span>
-                        <span class="prelude-val">Ok</span>(<span class="kw-2">mut</span> <span class="ident">client</span>) =&gt; <span class="kw">match</span> <span class="ident">client</span>.<span class="ident">retrieve</span>(<span class="ident">tonic::Request::new</span>(<span class="ident">msg</span>)).<span class="kw">await</span> {
-                            <span class="prelude-val">Ok</span>(<span class="ident">response</span>) =&gt; {
-                                <span class="ident">Outcome::Success</span>(<span class="ident">SessionInfo::from</span>(<span class="ident">response</span>.<span class="ident">into_inner</span>(), <span class="ident">token</span>))
+                        <span class="comment">// Upon success, attempt to fetch session data
+                        </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>client) =&gt; <span class="kw">match </span>client.retrieve(tonic::Request::new(msg)).<span class="kw">await </span>{
+                            <span class="prelude-val">Ok</span>(response) =&gt; {
+                                Outcome::Success(SessionInfo::from(response.into_inner(), token))
                             }
                             <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
-                                <span class="ident">Outcome::Failure</span>((<span class="ident">Status::Unauthorized</span>, <span class="ident">SessionError::ExpiredAuth</span>))
+                                Outcome::Failure((Status::Unauthorized, SessionError::ExpiredAuth))
                             }
                         },
                     }
                 }
-                <span class="prelude-val">None</span> =&gt; <span class="ident">Outcome::Failure</span>((<span class="ident">Status::Unauthorized</span>, <span class="ident">SessionError::MissingAuth</span>)),
+                <span class="prelude-val">None </span>=&gt; Outcome::Failure((Status::Unauthorized, SessionError::MissingAuth)),
             },
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="minerva_rest" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="minerva_rest" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

@@ -1,3 +1,3 @@
-(function() {var implementors = {};
-implementors["minerva_rest"] = [{"text":"impl&lt;'r&gt; <a class=\"trait\" href=\"https://api.rocket.rs/v0.5-rc/rocket/request/from_request/trait.FromRequest.html\" title=\"trait rocket::request::from_request::FromRequest\">FromRequest</a>&lt;'r&gt; for <a class=\"struct\" href=\"minerva_rest/fairings/auth/struct.SessionInfo.html\" title=\"struct minerva_rest::fairings::auth::SessionInfo\">SessionInfo</a>","synthetic":false,"types":["minerva_rest::fairings::auth::SessionInfo"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"minerva_rest":[["impl&lt;'r&gt; <a class=\"trait\" href=\"https://api.rocket.rs/v0.5-rc/rocket/request/from_request/trait.FromRequest.html\" title=\"trait rocket::request::from_request::FromRequest\">FromRequest</a>&lt;'r&gt; for <a class=\"struct\" href=\"minerva_rest/fairings/auth/struct.SessionInfo.html\" title=\"struct minerva_rest::fairings::auth::SessionInfo\">SessionInfo</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

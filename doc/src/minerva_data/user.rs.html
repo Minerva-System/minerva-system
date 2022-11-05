@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-data/src/user.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>user.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_data/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-data/src/user.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>user.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_data/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -433,440 +433,440 @@
 <span id="433">433</span>
 <span id="434">434</span>
 <span id="435">435</span>
-</pre><pre class="rust"><code><span class="doccomment">//! This module contains Data Transfer Objects for the `user` table, which</span>
-<span class="doccomment">//! represents the registered users for this tenancy.</span>
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::extra_unused_lifetimes</span>)]</span>
+</pre><pre class="rust"><code><span class="doccomment">//! This module contains Data Transfer Objects for the `user` table, which
+//! represents the registered users for this tenancy.
+</span><span class="attribute">#![allow(clippy::extra_unused_lifetimes)]
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::encryption</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::schema::user</span>;
-<span class="kw">use</span> <span class="ident">minerva_rpc::messages</span>;
-<span class="kw">use</span> <span class="ident">std::str</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::encryption;
+<span class="kw">use </span><span class="kw">crate</span>::schema::user;
+<span class="kw">use </span>minerva_rpc::messages;
+<span class="kw">use </span>std::str;
 
-<span class="doccomment">/// DTO representing a single entry on the `user` table.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Queryable</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">User</span> {
-    <span class="doccomment">/// ID of the entry on the table.</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">i32</span>,
-    <span class="doccomment">/// Username of the user for this entry.</span>
-    <span class="kw">pub</span> <span class="ident">login</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Full name of the user for this entry.</span>
-    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Optional e-mail of the user for this entry.</span>
-    <span class="kw">pub</span> <span class="ident">email</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Hash of the password of the user for this entry.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_deserializing</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">pwhash</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
+<span class="doccomment">/// DTO representing a single entry on the `user` table.
+</span><span class="attribute">#[derive(Queryable, Serialize, Deserialize, Clone, Debug)]
+</span><span class="kw">pub struct </span>User {
+    <span class="doccomment">/// ID of the entry on the table.
+    </span><span class="kw">pub </span>id: i32,
+    <span class="doccomment">/// Username of the user for this entry.
+    </span><span class="kw">pub </span>login: String,
+    <span class="doccomment">/// Full name of the user for this entry.
+    </span><span class="kw">pub </span>name: String,
+    <span class="doccomment">/// Optional e-mail of the user for this entry.
+    </span><span class="kw">pub </span>email: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="doccomment">/// Hash of the password of the user for this entry.
+    </span><span class="attribute">#[serde(skip_serializing)]
+    #[serde(skip_deserializing)]
+    </span><span class="kw">pub </span>pwhash: Vec&lt;u8&gt;,
 }
 
-<span class="doccomment">/// DTO representing user data received through a REST request.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Default</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RecvUser</span> {
-    <span class="doccomment">/// Username of the user being emplaced.</span>
-    <span class="kw">pub</span> <span class="ident">login</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Full name of the user being emplaced.</span>
-    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Optional e-mail of the user being emplaced.</span>
-    <span class="doccomment">/// Shouldn&#39;t clash with any other e-mail on the table.</span>
-    <span class="kw">pub</span> <span class="ident">email</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Password of the user being emplaced.</span>
-    <span class="doccomment">/// If updating a user, using `None` will prevent updating the password.</span>
-    <span class="kw">pub</span> <span class="ident">password</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+<span class="doccomment">/// DTO representing user data received through a REST request.
+</span><span class="attribute">#[derive(Serialize, Deserialize, Default)]
+</span><span class="kw">pub struct </span>RecvUser {
+    <span class="doccomment">/// Username of the user being emplaced.
+    </span><span class="kw">pub </span>login: String,
+    <span class="doccomment">/// Full name of the user being emplaced.
+    </span><span class="kw">pub </span>name: String,
+    <span class="doccomment">/// Optional e-mail of the user being emplaced.
+    /// Shouldn&#39;t clash with any other e-mail on the table.
+    </span><span class="kw">pub </span>email: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="doccomment">/// Password of the user being emplaced.
+    /// If updating a user, using `None` will prevent updating the password.
+    </span><span class="kw">pub </span>password: <span class="prelude-ty">Option</span>&lt;String&gt;,
 }
 
-<span class="doccomment">/// DTO representing a new entry on the `user` table.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Insertable</span>, <span class="ident">Default</span>, <span class="ident">Debug</span>)]</span>
-<span class="attribute">#[<span class="ident">table_name</span> <span class="op">=</span> <span class="string">&quot;user&quot;</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NewUser</span> {
-    <span class="doccomment">/// Username of the user being created.</span>
-    <span class="kw">pub</span> <span class="ident">login</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Full name of the user being created.</span>
-    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Optional e-mail of the user being created.</span>
-    <span class="doccomment">/// Shouldn&#39;t clash with any other e-mail on the table.</span>
-    <span class="kw">pub</span> <span class="ident">email</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Hash of the password of the user being created.</span>
-    <span class="kw">pub</span> <span class="ident">pwhash</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
+<span class="doccomment">/// DTO representing a new entry on the `user` table.
+</span><span class="attribute">#[derive(Insertable, Default, Debug)]
+#[table_name = <span class="string">&quot;user&quot;</span>]
+</span><span class="kw">pub struct </span>NewUser {
+    <span class="doccomment">/// Username of the user being created.
+    </span><span class="kw">pub </span>login: String,
+    <span class="doccomment">/// Full name of the user being created.
+    </span><span class="kw">pub </span>name: String,
+    <span class="doccomment">/// Optional e-mail of the user being created.
+    /// Shouldn&#39;t clash with any other e-mail on the table.
+    </span><span class="kw">pub </span>email: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="doccomment">/// Hash of the password of the user being created.
+    </span><span class="kw">pub </span>pwhash: Vec&lt;u8&gt;,
 }
 
-<span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">User</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
-        (<span class="self">self</span>.<span class="ident">id</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">id</span>)
-            <span class="op">&amp;&amp;</span> (<span class="self">self</span>.<span class="ident">login</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">login</span>)
-            <span class="op">&amp;&amp;</span> (<span class="self">self</span>.<span class="ident">name</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">name</span>)
-            <span class="op">&amp;&amp;</span> (<span class="self">self</span>.<span class="ident">email</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">email</span>)
+<span class="kw">impl </span>PartialEq <span class="kw">for </span>User {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+        (<span class="self">self</span>.id == other.id)
+            &amp;&amp; (<span class="self">self</span>.login == other.login)
+            &amp;&amp; (<span class="self">self</span>.name == other.name)
+            &amp;&amp; (<span class="self">self</span>.email == other.email)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">NewUser</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
-        (<span class="self">self</span>.<span class="ident">login</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">login</span>) <span class="op">&amp;&amp;</span> (<span class="self">self</span>.<span class="ident">name</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">name</span>) <span class="op">&amp;&amp;</span> (<span class="self">self</span>.<span class="ident">email</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">email</span>)
+<span class="kw">impl </span>PartialEq <span class="kw">for </span>NewUser {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
+        (<span class="self">self</span>.login == other.login) &amp;&amp; (<span class="self">self</span>.name == other.name) &amp;&amp; (<span class="self">self</span>.email == other.email)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">messages::User</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">User</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">message</span>: <span class="ident">messages::User</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">id</span>: <span class="ident">message</span>.<span class="ident">id</span>.<span class="ident">expect</span>(<span class="string">&quot;Cannot retrieve ID for user&quot;</span>),
-            <span class="ident">login</span>: <span class="ident">message</span>.<span class="ident">login</span>.<span class="ident">clone</span>(),
-            <span class="ident">name</span>: <span class="ident">message</span>.<span class="ident">name</span>.<span class="ident">clone</span>(),
-            <span class="ident">email</span>: <span class="ident">message</span>.<span class="ident">email</span>.<span class="ident">clone</span>(),
-            <span class="ident">pwhash</span>: <span class="ident">message</span>
-                .<span class="ident">password</span>
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">pw</span><span class="op">|</span> <span class="ident">encryption::generate_hash</span>(<span class="kw-2">&amp;</span><span class="ident">pw</span>))
-                .<span class="ident">unwrap_or_default</span>(),
+<span class="kw">impl </span>From&lt;messages::User&gt; <span class="kw">for </span>User {
+    <span class="kw">fn </span>from(message: messages::User) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            id: message.id.expect(<span class="string">&quot;Cannot retrieve ID for user&quot;</span>),
+            login: message.login.clone(),
+            name: message.name.clone(),
+            email: message.email.clone(),
+            pwhash: message
+                .password
+                .map(|pw| encryption::generate_hash(<span class="kw-2">&amp;</span>pw))
+                .unwrap_or_default(),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">User</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">messages::User</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">user</span>: <span class="ident">User</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">id</span>: <span class="prelude-val">Some</span>(<span class="ident">user</span>.<span class="ident">id</span>),
-            <span class="ident">login</span>: <span class="ident">user</span>.<span class="ident">login</span>.<span class="ident">clone</span>(),
-            <span class="ident">name</span>: <span class="ident">user</span>.<span class="ident">name</span>.<span class="ident">clone</span>(),
-            <span class="ident">email</span>: <span class="ident">user</span>.<span class="ident">email</span>,
-            <span class="ident">password</span>: <span class="prelude-val">None</span>,
+<span class="kw">impl </span>From&lt;User&gt; <span class="kw">for </span>messages::User {
+    <span class="kw">fn </span>from(user: User) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            id: <span class="prelude-val">Some</span>(user.id),
+            login: user.login.clone(),
+            name: user.name.clone(),
+            email: user.email,
+            password: <span class="prelude-val">None</span>,
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">RecvUser</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">messages::User</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">recv</span>: <span class="ident">RecvUser</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">id</span>: <span class="prelude-val">None</span>,
-            <span class="ident">login</span>: <span class="ident">recv</span>.<span class="ident">login</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">name</span>: <span class="ident">recv</span>.<span class="ident">name</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">email</span>: <span class="ident">recv</span>.<span class="ident">email</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>()),
-            <span class="ident">password</span>: <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">pw</span>) <span class="op">=</span> <span class="ident">recv</span>.<span class="ident">password</span> {
-                <span class="kw">let</span> <span class="ident">pw</span> <span class="op">=</span> <span class="ident">pw</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>();
-                <span class="kw">if</span> <span class="ident">pw</span>.<span class="ident">is_empty</span>() {
-                    <span class="prelude-val">None</span>
-                } <span class="kw">else</span> {
-                    <span class="prelude-val">Some</span>(<span class="ident">pw</span>)
+<span class="kw">impl </span>From&lt;RecvUser&gt; <span class="kw">for </span>messages::User {
+    <span class="kw">fn </span>from(recv: RecvUser) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            id: <span class="prelude-val">None</span>,
+            login: recv.login.trim().to_string(),
+            name: recv.name.trim().to_string(),
+            email: recv.email.map(|e| e.trim().to_string()),
+            password: <span class="kw">if let </span><span class="prelude-val">Some</span>(pw) = recv.password {
+                <span class="kw">let </span>pw = pw.trim().to_string();
+                <span class="kw">if </span>pw.is_empty() {
+                    <span class="prelude-val">None
+                </span>} <span class="kw">else </span>{
+                    <span class="prelude-val">Some</span>(pw)
                 }
-            } <span class="kw">else</span> {
-                <span class="prelude-val">None</span>
-            },
+            } <span class="kw">else </span>{
+                <span class="prelude-val">None
+            </span>},
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">messages::User</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">NewUser</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">message</span>: <span class="ident">messages::User</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">login</span>: <span class="ident">message</span>.<span class="ident">login</span>.<span class="ident">clone</span>(),
-            <span class="ident">name</span>: <span class="ident">message</span>.<span class="ident">name</span>.<span class="ident">clone</span>(),
-            <span class="ident">email</span>: <span class="ident">message</span>.<span class="ident">email</span>.<span class="ident">clone</span>(),
-            <span class="ident">pwhash</span>: <span class="ident">message</span>
-                .<span class="ident">password</span>
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">pw</span><span class="op">|</span> <span class="ident">encryption::generate_hash</span>(<span class="kw-2">&amp;</span><span class="ident">pw</span>))
-                .<span class="ident">unwrap</span>(),
+<span class="kw">impl </span>From&lt;messages::User&gt; <span class="kw">for </span>NewUser {
+    <span class="kw">fn </span>from(message: messages::User) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            login: message.login.clone(),
+            name: message.name.clone(),
+            email: message.email.clone(),
+            pwhash: message
+                .password
+                .map(|pw| encryption::generate_hash(<span class="kw-2">&amp;</span>pw))
+                .unwrap(),
         }
     }
 }
 
-<span class="doccomment">/// Converts a `UserList` message into a `Vec` of `User` DTOs so that it</span>
-<span class="doccomment">/// can be sent back as a REST response.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">message_to_vec</span>(<span class="ident">message</span>: <span class="ident">messages::UserList</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">User</span><span class="op">&gt;</span> {
-    <span class="ident">message</span>.<span class="ident">users</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">u</span><span class="op">|</span> <span class="ident">u</span>.<span class="ident">clone</span>().<span class="ident">into</span>()).<span class="ident">collect</span>()
+<span class="doccomment">/// Converts a `UserList` message into a `Vec` of `User` DTOs so that it
+/// can be sent back as a REST response.
+</span><span class="kw">pub fn </span>message_to_vec(message: messages::UserList) -&gt; Vec&lt;User&gt; {
+    message.users.iter().map(|u| u.clone().into()).collect()
 }
 
-<span class="doccomment">/// Converts a `Vec` of `User` DTOs to a `UserList` so that it can be</span>
-<span class="doccomment">/// sent back as a gRPC response.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">vec_to_message</span>(<span class="ident">v</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">User</span><span class="op">&gt;</span>) -&gt; <span class="ident">messages::UserList</span> {
-    <span class="ident">messages::UserList</span> {
-        <span class="ident">users</span>: <span class="ident">v</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">u</span><span class="op">|</span> <span class="ident">u</span>.<span class="ident">clone</span>().<span class="ident">into</span>()).<span class="ident">collect</span>(),
+<span class="doccomment">/// Converts a `Vec` of `User` DTOs to a `UserList` so that it can be
+/// sent back as a gRPC response.
+</span><span class="kw">pub fn </span>vec_to_message(v: Vec&lt;User&gt;) -&gt; messages::UserList {
+    messages::UserList {
+        users: v.iter().map(|u| u.clone().into()).collect(),
     }
 }
 
-<span class="doccomment">/// Unit tests for this module.</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">unit_tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::encryption</span>;
-    <span class="kw">use</span> <span class="ident">std::str</span>;
+<span class="doccomment">/// Unit tests for this module.
+</span><span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>unit_tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::encryption;
+    <span class="kw">use </span>std::str;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">convert_message_to_user</span>() {
-        <span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">User</span> {
-            <span class="ident">id</span>: <span class="number">0</span>,
-            <span class="ident">login</span>: <span class="string">&quot;teste&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">name</span>: <span class="string">&quot;Fulano da Silva&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-            <span class="ident">pwhash</span>: <span class="ident">encryption::generate_hash</span>(<span class="string">&quot;senha&quot;</span>),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>convert_message_to_user() {
+        <span class="kw">let </span>user = User {
+            id: <span class="number">0</span>,
+            login: <span class="string">&quot;teste&quot;</span>.into(),
+            name: <span class="string">&quot;Fulano da Silva&quot;</span>.into(),
+            email: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.into()),
+            pwhash: encryption::generate_hash(<span class="string">&quot;senha&quot;</span>),
         };
 
-        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">messages::User</span> {
-            <span class="ident">id</span>: <span class="prelude-val">Some</span>(<span class="number">0</span>),
-            <span class="ident">login</span>: <span class="string">&quot;teste&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">name</span>: <span class="string">&quot;Fulano da Silva&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-            <span class="ident">password</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;senha&quot;</span>.<span class="ident">into</span>()),
+        <span class="kw">let </span>msg = messages::User {
+            id: <span class="prelude-val">Some</span>(<span class="number">0</span>),
+            login: <span class="string">&quot;teste&quot;</span>.into(),
+            name: <span class="string">&quot;Fulano da Silva&quot;</span>.into(),
+            email: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.into()),
+            password: <span class="prelude-val">Some</span>(<span class="string">&quot;senha&quot;</span>.into()),
         };
 
-        <span class="kw">let</span> <span class="ident">msg_user</span>: <span class="ident">User</span> <span class="op">=</span> <span class="ident">msg</span>.<span class="ident">into</span>();
+        <span class="kw">let </span>msg_user: User = msg.into();
 
-        <span class="macro">assert_eq!</span>(<span class="ident">user</span>, <span class="ident">msg_user</span>);
-        <span class="macro">assert!</span>(<span class="ident">encryption::check_hash</span>(
+        <span class="macro">assert_eq!</span>(user, msg_user);
+        <span class="macro">assert!</span>(encryption::check_hash(
             <span class="string">&quot;senha&quot;</span>,
-            <span class="ident">str::from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">user</span>.<span class="ident">pwhash</span>).<span class="ident">unwrap</span>()
+            str::from_utf8(<span class="kw-2">&amp;</span>user.pwhash).unwrap()
         ));
-        <span class="macro">assert!</span>(<span class="ident">encryption::check_hash</span>(
+        <span class="macro">assert!</span>(encryption::check_hash(
             <span class="string">&quot;senha&quot;</span>,
-            <span class="ident">str::from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">msg_user</span>.<span class="ident">pwhash</span>).<span class="ident">unwrap</span>()
+            str::from_utf8(<span class="kw-2">&amp;</span>msg_user.pwhash).unwrap()
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">convert_user_to_message</span>() {
-        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">messages::User</span> {
-            <span class="ident">id</span>: <span class="prelude-val">Some</span>(<span class="number">0</span>),
-            <span class="ident">login</span>: <span class="string">&quot;ciclano&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">name</span>: <span class="string">&quot;Ciclano da Silva&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-            <span class="ident">password</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;senha123&quot;</span>.<span class="ident">into</span>()),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>convert_user_to_message() {
+        <span class="kw">let </span>msg = messages::User {
+            id: <span class="prelude-val">Some</span>(<span class="number">0</span>),
+            login: <span class="string">&quot;ciclano&quot;</span>.into(),
+            name: <span class="string">&quot;Ciclano da Silva&quot;</span>.into(),
+            email: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.into()),
+            password: <span class="prelude-val">Some</span>(<span class="string">&quot;senha123&quot;</span>.into()),
         };
 
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">User</span> {
-            <span class="ident">id</span>: <span class="number">0</span>,
-            <span class="ident">login</span>: <span class="string">&quot;ciclano&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">name</span>: <span class="string">&quot;Ciclano da Silva&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-            <span class="ident">pwhash</span>: <span class="ident">encryption::generate_hash</span>(<span class="string">&quot;senha123&quot;</span>),
+        <span class="kw">let </span>expected = User {
+            id: <span class="number">0</span>,
+            login: <span class="string">&quot;ciclano&quot;</span>.into(),
+            name: <span class="string">&quot;Ciclano da Silva&quot;</span>.into(),
+            email: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.into()),
+            pwhash: encryption::generate_hash(<span class="string">&quot;senha123&quot;</span>),
         };
 
-        <span class="kw">let</span> <span class="ident">expected_msg</span>: <span class="ident">messages::User</span> <span class="op">=</span> <span class="ident">expected</span>.<span class="ident">clone</span>().<span class="ident">into</span>();
+        <span class="kw">let </span>expected_msg: messages::User = expected.clone().into();
 
-        <span class="macro">assert_eq!</span>(<span class="ident">msg</span>.<span class="ident">id</span>, <span class="ident">expected_msg</span>.<span class="ident">id</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">msg</span>.<span class="ident">login</span>, <span class="ident">expected_msg</span>.<span class="ident">login</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">msg</span>.<span class="ident">name</span>, <span class="ident">expected_msg</span>.<span class="ident">name</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">msg</span>.<span class="ident">email</span>, <span class="ident">expected_msg</span>.<span class="ident">email</span>);
-        <span class="macro">assert!</span>(<span class="ident">encryption::check_hash</span>(
+        <span class="macro">assert_eq!</span>(msg.id, expected_msg.id);
+        <span class="macro">assert_eq!</span>(msg.login, expected_msg.login);
+        <span class="macro">assert_eq!</span>(msg.name, expected_msg.name);
+        <span class="macro">assert_eq!</span>(msg.email, expected_msg.email);
+        <span class="macro">assert!</span>(encryption::check_hash(
             <span class="string">&quot;senha123&quot;</span>,
-            <span class="ident">str::from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">expected</span>.<span class="ident">pwhash</span>).<span class="ident">unwrap</span>()
+            str::from_utf8(<span class="kw-2">&amp;</span>expected.pwhash).unwrap()
         ));
-        <span class="macro">assert!</span>(<span class="ident">expected_msg</span>.<span class="ident">password</span>.<span class="ident">is_none</span>());
+        <span class="macro">assert!</span>(expected_msg.password.is_none());
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">convert_message_to_newuser</span>() {
-        <span class="kw">let</span> <span class="ident">newuser</span> <span class="op">=</span> <span class="ident">NewUser</span> {
-            <span class="ident">login</span>: <span class="string">&quot;teste&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">name</span>: <span class="string">&quot;Fulano da Silva&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-            <span class="ident">pwhash</span>: <span class="ident">encryption::generate_hash</span>(<span class="string">&quot;senha&quot;</span>),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>convert_message_to_newuser() {
+        <span class="kw">let </span>newuser = NewUser {
+            login: <span class="string">&quot;teste&quot;</span>.into(),
+            name: <span class="string">&quot;Fulano da Silva&quot;</span>.into(),
+            email: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.into()),
+            pwhash: encryption::generate_hash(<span class="string">&quot;senha&quot;</span>),
         };
 
-        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">messages::User</span> {
-            <span class="ident">id</span>: <span class="prelude-val">Some</span>(<span class="number">0</span>),
-            <span class="ident">login</span>: <span class="string">&quot;teste&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">name</span>: <span class="string">&quot;Fulano da Silva&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-            <span class="ident">password</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;senha&quot;</span>.<span class="ident">into</span>()),
+        <span class="kw">let </span>msg = messages::User {
+            id: <span class="prelude-val">Some</span>(<span class="number">0</span>),
+            login: <span class="string">&quot;teste&quot;</span>.into(),
+            name: <span class="string">&quot;Fulano da Silva&quot;</span>.into(),
+            email: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.into()),
+            password: <span class="prelude-val">Some</span>(<span class="string">&quot;senha&quot;</span>.into()),
         };
 
-        <span class="kw">let</span> <span class="ident">msg_user</span>: <span class="ident">NewUser</span> <span class="op">=</span> <span class="ident">msg</span>.<span class="ident">into</span>();
+        <span class="kw">let </span>msg_user: NewUser = msg.into();
 
-        <span class="macro">assert_eq!</span>(<span class="ident">newuser</span>, <span class="ident">msg_user</span>);
-        <span class="macro">assert!</span>(<span class="ident">encryption::check_hash</span>(
+        <span class="macro">assert_eq!</span>(newuser, msg_user);
+        <span class="macro">assert!</span>(encryption::check_hash(
             <span class="string">&quot;senha&quot;</span>,
-            <span class="ident">str::from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">newuser</span>.<span class="ident">pwhash</span>).<span class="ident">unwrap</span>()
+            str::from_utf8(<span class="kw-2">&amp;</span>newuser.pwhash).unwrap()
         ));
-        <span class="macro">assert!</span>(<span class="ident">encryption::check_hash</span>(
+        <span class="macro">assert!</span>(encryption::check_hash(
             <span class="string">&quot;senha&quot;</span>,
-            <span class="ident">str::from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">msg_user</span>.<span class="ident">pwhash</span>).<span class="ident">unwrap</span>()
+            str::from_utf8(<span class="kw-2">&amp;</span>msg_user.pwhash).unwrap()
         ));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">convert_recvuser_to_message</span>() {
-        <span class="comment">// Insert case</span>
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">messages::User</span> {
-            <span class="ident">id</span>: <span class="prelude-val">None</span>,
-            <span class="ident">login</span>: <span class="string">&quot;ciclano&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">name</span>: <span class="string">&quot;Ciclano da Silva&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-            <span class="ident">password</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;senha123&quot;</span>.<span class="ident">into</span>()),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>convert_recvuser_to_message() {
+        <span class="comment">// Insert case
+        </span><span class="kw">let </span>expected = messages::User {
+            id: <span class="prelude-val">None</span>,
+            login: <span class="string">&quot;ciclano&quot;</span>.into(),
+            name: <span class="string">&quot;Ciclano da Silva&quot;</span>.into(),
+            email: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.into()),
+            password: <span class="prelude-val">Some</span>(<span class="string">&quot;senha123&quot;</span>.into()),
         };
 
-        <span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">RecvUser</span> {
-            <span class="ident">login</span>: <span class="string">&quot;ciclano&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">name</span>: <span class="string">&quot;Ciclano da Silva&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-            <span class="ident">password</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;senha123&quot;</span>.<span class="ident">into</span>()),
+        <span class="kw">let </span>user = RecvUser {
+            login: <span class="string">&quot;ciclano&quot;</span>.into(),
+            name: <span class="string">&quot;Ciclano da Silva&quot;</span>.into(),
+            email: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.into()),
+            password: <span class="prelude-val">Some</span>(<span class="string">&quot;senha123&quot;</span>.into()),
         };
 
-        <span class="kw">let</span> <span class="ident">msg</span>: <span class="ident">messages::User</span> <span class="op">=</span> <span class="ident">user</span>.<span class="ident">into</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">expected</span>, <span class="ident">msg</span>);
+        <span class="kw">let </span>msg: messages::User = user.into();
+        <span class="macro">assert_eq!</span>(expected, msg);
 
-        <span class="comment">// Update case -- No password</span>
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">messages::User</span> {
-            <span class="ident">id</span>: <span class="prelude-val">Some</span>(<span class="number">2</span>),
-            <span class="ident">login</span>: <span class="string">&quot;ciclano&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">name</span>: <span class="string">&quot;Ciclano da Silva&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-            <span class="ident">password</span>: <span class="prelude-val">None</span>,
+        <span class="comment">// Update case -- No password
+        </span><span class="kw">let </span>expected = messages::User {
+            id: <span class="prelude-val">Some</span>(<span class="number">2</span>),
+            login: <span class="string">&quot;ciclano&quot;</span>.into(),
+            name: <span class="string">&quot;Ciclano da Silva&quot;</span>.into(),
+            email: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.into()),
+            password: <span class="prelude-val">None</span>,
         };
 
-        <span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">RecvUser</span> {
-            <span class="ident">login</span>: <span class="string">&quot;ciclano&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">name</span>: <span class="string">&quot;Ciclano da Silva&quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-            <span class="ident">password</span>: <span class="prelude-val">None</span>,
+        <span class="kw">let </span>user = RecvUser {
+            login: <span class="string">&quot;ciclano&quot;</span>.into(),
+            name: <span class="string">&quot;Ciclano da Silva&quot;</span>.into(),
+            email: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.into()),
+            password: <span class="prelude-val">None</span>,
         };
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msg</span>: <span class="ident">messages::User</span> <span class="op">=</span> <span class="ident">user</span>.<span class="ident">into</span>();
-        <span class="ident">msg</span>.<span class="ident">id</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="number">2</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">expected</span>, <span class="ident">msg</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>msg: messages::User = user.into();
+        msg.id = <span class="prelude-val">Some</span>(<span class="number">2</span>);
+        <span class="macro">assert_eq!</span>(expected, msg);
 
-        <span class="comment">// Any case: Trim strings</span>
-        <span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">RecvUser</span> {
-            <span class="ident">login</span>: <span class="string">&quot;    ciclano      &quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">name</span>: <span class="string">&quot;      Ciclano da Silva    &quot;</span>.<span class="ident">into</span>(),
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;  ciclano@exemplo.com    &quot;</span>.<span class="ident">into</span>()),
-            <span class="ident">password</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;    senha123          &quot;</span>.<span class="ident">into</span>()),
+        <span class="comment">// Any case: Trim strings
+        </span><span class="kw">let </span>user = RecvUser {
+            login: <span class="string">&quot;    ciclano      &quot;</span>.into(),
+            name: <span class="string">&quot;      Ciclano da Silva    &quot;</span>.into(),
+            email: <span class="prelude-val">Some</span>(<span class="string">&quot;  ciclano@exemplo.com    &quot;</span>.into()),
+            password: <span class="prelude-val">Some</span>(<span class="string">&quot;    senha123          &quot;</span>.into()),
         };
-        <span class="kw">let</span> <span class="ident">msg</span>: <span class="ident">messages::User</span> <span class="op">=</span> <span class="ident">user</span>.<span class="ident">into</span>();
+        <span class="kw">let </span>msg: messages::User = user.into();
 
-        <span class="macro">assert_eq!</span>(<span class="ident">msg</span>.<span class="ident">login</span>, <span class="string">&quot;ciclano&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">msg</span>.<span class="ident">name</span>, <span class="string">&quot;Ciclano da Silva&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">msg</span>.<span class="ident">email</span>.<span class="ident">unwrap</span>(), <span class="string">&quot;ciclano@exemplo.com&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">msg</span>.<span class="ident">password</span>.<span class="ident">unwrap</span>(), <span class="string">&quot;senha123&quot;</span>);
+        <span class="macro">assert_eq!</span>(msg.login, <span class="string">&quot;ciclano&quot;</span>);
+        <span class="macro">assert_eq!</span>(msg.name, <span class="string">&quot;Ciclano da Silva&quot;</span>);
+        <span class="macro">assert_eq!</span>(msg.email.unwrap(), <span class="string">&quot;ciclano@exemplo.com&quot;</span>);
+        <span class="macro">assert_eq!</span>(msg.password.unwrap(), <span class="string">&quot;senha123&quot;</span>);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">convert_userlist_message_to_user_vec</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">messages::UserList</span> {
-            <span class="ident">users</span>: <span class="macro">vec!</span>[
-                <span class="ident">messages::User</span> {
-                    <span class="ident">id</span>: <span class="prelude-val">Some</span>(<span class="number">1</span>),
-                    <span class="ident">login</span>: <span class="string">&quot;fulano&quot;</span>.<span class="ident">into</span>(),
-                    <span class="ident">name</span>: <span class="string">&quot;Fulano da Silva&quot;</span>.<span class="ident">into</span>(),
-                    <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-                    <span class="ident">password</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;senha1234&quot;</span>.<span class="ident">into</span>()),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>convert_userlist_message_to_user_vec() {
+        <span class="kw">let </span><span class="kw-2">mut </span>msg = messages::UserList {
+            users: <span class="macro">vec!</span>[
+                messages::User {
+                    id: <span class="prelude-val">Some</span>(<span class="number">1</span>),
+                    login: <span class="string">&quot;fulano&quot;</span>.into(),
+                    name: <span class="string">&quot;Fulano da Silva&quot;</span>.into(),
+                    email: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.into()),
+                    password: <span class="prelude-val">Some</span>(<span class="string">&quot;senha1234&quot;</span>.into()),
                 },
-                <span class="ident">messages::User</span> {
-                    <span class="ident">id</span>: <span class="prelude-val">Some</span>(<span class="number">2</span>),
-                    <span class="ident">login</span>: <span class="string">&quot;ciclano&quot;</span>.<span class="ident">into</span>(),
-                    <span class="ident">name</span>: <span class="string">&quot;Ciclano da Silva&quot;</span>.<span class="ident">into</span>(),
-                    <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-                    <span class="ident">password</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;senha5678&quot;</span>.<span class="ident">into</span>()),
+                messages::User {
+                    id: <span class="prelude-val">Some</span>(<span class="number">2</span>),
+                    login: <span class="string">&quot;ciclano&quot;</span>.into(),
+                    name: <span class="string">&quot;Ciclano da Silva&quot;</span>.into(),
+                    email: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.into()),
+                    password: <span class="prelude-val">Some</span>(<span class="string">&quot;senha5678&quot;</span>.into()),
                 },
-                <span class="ident">messages::User</span> {
-                    <span class="ident">id</span>: <span class="prelude-val">Some</span>(<span class="number">3</span>),
-                    <span class="ident">login</span>: <span class="string">&quot;beltrano&quot;</span>.<span class="ident">into</span>(),
-                    <span class="ident">name</span>: <span class="string">&quot;Beltrano da Silva&quot;</span>.<span class="ident">into</span>(),
-                    <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;beltrano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-                    <span class="ident">password</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;senha9821&quot;</span>.<span class="ident">into</span>()),
+                messages::User {
+                    id: <span class="prelude-val">Some</span>(<span class="number">3</span>),
+                    login: <span class="string">&quot;beltrano&quot;</span>.into(),
+                    name: <span class="string">&quot;Beltrano da Silva&quot;</span>.into(),
+                    email: <span class="prelude-val">Some</span>(<span class="string">&quot;beltrano@exemplo.com&quot;</span>.into()),
+                    password: <span class="prelude-val">Some</span>(<span class="string">&quot;senha9821&quot;</span>.into()),
                 },
             ],
         };
 
-        <span class="kw">let</span> <span class="ident">expected</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">User</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[
-            <span class="ident">User</span> {
-                <span class="ident">id</span>: <span class="number">1</span>,
-                <span class="ident">login</span>: <span class="string">&quot;fulano&quot;</span>.<span class="ident">into</span>(),
-                <span class="ident">name</span>: <span class="string">&quot;Fulano da Silva&quot;</span>.<span class="ident">into</span>(),
-                <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-                <span class="ident">pwhash</span>: <span class="ident">encryption::generate_hash</span>(<span class="string">&quot;senha1234&quot;</span>),
+        <span class="kw">let </span>expected: Vec&lt;User&gt; = <span class="macro">vec!</span>[
+            User {
+                id: <span class="number">1</span>,
+                login: <span class="string">&quot;fulano&quot;</span>.into(),
+                name: <span class="string">&quot;Fulano da Silva&quot;</span>.into(),
+                email: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.into()),
+                pwhash: encryption::generate_hash(<span class="string">&quot;senha1234&quot;</span>),
             },
-            <span class="ident">User</span> {
-                <span class="ident">id</span>: <span class="number">2</span>,
-                <span class="ident">login</span>: <span class="string">&quot;ciclano&quot;</span>.<span class="ident">into</span>(),
-                <span class="ident">name</span>: <span class="string">&quot;Ciclano da Silva&quot;</span>.<span class="ident">into</span>(),
-                <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-                <span class="ident">pwhash</span>: <span class="ident">encryption::generate_hash</span>(<span class="string">&quot;senha5678&quot;</span>),
+            User {
+                id: <span class="number">2</span>,
+                login: <span class="string">&quot;ciclano&quot;</span>.into(),
+                name: <span class="string">&quot;Ciclano da Silva&quot;</span>.into(),
+                email: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.into()),
+                pwhash: encryption::generate_hash(<span class="string">&quot;senha5678&quot;</span>),
             },
-            <span class="ident">User</span> {
-                <span class="ident">id</span>: <span class="number">3</span>,
-                <span class="ident">login</span>: <span class="string">&quot;beltrano&quot;</span>.<span class="ident">into</span>(),
-                <span class="ident">name</span>: <span class="string">&quot;Beltrano da Silva&quot;</span>.<span class="ident">into</span>(),
-                <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;beltrano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-                <span class="ident">pwhash</span>: <span class="ident">encryption::generate_hash</span>(<span class="string">&quot;senha9821&quot;</span>),
+            User {
+                id: <span class="number">3</span>,
+                login: <span class="string">&quot;beltrano&quot;</span>.into(),
+                name: <span class="string">&quot;Beltrano da Silva&quot;</span>.into(),
+                email: <span class="prelude-val">Some</span>(<span class="string">&quot;beltrano@exemplo.com&quot;</span>.into()),
+                pwhash: encryption::generate_hash(<span class="string">&quot;senha9821&quot;</span>),
             },
         ];
 
-        <span class="kw">for</span> <span class="ident">it</span> <span class="kw">in</span> <span class="ident">expected</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">zip</span>(<span class="ident">message_to_vec</span>(<span class="ident">msg</span>.<span class="ident">clone</span>()).<span class="ident">iter_mut</span>())
-            .<span class="ident">zip</span>(<span class="ident">msg</span>.<span class="ident">users</span>.<span class="ident">iter_mut</span>())
+        <span class="kw">for </span>it <span class="kw">in </span>expected
+            .iter()
+            .zip(message_to_vec(msg.clone()).iter_mut())
+            .zip(msg.users.iter_mut())
         {
-            <span class="kw">let</span> ((<span class="ident">expected</span>, <span class="ident">converted</span>), <span class="ident">message</span>) <span class="op">=</span> <span class="ident">it</span>;
-            <span class="macro">assert_eq!</span>(<span class="ident">converted</span>, <span class="ident">expected</span>);
-            <span class="macro">assert!</span>(<span class="ident">encryption::check_hash</span>(
-                <span class="ident">message</span>.<span class="ident">password</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">str::from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">expected</span>.<span class="ident">pwhash</span>).<span class="ident">unwrap</span>()
+            <span class="kw">let </span>((expected, converted), message) = it;
+            <span class="macro">assert_eq!</span>(converted, expected);
+            <span class="macro">assert!</span>(encryption::check_hash(
+                message.password.as_ref().unwrap(),
+                str::from_utf8(<span class="kw-2">&amp;</span>expected.pwhash).unwrap()
             ));
-            <span class="macro">assert!</span>(<span class="ident">encryption::check_hash</span>(
-                <span class="ident">message</span>.<span class="ident">password</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">str::from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">converted</span>.<span class="ident">pwhash</span>).<span class="ident">unwrap</span>()
+            <span class="macro">assert!</span>(encryption::check_hash(
+                message.password.as_ref().unwrap(),
+                str::from_utf8(<span class="kw-2">&amp;</span>converted.pwhash).unwrap()
             ));
         }
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">convert_user_vec_to_userlist_message</span>() {
-        <span class="kw">let</span> <span class="ident">users</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">User</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[
-            <span class="ident">User</span> {
-                <span class="ident">id</span>: <span class="number">1</span>,
-                <span class="ident">login</span>: <span class="string">&quot;fulano&quot;</span>.<span class="ident">into</span>(),
-                <span class="ident">name</span>: <span class="string">&quot;Fulano da Silva&quot;</span>.<span class="ident">into</span>(),
-                <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-                <span class="ident">pwhash</span>: <span class="ident">encryption::generate_hash</span>(<span class="string">&quot;senha1234&quot;</span>),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>convert_user_vec_to_userlist_message() {
+        <span class="kw">let </span>users: Vec&lt;User&gt; = <span class="macro">vec!</span>[
+            User {
+                id: <span class="number">1</span>,
+                login: <span class="string">&quot;fulano&quot;</span>.into(),
+                name: <span class="string">&quot;Fulano da Silva&quot;</span>.into(),
+                email: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.into()),
+                pwhash: encryption::generate_hash(<span class="string">&quot;senha1234&quot;</span>),
             },
-            <span class="ident">User</span> {
-                <span class="ident">id</span>: <span class="number">2</span>,
-                <span class="ident">login</span>: <span class="string">&quot;ciclano&quot;</span>.<span class="ident">into</span>(),
-                <span class="ident">name</span>: <span class="string">&quot;Ciclano da Silva&quot;</span>.<span class="ident">into</span>(),
-                <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-                <span class="ident">pwhash</span>: <span class="ident">encryption::generate_hash</span>(<span class="string">&quot;senha5678&quot;</span>),
+            User {
+                id: <span class="number">2</span>,
+                login: <span class="string">&quot;ciclano&quot;</span>.into(),
+                name: <span class="string">&quot;Ciclano da Silva&quot;</span>.into(),
+                email: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.into()),
+                pwhash: encryption::generate_hash(<span class="string">&quot;senha5678&quot;</span>),
             },
-            <span class="ident">User</span> {
-                <span class="ident">id</span>: <span class="number">3</span>,
-                <span class="ident">login</span>: <span class="string">&quot;beltrano&quot;</span>.<span class="ident">into</span>(),
-                <span class="ident">name</span>: <span class="string">&quot;Beltrano da Silva&quot;</span>.<span class="ident">into</span>(),
-                <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;beltrano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-                <span class="ident">pwhash</span>: <span class="ident">encryption::generate_hash</span>(<span class="string">&quot;senha9821&quot;</span>),
+            User {
+                id: <span class="number">3</span>,
+                login: <span class="string">&quot;beltrano&quot;</span>.into(),
+                name: <span class="string">&quot;Beltrano da Silva&quot;</span>.into(),
+                email: <span class="prelude-val">Some</span>(<span class="string">&quot;beltrano@exemplo.com&quot;</span>.into()),
+                pwhash: encryption::generate_hash(<span class="string">&quot;senha9821&quot;</span>),
             },
         ];
 
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">messages::UserList</span> {
-            <span class="ident">users</span>: <span class="macro">vec!</span>[
-                <span class="ident">messages::User</span> {
-                    <span class="ident">id</span>: <span class="prelude-val">Some</span>(<span class="number">1</span>),
-                    <span class="ident">login</span>: <span class="string">&quot;fulano&quot;</span>.<span class="ident">into</span>(),
-                    <span class="ident">name</span>: <span class="string">&quot;Fulano da Silva&quot;</span>.<span class="ident">into</span>(),
-                    <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-                    <span class="ident">password</span>: <span class="prelude-val">None</span>,
+        <span class="kw">let </span>expected = messages::UserList {
+            users: <span class="macro">vec!</span>[
+                messages::User {
+                    id: <span class="prelude-val">Some</span>(<span class="number">1</span>),
+                    login: <span class="string">&quot;fulano&quot;</span>.into(),
+                    name: <span class="string">&quot;Fulano da Silva&quot;</span>.into(),
+                    email: <span class="prelude-val">Some</span>(<span class="string">&quot;fulano@exemplo.com&quot;</span>.into()),
+                    password: <span class="prelude-val">None</span>,
                 },
-                <span class="ident">messages::User</span> {
-                    <span class="ident">id</span>: <span class="prelude-val">Some</span>(<span class="number">2</span>),
-                    <span class="ident">login</span>: <span class="string">&quot;ciclano&quot;</span>.<span class="ident">into</span>(),
-                    <span class="ident">name</span>: <span class="string">&quot;Ciclano da Silva&quot;</span>.<span class="ident">into</span>(),
-                    <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-                    <span class="ident">password</span>: <span class="prelude-val">None</span>,
+                messages::User {
+                    id: <span class="prelude-val">Some</span>(<span class="number">2</span>),
+                    login: <span class="string">&quot;ciclano&quot;</span>.into(),
+                    name: <span class="string">&quot;Ciclano da Silva&quot;</span>.into(),
+                    email: <span class="prelude-val">Some</span>(<span class="string">&quot;ciclano@exemplo.com&quot;</span>.into()),
+                    password: <span class="prelude-val">None</span>,
                 },
-                <span class="ident">messages::User</span> {
-                    <span class="ident">id</span>: <span class="prelude-val">Some</span>(<span class="number">3</span>),
-                    <span class="ident">login</span>: <span class="string">&quot;beltrano&quot;</span>.<span class="ident">into</span>(),
-                    <span class="ident">name</span>: <span class="string">&quot;Beltrano da Silva&quot;</span>.<span class="ident">into</span>(),
-                    <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;beltrano@exemplo.com&quot;</span>.<span class="ident">into</span>()),
-                    <span class="ident">password</span>: <span class="prelude-val">None</span>,
+                messages::User {
+                    id: <span class="prelude-val">Some</span>(<span class="number">3</span>),
+                    login: <span class="string">&quot;beltrano&quot;</span>.into(),
+                    name: <span class="string">&quot;Beltrano da Silva&quot;</span>.into(),
+                    email: <span class="prelude-val">Some</span>(<span class="string">&quot;beltrano@exemplo.com&quot;</span>.into()),
+                    password: <span class="prelude-val">None</span>,
                 },
             ],
         };
 
-        <span class="kw">for</span> <span class="ident">it</span> <span class="kw">in</span> <span class="ident">expected</span>
-            .<span class="ident">users</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">zip</span>(<span class="ident">vec_to_message</span>(<span class="ident">users</span>).<span class="ident">users</span>.<span class="ident">iter_mut</span>())
+        <span class="kw">for </span>it <span class="kw">in </span>expected
+            .users
+            .iter()
+            .zip(vec_to_message(users).users.iter_mut())
         {
-            <span class="kw">let</span> (<span class="ident">expected</span>, <span class="ident">converted</span>) <span class="op">=</span> <span class="ident">it</span>;
-            <span class="macro">assert_eq!</span>(<span class="ident">expected</span>, <span class="ident">converted</span>);
-            <span class="macro">assert!</span>(<span class="ident">converted</span>.<span class="ident">password</span>.<span class="ident">is_none</span>());
+            <span class="kw">let </span>(expected, converted) = it;
+            <span class="macro">assert_eq!</span>(expected, converted);
+            <span class="macro">assert!</span>(converted.password.is_none());
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_data" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_data" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

@@ -1,3 +1,3 @@
-(function() {var implementors = {};
-implementors["minerva_session"] = [{"text":"impl <a class=\"trait\" href=\"minerva_rpc/session/session_server/trait.Session.html\" title=\"trait minerva_rpc::session::session_server::Session\">Session</a> for <a class=\"struct\" href=\"minerva_session/service/struct.SessionService.html\" title=\"struct minerva_session::service::SessionService\">SessionService</a>","synthetic":false,"types":["minerva_session::service::SessionService"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"minerva_session":[["impl Session for <a class=\"struct\" href=\"minerva_session/service/struct.SessionService.html\" title=\"struct minerva_session::service::SessionService\">SessionService</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

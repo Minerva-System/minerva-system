@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-user/src/repository.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>repository.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_user/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_user/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_user/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-user/src/repository.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>repository.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_user/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_user/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_user/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -189,196 +189,196 @@
 <span id="189">189</span>
 <span id="190">190</span>
 <span id="191">191</span>
-</pre><pre class="rust"><code><span class="doccomment">//! This module wraps the repository which handles the user DTOs.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! This module wraps the repository which handles the user DTOs.
 
-<span class="kw">use</span> <span class="ident">diesel::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">diesel::result::Error</span>;
-<span class="kw">use</span> <span class="ident">lapin</span>::{<span class="ident">options::BasicPublishOptions</span>, <span class="ident">BasicProperties</span>};
-<span class="kw">use</span> <span class="ident">minerva_broker</span> <span class="kw">as</span> <span class="ident">broker</span>;
-<span class="kw">use</span> <span class="ident">minerva_data::db::DBConnection</span>;
-<span class="kw">use</span> <span class="ident">minerva_data::db::DBPool</span>;
-<span class="kw">use</span> <span class="ident">minerva_data::syslog</span>::{<span class="ident">NewLog</span>, <span class="ident">OpType</span>};
-<span class="kw">use</span> <span class="ident">minerva_data::user</span> <span class="kw">as</span> <span class="ident">model</span>;
-<span class="kw">use</span> <span class="ident">tonic::Status</span>;
+</span><span class="kw">use </span>diesel::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>diesel::result::Error;
+<span class="kw">use </span>lapin::{options::BasicPublishOptions, BasicProperties};
+<span class="kw">use </span>minerva_broker <span class="kw">as </span>broker;
+<span class="kw">use </span>minerva_data::db::DBConnection;
+<span class="kw">use </span>minerva_data::db::DBPool;
+<span class="kw">use </span>minerva_data::syslog::{NewLog, OpType};
+<span class="kw">use </span>minerva_data::user <span class="kw">as </span>model;
+<span class="kw">use </span>tonic::Status;
 
-<span class="doccomment">/// Default page size of a user list.</span>
-<span class="kw">const</span> <span class="ident">USER_PAGE_SIZE</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="number">20</span>;
+<span class="doccomment">/// Default page size of a user list.
+</span><span class="kw">const </span>USER_PAGE_SIZE: i64 = <span class="number">20</span>;
 
-<span class="doccomment">/// Grabs a list of users, paged. Expects a page number. If none or a negative</span>
-<span class="doccomment">/// value is provided, returns page 0.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_list</span>(<span class="ident">page</span>: <span class="ident">i64</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">DBConnection</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">model::User</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">use</span> <span class="ident">minerva_data::schema::user::dsl</span>::<span class="kw-2">*</span>;
-    <span class="kw">let</span> <span class="ident">page</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">page</span> <span class="op">&lt;</span> <span class="number">0</span> { <span class="number">0</span> } <span class="kw">else</span> { <span class="ident">page</span> };
-    <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">page</span> <span class="op">*</span> <span class="ident">USER_PAGE_SIZE</span>;
-    <span class="ident">user</span>.<span class="ident">order</span>(<span class="ident">id</span>)
-        .<span class="ident">limit</span>(<span class="ident">USER_PAGE_SIZE</span>)
-        .<span class="ident">offset</span>(<span class="ident">offset</span>)
-        .<span class="ident">load</span>::<span class="op">&lt;</span><span class="ident">model::User</span><span class="op">&gt;</span>(<span class="ident">connection</span>)
+<span class="doccomment">/// Grabs a list of users, paged. Expects a page number. If none or a negative
+/// value is provided, returns page 0.
+</span><span class="kw">pub fn </span>get_list(page: i64, connection: <span class="kw-2">&amp;</span>DBConnection) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;model::User&gt;, Error&gt; {
+    <span class="kw">use </span>minerva_data::schema::user::dsl::<span class="kw-2">*</span>;
+    <span class="kw">let </span>page = <span class="kw">if </span>page &lt; <span class="number">0 </span>{ <span class="number">0 </span>} <span class="kw">else </span>{ page };
+    <span class="kw">let </span>offset = page * USER_PAGE_SIZE;
+    user.order(id)
+        .limit(USER_PAGE_SIZE)
+        .offset(offset)
+        .load::&lt;model::User&gt;(connection)
 }
 
-<span class="doccomment">/// Grabs a specific user, given its ID on the database.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_user</span>(<span class="ident">user_id</span>: <span class="ident">i32</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">DBConnection</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">model::User</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">use</span> <span class="ident">minerva_data::schema::user::dsl</span>::<span class="kw-2">*</span>;
-    <span class="ident">user</span>.<span class="ident">filter</span>(<span class="ident">id</span>.<span class="ident">eq</span>(<span class="ident">user_id</span>))
-        .<span class="ident">first</span>::<span class="op">&lt;</span><span class="ident">model::User</span><span class="op">&gt;</span>(<span class="ident">connection</span>)
-        .<span class="ident">optional</span>()
+<span class="doccomment">/// Grabs a specific user, given its ID on the database.
+</span><span class="kw">pub fn </span>get_user(user_id: i32, connection: <span class="kw-2">&amp;</span>DBConnection) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;model::User&gt;, Error&gt; {
+    <span class="kw">use </span>minerva_data::schema::user::dsl::<span class="kw-2">*</span>;
+    user.filter(id.eq(user_id))
+        .first::&lt;model::User&gt;(connection)
+        .optional()
 }
 
-<span class="doccomment">/// Creates a new user, for a given requestor, which shall also be a user.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_user</span>(
-    <span class="ident">data</span>: <span class="ident">model::NewUser</span>,
-    <span class="ident">requestor</span>: <span class="ident">String</span>,
-    <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">DBConnection</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">model::User</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">use</span> <span class="ident">minerva_data::schema::syslog</span>;
-    <span class="kw">use</span> <span class="ident">minerva_data::schema::user</span>;
+<span class="doccomment">/// Creates a new user, for a given requestor, which shall also be a user.
+</span><span class="kw">pub fn </span>add_user(
+    data: model::NewUser,
+    requestor: String,
+    connection: <span class="kw-2">&amp;</span>DBConnection,
+) -&gt; <span class="prelude-ty">Result</span>&lt;model::User, Error&gt; {
+    <span class="kw">use </span>minerva_data::schema::syslog;
+    <span class="kw">use </span>minerva_data::schema::user;
 
-    <span class="ident">connection</span>
-        .<span class="ident">build_transaction</span>()
-        .<span class="ident">read_write</span>()
-        .<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">model::User</span>, <span class="ident">Error</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="op">|</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">diesel::insert_into</span>(<span class="ident">user::table</span>)
-                .<span class="ident">values</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>)
-                .<span class="ident">get_result</span>::<span class="op">&lt;</span><span class="ident">model::User</span><span class="op">&gt;</span>(<span class="ident">connection</span>)<span class="question-mark">?</span>;
+    connection
+        .build_transaction()
+        .read_write()
+        .run::&lt;model::User, Error, <span class="kw">_</span>&gt;(|| {
+            <span class="kw">let </span>result = diesel::insert_into(user::table)
+                .values(<span class="kw-2">&amp;</span>data)
+                .get_result::&lt;model::User&gt;(connection)<span class="question-mark">?</span>;
 
-            <span class="ident">diesel::insert_into</span>(<span class="ident">syslog::table</span>)
-                .<span class="ident">values</span>(<span class="kw-2">&amp;</span><span class="ident">NewLog</span> {
-                    <span class="ident">service</span>: <span class="string">&quot;USER&quot;</span>.<span class="ident">to_string</span>(),
-                    <span class="ident">requestor</span>,
-                    <span class="ident">entity</span>: <span class="string">&quot;user&quot;</span>.<span class="ident">to_string</span>(),
-                    <span class="ident">operation</span>: <span class="ident">OpType::Insert</span>,
-                    <span class="ident">datetime</span>: <span class="ident">chrono::offset::Utc::now</span>(),
-                    <span class="ident">description</span>: <span class="prelude-val">Some</span>(<span class="macro">format!</span>(<span class="string">&quot;Add user ID {}&quot;</span>, <span class="ident">result</span>.<span class="ident">id</span>)),
+            diesel::insert_into(syslog::table)
+                .values(<span class="kw-2">&amp;</span>NewLog {
+                    service: <span class="string">&quot;USER&quot;</span>.to_string(),
+                    requestor,
+                    entity: <span class="string">&quot;user&quot;</span>.to_string(),
+                    operation: OpType::Insert,
+                    datetime: chrono::offset::Utc::now(),
+                    description: <span class="prelude-val">Some</span>(<span class="macro">format!</span>(<span class="string">&quot;Add user ID {}&quot;</span>, result.id)),
                 })
-                .<span class="ident">execute</span>(<span class="ident">connection</span>)<span class="question-mark">?</span>;
+                .execute(connection)<span class="question-mark">?</span>;
 
-            <span class="prelude-val">Ok</span>(<span class="ident">result</span>)
+            <span class="prelude-val">Ok</span>(result)
         })
 }
 
-<span class="doccomment">/// Updates the data for a user, for a given requestor, which shall also be a user.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_user</span>(
-    <span class="ident">data</span>: <span class="ident">model::User</span>,
-    <span class="ident">requestor</span>: <span class="ident">String</span>,
-    <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">DBConnection</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">model::User</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">use</span> <span class="ident">minerva_data::schema::syslog</span>;
-    <span class="kw">use</span> <span class="ident">minerva_data::schema::user::dsl</span>::<span class="kw-2">*</span>;
+<span class="doccomment">/// Updates the data for a user, for a given requestor, which shall also be a user.
+</span><span class="kw">pub fn </span>update_user(
+    data: model::User,
+    requestor: String,
+    connection: <span class="kw-2">&amp;</span>DBConnection,
+) -&gt; <span class="prelude-ty">Result</span>&lt;model::User, Error&gt; {
+    <span class="kw">use </span>minerva_data::schema::syslog;
+    <span class="kw">use </span>minerva_data::schema::user::dsl::<span class="kw-2">*</span>;
 
-    <span class="kw">let</span> <span class="ident">old</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="ident">get_user</span>(<span class="ident">data</span>.<span class="ident">id</span>, <span class="ident">connection</span>)<span class="question-mark">?</span> {
-        <span class="ident">value</span>
-    } <span class="kw">else</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::NotFound</span>);
+    <span class="kw">let </span>old = <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = get_user(data.id, connection)<span class="question-mark">? </span>{
+        value
+    } <span class="kw">else </span>{
+        <span class="kw">return </span><span class="prelude-val">Err</span>(Error::NotFound);
     };
 
-    <span class="comment">// Relies on model::User&#39;s Eq and/or PartialEq</span>
-    <span class="kw">if</span> <span class="ident">old</span> <span class="op">==</span> <span class="ident">data</span> {
-        <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">old</span>);
+    <span class="comment">// Relies on model::User&#39;s Eq and/or PartialEq
+    </span><span class="kw">if </span>old == data {
+        <span class="kw">return </span><span class="prelude-val">Ok</span>(old);
     }
 
-    <span class="ident">connection</span>
-        .<span class="ident">build_transaction</span>()
-        .<span class="ident">read_write</span>()
-        .<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">model::User</span>, <span class="ident">Error</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="op">|</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">target</span> <span class="op">=</span> <span class="ident">user</span>.<span class="ident">filter</span>(<span class="ident">id</span>.<span class="ident">eq</span>(<span class="ident">data</span>.<span class="ident">id</span>));
+    connection
+        .build_transaction()
+        .read_write()
+        .run::&lt;model::User, Error, <span class="kw">_</span>&gt;(|| {
+            <span class="kw">let </span>target = user.filter(id.eq(data.id));
 
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">diesel::update</span>(<span class="ident">target</span>)
-                .<span class="ident">set</span>((
-                    <span class="ident">login</span>.<span class="ident">eq</span>(<span class="ident">data</span>.<span class="ident">login</span>),
-                    <span class="ident">name</span>.<span class="ident">eq</span>(<span class="ident">data</span>.<span class="ident">name</span>),
-                    <span class="ident">email</span>.<span class="ident">eq</span>(<span class="ident">data</span>.<span class="ident">email</span>),
+            <span class="kw">let </span>result = diesel::update(target)
+                .set((
+                    login.eq(data.login),
+                    name.eq(data.name),
+                    email.eq(data.email),
                 ))
-                .<span class="ident">get_result</span>::<span class="op">&lt;</span><span class="ident">model::User</span><span class="op">&gt;</span>(<span class="ident">connection</span>)<span class="question-mark">?</span>;
+                .get_result::&lt;model::User&gt;(connection)<span class="question-mark">?</span>;
 
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">data</span>.<span class="ident">pwhash</span>.<span class="ident">is_empty</span>() {
-                <span class="ident">result</span>
-            } <span class="kw">else</span> {
-                <span class="ident">diesel::update</span>(<span class="ident">target</span>)
-                    .<span class="ident">set</span>(<span class="ident">pwhash</span>.<span class="ident">eq</span>(<span class="ident">data</span>.<span class="ident">pwhash</span>))
-                    .<span class="ident">get_result</span>::<span class="op">&lt;</span><span class="ident">model::User</span><span class="op">&gt;</span>(<span class="ident">connection</span>)<span class="question-mark">?</span>
-            };
+            <span class="kw">let </span>result = <span class="kw">if </span>data.pwhash.is_empty() {
+                result
+            } <span class="kw">else </span>{
+                diesel::update(target)
+                    .set(pwhash.eq(data.pwhash))
+                    .get_result::&lt;model::User&gt;(connection)<span class="question-mark">?
+            </span>};
 
-            <span class="ident">diesel::insert_into</span>(<span class="ident">syslog::table</span>)
-                .<span class="ident">values</span>(<span class="kw-2">&amp;</span><span class="ident">NewLog</span> {
-                    <span class="ident">service</span>: <span class="string">&quot;USER&quot;</span>.<span class="ident">to_string</span>(),
-                    <span class="ident">requestor</span>,
-                    <span class="ident">entity</span>: <span class="string">&quot;user&quot;</span>.<span class="ident">to_string</span>(),
-                    <span class="ident">operation</span>: <span class="ident">OpType::Update</span>,
-                    <span class="ident">datetime</span>: <span class="ident">chrono::offset::Utc::now</span>(),
-                    <span class="ident">description</span>: <span class="prelude-val">Some</span>(<span class="macro">format!</span>(<span class="string">&quot;Update user ID {}&quot;</span>, <span class="ident">result</span>.<span class="ident">id</span>)),
+            diesel::insert_into(syslog::table)
+                .values(<span class="kw-2">&amp;</span>NewLog {
+                    service: <span class="string">&quot;USER&quot;</span>.to_string(),
+                    requestor,
+                    entity: <span class="string">&quot;user&quot;</span>.to_string(),
+                    operation: OpType::Update,
+                    datetime: chrono::offset::Utc::now(),
+                    description: <span class="prelude-val">Some</span>(<span class="macro">format!</span>(<span class="string">&quot;Update user ID {}&quot;</span>, result.id)),
                 })
-                .<span class="ident">execute</span>(<span class="ident">connection</span>)<span class="question-mark">?</span>;
+                .execute(connection)<span class="question-mark">?</span>;
 
-            <span class="prelude-val">Ok</span>(<span class="ident">result</span>)
+            <span class="prelude-val">Ok</span>(result)
         })
 }
 
-<span class="doccomment">/// Deletes a user, for a given requestor, which shall also be a user.</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_user</span>(
-    <span class="ident">user_id</span>: <span class="ident">i32</span>,
-    <span class="ident">requestor</span>: <span class="ident">String</span>,
-    <span class="ident">dbpool</span>: <span class="kw-2">&amp;</span><span class="ident">DBPool</span>,
-    <span class="ident">rabbitmq</span>: <span class="kw-2">&amp;</span><span class="ident">lapin::Connection</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Status</span><span class="op">&gt;</span> {
-    <span class="kw">use</span> <span class="ident">minerva_data::schema::syslog</span>;
-    <span class="kw">use</span> <span class="ident">minerva_data::schema::user::dsl</span>::<span class="kw-2">*</span>;
+<span class="doccomment">/// Deletes a user, for a given requestor, which shall also be a user.
+</span><span class="kw">pub async fn </span>delete_user(
+    user_id: i32,
+    requestor: String,
+    dbpool: <span class="kw-2">&amp;</span>DBPool,
+    rabbitmq: <span class="kw-2">&amp;</span>lapin::Connection,
+) -&gt; <span class="prelude-ty">Result</span>&lt;(), Status&gt; {
+    <span class="kw">use </span>minerva_data::schema::syslog;
+    <span class="kw">use </span>minerva_data::schema::user::dsl::<span class="kw-2">*</span>;
 
-    <span class="kw">let</span> <span class="ident">connection</span> <span class="op">=</span> <span class="ident">dbpool</span>
-        .<span class="ident">get</span>()
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="macro">format!</span>(<span class="string">&quot;Database access error: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+    <span class="kw">let </span>connection = dbpool
+        .get()
+        .<span class="kw">await
+        </span>.map_err(|e| Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Database access error: {}&quot;</span>, e)))<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">connection</span>
-        .<span class="ident">build_transaction</span>()
-        .<span class="ident">read_write</span>()
-        .<span class="ident">run</span>::<span class="op">&lt;</span><span class="ident">model::User</span>, <span class="ident">Error</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="op">|</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">target</span> <span class="op">=</span> <span class="ident">user</span>.<span class="ident">filter</span>(<span class="ident">id</span>.<span class="ident">eq</span>(<span class="ident">user_id</span>));
+    <span class="kw">let </span>result = connection
+        .build_transaction()
+        .read_write()
+        .run::&lt;model::User, Error, <span class="kw">_</span>&gt;(|| {
+            <span class="kw">let </span>target = user.filter(id.eq(user_id));
 
-            <span class="kw">let</span> <span class="ident">entity</span> <span class="op">=</span> <span class="ident">target</span>.<span class="ident">get_result</span>::<span class="op">&lt;</span><span class="ident">model::User</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">connection</span>)<span class="question-mark">?</span>;
+            <span class="kw">let </span>entity = target.get_result::&lt;model::User&gt;(<span class="kw-2">&amp;*</span>connection)<span class="question-mark">?</span>;
 
-            <span class="ident">diesel::delete</span>(<span class="ident">target</span>).<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">connection</span>)<span class="question-mark">?</span>;
+            diesel::delete(target).execute(<span class="kw-2">&amp;*</span>connection)<span class="question-mark">?</span>;
 
-            <span class="ident">diesel::insert_into</span>(<span class="ident">syslog::table</span>)
-                .<span class="ident">values</span>(<span class="kw-2">&amp;</span><span class="ident">NewLog</span> {
-                    <span class="ident">service</span>: <span class="string">&quot;USER&quot;</span>.<span class="ident">to_string</span>(),
-                    <span class="ident">requestor</span>,
-                    <span class="ident">entity</span>: <span class="string">&quot;user&quot;</span>.<span class="ident">to_string</span>(),
-                    <span class="ident">operation</span>: <span class="ident">OpType::Delete</span>,
-                    <span class="ident">datetime</span>: <span class="ident">chrono::offset::Utc::now</span>(),
-                    <span class="ident">description</span>: <span class="prelude-val">Some</span>(<span class="macro">format!</span>(<span class="string">&quot;Delete user ID {}&quot;</span>, <span class="ident">user_id</span>)),
+            diesel::insert_into(syslog::table)
+                .values(<span class="kw-2">&amp;</span>NewLog {
+                    service: <span class="string">&quot;USER&quot;</span>.to_string(),
+                    requestor,
+                    entity: <span class="string">&quot;user&quot;</span>.to_string(),
+                    operation: OpType::Delete,
+                    datetime: chrono::offset::Utc::now(),
+                    description: <span class="prelude-val">Some</span>(<span class="macro">format!</span>(<span class="string">&quot;Delete user ID {}&quot;</span>, user_id)),
                 })
-                .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">connection</span>)<span class="question-mark">?</span>;
+                .execute(<span class="kw-2">&amp;*</span>connection)<span class="question-mark">?</span>;
 
-            <span class="prelude-val">Ok</span>(<span class="ident">entity</span>)
+            <span class="prelude-val">Ok</span>(entity)
         })
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="macro">format!</span>(<span class="string">&quot;Database error: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+        .map_err(|e| Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Database error: {}&quot;</span>, e)))<span class="question-mark">?</span>;
 
-    <span class="comment">// Queue message on RabbitMQ so that the session service</span>
-    <span class="comment">// asynchronously deletes the user&#39;s sessions.</span>
-    <span class="comment">// We can just inform the tenant and the login and that should be it</span>
-    <span class="kw">let</span> <span class="ident">channel</span> <span class="op">=</span> <span class="ident">rabbitmq</span>
-        .<span class="ident">create_channel</span>()
-        .<span class="kw">await</span>
-        .<span class="ident">expect</span>(<span class="string">&quot;Could not create RabbitMQ channel&quot;</span>);
+    <span class="comment">// Queue message on RabbitMQ so that the session service
+    // asynchronously deletes the user&#39;s sessions.
+    // We can just inform the tenant and the login and that should be it
+    </span><span class="kw">let </span>channel = rabbitmq
+        .create_channel()
+        .<span class="kw">await
+        </span>.expect(<span class="string">&quot;Could not create RabbitMQ channel&quot;</span>);
 
-    <span class="kw">let</span> <span class="ident">json</span> <span class="op">=</span> <span class="ident">broker::model::SessionMessage::Remove</span> { <span class="ident">user</span>: <span class="ident">result</span>.<span class="ident">login</span> }.<span class="ident">to_json</span>();
+    <span class="kw">let </span>json = broker::model::SessionMessage::Remove { user: result.login }.to_json();
 
-    <span class="ident">channel</span>
-        .<span class="ident">basic_publish</span>(
+    channel
+        .basic_publish(
             <span class="string">&quot;&quot;</span>,
             <span class="string">&quot;session_management&quot;</span>,
-            <span class="ident">BasicPublishOptions::default</span>(),
-            <span class="ident">json</span>.<span class="ident">as_bytes</span>(),
-            <span class="ident">BasicProperties::default</span>(),
+            BasicPublishOptions::default(),
+            json.as_bytes(),
+            BasicProperties::default(),
         )
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="macro">format!</span>(<span class="string">&quot;Session removal publishing failed: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-            <span class="ident">Status::internal</span>(<span class="macro">format!</span>(<span class="string">&quot;Session removal publishing not confirmed: {}&quot;</span>, <span class="ident">e</span>))
+        .<span class="kw">await
+        </span>.map_err(|e| Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Session removal publishing failed: {}&quot;</span>, e)))<span class="question-mark">?
+        </span>.<span class="kw">await
+        </span>.map_err(|e| {
+            Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Session removal publishing not confirmed: {}&quot;</span>, e))
         })<span class="question-mark">?</span>;
 
     <span class="prelude-val">Ok</span>(())
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_user" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_user" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

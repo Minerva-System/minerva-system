@@ -1,3 +1,3 @@
-(function() {var implementors = {};
-implementors["minerva_runonce"] = [{"text":"impl Migration for <a class=\"struct\" href=\"minerva_runonce/embedded_migrations/struct.EmbeddedMigration.html\" title=\"struct minerva_runonce::embedded_migrations::EmbeddedMigration\">EmbeddedMigration</a>","synthetic":false,"types":["minerva_runonce::embedded_migrations::EmbeddedMigration"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"minerva_runonce":[["impl Migration for <a class=\"struct\" href=\"minerva_runonce/embedded_migrations/struct.EmbeddedMigration.html\" title=\"struct minerva_runonce::embedded_migrations::EmbeddedMigration\">EmbeddedMigration</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

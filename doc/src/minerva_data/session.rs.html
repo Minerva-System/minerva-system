@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-data/src/session.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>session.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_data/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-data/src/session.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>session.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_data/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -266,273 +266,273 @@
 <span id="266">266</span>
 <span id="267">267</span>
 <span id="268">268</span>
-</pre><pre class="rust"><code><span class="doccomment">//! This module contains Data Transfer Objects for the user sessions on the</span>
-<span class="doccomment">//! system, representing a user&#39;s login session for a given tenant. These DTO&#39;s</span>
-<span class="doccomment">//! mostly relate to the `session` collecton on MongoDB database.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! This module contains Data Transfer Objects for the user sessions on the
+//! system, representing a user&#39;s login session for a given tenant. These DTO&#39;s
+//! mostly relate to the `session` collecton on MongoDB database.
 
-<span class="kw">use</span> <span class="ident">minerva_rpc::messages</span>;
-<span class="kw">use</span> <span class="ident">mongodb::bson::DateTime</span>;
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+</span><span class="kw">use </span>minerva_rpc::messages;
+<span class="kw">use </span>mongodb::bson::DateTime;
+<span class="kw">use </span>serde::{Deserialize, Serialize};
 
-<span class="doccomment">/// DTO representing the data for a user session.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;camelCase&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Session</span> {
-    <span class="doccomment">/// Tenant of this session.</span>
-    <span class="kw">pub</span> <span class="ident">tenant</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// User logged in.</span>
-    <span class="kw">pub</span> <span class="ident">login</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Creation date of the session, used for checks</span>
-    <span class="doccomment">/// related to expiration date.</span>
-    <span class="kw">pub</span> <span class="ident">creation_date</span>: <span class="ident">DateTime</span>,
+<span class="doccomment">/// DTO representing the data for a user session.
+</span><span class="attribute">#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
+#[serde(rename_all = <span class="string">&quot;camelCase&quot;</span>)]
+</span><span class="kw">pub struct </span>Session {
+    <span class="doccomment">/// Tenant of this session.
+    </span><span class="kw">pub </span>tenant: String,
+    <span class="doccomment">/// User logged in.
+    </span><span class="kw">pub </span>login: String,
+    <span class="doccomment">/// Creation date of the session, used for checks
+    /// related to expiration date.
+    </span><span class="kw">pub </span>creation_date: DateTime,
 }
 
-<span class="doccomment">/// DTO representing the data for a new session, to be received by the</span>
-<span class="doccomment">/// gRPC session service.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NewSession</span> {
-    <span class="doccomment">/// Tenant of the required session.</span>
-    <span class="kw">pub</span> <span class="ident">tenant</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// User attempting to log in.</span>
-    <span class="kw">pub</span> <span class="ident">login</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Plain text password of the user attempting to log in.</span>
-    <span class="kw">pub</span> <span class="ident">password</span>: <span class="ident">String</span>,
+<span class="doccomment">/// DTO representing the data for a new session, to be received by the
+/// gRPC session service.
+</span><span class="attribute">#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
+</span><span class="kw">pub struct </span>NewSession {
+    <span class="doccomment">/// Tenant of the required session.
+    </span><span class="kw">pub </span>tenant: String,
+    <span class="doccomment">/// User attempting to log in.
+    </span><span class="kw">pub </span>login: String,
+    <span class="doccomment">/// Plain text password of the user attempting to log in.
+    </span><span class="kw">pub </span>password: String,
 }
 
-<span class="doccomment">/// DTO representing the data for a new session, to be received by the</span>
-<span class="doccomment">/// REST gateway endpoint.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RecvSession</span> {
-    <span class="doccomment">/// User attempting to log in.</span>
-    <span class="kw">pub</span> <span class="ident">login</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Plain text password of the user attempting to log in.</span>
-    <span class="kw">pub</span> <span class="ident">password</span>: <span class="ident">String</span>,
+<span class="doccomment">/// DTO representing the data for a new session, to be received by the
+/// REST gateway endpoint.
+</span><span class="attribute">#[derive(Debug, Deserialize)]
+</span><span class="kw">pub struct </span>RecvSession {
+    <span class="doccomment">/// User attempting to log in.
+    </span><span class="kw">pub </span>login: String,
+    <span class="doccomment">/// Plain text password of the user attempting to log in.
+    </span><span class="kw">pub </span>password: String,
 }
 
-<span class="doccomment">/// DTO representing the data returned from the login route on the REST</span>
-<span class="doccomment">/// endpoint, which should have a token and the tenant name.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SessionResponse</span> {
-    <span class="doccomment">/// Access token for the user.</span>
-    <span class="kw">pub</span> <span class="ident">token</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Tenant where the token is valid.</span>
-    <span class="kw">pub</span> <span class="ident">tenant</span>: <span class="ident">String</span>,
+<span class="doccomment">/// DTO representing the data returned from the login route on the REST
+/// endpoint, which should have a token and the tenant name.
+</span><span class="attribute">#[derive(Debug, Serialize, Deserialize)]
+</span><span class="kw">pub struct </span>SessionResponse {
+    <span class="doccomment">/// Access token for the user.
+    </span><span class="kw">pub </span>token: String,
+    <span class="doccomment">/// Tenant where the token is valid.
+    </span><span class="kw">pub </span>tenant: String,
 }
 
-<span class="kw">impl</span> <span class="ident">RecvSession</span> {
-    <span class="doccomment">/// Converts this DTO to another DTO that can be</span>
-    <span class="doccomment">/// used by the gRPC service.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_new</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">tenant</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">NewSession</span> {
-        <span class="ident">NewSession</span> {
-            <span class="ident">tenant</span>: <span class="ident">tenant</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="self">self</span>.<span class="ident">login</span>.<span class="ident">clone</span>(),
-            <span class="ident">password</span>: <span class="self">self</span>.<span class="ident">password</span>.<span class="ident">clone</span>(),
+<span class="kw">impl </span>RecvSession {
+    <span class="doccomment">/// Converts this DTO to another DTO that can be
+    /// used by the gRPC service.
+    </span><span class="kw">pub fn </span>as_new(<span class="kw-2">&amp;</span><span class="self">self</span>, tenant: <span class="kw-2">&amp;</span>str) -&gt; NewSession {
+        NewSession {
+            tenant: tenant.trim().to_string(),
+            login: <span class="self">self</span>.login.clone(),
+            password: <span class="self">self</span>.password.clone(),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">NewSession</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Session</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">new</span>: <span class="ident">NewSession</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">tenant</span>: <span class="ident">new</span>.<span class="ident">tenant</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="ident">new</span>.<span class="ident">login</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">creation_date</span>: <span class="ident">DateTime::now</span>(),
+<span class="kw">impl </span>From&lt;NewSession&gt; <span class="kw">for </span>Session {
+    <span class="kw">fn </span>from(new: NewSession) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            tenant: new.tenant.trim().to_string(),
+            login: new.login.trim().to_string(),
+            creation_date: DateTime::now(),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">messages::SessionData</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Session</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">msg</span>: <span class="ident">messages::SessionData</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">tenant</span>: <span class="ident">msg</span>.<span class="ident">tenant</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="ident">msg</span>.<span class="ident">login</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">creation_date</span>: <span class="ident">DateTime::from_millis</span>(<span class="ident">msg</span>.<span class="ident">creation_date</span>),
+<span class="kw">impl </span>From&lt;messages::SessionData&gt; <span class="kw">for </span>Session {
+    <span class="kw">fn </span>from(msg: messages::SessionData) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            tenant: msg.tenant.trim().to_string(),
+            login: msg.login.trim().to_string(),
+            creation_date: DateTime::from_millis(msg.creation_date),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">messages::SessionCreationData</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Session</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">msg</span>: <span class="ident">messages::SessionCreationData</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">tenant</span>: <span class="ident">msg</span>.<span class="ident">tenant</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="ident">msg</span>.<span class="ident">login</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">creation_date</span>: <span class="ident">DateTime::now</span>(),
+<span class="kw">impl </span>From&lt;messages::SessionCreationData&gt; <span class="kw">for </span>Session {
+    <span class="kw">fn </span>from(msg: messages::SessionCreationData) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            tenant: msg.tenant.trim().to_string(),
+            login: msg.login.trim().to_string(),
+            creation_date: DateTime::now(),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">messages::SessionCreationData</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">NewSession</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">msg</span>: <span class="ident">messages::SessionCreationData</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">tenant</span>: <span class="ident">msg</span>.<span class="ident">tenant</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="ident">msg</span>.<span class="ident">login</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">password</span>: <span class="ident">msg</span>.<span class="ident">password</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
+<span class="kw">impl </span>From&lt;messages::SessionCreationData&gt; <span class="kw">for </span>NewSession {
+    <span class="kw">fn </span>from(msg: messages::SessionCreationData) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            tenant: msg.tenant.trim().to_string(),
+            login: msg.login.trim().to_string(),
+            password: msg.password.trim().to_string(),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Session</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">messages::SessionData</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">session</span>: <span class="ident">Session</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">tenant</span>: <span class="ident">session</span>.<span class="ident">tenant</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="ident">session</span>.<span class="ident">login</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">creation_date</span>: <span class="ident">session</span>.<span class="ident">creation_date</span>.<span class="ident">timestamp_millis</span>(),
+<span class="kw">impl </span>From&lt;Session&gt; <span class="kw">for </span>messages::SessionData {
+    <span class="kw">fn </span>from(session: Session) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            tenant: session.tenant.trim().to_string(),
+            login: session.login.trim().to_string(),
+            creation_date: session.creation_date.timestamp_millis(),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">NewSession</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">messages::SessionCreationData</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">new</span>: <span class="ident">NewSession</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">tenant</span>: <span class="ident">new</span>.<span class="ident">tenant</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="ident">new</span>.<span class="ident">login</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
-            <span class="ident">password</span>: <span class="ident">new</span>.<span class="ident">password</span>.<span class="ident">trim</span>().<span class="ident">to_string</span>(),
+<span class="kw">impl </span>From&lt;NewSession&gt; <span class="kw">for </span>messages::SessionCreationData {
+    <span class="kw">fn </span>from(new: NewSession) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            tenant: new.tenant.trim().to_string(),
+            login: new.login.trim().to_string(),
+            password: new.password.trim().to_string(),
         }
     }
 }
 
-<span class="doccomment">/// Unit tests for this module.</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">unit_tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">mongodb::bson::DateTime</span>;
+<span class="doccomment">/// Unit tests for this module.
+</span><span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>unit_tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span>mongodb::bson::DateTime;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">convert_session_message_to_data</span>() {
-        <span class="kw">let</span> <span class="ident">creation_date</span> <span class="op">=</span> <span class="ident">DateTime::now</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>convert_session_message_to_data() {
+        <span class="kw">let </span>creation_date = DateTime::now();
 
-        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">messages::SessionData</span> {
-            <span class="ident">tenant</span>: <span class="string">&quot;minerva&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">creation_date</span>: <span class="ident">creation_date</span>.<span class="ident">timestamp_millis</span>(),
+        <span class="kw">let </span>message = messages::SessionData {
+            tenant: <span class="string">&quot;minerva&quot;</span>.to_string(),
+            login: <span class="string">&quot;admin&quot;</span>.to_string(),
+            creation_date: creation_date.timestamp_millis(),
         };
 
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">Session</span> {
-            <span class="ident">tenant</span>: <span class="string">&quot;minerva&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">creation_date</span>,
+        <span class="kw">let </span>expected = Session {
+            tenant: <span class="string">&quot;minerva&quot;</span>.to_string(),
+            login: <span class="string">&quot;admin&quot;</span>.to_string(),
+            creation_date,
         };
 
-        <span class="kw">let</span> <span class="ident">result</span>: <span class="ident">Session</span> <span class="op">=</span> <span class="ident">message</span>.<span class="ident">into</span>();
+        <span class="kw">let </span>result: Session = message.into();
 
-        <span class="macro">assert_eq!</span>(<span class="ident">expected</span>, <span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(expected, result);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">convert_data_to_session_message</span>() {
-        <span class="kw">let</span> <span class="ident">creation_date</span> <span class="op">=</span> <span class="ident">DateTime::now</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>convert_data_to_session_message() {
+        <span class="kw">let </span>creation_date = DateTime::now();
 
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Session</span> {
-            <span class="ident">tenant</span>: <span class="string">&quot;minerva&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">creation_date</span>,
+        <span class="kw">let </span>data = Session {
+            tenant: <span class="string">&quot;minerva&quot;</span>.to_string(),
+            login: <span class="string">&quot;admin&quot;</span>.to_string(),
+            creation_date,
         };
 
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">messages::SessionData</span> {
-            <span class="ident">tenant</span>: <span class="string">&quot;minerva&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">creation_date</span>: <span class="ident">creation_date</span>.<span class="ident">timestamp_millis</span>(),
+        <span class="kw">let </span>expected = messages::SessionData {
+            tenant: <span class="string">&quot;minerva&quot;</span>.to_string(),
+            login: <span class="string">&quot;admin&quot;</span>.to_string(),
+            creation_date: creation_date.timestamp_millis(),
         };
 
-        <span class="kw">let</span> <span class="ident">result</span>: <span class="ident">messages::SessionData</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">into</span>();
+        <span class="kw">let </span>result: messages::SessionData = data.into();
 
-        <span class="macro">assert_eq!</span>(<span class="ident">expected</span>, <span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(expected, result);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">convert_session_creation_message_to_data</span>() {
-        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">messages::SessionCreationData</span> {
-            <span class="ident">tenant</span>: <span class="string">&quot;minerva&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">password</span>: <span class="ident">String::new</span>(),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>convert_session_creation_message_to_data() {
+        <span class="kw">let </span>message = messages::SessionCreationData {
+            tenant: <span class="string">&quot;minerva&quot;</span>.to_string(),
+            login: <span class="string">&quot;admin&quot;</span>.to_string(),
+            password: String::new(),
         };
 
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">Session</span> {
-            <span class="ident">tenant</span>: <span class="string">&quot;minerva&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">creation_date</span>: <span class="ident">DateTime::now</span>(),
+        <span class="kw">let </span>expected = Session {
+            tenant: <span class="string">&quot;minerva&quot;</span>.to_string(),
+            login: <span class="string">&quot;admin&quot;</span>.to_string(),
+            creation_date: DateTime::now(),
         };
 
-        <span class="kw">let</span> <span class="ident">result</span>: <span class="ident">Session</span> <span class="op">=</span> <span class="ident">message</span>.<span class="ident">into</span>();
+        <span class="kw">let </span>result: Session = message.into();
 
-        <span class="macro">assert_eq!</span>(<span class="ident">expected</span>, <span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(expected, result);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">convert_session_creation_data_to_creation_message</span>() {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">NewSession</span> {
-            <span class="ident">tenant</span>: <span class="string">&quot;minerva&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">password</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>convert_session_creation_data_to_creation_message() {
+        <span class="kw">let </span>data = NewSession {
+            tenant: <span class="string">&quot;minerva&quot;</span>.to_string(),
+            login: <span class="string">&quot;admin&quot;</span>.to_string(),
+            password: <span class="string">&quot;admin&quot;</span>.to_string(),
         };
 
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">messages::SessionCreationData</span> {
-            <span class="ident">tenant</span>: <span class="string">&quot;minerva&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">password</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="kw">let </span>expected = messages::SessionCreationData {
+            tenant: <span class="string">&quot;minerva&quot;</span>.to_string(),
+            login: <span class="string">&quot;admin&quot;</span>.to_string(),
+            password: <span class="string">&quot;admin&quot;</span>.to_string(),
         };
 
-        <span class="kw">let</span> <span class="ident">result</span>: <span class="ident">messages::SessionCreationData</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">into</span>();
+        <span class="kw">let </span>result: messages::SessionCreationData = data.into();
 
-        <span class="macro">assert_eq!</span>(<span class="ident">expected</span>, <span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(expected, result);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">convert_session_creation_message_to_creation_data</span>() {
-        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">messages::SessionCreationData</span> {
-            <span class="ident">tenant</span>: <span class="string">&quot;minerva&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">password</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>convert_session_creation_message_to_creation_data() {
+        <span class="kw">let </span>msg = messages::SessionCreationData {
+            tenant: <span class="string">&quot;minerva&quot;</span>.to_string(),
+            login: <span class="string">&quot;admin&quot;</span>.to_string(),
+            password: <span class="string">&quot;admin&quot;</span>.to_string(),
         };
 
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">NewSession</span> {
-            <span class="ident">tenant</span>: <span class="string">&quot;minerva&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">password</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="kw">let </span>expected = NewSession {
+            tenant: <span class="string">&quot;minerva&quot;</span>.to_string(),
+            login: <span class="string">&quot;admin&quot;</span>.to_string(),
+            password: <span class="string">&quot;admin&quot;</span>.to_string(),
         };
 
-        <span class="kw">let</span> <span class="ident">result</span>: <span class="ident">NewSession</span> <span class="op">=</span> <span class="ident">msg</span>.<span class="ident">into</span>();
+        <span class="kw">let </span>result: NewSession = msg.into();
 
-        <span class="macro">assert_eq!</span>(<span class="ident">expected</span>, <span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(expected, result);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">convert_new_session_to_session</span>() {
-        <span class="kw">let</span> <span class="ident">new</span> <span class="op">=</span> <span class="ident">NewSession</span> {
-            <span class="ident">tenant</span>: <span class="string">&quot;minerva&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">password</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>convert_new_session_to_session() {
+        <span class="kw">let </span>new = NewSession {
+            tenant: <span class="string">&quot;minerva&quot;</span>.to_string(),
+            login: <span class="string">&quot;admin&quot;</span>.to_string(),
+            password: <span class="string">&quot;admin&quot;</span>.to_string(),
         };
 
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">Session</span> {
-            <span class="ident">tenant</span>: <span class="string">&quot;minerva&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">creation_date</span>: <span class="ident">DateTime::now</span>(),
+        <span class="kw">let </span>expected = Session {
+            tenant: <span class="string">&quot;minerva&quot;</span>.to_string(),
+            login: <span class="string">&quot;admin&quot;</span>.to_string(),
+            creation_date: DateTime::now(),
         };
 
-        <span class="kw">let</span> <span class="ident">result</span>: <span class="ident">Session</span> <span class="op">=</span> <span class="ident">new</span>.<span class="ident">into</span>();
+        <span class="kw">let </span>result: Session = new.into();
 
-        <span class="macro">assert_eq!</span>(<span class="ident">expected</span>.<span class="ident">tenant</span>, <span class="ident">result</span>.<span class="ident">tenant</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">expected</span>.<span class="ident">login</span>, <span class="ident">result</span>.<span class="ident">login</span>);
+        <span class="macro">assert_eq!</span>(expected.tenant, result.tenant);
+        <span class="macro">assert_eq!</span>(expected.login, result.login);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">convert_recv_session_to_new_session</span>() {
-        <span class="kw">let</span> <span class="ident">recv</span> <span class="op">=</span> <span class="ident">RecvSession</span> {
-            <span class="ident">login</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">password</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>convert_recv_session_to_new_session() {
+        <span class="kw">let </span>recv = RecvSession {
+            login: <span class="string">&quot;admin&quot;</span>.to_string(),
+            password: <span class="string">&quot;admin&quot;</span>.to_string(),
         };
 
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">NewSession</span> {
-            <span class="ident">tenant</span>: <span class="string">&quot;minerva&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">login</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">password</span>: <span class="string">&quot;admin&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="kw">let </span>expected = NewSession {
+            tenant: <span class="string">&quot;minerva&quot;</span>.to_string(),
+            login: <span class="string">&quot;admin&quot;</span>.to_string(),
+            password: <span class="string">&quot;admin&quot;</span>.to_string(),
         };
 
-        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">recv</span>.<span class="ident">as_new</span>(<span class="string">&quot;minerva&quot;</span>);
+        <span class="kw">let </span>result = recv.as_new(<span class="string">&quot;minerva&quot;</span>);
 
-        <span class="macro">assert_eq!</span>(<span class="ident">expected</span>, <span class="ident">result</span>);
+        <span class="macro">assert_eq!</span>(expected, result);
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_data" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_data" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

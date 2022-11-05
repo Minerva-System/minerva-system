@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-data/src/schema.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>schema.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_data/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-data/src/schema.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>schema.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_data/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -108,115 +108,115 @@
 <span id="108">108</span>
 <span id="109">109</span>
 <span id="110">110</span>
-</pre><pre class="rust"><code><span class="macro">table!</span> {
-    <span class="kw">use</span> <span class="ident">diesel::sql_types</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::syslog::Op_type</span>;
+</pre><pre class="rust"><code><span class="macro">table! </span>{
+    <span class="kw">use </span>diesel::sql_types::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::syslog::Op_type;
 
-    <span class="ident">address</span> (<span class="ident">id</span>) {
-        <span class="ident">id</span> -&gt; <span class="ident">Int4</span>,
-        <span class="ident">client_id</span> -&gt; <span class="ident">Int4</span>,
-        <span class="attribute">#[<span class="ident">sql_name</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>]</span>
-        <span class="ident">type_</span> -&gt; <span class="ident">Int2</span>,
-        <span class="ident">location</span> -&gt; <span class="ident">Varchar</span>,
-        <span class="ident">number</span> -&gt; <span class="ident">Varchar</span>,
-        <span class="ident">complement</span> -&gt; <span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">Varchar</span><span class="op">&gt;</span>,
-        <span class="ident">district</span> -&gt; <span class="ident">Varchar</span>,
-        <span class="ident">state</span> -&gt; <span class="ident">Bpchar</span>,
-        <span class="ident">city</span> -&gt; <span class="ident">Varchar</span>,
-        <span class="ident">country</span> -&gt; <span class="ident">Bpchar</span>,
+    address (id) {
+        id -&gt; Int4,
+        client_id -&gt; Int4,
+        <span class="attribute">#[sql_name = <span class="string">&quot;type&quot;</span>]
+        </span>type_ -&gt; Int2,
+        location -&gt; Varchar,
+        number -&gt; Varchar,
+        complement -&gt; Nullable&lt;Varchar&gt;,
+        district -&gt; Varchar,
+        state -&gt; Bpchar,
+        city -&gt; Varchar,
+        country -&gt; Bpchar,
     }
 }
 
-<span class="macro">table!</span> {
-    <span class="kw">use</span> <span class="ident">diesel::sql_types</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::syslog::Op_type</span>;
+<span class="macro">table! </span>{
+    <span class="kw">use </span>diesel::sql_types::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::syslog::Op_type;
 
-    <span class="ident">client</span> (<span class="ident">id</span>) {
-        <span class="ident">id</span> -&gt; <span class="ident">Int4</span>,
-        <span class="attribute">#[<span class="ident">sql_name</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>]</span>
-        <span class="ident">type_</span> -&gt; <span class="ident">Int2</span>,
-        <span class="ident">name</span> -&gt; <span class="ident">Varchar</span>,
-        <span class="ident">document</span> -&gt; <span class="ident">Varchar</span>,
-        <span class="ident">active</span> -&gt; <span class="ident">Bool</span>,
+    client (id) {
+        id -&gt; Int4,
+        <span class="attribute">#[sql_name = <span class="string">&quot;type&quot;</span>]
+        </span>type_ -&gt; Int2,
+        name -&gt; Varchar,
+        document -&gt; Varchar,
+        active -&gt; Bool,
     }
 }
 
-<span class="macro">table!</span> {
-    <span class="kw">use</span> <span class="ident">diesel::sql_types</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::syslog::Op_type</span>;
+<span class="macro">table! </span>{
+    <span class="kw">use </span>diesel::sql_types::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::syslog::Op_type;
 
-    <span class="ident">product</span> (<span class="ident">id</span>) {
-        <span class="ident">id</span> -&gt; <span class="ident">Int4</span>,
-        <span class="ident">description</span> -&gt; <span class="ident">Varchar</span>,
-        <span class="ident">unit</span> -&gt; <span class="ident">Bpchar</span>,
-        <span class="ident">price</span> -&gt; <span class="ident">Numeric</span>,
+    product (id) {
+        id -&gt; Int4,
+        description -&gt; Varchar,
+        unit -&gt; Bpchar,
+        price -&gt; Numeric,
     }
 }
 
-<span class="macro">table!</span> {
-    <span class="kw">use</span> <span class="ident">diesel::sql_types</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::syslog::Op_type</span>;
+<span class="macro">table! </span>{
+    <span class="kw">use </span>diesel::sql_types::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::syslog::Op_type;
 
-    <span class="ident">stock</span> (<span class="ident">product_id</span>) {
-        <span class="ident">product_id</span> -&gt; <span class="ident">Int4</span>,
-        <span class="ident">amount</span> -&gt; <span class="ident">Numeric</span>,
-        <span class="ident">cost</span> -&gt; <span class="ident">Numeric</span>,
+    stock (product_id) {
+        product_id -&gt; Int4,
+        amount -&gt; Numeric,
+        cost -&gt; Numeric,
     }
 }
 
-<span class="macro">table!</span> {
-    <span class="kw">use</span> <span class="ident">diesel::sql_types</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::syslog::Op_type</span>;
+<span class="macro">table! </span>{
+    <span class="kw">use </span>diesel::sql_types::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::syslog::Op_type;
 
-    <span class="ident">stock_mov</span> (<span class="ident">id</span>) {
-        <span class="ident">id</span> -&gt; <span class="ident">Int4</span>,
-        <span class="ident">product_id</span> -&gt; <span class="ident">Int4</span>,
-        <span class="ident">document</span> -&gt; <span class="ident">Varchar</span>,
-        <span class="ident">amount</span> -&gt; <span class="ident">Numeric</span>,
-        <span class="ident">cost</span> -&gt; <span class="ident">Numeric</span>,
-        <span class="ident">shipping_cost</span> -&gt; <span class="ident">Numeric</span>,
-        <span class="ident">date</span> -&gt; <span class="ident">Timestamptz</span>,
+    stock_mov (id) {
+        id -&gt; Int4,
+        product_id -&gt; Int4,
+        document -&gt; Varchar,
+        amount -&gt; Numeric,
+        cost -&gt; Numeric,
+        shipping_cost -&gt; Numeric,
+        date -&gt; Timestamptz,
     }
 }
 
-<span class="macro">table!</span> {
-    <span class="kw">use</span> <span class="ident">diesel::sql_types</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::syslog::Op_type</span>;
+<span class="macro">table! </span>{
+    <span class="kw">use </span>diesel::sql_types::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::syslog::Op_type;
 
-    <span class="ident">syslog</span> (<span class="ident">id</span>) {
-        <span class="ident">id</span> -&gt; <span class="ident">Int4</span>,
-        <span class="ident">service</span> -&gt; <span class="ident">Varchar</span>,
-        <span class="ident">requestor</span> -&gt; <span class="ident">Varchar</span>,
-        <span class="ident">entity</span> -&gt; <span class="ident">Varchar</span>,
-        <span class="ident">operation</span> -&gt; <span class="ident">Op_type</span>,
-        <span class="ident">datetime</span> -&gt; <span class="ident">Timestamptz</span>,
-        <span class="ident">description</span> -&gt; <span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">Varchar</span><span class="op">&gt;</span>,
+    syslog (id) {
+        id -&gt; Int4,
+        service -&gt; Varchar,
+        requestor -&gt; Varchar,
+        entity -&gt; Varchar,
+        operation -&gt; Op_type,
+        datetime -&gt; Timestamptz,
+        description -&gt; Nullable&lt;Varchar&gt;,
     }
 }
 
-<span class="macro">table!</span> {
-    <span class="kw">use</span> <span class="ident">diesel::sql_types</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::syslog::Op_type</span>;
+<span class="macro">table! </span>{
+    <span class="kw">use </span>diesel::sql_types::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::syslog::Op_type;
 
-    <span class="ident">user</span> (<span class="ident">id</span>) {
-        <span class="ident">id</span> -&gt; <span class="ident">Int4</span>,
-        <span class="ident">login</span> -&gt; <span class="ident">Varchar</span>,
-        <span class="ident">name</span> -&gt; <span class="ident">Varchar</span>,
-        <span class="ident">email</span> -&gt; <span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">Varchar</span><span class="op">&gt;</span>,
-        <span class="ident">pwhash</span> -&gt; <span class="ident">Bytea</span>,
+    user (id) {
+        id -&gt; Int4,
+        login -&gt; Varchar,
+        name -&gt; Varchar,
+        email -&gt; Nullable&lt;Varchar&gt;,
+        pwhash -&gt; Bytea,
     }
 }
 
-<span class="macro">joinable!</span>(<span class="ident">address</span> -&gt; <span class="ident">client</span> (<span class="ident">client_id</span>));
+<span class="macro">joinable!</span>(address -&gt; client (client_id));
 
 <span class="macro">allow_tables_to_appear_in_same_query!</span>(
-    <span class="ident">address</span>,
-    <span class="ident">client</span>,
-    <span class="ident">product</span>,
-    <span class="ident">stock</span>,
-    <span class="ident">stock_mov</span>,
-    <span class="ident">syslog</span>,
-    <span class="ident">user</span>,
+    address,
+    client,
+    product,
+    stock,
+    stock_mov,
+    syslog,
+    user,
 );
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_data" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_data" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

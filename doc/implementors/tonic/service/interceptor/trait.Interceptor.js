@@ -1,3 +1,3 @@
-(function() {var implementors = {};
-implementors["minerva_rpc"] = [{"text":"impl <a class=\"trait\" href=\"https://docs.rs/tonic/0.8.2/tonic/service/interceptor/trait.Interceptor.html\" title=\"trait tonic::service::interceptor::Interceptor\">Interceptor</a> for <a class=\"struct\" href=\"minerva_rpc/metadata/struct.ClientInterceptor.html\" title=\"struct minerva_rpc::metadata::ClientInterceptor\">ClientInterceptor</a>","synthetic":false,"types":["minerva_rpc::metadata::ClientInterceptor"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"minerva_rpc":[["impl <a class=\"trait\" href=\"https://docs.rs/tonic/0.8.2/tonic/service/interceptor/trait.Interceptor.html\" title=\"trait tonic::service::interceptor::Interceptor\">Interceptor</a> for <a class=\"struct\" href=\"minerva_rpc/metadata/struct.ClientInterceptor.html\" title=\"struct minerva_rpc::metadata::ClientInterceptor\">ClientInterceptor</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

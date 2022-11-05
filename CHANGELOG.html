@@ -174,6 +174,7 @@ padronizados.</li>
 </ul>
 <h3 id="modificado"><a class="header" href="#modificado">Modificado</a></h3>
 <ul>
+<li>Rust: Define versão 1.65.0 para todo o projeto.</li>
 <li><em><code>RUNONCE</code>:</em> Spinlocks de aguardo de disponibilidade de serviços agora realizam
 <em>sleep</em> assíncrono de dois segundos após cada falha.</li>
 <li><em><code>RUNONCE</code>:</em> Spinlocks de disponibilidade agora também operam de forma assíncrona.</li>
@@ -216,6 +217,9 @@ essa limitação também foi refletida na configuração da ferramenta via k8s.<
 necessário para realizar deploy em K3s, com Traefik sendo utilizado como
 backend para Ingresses. Isso inviabiliza um pouco o uso de Minikube e
 Microk8s.</li>
+<li>Builds de imagens Docker com Rust quebram o Qemu com uso excessivo de memória,
+caso a variável de ambiente <code>CARGO_NET_GIT_FETCH_WITH_CLI</code> não esteja definida
+como <code>true</code>.</li>
 </ul>
 <h2 id="v2---2022-06-05"><a class="header" href="#v2---2022-06-05"><a href="https://github.com/luksamuk/minerva-system/releases/tag/v2">v2</a> - 2022-06-05</a></h2>
 <p>Relação de versões de microsserviços:</p>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-broker/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_broker/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_broker/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_broker/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-broker/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_broker/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_broker/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_broker/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -111,118 +111,118 @@
 <span id="111">111</span>
 <span id="112">112</span>
 <span id="113">113</span>
-</pre><pre class="rust"><code><span class="doccomment">//! This is a library for working with routines related to the message broker,</span>
-<span class="doccomment">//! or more specifically, messages sent and received to/from RabbitMQ.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! This is a library for working with routines related to the message broker,
+//! or more specifically, messages sent and received to/from RabbitMQ.
 
-<span class="attribute">#![<span class="ident">warn</span>(<span class="ident">clippy::all</span>)]</span>
-<span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>)]</span>
+</span><span class="attribute">#![warn(clippy::all)]
+#![warn(missing_docs)]
 
-<span class="kw">use</span> <span class="ident">bb8_lapin</span>::{<span class="ident">bb8::Pool</span>, <span class="ident">LapinConnectionManager</span>};
-<span class="kw">use</span> <span class="ident">lapin</span>::{<span class="ident">Connection</span>, <span class="ident">ConnectionProperties</span>, <span class="ident">Error</span>};
+</span><span class="kw">use </span>bb8_lapin::{bb8::Pool, LapinConnectionManager};
+<span class="kw">use </span>lapin::{Connection, ConnectionProperties, Error};
 
-<span class="doccomment">/// Default user for authentication on RabbitMQ.</span>
-<span class="kw">const</span> <span class="ident">AUTH_USER</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;rabbitmq&quot;</span>;
+<span class="doccomment">/// Default user for authentication on RabbitMQ.
+</span><span class="kw">const </span>AUTH_USER: <span class="kw-2">&amp;</span>str = <span class="string">&quot;rabbitmq&quot;</span>;
 
-<span class="doccomment">/// Default password for authentication on RabbitMQ.</span>
-<span class="kw">const</span> <span class="ident">AUTH_PASS</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="string">&quot;minerva&quot;</span>);
+<span class="doccomment">/// Default password for authentication on RabbitMQ.
+</span><span class="kw">const </span>AUTH_PASS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">&quot;minerva&quot;</span>);
 
-<span class="doccomment">/// Names of default queues that should be present on RabbitMQ, for each tenant.</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">QUEUES</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;session_management&quot;</span>];
+<span class="doccomment">/// Names of default queues that should be present on RabbitMQ, for each tenant.
+</span><span class="kw">pub const </span>QUEUES: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str] = <span class="kw-2">&amp;</span>[<span class="string">&quot;session_management&quot;</span>];
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">model</span>;
+<span class="kw">pub mod </span>model;
 
-<span class="doccomment">/// Represents a pool of connections to RabbitMQ.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">LapinPool</span> <span class="op">=</span> <span class="ident">Pool</span><span class="op">&lt;</span><span class="ident">LapinConnectionManager</span><span class="op">&gt;</span>;
+<span class="doccomment">/// Represents a pool of connections to RabbitMQ.
+</span><span class="kw">pub type </span>LapinPool = Pool&lt;LapinConnectionManager&gt;;
 
-<span class="doccomment">/// Generate connection URL to a vhost configuration API.</span>
-<span class="kw">fn</span> <span class="ident">make_vhost_url</span>(<span class="ident">host</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">vhost</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">String</span> {
-    <span class="macro">format!</span>(<span class="string">&quot;http://{}:15672/api/vhosts/{}&quot;</span>, <span class="ident">host</span>, <span class="ident">vhost</span>)
+<span class="doccomment">/// Generate connection URL to a vhost configuration API.
+</span><span class="kw">fn </span>make_vhost_url(host: <span class="kw-2">&amp;</span>str, vhost: <span class="kw-2">&amp;</span>str) -&gt; String {
+    <span class="macro">format!</span>(<span class="string">&quot;http://{}:15672/api/vhosts/{}&quot;</span>, host, vhost)
 }
 
-<span class="doccomment">/// Builds an AMQP protocol URI for RabbitMQ.</span>
-<span class="doccomment">/// If `vhost` is an empty string, assumes that the connection string should</span>
-<span class="doccomment">/// be to the default virtual host.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build_broker_uri</span>(<span class="ident">host</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">vhost</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">String</span> {
+<span class="doccomment">/// Builds an AMQP protocol URI for RabbitMQ.
+/// If `vhost` is an empty string, assumes that the connection string should
+/// be to the default virtual host.
+</span><span class="kw">pub fn </span>build_broker_uri(host: <span class="kw-2">&amp;</span>str, vhost: <span class="kw-2">&amp;</span>str) -&gt; String {
     <span class="macro">format!</span>(
         <span class="string">&quot;amqp://{}:{}@{}:5672/{}&quot;</span>,
-        <span class="ident">AUTH_USER</span>,
-        <span class="ident">AUTH_PASS</span>.<span class="ident">unwrap</span>(),
-        <span class="ident">host</span>,
-        <span class="kw">if</span> <span class="ident">vhost</span>.<span class="ident">is_empty</span>() { <span class="string">&quot;%2f&quot;</span> } <span class="kw">else</span> { <span class="ident">vhost</span> }
+        AUTH_USER,
+        AUTH_PASS.unwrap(),
+        host,
+        <span class="kw">if </span>vhost.is_empty() { <span class="string">&quot;%2f&quot; </span>} <span class="kw">else </span>{ vhost }
     )
 }
 
-<span class="doccomment">/// Attempts to create a single connection to RabbitMQ. If the `vhost` is set</span>
-<span class="doccomment">/// to `None`, assumes that the connection should be established to the default</span>
-<span class="doccomment">/// virtual host.</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">make_connection</span>(<span class="ident">host</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">vhost</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Connection</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">build_broker_uri</span>(<span class="ident">host</span>, <span class="ident">vhost</span>.<span class="ident">unwrap_or</span>(<span class="string">&quot;&quot;</span>));
-    <span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">ConnectionProperties::default</span>()
-        .<span class="ident">with_executor</span>(<span class="ident">tokio_executor_trait::Tokio::current</span>())
-        .<span class="ident">with_reactor</span>(<span class="ident">tokio_reactor_trait::Tokio</span>);
-    <span class="ident">Connection::connect</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">options</span>).<span class="kw">await</span>
+<span class="doccomment">/// Attempts to create a single connection to RabbitMQ. If the `vhost` is set
+/// to `None`, assumes that the connection should be established to the default
+/// virtual host.
+</span><span class="kw">pub async fn </span>make_connection(host: <span class="kw-2">&amp;</span>str, vhost: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Connection, Error&gt; {
+    <span class="kw">let </span>uri = build_broker_uri(host, vhost.unwrap_or(<span class="string">&quot;&quot;</span>));
+    <span class="kw">let </span>options = ConnectionProperties::default()
+        .with_executor(tokio_executor_trait::Tokio::current())
+        .with_reactor(tokio_reactor_trait::Tokio);
+    Connection::connect(<span class="kw-2">&amp;</span>uri, options).<span class="kw">await
+</span>}
+
+<span class="doccomment">/// Creates a connection pool to RabbitMQ. If the `vhost` is set to `None`,
+/// assumes that the connection should be established to the default virtual
+/// host.
+</span><span class="kw">pub async fn </span>make_connection_pool(
+    host: <span class="kw-2">&amp;</span>str,
+    vhost: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+    max_connections: u32,
+) -&gt; LapinPool {
+    <span class="kw">let </span>uri = build_broker_uri(host, vhost.unwrap_or(<span class="string">&quot;&quot;</span>));
+    <span class="kw">let </span>options = ConnectionProperties::default()
+        .with_executor(tokio_executor_trait::Tokio::current())
+        .with_reactor(tokio_reactor_trait::Tokio);
+    <span class="kw">let </span>manager = LapinConnectionManager::new(<span class="kw-2">&amp;</span>uri, options);
+    Pool::builder()
+        .max_size(max_connections)
+        .build(manager)
+        .<span class="kw">await
+        </span>.map_err(|e| <span class="macro">panic!</span>(<span class="string">&quot;Error creating RabbitMQ connection pool: {}&quot;</span>, e))
+        .unwrap()
 }
 
-<span class="doccomment">/// Creates a connection pool to RabbitMQ. If the `vhost` is set to `None`,</span>
-<span class="doccomment">/// assumes that the connection should be established to the default virtual</span>
-<span class="doccomment">/// host.</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">make_connection_pool</span>(
-    <span class="ident">host</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    <span class="ident">vhost</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
-    <span class="ident">max_connections</span>: <span class="ident">u32</span>,
-) -&gt; <span class="ident">LapinPool</span> {
-    <span class="kw">let</span> <span class="ident">uri</span> <span class="op">=</span> <span class="ident">build_broker_uri</span>(<span class="ident">host</span>, <span class="ident">vhost</span>.<span class="ident">unwrap_or</span>(<span class="string">&quot;&quot;</span>));
-    <span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="ident">ConnectionProperties::default</span>()
-        .<span class="ident">with_executor</span>(<span class="ident">tokio_executor_trait::Tokio::current</span>())
-        .<span class="ident">with_reactor</span>(<span class="ident">tokio_reactor_trait::Tokio</span>);
-    <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">LapinConnectionManager::new</span>(<span class="kw-2">&amp;</span><span class="ident">uri</span>, <span class="ident">options</span>);
-    <span class="ident">Pool::builder</span>()
-        .<span class="ident">max_size</span>(<span class="ident">max_connections</span>)
-        .<span class="ident">build</span>(<span class="ident">manager</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">panic!</span>(<span class="string">&quot;Error creating RabbitMQ connection pool: {}&quot;</span>, <span class="ident">e</span>))
-        .<span class="ident">unwrap</span>()
+<span class="doccomment">/// Checks whether RabbitMQ can be accessed or not.
+</span><span class="kw">pub async fn </span>check_virtual_host(host: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;bool, reqwest::Error&gt; {
+    <span class="kw">let </span>url = make_vhost_url(host, <span class="string">&quot;&quot;</span>);
+    <span class="kw">let </span>client = reqwest::Client::new();
+    <span class="comment">// Returns 200 when could fetch the API
+    </span><span class="prelude-val">Ok</span>(client
+        .get(url)
+        .basic_auth(AUTH_USER, AUTH_PASS)
+        .send()
+        .<span class="kw">await</span><span class="question-mark">?
+        </span>.status()
+        .as_u16()
+        == <span class="number">200</span>)
 }
 
-<span class="doccomment">/// Checks whether RabbitMQ can be accessed or not.</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">check_virtual_host</span>(<span class="ident">host</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">reqwest::Error</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">make_vhost_url</span>(<span class="ident">host</span>, <span class="string">&quot;&quot;</span>);
-    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">reqwest::Client::new</span>();
-    <span class="comment">// Returns 200 when could fetch the API</span>
-    <span class="prelude-val">Ok</span>(<span class="ident">client</span>
-        .<span class="ident">get</span>(<span class="ident">url</span>)
-        .<span class="ident">basic_auth</span>(<span class="ident">AUTH_USER</span>, <span class="ident">AUTH_PASS</span>)
-        .<span class="ident">send</span>()
-        .<span class="kw">await</span><span class="question-mark">?</span>
-        .<span class="ident">status</span>()
-        .<span class="ident">as_u16</span>()
-        <span class="op">==</span> <span class="number">200</span>)
-}
-
-<span class="doccomment">/// Creates a virtual host on RabbitMQ.</span>
-<span class="doccomment">/// Virtual hosts are created by performing a PUT request on the management</span>
-<span class="doccomment">/// API. If the request does not return an error, returns an optional boolean.</span>
-<span class="doccomment">/// This result should be `None` if the request was unsuccessful, or `true`</span>
-<span class="doccomment">/// or `false` depending on whether the virtual host was created or not.</span>
-<span class="doccomment">/// This value is `true` if the request results in a 201 status, or `false` if</span>
-<span class="doccomment">/// the result had a status of 204.</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">make_virtual_host</span>(<span class="ident">host</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">vhost</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>, <span class="ident">reqwest::Error</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">make_vhost_url</span>(<span class="ident">host</span>, <span class="ident">vhost</span>);
-    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">reqwest::Client::new</span>();
-    <span class="comment">// Returns 201 on creation or 204 when it already exists</span>
-    <span class="kw">match</span> <span class="ident">client</span>
-        .<span class="ident">put</span>(<span class="ident">url</span>)
-        .<span class="ident">basic_auth</span>(<span class="ident">AUTH_USER</span>, <span class="ident">AUTH_PASS</span>)
-        .<span class="ident">send</span>()
-        .<span class="kw">await</span>
-    {
-        <span class="prelude-val">Ok</span>(<span class="ident">response</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() {
-            <span class="prelude-val">None</span>
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">==</span> <span class="number">201</span>)
+<span class="doccomment">/// Creates a virtual host on RabbitMQ.
+/// Virtual hosts are created by performing a PUT request on the management
+/// API. If the request does not return an error, returns an optional boolean.
+/// This result should be `None` if the request was unsuccessful, or `true`
+/// or `false` depending on whether the virtual host was created or not.
+/// This value is `true` if the request results in a 201 status, or `false` if
+/// the result had a status of 204.
+</span><span class="kw">pub async fn </span>make_virtual_host(host: <span class="kw-2">&amp;</span>str, vhost: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;, reqwest::Error&gt; {
+    <span class="kw">let </span>url = make_vhost_url(host, vhost);
+    <span class="kw">let </span>client = reqwest::Client::new();
+    <span class="comment">// Returns 201 on creation or 204 when it already exists
+    </span><span class="kw">match </span>client
+        .put(url)
+        .basic_auth(AUTH_USER, AUTH_PASS)
+        .send()
+        .<span class="kw">await
+    </span>{
+        <span class="prelude-val">Ok</span>(response) =&gt; <span class="prelude-val">Ok</span>(<span class="kw">if </span>!response.status().is_success() {
+            <span class="prelude-val">None
+        </span>} <span class="kw">else </span>{
+            <span class="prelude-val">Some</span>(response.status().as_u16() == <span class="number">201</span>)
         }),
-        <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">e</span>),
+        <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e),
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_broker" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_broker" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

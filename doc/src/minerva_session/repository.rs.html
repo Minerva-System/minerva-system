@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-session/src/repository.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>repository.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_session/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_session/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_session/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-session/src/repository.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>repository.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_session/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_session/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_session/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -190,197 +190,197 @@
 <span id="190">190</span>
 <span id="191">191</span>
 <span id="192">192</span>
-</pre><pre class="rust"><code><span class="doccomment">//! This module wraps the repository which handles the session DTOs.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! This module wraps the repository which handles the session DTOs.
 
-<span class="kw">use</span> <span class="ident">diesel::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">minerva_cache</span> <span class="kw">as</span> <span class="ident">cache</span>;
-<span class="kw">use</span> <span class="ident">minerva_data::db::DBPool</span>;
-<span class="kw">use</span> <span class="ident">minerva_data::encryption</span>;
-<span class="kw">use</span> <span class="ident">minerva_data::schema::syslog</span>;
-<span class="kw">use</span> <span class="ident">minerva_data::session</span> <span class="kw">as</span> <span class="ident">model</span>;
-<span class="kw">use</span> <span class="ident">minerva_data::syslog</span>::{<span class="ident">NewLog</span>, <span class="ident">OpType</span>};
-<span class="kw">use</span> <span class="ident">minerva_data::user::User</span>;
-<span class="kw">use</span> <span class="ident">mongodb::bson::doc</span>;
-<span class="kw">use</span> <span class="ident">mongodb::bson::oid::ObjectId</span>;
-<span class="kw">use</span> <span class="ident">mongodb::Database</span> <span class="kw">as</span> <span class="ident">MongoDatabase</span>;
-<span class="kw">use</span> <span class="ident">redis::Client</span> <span class="kw">as</span> <span class="ident">RedisClient</span>;
-<span class="kw">use</span> <span class="ident">std::str</span>;
-<span class="kw">use</span> <span class="ident">tonic::Status</span>;
+</span><span class="kw">use </span>diesel::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>minerva_cache <span class="kw">as </span>cache;
+<span class="kw">use </span>minerva_data::db::DBPool;
+<span class="kw">use </span>minerva_data::encryption;
+<span class="kw">use </span>minerva_data::schema::syslog;
+<span class="kw">use </span>minerva_data::session <span class="kw">as </span>model;
+<span class="kw">use </span>minerva_data::syslog::{NewLog, OpType};
+<span class="kw">use </span>minerva_data::user::User;
+<span class="kw">use </span>mongodb::bson::doc;
+<span class="kw">use </span>mongodb::bson::oid::ObjectId;
+<span class="kw">use </span>mongodb::Database <span class="kw">as </span>MongoDatabase;
+<span class="kw">use </span>redis::Client <span class="kw">as </span>RedisClient;
+<span class="kw">use </span>std::str;
+<span class="kw">use </span>tonic::Status;
 
-<span class="doccomment">/// Creates a new session for a user. Given the data for a new session, checks</span>
-<span class="doccomment">/// if the database contains that user, if the password matches and, if it does,</span>
-<span class="doccomment">/// creates a new session on the non-relational database and returns its ID as a</span>
-<span class="doccomment">/// Base64 encoded string that should be stored on a cookie.</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_session</span>(
-    <span class="ident">tenant</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    <span class="ident">data</span>: <span class="ident">model::NewSession</span>,
-    <span class="ident">pool</span>: <span class="ident">DBPool</span>,
-    <span class="ident">mongo</span>: <span class="ident">MongoDatabase</span>,
-    <span class="ident">redis</span>: <span class="kw-2">&amp;</span><span class="ident">RedisClient</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Status</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">usr</span> <span class="op">=</span> {
-        <span class="kw">use</span> <span class="ident">minerva_data::schema::user::dsl</span>::<span class="kw-2">*</span>;
+<span class="doccomment">/// Creates a new session for a user. Given the data for a new session, checks
+/// if the database contains that user, if the password matches and, if it does,
+/// creates a new session on the non-relational database and returns its ID as a
+/// Base64 encoded string that should be stored on a cookie.
+</span><span class="kw">pub async fn </span>create_session(
+    tenant: <span class="kw-2">&amp;</span>str,
+    data: model::NewSession,
+    pool: DBPool,
+    mongo: MongoDatabase,
+    redis: <span class="kw-2">&amp;</span>RedisClient,
+) -&gt; <span class="prelude-ty">Result</span>&lt;String, Status&gt; {
+    <span class="kw">let </span>usr = {
+        <span class="kw">use </span>minerva_data::schema::user::dsl::<span class="kw-2">*</span>;
 
-        <span class="kw">let</span> <span class="ident">connection</span> <span class="op">=</span> <span class="ident">pool</span>
-            .<span class="ident">get</span>()
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="macro">format!</span>(<span class="string">&quot;Database access error: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+        <span class="kw">let </span>connection = pool
+            .get()
+            .<span class="kw">await
+            </span>.map_err(|e| Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Database access error: {}&quot;</span>, e)))<span class="question-mark">?</span>;
 
-        <span class="ident">user</span>.<span class="ident">filter</span>(<span class="ident">login</span>.<span class="ident">eq</span>(<span class="ident">data</span>.<span class="ident">login</span>.<span class="ident">clone</span>()))
-            .<span class="ident">first</span>::<span class="op">&lt;</span><span class="ident">User</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">connection</span>)
+        user.filter(login.eq(data.login.clone()))
+            .first::&lt;User&gt;(<span class="kw-2">&amp;*</span>connection)
     }
-    .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Status::unauthenticated</span>(<span class="string">&quot;Invalid login or password&quot;</span>))<span class="question-mark">?</span>;
+    .map_err(|<span class="kw">_</span>| Status::unauthenticated(<span class="string">&quot;Invalid login or password&quot;</span>))<span class="question-mark">?</span>;
 
-    <span class="comment">// Check for correct password</span>
-    <span class="kw">let</span> <span class="ident">pwhash</span> <span class="op">=</span> <span class="ident">str::from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">usr</span>.<span class="ident">pwhash</span>)
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="macro">format!</span>(<span class="string">&quot;Error while performing authentication: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
-    <span class="kw">if</span> <span class="op">!</span><span class="ident">encryption::check_hash</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">password</span>, <span class="ident">pwhash</span>) {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Status::unauthenticated</span>(<span class="string">&quot;Invalid login or password&quot;</span>));
+    <span class="comment">// Check for correct password
+    </span><span class="kw">let </span>pwhash = str::from_utf8(<span class="kw-2">&amp;</span>usr.pwhash)
+        .map_err(|e| Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Error while performing authentication: {}&quot;</span>, e)))<span class="question-mark">?</span>;
+    <span class="kw">if </span>!encryption::check_hash(<span class="kw-2">&amp;</span>data.password, pwhash) {
+        <span class="kw">return </span><span class="prelude-val">Err</span>(Status::unauthenticated(<span class="string">&quot;Invalid login or password&quot;</span>));
     }
 
-    <span class="comment">// Create session object</span>
-    <span class="kw">let</span> <span class="ident">collection</span> <span class="op">=</span> <span class="ident">mongo</span>.<span class="ident">collection</span>::<span class="op">&lt;</span><span class="ident">model::Session</span><span class="op">&gt;</span>(<span class="string">&quot;session&quot;</span>);
-    <span class="kw">let</span> <span class="ident">session</span>: <span class="ident">model::Session</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">into</span>();
+    <span class="comment">// Create session object
+    </span><span class="kw">let </span>collection = mongo.collection::&lt;model::Session&gt;(<span class="string">&quot;session&quot;</span>);
+    <span class="kw">let </span>session: model::Session = data.into();
 
-    <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">collection</span>
-        .<span class="ident">insert_one</span>(<span class="ident">session</span>.<span class="ident">clone</span>(), <span class="prelude-val">None</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="macro">format!</span>(<span class="string">&quot;Error while creating session: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>
-        .<span class="ident">inserted_id</span>
-        .<span class="ident">as_object_id</span>()
-        .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="string">&quot;Erro ao processar token de sessão&quot;</span>))<span class="question-mark">?</span>
-        .<span class="ident">to_hex</span>();
-    <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">base64::encode</span>(<span class="ident">result</span>);
+    <span class="kw">let </span>result = collection
+        .insert_one(session.clone(), <span class="prelude-val">None</span>)
+        .<span class="kw">await
+        </span>.map_err(|e| Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Error while creating session: {}&quot;</span>, e)))<span class="question-mark">?
+        </span>.inserted_id
+        .as_object_id()
+        .ok_or_else(|| Status::internal(<span class="string">&quot;Erro ao processar token de sessão&quot;</span>))<span class="question-mark">?
+        </span>.to_hex();
+    <span class="kw">let </span>token = base64::encode(result);
 
-    <span class="comment">// Write token to cache. Outcome doesn&#39;t matter at this point</span>
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">session</span>)
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">json</span><span class="op">|</span> <span class="ident">cache::auth::save_session</span>(<span class="ident">redis</span>, <span class="ident">tenant</span>, <span class="kw-2">&amp;</span><span class="ident">token</span>, <span class="kw-2">&amp;</span><span class="ident">json</span>));
+    <span class="comment">// Write token to cache. Outcome doesn&#39;t matter at this point
+    </span><span class="kw">let _ </span>= serde_json::to_string(<span class="kw-2">&amp;</span>session)
+        .map(|json| cache::auth::save_session(redis, tenant, <span class="kw-2">&amp;</span>token, <span class="kw-2">&amp;</span>json));
 
-    <span class="comment">// Try writing session log. Outcome doesn&#39;t matter</span>
-    <span class="kw">let</span> <span class="ident">connection</span> <span class="op">=</span> <span class="ident">pool</span>
-        .<span class="ident">get</span>()
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="macro">format!</span>(<span class="string">&quot;Database access error: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+    <span class="comment">// Try writing session log. Outcome doesn&#39;t matter
+    </span><span class="kw">let </span>connection = pool
+        .get()
+        .<span class="kw">await
+        </span>.map_err(|e| Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Database access error: {}&quot;</span>, e)))<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">diesel::insert_into</span>(<span class="ident">syslog::table</span>)
-        .<span class="ident">values</span>(<span class="kw-2">&amp;</span><span class="ident">NewLog</span> {
-            <span class="ident">service</span>: <span class="string">&quot;SESSION&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">requestor</span>: <span class="ident">session</span>.<span class="ident">login</span>.<span class="ident">clone</span>(),
-            <span class="ident">entity</span>: <span class="string">&quot;session&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">operation</span>: <span class="ident">OpType::Insert</span>,
-            <span class="ident">datetime</span>: <span class="ident">chrono::offset::Utc::now</span>(),
-            <span class="ident">description</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;Create user session&quot;</span>.<span class="ident">to_string</span>()),
+    <span class="kw">let _ </span>= diesel::insert_into(syslog::table)
+        .values(<span class="kw-2">&amp;</span>NewLog {
+            service: <span class="string">&quot;SESSION&quot;</span>.to_string(),
+            requestor: session.login.clone(),
+            entity: <span class="string">&quot;session&quot;</span>.to_string(),
+            operation: OpType::Insert,
+            datetime: chrono::offset::Utc::now(),
+            description: <span class="prelude-val">Some</span>(<span class="string">&quot;Create user session&quot;</span>.to_string()),
         })
-        .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">connection</span>);
+        .execute(<span class="kw-2">&amp;*</span>connection);
 
-    <span class="prelude-val">Ok</span>(<span class="ident">token</span>)
+    <span class="prelude-val">Ok</span>(token)
 }
 
-<span class="doccomment">/// Recovers a user&#39;s session from the non-relational database, given a</span>
-<span class="doccomment">/// previously generated token. The token must be the actual ID for the session</span>
-<span class="doccomment">/// object on the non-relational database, encoded as Base64. If it was found,</span>
-<span class="doccomment">/// returns the `Session` object with the session information that was stored.</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recover_session</span>(
-    <span class="ident">tenant</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    <span class="ident">token</span>: <span class="ident">String</span>,
-    <span class="ident">mongo</span>: <span class="ident">MongoDatabase</span>,
-    <span class="ident">redis</span>: <span class="kw-2">&amp;</span><span class="ident">RedisClient</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">model::Session</span>, <span class="ident">Status</span><span class="op">&gt;</span> {
-    <span class="comment">// Try to find object on Redis. If we do, return it</span>
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">json</span>) <span class="op">=</span> <span class="ident">cache::auth::get_session</span>(<span class="ident">redis</span>, <span class="ident">tenant</span>, <span class="kw-2">&amp;</span><span class="ident">token</span>).<span class="kw">await</span> {
-        <span class="kw">return</span> <span class="ident">serde_json::from_str</span>(<span class="kw-2">&amp;</span><span class="ident">json</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-            <span class="ident">Status::internal</span>(<span class="macro">format!</span>(
+<span class="doccomment">/// Recovers a user&#39;s session from the non-relational database, given a
+/// previously generated token. The token must be the actual ID for the session
+/// object on the non-relational database, encoded as Base64. If it was found,
+/// returns the `Session` object with the session information that was stored.
+</span><span class="kw">pub async fn </span>recover_session(
+    tenant: <span class="kw-2">&amp;</span>str,
+    token: String,
+    mongo: MongoDatabase,
+    redis: <span class="kw-2">&amp;</span>RedisClient,
+) -&gt; <span class="prelude-ty">Result</span>&lt;model::Session, Status&gt; {
+    <span class="comment">// Try to find object on Redis. If we do, return it
+    </span><span class="kw">if let </span><span class="prelude-val">Ok</span>(json) = cache::auth::get_session(redis, tenant, <span class="kw-2">&amp;</span>token).<span class="kw">await </span>{
+        <span class="kw">return </span>serde_json::from_str(<span class="kw-2">&amp;</span>json).map_err(|e| {
+            Status::internal(<span class="macro">format!</span>(
                 <span class="string">&quot;Error while recovering session from cache: {:?}&quot;</span>,
-                <span class="ident">e</span>
+                e
             ))
         });
     }
 
-    <span class="kw">let</span> <span class="ident">collection</span> <span class="op">=</span> <span class="ident">mongo</span>.<span class="ident">collection</span>::<span class="op">&lt;</span><span class="ident">model::Session</span><span class="op">&gt;</span>(<span class="string">&quot;session&quot;</span>);
+    <span class="kw">let </span>collection = mongo.collection::&lt;model::Session&gt;(<span class="string">&quot;session&quot;</span>);
 
-    <span class="comment">// Decode session token</span>
-    <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">base64::decode</span>(<span class="ident">token</span>.<span class="ident">as_bytes</span>())
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="string">&quot;Unable to decode session token&quot;</span>))<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span>
-        <span class="ident">String::from_utf8</span>(<span class="ident">id</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="string">&quot;Unable to decode session token&quot;</span>))<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span>
-        <span class="ident">ObjectId::parse_str</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="string">&quot;Unable to decode session token&quot;</span>))<span class="question-mark">?</span>;
+    <span class="comment">// Decode session token
+    </span><span class="kw">let </span>id = base64::decode(token.as_bytes())
+        .map_err(|<span class="kw">_</span>| Status::internal(<span class="string">&quot;Unable to decode session token&quot;</span>))<span class="question-mark">?</span>;
+    <span class="kw">let </span>id =
+        String::from_utf8(id).map_err(|<span class="kw">_</span>| Status::internal(<span class="string">&quot;Unable to decode session token&quot;</span>))<span class="question-mark">?</span>;
+    <span class="kw">let </span>id =
+        ObjectId::parse_str(<span class="kw-2">&amp;</span>id).map_err(|<span class="kw">_</span>| Status::internal(<span class="string">&quot;Unable to decode session token&quot;</span>))<span class="question-mark">?</span>;
 
-    <span class="comment">// Otherwise, find session object on database</span>
-    <span class="kw">let</span> <span class="ident">session</span> <span class="op">=</span> <span class="ident">collection</span>
-        .<span class="ident">find_one</span>(<span class="macro">doc!</span> { <span class="string">&quot;_id&quot;</span>: <span class="ident">id</span> }, <span class="prelude-val">None</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="macro">format!</span>(<span class="string">&quot;Error while trying to recover session: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>
-        .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Status::not_found</span>(<span class="string">&quot;Session does not exist&quot;</span>))<span class="question-mark">?</span>;
+    <span class="comment">// Otherwise, find session object on database
+    </span><span class="kw">let </span>session = collection
+        .find_one(<span class="macro">doc! </span>{ <span class="string">&quot;_id&quot;</span>: id }, <span class="prelude-val">None</span>)
+        .<span class="kw">await
+        </span>.map_err(|e| Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Error while trying to recover session: {}&quot;</span>, e)))<span class="question-mark">?
+        </span>.ok_or_else(|| Status::not_found(<span class="string">&quot;Session does not exist&quot;</span>))<span class="question-mark">?</span>;
 
-    <span class="comment">// Now cache the session object on Redis, in JSON format.</span>
-    <span class="comment">// When caching, we shouldn&#39;t really care about the outcome.</span>
-    <span class="comment">// Just log stuff to console on error.</span>
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">json</span>) <span class="op">=</span> <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">session</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">cache::auth::save_session</span>(<span class="ident">redis</span>, <span class="ident">tenant</span>, <span class="kw-2">&amp;</span><span class="ident">token</span>, <span class="kw-2">&amp;</span><span class="ident">json</span>) {
-            <span class="macro">println!</span>(<span class="string">&quot;Error while caching recovered user session: {:#?}&quot;</span>, <span class="ident">e</span>);
+    <span class="comment">// Now cache the session object on Redis, in JSON format.
+    // When caching, we shouldn&#39;t really care about the outcome.
+    // Just log stuff to console on error.
+    </span><span class="kw">if let </span><span class="prelude-val">Ok</span>(json) = serde_json::to_string(<span class="kw-2">&amp;</span>session) {
+        <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = cache::auth::save_session(redis, tenant, <span class="kw-2">&amp;</span>token, <span class="kw-2">&amp;</span>json) {
+            <span class="macro">println!</span>(<span class="string">&quot;Error while caching recovered user session: {:#?}&quot;</span>, e);
         }
     }
 
-    <span class="prelude-val">Ok</span>(<span class="ident">session</span>)
+    <span class="prelude-val">Ok</span>(session)
 }
 
-<span class="doccomment">/// Removes a user session from non-relational database, given a session token.</span>
-<span class="doccomment">/// The token must be the actual ID for the session object on the non-relational</span>
-<span class="doccomment">/// database, encoded as Base64. If it was found, remove it altogether from the</span>
-<span class="doccomment">/// non-relational database.</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">remove_session</span>(
-    <span class="ident">tenant</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    <span class="ident">token</span>: <span class="ident">String</span>,
-    <span class="ident">pool</span>: <span class="ident">DBPool</span>,
-    <span class="ident">mongo</span>: <span class="ident">MongoDatabase</span>,
-    <span class="ident">redis</span>: <span class="kw-2">&amp;</span><span class="ident">RedisClient</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Status</span><span class="op">&gt;</span> {
-    <span class="comment">// Remove session from cache, forcibly.</span>
-    <span class="ident">cache::auth::remove_session</span>(<span class="ident">redis</span>, <span class="ident">tenant</span>, <span class="kw-2">&amp;</span><span class="ident">token</span>)
-        .<span class="kw">await</span>
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="macro">format!</span>(<span class="string">&quot;Could not remove session from cache: {:?}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+<span class="doccomment">/// Removes a user session from non-relational database, given a session token.
+/// The token must be the actual ID for the session object on the non-relational
+/// database, encoded as Base64. If it was found, remove it altogether from the
+/// non-relational database.
+</span><span class="kw">pub async fn </span>remove_session(
+    tenant: <span class="kw-2">&amp;</span>str,
+    token: String,
+    pool: DBPool,
+    mongo: MongoDatabase,
+    redis: <span class="kw-2">&amp;</span>RedisClient,
+) -&gt; <span class="prelude-ty">Result</span>&lt;(), Status&gt; {
+    <span class="comment">// Remove session from cache, forcibly.
+    </span>cache::auth::remove_session(redis, tenant, <span class="kw-2">&amp;</span>token)
+        .<span class="kw">await
+        </span>.map_err(|e| Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Could not remove session from cache: {:?}&quot;</span>, e)))<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="ident">collection</span> <span class="op">=</span> <span class="ident">mongo</span>.<span class="ident">collection</span>::<span class="op">&lt;</span><span class="ident">model::Session</span><span class="op">&gt;</span>(<span class="string">&quot;session&quot;</span>);
+    <span class="kw">let </span>collection = mongo.collection::&lt;model::Session&gt;(<span class="string">&quot;session&quot;</span>);
 
-    <span class="comment">// Decode session token</span>
-    <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">base64::decode</span>(<span class="ident">token</span>.<span class="ident">as_bytes</span>())
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="string">&quot;Unable to decode session token&quot;</span>))<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span>
-        <span class="ident">String::from_utf8</span>(<span class="ident">id</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="string">&quot;Unable to decode session token&quot;</span>))<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span>
-        <span class="ident">ObjectId::parse_str</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="string">&quot;Unable to decode session token&quot;</span>))<span class="question-mark">?</span>;
+    <span class="comment">// Decode session token
+    </span><span class="kw">let </span>id = base64::decode(token.as_bytes())
+        .map_err(|<span class="kw">_</span>| Status::internal(<span class="string">&quot;Unable to decode session token&quot;</span>))<span class="question-mark">?</span>;
+    <span class="kw">let </span>id =
+        String::from_utf8(id).map_err(|<span class="kw">_</span>| Status::internal(<span class="string">&quot;Unable to decode session token&quot;</span>))<span class="question-mark">?</span>;
+    <span class="kw">let </span>id =
+        ObjectId::parse_str(<span class="kw-2">&amp;</span>id).map_err(|<span class="kw">_</span>| Status::internal(<span class="string">&quot;Unable to decode session token&quot;</span>))<span class="question-mark">?</span>;
 
-    <span class="comment">// Find session object</span>
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">session</span>) <span class="op">=</span> <span class="ident">collection</span>.<span class="ident">find_one</span>(<span class="macro">doc!</span> { <span class="string">&quot;_id&quot;</span>: <span class="ident">id</span> }, <span class="prelude-val">None</span>).<span class="kw">await</span> {
-        <span class="comment">// Since the object was found, remove it</span>
-        <span class="ident">collection</span>
-            .<span class="ident">delete_one</span>(<span class="macro">doc!</span> { <span class="string">&quot;_id&quot;</span>: <span class="ident">id</span> }, <span class="prelude-val">None</span>)
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="macro">format!</span>(<span class="string">&quot;Error while deleting session data: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+    <span class="comment">// Find session object
+    </span><span class="kw">if let </span><span class="prelude-val">Ok</span>(session) = collection.find_one(<span class="macro">doc! </span>{ <span class="string">&quot;_id&quot;</span>: id }, <span class="prelude-val">None</span>).<span class="kw">await </span>{
+        <span class="comment">// Since the object was found, remove it
+        </span>collection
+            .delete_one(<span class="macro">doc! </span>{ <span class="string">&quot;_id&quot;</span>: id }, <span class="prelude-val">None</span>)
+            .<span class="kw">await
+            </span>.map_err(|e| Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Error while deleting session data: {}&quot;</span>, e)))<span class="question-mark">?</span>;
 
-        <span class="comment">// Try writing session log. Outcome doesn&#39;t matter</span>
-        <span class="kw">let</span> <span class="ident">connection</span> <span class="op">=</span> <span class="ident">pool</span>
-            .<span class="ident">get</span>()
-            .<span class="kw">await</span>
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Status::internal</span>(<span class="macro">format!</span>(<span class="string">&quot;Database access error: {}&quot;</span>, <span class="ident">e</span>)))<span class="question-mark">?</span>;
+        <span class="comment">// Try writing session log. Outcome doesn&#39;t matter
+        </span><span class="kw">let </span>connection = pool
+            .get()
+            .<span class="kw">await
+            </span>.map_err(|e| Status::internal(<span class="macro">format!</span>(<span class="string">&quot;Database access error: {}&quot;</span>, e)))<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">diesel::insert_into</span>(<span class="ident">syslog::table</span>)
-            .<span class="ident">values</span>(<span class="kw-2">&amp;</span><span class="ident">NewLog</span> {
-                <span class="ident">service</span>: <span class="string">&quot;SESSION&quot;</span>.<span class="ident">to_string</span>(),
-                <span class="ident">requestor</span>: <span class="ident">session</span>
-                    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">login</span>)
-                    .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;unknown&quot;</span>.<span class="ident">to_string</span>()),
-                <span class="ident">entity</span>: <span class="string">&quot;session&quot;</span>.<span class="ident">to_string</span>(),
-                <span class="ident">operation</span>: <span class="ident">OpType::Delete</span>,
-                <span class="ident">datetime</span>: <span class="ident">chrono::offset::Utc::now</span>(),
-                <span class="ident">description</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;Remove user session&quot;</span>.<span class="ident">to_string</span>()),
+        <span class="kw">let _ </span>= diesel::insert_into(syslog::table)
+            .values(<span class="kw-2">&amp;</span>NewLog {
+                service: <span class="string">&quot;SESSION&quot;</span>.to_string(),
+                requestor: session
+                    .map(|s| s.login)
+                    .unwrap_or_else(|| <span class="string">&quot;unknown&quot;</span>.to_string()),
+                entity: <span class="string">&quot;session&quot;</span>.to_string(),
+                operation: OpType::Delete,
+                datetime: chrono::offset::Utc::now(),
+                description: <span class="prelude-val">Some</span>(<span class="string">&quot;Remove user session&quot;</span>.to_string()),
             })
-            .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">connection</span>);
+            .execute(<span class="kw-2">&amp;*</span>connection);
     }
 
-    <span class="comment">// If session was not found, return success anyway</span>
-    <span class="prelude-val">Ok</span>(())
+    <span class="comment">// If session was not found, return success anyway
+    </span><span class="prelude-val">Ok</span>(())
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_session" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_session" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

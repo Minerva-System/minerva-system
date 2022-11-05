@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-runonce/src/main.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_runonce/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_runonce/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_runonce/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-runonce/src/main.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_runonce/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_runonce/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_runonce/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -86,88 +86,88 @@
 <span id="86">86</span>
 <span id="87">87</span>
 <span id="88">88</span>
-</pre><pre class="rust"><code><span class="doccomment">//! # Minerva System: RUNONCE Service</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## About this service</span>
-<span class="doccomment">//! This service&#39;s responsibility is that of preparing the Minerva System</span>
-<span class="doccomment">//! environment for use, specially when it comes to preparing databases by</span>
-<span class="doccomment">//! running migrations, for example.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! This service is best used as a job, and should be run only when deploying</span>
-<span class="doccomment">//! new changes to the database service is really needed. This means that it</span>
-<span class="doccomment">//! should be a single-run job or a cron job at best.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! # Minerva System: RUNONCE Service
+//!
+//! ## About this service
+//! This service&#39;s responsibility is that of preparing the Minerva System
+//! environment for use, specially when it comes to preparing databases by
+//! running migrations, for example.
+//!
+//! This service is best used as a job, and should be run only when deploying
+//! new changes to the database service is really needed. This means that it
+//! should be a single-run job or a cron job at best.
 
-<span class="attribute">#![<span class="ident">warn</span>(<span class="ident">clippy::all</span>)]</span>
-<span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>)]</span>
+</span><span class="attribute">#![warn(clippy::all)]
+#![warn(missing_docs)]
 
-<span class="attribute">#[<span class="ident">macro_use</span>]</span>
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">diesel_migrations</span>;
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">minerva_broker</span>;
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">minerva_data</span>;
+#[macro_use]
+</span><span class="kw">extern crate </span>diesel_migrations;
+<span class="kw">extern crate </span>minerva_broker;
+<span class="kw">extern crate </span>minerva_data;
 
-<span class="kw">use</span> <span class="ident">dotenv::dotenv</span>;
-<span class="kw">use</span> <span class="ident">std::env</span>;
+<span class="kw">use </span>dotenv::dotenv;
+<span class="kw">use </span>std::env;
 
 <span class="macro">embed_migrations!</span>();
 
-<span class="kw">mod</span> <span class="ident">database</span>;
-<span class="kw">mod</span> <span class="ident">mongo</span>;
-<span class="kw">mod</span> <span class="ident">rabbitmq</span>;
+<span class="kw">mod </span>database;
+<span class="kw">mod </span>mongo;
+<span class="kw">mod </span>rabbitmq;
 
-<span class="doccomment">/// Entry point for this service.</span>
-<span class="attribute">#[<span class="ident">tokio::main</span>]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">main</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::error::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="doccomment">/// Entry point for this service.
+</span><span class="attribute">#[tokio::main]
+</span><span class="kw">async fn </span>main() -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
     <span class="macro">println!</span>(<span class="string">&quot;Minerva System: RUNONCE&quot;</span>);
     <span class="macro">println!</span>(<span class="string">&quot;Copyright (c) 2022 Lucas S. Vieira&quot;</span>);
     <span class="macro">println!</span>();
 
-    <span class="ident">dotenv</span>().<span class="ident">ok</span>();
+    dotenv().ok();
 
-    <span class="kw">let</span> <span class="ident">dbserver</span> <span class="op">=</span>
-        <span class="ident">env::var</span>(<span class="string">&quot;DATABASE_SERVICE_SERVER&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Unable to read DATABASE_SERVICE_SERVER&quot;</span>);
+    <span class="kw">let </span>dbserver =
+        env::var(<span class="string">&quot;DATABASE_SERVICE_SERVER&quot;</span>).expect(<span class="string">&quot;Unable to read DATABASE_SERVICE_SERVER&quot;</span>);
 
-    <span class="kw">let</span> <span class="ident">mongoserver</span> <span class="op">=</span>
-        <span class="ident">env::var</span>(<span class="string">&quot;MONGO_SERVICE_SERVER&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Unable to read MONGO_SERVICE_SERVER&quot;</span>);
+    <span class="kw">let </span>mongoserver =
+        env::var(<span class="string">&quot;MONGO_SERVICE_SERVER&quot;</span>).expect(<span class="string">&quot;Unable to read MONGO_SERVICE_SERVER&quot;</span>);
 
-    <span class="kw">let</span> <span class="ident">rmqserver</span> <span class="op">=</span>
-        <span class="ident">env::var</span>(<span class="string">&quot;RABBITMQ_SERVICE_SERVER&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Unable to read RABBITMQ_SERVICE_SERVER&quot;</span>);
+    <span class="kw">let </span>rmqserver =
+        env::var(<span class="string">&quot;RABBITMQ_SERVICE_SERVER&quot;</span>).expect(<span class="string">&quot;Unable to read RABBITMQ_SERVICE_SERVER&quot;</span>);
 
-    <span class="kw">let</span> <span class="ident">init_handle</span> <span class="op">=</span> {
-        <span class="kw">let</span> <span class="ident">dbserver</span> <span class="op">=</span> <span class="ident">dbserver</span>.<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="ident">mongoserver</span> <span class="op">=</span> <span class="ident">mongoserver</span>.<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="ident">rmqserver</span> <span class="op">=</span> <span class="ident">rmqserver</span>.<span class="ident">clone</span>();
-        <span class="ident">tokio::spawn</span>(<span class="kw">async</span> <span class="kw">move</span> {
+    <span class="kw">let </span>init_handle = {
+        <span class="kw">let </span>dbserver = dbserver.clone();
+        <span class="kw">let </span>mongoserver = mongoserver.clone();
+        <span class="kw">let </span>rmqserver = rmqserver.clone();
+        tokio::spawn(<span class="kw">async move </span>{
             <span class="macro">println!</span>(<span class="string">&quot;Awaiting services:&quot;</span>);
 
-            <span class="kw">let</span> <span class="ident">pg_task</span> <span class="op">=</span> <span class="ident">database::database_spinlock</span>(<span class="kw-2">&amp;</span><span class="ident">dbserver</span>);
+            <span class="kw">let </span>pg_task = database::database_spinlock(<span class="kw-2">&amp;</span>dbserver);
             <span class="macro">println!</span>(<span class="string">&quot;- PostgreSQL&quot;</span>);
-            <span class="kw">let</span> <span class="ident">mongo_task</span> <span class="op">=</span> <span class="ident">mongo::database_spinlock</span>(<span class="kw-2">&amp;</span><span class="ident">mongoserver</span>);
+            <span class="kw">let </span>mongo_task = mongo::database_spinlock(<span class="kw-2">&amp;</span>mongoserver);
             <span class="macro">println!</span>(<span class="string">&quot;- MongoDB&quot;</span>);
-            <span class="kw">let</span> <span class="ident">broker_task</span> <span class="op">=</span> <span class="ident">rabbitmq::broker_spinlock</span>(<span class="kw-2">&amp;</span><span class="ident">rmqserver</span>);
+            <span class="kw">let </span>broker_task = rabbitmq::broker_spinlock(<span class="kw-2">&amp;</span>rmqserver);
             <span class="macro">println!</span>(<span class="string">&quot;- RabbitMQ&quot;</span>);
 
-            <span class="ident">pg_task</span>.<span class="kw">await</span>;
+            pg_task.<span class="kw">await</span>;
             <span class="macro">println!</span>(<span class="string">&quot;PostgreSQL is ready.&quot;</span>);
 
-            <span class="ident">mongo_task</span>.<span class="kw">await</span>;
+            mongo_task.<span class="kw">await</span>;
             <span class="macro">println!</span>(<span class="string">&quot;MongoDB is ready.&quot;</span>);
 
-            <span class="ident">broker_task</span>.<span class="kw">await</span>;
+            broker_task.<span class="kw">await</span>;
             <span class="macro">println!</span>(<span class="string">&quot;RabbitMQ is ready.&quot;</span>);
         })
     };
 
-    <span class="ident">init_handle</span>.<span class="kw">await</span><span class="question-mark">?</span>;
+    init_handle.<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="macro">println!</span>(<span class="string">&quot;Running preparation...&quot;</span>);
 
-    <span class="kw">for</span> <span class="ident">tenant</span> <span class="kw">in</span> <span class="ident">minerva_data::tenancy::get_tenants</span>(<span class="string">&quot;tenancy.toml&quot;</span>) {
-        <span class="macro">println!</span>(<span class="string">&quot;Running configuration for tenant \&quot;{}\&quot;...&quot;</span>, <span class="ident">tenant</span>.<span class="ident">name</span>);
-        <span class="ident">database::create_database</span>(<span class="kw-2">&amp;</span><span class="ident">tenant</span>.<span class="ident">database</span>, <span class="kw-2">&amp;</span><span class="ident">dbserver</span>);
-        <span class="ident">database::run_migrations</span>(<span class="kw-2">&amp;</span><span class="ident">tenant</span>.<span class="ident">database</span>, <span class="kw-2">&amp;</span><span class="ident">dbserver</span>);
-        <span class="ident">database::create_admin_user</span>(<span class="kw-2">&amp;</span><span class="ident">tenant</span>.<span class="ident">database</span>, <span class="kw-2">&amp;</span><span class="ident">dbserver</span>);
-        <span class="ident">mongo::prepare_database</span>(<span class="kw-2">&amp;</span><span class="ident">tenant</span>.<span class="ident">database</span>, <span class="kw-2">&amp;</span><span class="ident">mongoserver</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-        <span class="ident">rabbitmq::create_virtual_host</span>(<span class="kw-2">&amp;</span><span class="ident">tenant</span>.<span class="ident">database</span>, <span class="kw-2">&amp;</span><span class="ident">rmqserver</span>).<span class="kw">await</span><span class="question-mark">?</span>;
-        <span class="ident">rabbitmq::create_default_queues</span>(<span class="kw-2">&amp;</span><span class="ident">tenant</span>.<span class="ident">database</span>, <span class="kw-2">&amp;</span><span class="ident">rmqserver</span>).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="kw">for </span>tenant <span class="kw">in </span>minerva_data::tenancy::get_tenants(<span class="string">&quot;tenancy.toml&quot;</span>) {
+        <span class="macro">println!</span>(<span class="string">&quot;Running configuration for tenant \&quot;{}\&quot;...&quot;</span>, tenant.name);
+        database::create_database(<span class="kw-2">&amp;</span>tenant.database, <span class="kw-2">&amp;</span>dbserver);
+        database::run_migrations(<span class="kw-2">&amp;</span>tenant.database, <span class="kw-2">&amp;</span>dbserver);
+        database::create_admin_user(<span class="kw-2">&amp;</span>tenant.database, <span class="kw-2">&amp;</span>dbserver);
+        mongo::prepare_database(<span class="kw-2">&amp;</span>tenant.database, <span class="kw-2">&amp;</span>mongoserver).<span class="kw">await</span><span class="question-mark">?</span>;
+        rabbitmq::create_virtual_host(<span class="kw-2">&amp;</span>tenant.database, <span class="kw-2">&amp;</span>rmqserver).<span class="kw">await</span><span class="question-mark">?</span>;
+        rabbitmq::create_default_queues(<span class="kw-2">&amp;</span>tenant.database, <span class="kw-2">&amp;</span>rmqserver).<span class="kw">await</span><span class="question-mark">?</span>;
     }
 
     <span class="macro">println!</span>(<span class="string">&quot;All runs were successful.&quot;</span>);
@@ -175,4 +175,4 @@
     <span class="prelude-val">Ok</span>(())
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_runonce" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_runonce" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

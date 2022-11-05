@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-rest/src/controller/response.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>response.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../minerva_rest/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../minerva_rest/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../minerva_rest/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-rest/src/controller/response.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>response.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../minerva_rest/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../minerva_rest/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../minerva_rest/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -138,145 +138,145 @@
 <span id="138">138</span>
 <span id="139">139</span>
 <span id="140">140</span>
-</pre><pre class="rust"><code><span class="doccomment">//! This submodule contains structures and helper functions for creating</span>
-<span class="doccomment">//! responses for a request.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! This submodule contains structures and helper functions for creating
+//! responses for a request.
 
-<span class="kw">use</span> <span class="ident">rocket::response::Responder</span>;
-<span class="kw">use</span> <span class="ident">serde::Serialize</span>;
-<span class="kw">use</span> <span class="ident">serde_json::json</span>;
-<span class="kw">use</span> <span class="ident">tonic</span>::{<span class="ident">Code</span>, <span class="ident">Status</span>};
+</span><span class="kw">use </span>rocket::response::Responder;
+<span class="kw">use </span>serde::Serialize;
+<span class="kw">use </span>serde_json::json;
+<span class="kw">use </span>tonic::{Code, Status};
 
-<span class="doccomment">/// Enumeration containing many kinds of responses to a REST request that was</span>
-<span class="doccomment">/// received. All of these responses should contain an embedded JSON in String</span>
-<span class="doccomment">/// format. These responses are modelled after HTTP response codes.</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Responder</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Response</span> {
-    <span class="doccomment">/// 200 OK</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">200</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="prelude-val">Ok</span>(<span class="ident">String</span>),
+<span class="doccomment">/// Enumeration containing many kinds of responses to a REST request that was
+/// received. All of these responses should contain an embedded JSON in String
+/// format. These responses are modelled after HTTP response codes.
+</span><span class="attribute">#[allow(dead_code)]
+#[derive(Responder, Debug, Clone)]
+</span><span class="kw">pub enum </span>Response {
+    <span class="doccomment">/// 200 OK
+    </span><span class="attribute">#[response(status = <span class="number">200</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span><span class="prelude-val">Ok</span>(String),
 
-    <span class="doccomment">/// 304 Not Modified</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">304</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="ident">NotModified</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// 304 Not Modified
+    </span><span class="attribute">#[response(status = <span class="number">304</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span>NotModified(String),
 
-    <span class="doccomment">/// 400 Bad Request</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">400</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="ident">BadRequest</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// 400 Bad Request
+    </span><span class="attribute">#[response(status = <span class="number">400</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span>BadRequest(String),
 
-    <span class="doccomment">/// 401 Unauthorized</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">401</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="ident">Unauthorized</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// 401 Unauthorized
+    </span><span class="attribute">#[response(status = <span class="number">401</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span>Unauthorized(String),
 
-    <span class="doccomment">/// 404 Not Found</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">404</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="ident">NotFound</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// 404 Not Found
+    </span><span class="attribute">#[response(status = <span class="number">404</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span>NotFound(String),
 
-    <span class="doccomment">/// 408 Request Timeout</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">408</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="ident">RequestTimeout</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// 408 Request Timeout
+    </span><span class="attribute">#[response(status = <span class="number">408</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span>RequestTimeout(String),
 
-    <span class="doccomment">/// 409 Conflict</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">409</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="ident">Conflict</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// 409 Conflict
+    </span><span class="attribute">#[response(status = <span class="number">409</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span>Conflict(String),
 
-    <span class="doccomment">/// 412 Precondition Failed</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">412</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="ident">PreconditionFailed</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// 412 Precondition Failed
+    </span><span class="attribute">#[response(status = <span class="number">412</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span>PreconditionFailed(String),
 
-    <span class="doccomment">/// 422 Unprocessable Entity</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">422</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="ident">UnprocessableEntity</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// 422 Unprocessable Entity
+    </span><span class="attribute">#[response(status = <span class="number">422</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span>UnprocessableEntity(String),
 
-    <span class="doccomment">/// 444 No Response</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">444</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="ident">NoResponse</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// 444 No Response
+    </span><span class="attribute">#[response(status = <span class="number">444</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span>NoResponse(String),
 
-    <span class="doccomment">/// 499 Client Closed Request</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">499</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="ident">ClientClosedRequest</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// 499 Client Closed Request
+    </span><span class="attribute">#[response(status = <span class="number">499</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span>ClientClosedRequest(String),
 
-    <span class="doccomment">/// 500 Internal Server Error</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">500</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="ident">InternalServerError</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// 500 Internal Server Error
+    </span><span class="attribute">#[response(status = <span class="number">500</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span>InternalServerError(String),
 
-    <span class="doccomment">/// 501 Not Implemented</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">501</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="ident">NotImplemented</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// 501 Not Implemented
+    </span><span class="attribute">#[response(status = <span class="number">501</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span>NotImplemented(String),
 
-    <span class="doccomment">/// 503 Service Unavailable</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">503</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="ident">ServiceUnavailable</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// 503 Service Unavailable
+    </span><span class="attribute">#[response(status = <span class="number">503</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span>ServiceUnavailable(String),
 
-    <span class="doccomment">/// 511 Network Authentication Required</span>
-    <span class="attribute">#[<span class="ident">response</span>(<span class="ident">status</span> <span class="op">=</span> <span class="number">511</span>, <span class="ident">content_type</span> <span class="op">=</span> <span class="string">&quot;json&quot;</span>)]</span>
-    <span class="ident">NetworkAuthenticationRequired</span>(<span class="ident">String</span>),
+    <span class="doccomment">/// 511 Network Authentication Required
+    </span><span class="attribute">#[response(status = <span class="number">511</span>, content_type = <span class="string">&quot;json&quot;</span>)]
+    </span>NetworkAuthenticationRequired(String),
 }
 
-<span class="kw">impl</span> <span class="ident">Response</span> {
-    <span class="doccomment">/// Generates a `Response` from a gRPC response. This assumes that the</span>
-    <span class="doccomment">/// gRPC response is a `Result` that either holds a serializable success</span>
-    <span class="doccomment">/// value that will be serialized to JSON, or an error `Status` in case of</span>
-    <span class="doccomment">/// failure which will be converted to an appropriate HTTP error, containing</span>
-    <span class="doccomment">/// the `Status`&#39;s message.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">respond</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Serialize</span><span class="op">&gt;</span>(<span class="ident">response</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Status</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">match</span> <span class="ident">response</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">object</span>) =&gt; <span class="ident">Response::Ok</span>(<span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">object</span>).<span class="ident">unwrap</span>()),
-            <span class="prelude-val">Err</span>(<span class="ident">status</span>) =&gt; <span class="ident"><span class="self">Self</span>::convert</span>(<span class="ident">status</span>),
+<span class="kw">impl </span>Response {
+    <span class="doccomment">/// Generates a `Response` from a gRPC response. This assumes that the
+    /// gRPC response is a `Result` that either holds a serializable success
+    /// value that will be serialized to JSON, or an error `Status` in case of
+    /// failure which will be converted to an appropriate HTTP error, containing
+    /// the `Status`&#39;s message.
+    </span><span class="kw">pub fn </span>respond&lt;T: Serialize&gt;(response: <span class="prelude-ty">Result</span>&lt;T, Status&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>response {
+            <span class="prelude-val">Ok</span>(object) =&gt; Response::Ok(serde_json::to_string(<span class="kw-2">&amp;</span>object).unwrap()),
+            <span class="prelude-val">Err</span>(status) =&gt; <span class="self">Self</span>::convert(status),
         }
     }
 
-    <span class="doccomment">/// Generates a `Response` from a gRPC response, whenever the response</span>
-    <span class="doccomment">/// success result is empty. In that case, an empty JSON object is returned.</span>
-    <span class="doccomment">/// If the gRPC response is an error `Status`, that error will be converted</span>
-    <span class="doccomment">/// to an appropriate HTTP error, containing the `Status`&#39;s message.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">respond_empty</span>(<span class="ident">response</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">Status</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">match</span> <span class="ident">response</span> {
-            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="ident">Response::Ok</span>(<span class="string">&quot;{}&quot;</span>.<span class="ident">into</span>()),
-            <span class="prelude-val">Err</span>(<span class="ident">status</span>) =&gt; <span class="ident"><span class="self">Self</span>::convert</span>(<span class="ident">status</span>),
+    <span class="doccomment">/// Generates a `Response` from a gRPC response, whenever the response
+    /// success result is empty. In that case, an empty JSON object is returned.
+    /// If the gRPC response is an error `Status`, that error will be converted
+    /// to an appropriate HTTP error, containing the `Status`&#39;s message.
+    </span><span class="kw">pub fn </span>respond_empty(response: <span class="prelude-ty">Result</span>&lt;tonic::Response&lt;()&gt;, Status&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>response {
+            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; Response::Ok(<span class="string">&quot;{}&quot;</span>.into()),
+            <span class="prelude-val">Err</span>(status) =&gt; <span class="self">Self</span>::convert(status),
         }
     }
 
-    <span class="doccomment">/// Generates a `Response` from a gRPC response, assuming that the gRPC</span>
-    <span class="doccomment">/// response is an error. Must only be used whenever it is well known that</span>
-    <span class="doccomment">/// the response&#39;s error can be unwrapped, otherwise panics. The error will</span>
-    <span class="doccomment">/// be converted to an appropriate HTTP error, containing the `Status`&#39;s</span>
-    <span class="doccomment">/// message.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generate_error</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">std::fmt::Debug</span><span class="op">&gt;</span>(<span class="ident">response</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Status</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::convert</span>(<span class="ident">response</span>.<span class="ident">unwrap_err</span>())
+    <span class="doccomment">/// Generates a `Response` from a gRPC response, assuming that the gRPC
+    /// response is an error. Must only be used whenever it is well known that
+    /// the response&#39;s error can be unwrapped, otherwise panics. The error will
+    /// be converted to an appropriate HTTP error, containing the `Status`&#39;s
+    /// message.
+    </span><span class="kw">pub fn </span>generate_error&lt;T: std::fmt::Debug&gt;(response: <span class="prelude-ty">Result</span>&lt;T, Status&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::convert(response.unwrap_err())
     }
 
-    <span class="doccomment">/// Actual internal conversion function for generating an error `Response`</span>
-    <span class="doccomment">/// from a gRPC `Status`. The `Status` message will be converted into a JSON</span>
-    <span class="doccomment">/// object containing a single `&quot;message&quot;` field, which will be the response</span>
-    <span class="doccomment">/// body.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">/// This function will panic if using an unhandled status code or if the</span>
-    <span class="doccomment">/// status code is &quot;`Ok`&quot;, in which case it should have been a successful</span>
-    <span class="doccomment">/// response instead.</span>
-    <span class="kw">fn</span> <span class="ident">convert</span>(<span class="ident">status</span>: <span class="ident">Status</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">json!</span>({ <span class="string">&quot;message&quot;</span>: <span class="ident">status</span>.<span class="ident">message</span>() }).<span class="ident">to_string</span>();
-        <span class="kw">match</span> <span class="ident">status</span>.<span class="ident">code</span>() {
-            <span class="ident">Code::Aborted</span> =&gt; <span class="ident"><span class="self">Self</span>::NoResponse</span>(<span class="ident">message</span>),
-            <span class="ident">Code::AlreadyExists</span> =&gt; <span class="ident"><span class="self">Self</span>::Conflict</span>(<span class="ident">message</span>),
-            <span class="ident">Code::Cancelled</span> =&gt; <span class="ident"><span class="self">Self</span>::ClientClosedRequest</span>(<span class="ident">message</span>),
-            <span class="ident">Code::DataLoss</span> =&gt; <span class="ident"><span class="self">Self</span>::BadRequest</span>(<span class="ident">message</span>),
-            <span class="ident">Code::DeadlineExceeded</span> =&gt; <span class="ident"><span class="self">Self</span>::RequestTimeout</span>(<span class="ident">message</span>),
-            <span class="ident">Code::FailedPrecondition</span> =&gt; <span class="ident"><span class="self">Self</span>::PreconditionFailed</span>(<span class="ident">message</span>),
-            <span class="ident">Code::Internal</span> =&gt; <span class="ident"><span class="self">Self</span>::InternalServerError</span>(<span class="ident">message</span>),
-            <span class="ident">Code::InvalidArgument</span> =&gt; <span class="ident"><span class="self">Self</span>::UnprocessableEntity</span>(<span class="ident">message</span>),
-            <span class="ident">Code::NotFound</span> =&gt; <span class="ident"><span class="self">Self</span>::NotFound</span>(<span class="ident">message</span>),
-            <span class="ident">Code::Ok</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Returned an error with an &#39;OK&#39; status. What???&quot;</span>),
-            <span class="ident">Code::OutOfRange</span> =&gt; <span class="ident"><span class="self">Self</span>::UnprocessableEntity</span>(<span class="ident">message</span>),
-            <span class="ident">Code::PermissionDenied</span> =&gt; <span class="ident"><span class="self">Self</span>::Unauthorized</span>(<span class="ident">message</span>),
-            <span class="ident">Code::Unauthenticated</span> =&gt; <span class="ident"><span class="self">Self</span>::NetworkAuthenticationRequired</span>(<span class="ident">message</span>),
-            <span class="ident">Code::Unavailable</span> =&gt; <span class="ident"><span class="self">Self</span>::ServiceUnavailable</span>(<span class="ident">message</span>),
-            <span class="ident">Code::Unimplemented</span> =&gt; <span class="ident"><span class="self">Self</span>::NotImplemented</span>(<span class="ident">message</span>),
-            <span class="ident">Code::Unknown</span> =&gt; <span class="ident"><span class="self">Self</span>::InternalServerError</span>(<span class="ident">message</span>),
-            <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Unhandled return status: {}&quot;</span>, <span class="ident">status</span>),
+    <span class="doccomment">/// Actual internal conversion function for generating an error `Response`
+    /// from a gRPC `Status`. The `Status` message will be converted into a JSON
+    /// object containing a single `&quot;message&quot;` field, which will be the response
+    /// body.
+    ///
+    /// # Panics
+    /// This function will panic if using an unhandled status code or if the
+    /// status code is &quot;`Ok`&quot;, in which case it should have been a successful
+    /// response instead.
+    </span><span class="kw">fn </span>convert(status: Status) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>message = <span class="macro">json!</span>({ <span class="string">&quot;message&quot;</span>: status.message() }).to_string();
+        <span class="kw">match </span>status.code() {
+            Code::Aborted =&gt; <span class="self">Self</span>::NoResponse(message),
+            Code::AlreadyExists =&gt; <span class="self">Self</span>::Conflict(message),
+            Code::Cancelled =&gt; <span class="self">Self</span>::ClientClosedRequest(message),
+            Code::DataLoss =&gt; <span class="self">Self</span>::BadRequest(message),
+            Code::DeadlineExceeded =&gt; <span class="self">Self</span>::RequestTimeout(message),
+            Code::FailedPrecondition =&gt; <span class="self">Self</span>::PreconditionFailed(message),
+            Code::Internal =&gt; <span class="self">Self</span>::InternalServerError(message),
+            Code::InvalidArgument =&gt; <span class="self">Self</span>::UnprocessableEntity(message),
+            Code::NotFound =&gt; <span class="self">Self</span>::NotFound(message),
+            Code::Ok =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Returned an error with an &#39;OK&#39; status. What???&quot;</span>),
+            Code::OutOfRange =&gt; <span class="self">Self</span>::UnprocessableEntity(message),
+            Code::PermissionDenied =&gt; <span class="self">Self</span>::Unauthorized(message),
+            Code::Unauthenticated =&gt; <span class="self">Self</span>::NetworkAuthenticationRequired(message),
+            Code::Unavailable =&gt; <span class="self">Self</span>::ServiceUnavailable(message),
+            Code::Unimplemented =&gt; <span class="self">Self</span>::NotImplemented(message),
+            Code::Unknown =&gt; <span class="self">Self</span>::InternalServerError(message),
+            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;Unhandled return status: {}&quot;</span>, status),
         }
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="minerva_rest" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="minerva_rest" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

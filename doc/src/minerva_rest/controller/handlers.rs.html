@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-rest/src/controller/handlers.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>handlers.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../minerva_rest/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../minerva_rest/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../minerva_rest/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-rest/src/controller/handlers.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>handlers.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../minerva_rest/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../minerva_rest/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../minerva_rest/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -107,114 +107,114 @@
 <span id="107">107</span>
 <span id="108">108</span>
 <span id="109">109</span>
-</pre><pre class="rust"><code><span class="doccomment">//! This submodule contains default status code catchers for errors within the</span>
-<span class="doccomment">//! API.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! This submodule contains default status code catchers for errors within the
+//! API.
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::response::Response</span>;
-<span class="kw">use</span> <span class="ident">rocket::http::ContentType</span>;
-<span class="kw">use</span> <span class="ident">rocket::http::Status</span>;
-<span class="kw">use</span> <span class="ident">rocket::Request</span>;
-<span class="kw">use</span> <span class="ident">serde_json::json</span>;
+</span><span class="kw">use </span><span class="kw">super</span>::response::Response;
+<span class="kw">use </span>rocket::http::ContentType;
+<span class="kw">use </span>rocket::http::Status;
+<span class="kw">use </span>rocket::Request;
+<span class="kw">use </span>serde_json::json;
 
-<span class="doccomment">/// Exports an array of catcher functions to be used when mounting the server.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">catchers</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">rocket::Catcher</span><span class="op">&gt;</span> {
+<span class="doccomment">/// Exports an array of catcher functions to be used when mounting the server.
+</span><span class="kw">pub fn </span>catchers() -&gt; Vec&lt;rocket::Catcher&gt; {
     <span class="macro">catchers!</span>[
-        <span class="ident">default_catcher</span>,
-        <span class="ident">bad_request</span>,
-        <span class="ident">unauthorized</span>,
-        <span class="ident">not_found</span>,
-        <span class="ident">unprocessable_entity</span>,
-        <span class="ident">internal</span>,
-        <span class="ident">service_unavailable</span>
+        default_catcher,
+        bad_request,
+        unauthorized,
+        not_found,
+        unprocessable_entity,
+        internal,
+        service_unavailable
     ]
 }
 
-<span class="doccomment">/// Default error structure implementing a Rocket responder for any status code.</span>
-<span class="kw">struct</span> <span class="ident">DefaultError</span> {
-    <span class="doccomment">/// Status code for the error.</span>
-    <span class="ident">status</span>: <span class="ident">Status</span>,
+<span class="doccomment">/// Default error structure implementing a Rocket responder for any status code.
+</span><span class="kw">struct </span>DefaultError {
+    <span class="doccomment">/// Status code for the error.
+    </span>status: Status,
 }
 
-<span class="kw">impl</span> <span class="ident">rocket::response::Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;static</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DefaultError</span> {
-    <span class="kw">fn</span> <span class="ident">respond_to</span>(<span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">rocket::response::Result</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format!</span>(
+<span class="kw">impl </span>rocket::response::Responder&lt;<span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;static</span>&gt; <span class="kw">for </span>DefaultError {
+    <span class="kw">fn </span>respond_to(<span class="self">self</span>, req: <span class="kw-2">&amp;</span>Request&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; rocket::response::Result&lt;<span class="lifetime">&#39;static</span>&gt; {
+        <span class="kw">let </span>message = <span class="macro">format!</span>(
             <span class="string">&quot;There was an error processing the request: {}&quot;</span>,
-            <span class="self">self</span>.<span class="ident">status</span>.<span class="ident">reason</span>().<span class="ident">unwrap</span>()
+            <span class="self">self</span>.status.reason().unwrap()
         );
-        <span class="ident">rocket::response::Response::build_from</span>(<span class="ident">message</span>.<span class="ident">respond_to</span>(<span class="ident">req</span>)<span class="question-mark">?</span>)
-            .<span class="ident">header</span>(<span class="ident">ContentType::JSON</span>)
-            .<span class="ident">status</span>(<span class="self">self</span>.<span class="ident">status</span>)
-            .<span class="ident">ok</span>()
+        rocket::response::Response::build_from(message.respond_to(req)<span class="question-mark">?</span>)
+            .header(ContentType::JSON)
+            .status(<span class="self">self</span>.status)
+            .ok()
     }
 }
 
-<span class="doccomment">/// Generates a simple JSON string from a given message.</span>
-<span class="kw">fn</span> <span class="ident">gen_message</span>(<span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">String</span> {
-    <span class="macro">json!</span>({ <span class="string">&quot;message&quot;</span>: <span class="ident">message</span> }).<span class="ident">to_string</span>()
+<span class="doccomment">/// Generates a simple JSON string from a given message.
+</span><span class="kw">fn </span>gen_message(message: <span class="kw-2">&amp;</span>str) -&gt; String {
+    <span class="macro">json!</span>({ <span class="string">&quot;message&quot;</span>: message }).to_string()
 }
 
-<span class="doccomment">/// Default error catcher for any kind of error that was not treated</span>
-<span class="doccomment">/// specifically.</span>
-<span class="attribute">#[<span class="ident">catch</span>(<span class="ident">default</span>)]</span>
-<span class="kw">fn</span> <span class="ident">default_catcher</span>(<span class="ident">status</span>: <span class="ident">Status</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) -&gt; <span class="ident">DefaultError</span> {
-    <span class="ident">DefaultError</span> { <span class="ident">status</span> }
+<span class="doccomment">/// Default error catcher for any kind of error that was not treated
+/// specifically.
+</span><span class="attribute">#[catch(default)]
+</span><span class="kw">fn </span>default_catcher(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; DefaultError {
+    DefaultError { status }
 }
 
-<span class="doccomment">/// Error catcher for 400 - Bad Request.</span>
-<span class="attribute">#[<span class="ident">catch</span>(<span class="number">400</span>)]</span>
-<span class="kw">fn</span> <span class="ident">bad_request</span>(<span class="ident">status</span>: <span class="ident">Status</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) -&gt; <span class="ident">Response</span> {
-    <span class="ident">Response::BadRequest</span>(<span class="ident">gen_message</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
+<span class="doccomment">/// Error catcher for 400 - Bad Request.
+</span><span class="attribute">#[catch(<span class="number">400</span>)]
+</span><span class="kw">fn </span>bad_request(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; Response {
+    Response::BadRequest(gen_message(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
         <span class="string">&quot;The request is not valid: {}&quot;</span>,
-        <span class="ident">status</span>.<span class="ident">reason</span>().<span class="ident">unwrap</span>()
+        status.reason().unwrap()
     )))
 }
 
-<span class="doccomment">/// Error catcher for 401 - Unauthorized.</span>
-<span class="doccomment">/// Returned on problems with the authentication fairing.</span>
-<span class="attribute">#[<span class="ident">catch</span>(<span class="number">401</span>)]</span>
-<span class="kw">fn</span> <span class="ident">unauthorized</span>(<span class="ident">status</span>: <span class="ident">Status</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) -&gt; <span class="ident">Response</span> {
-    <span class="ident">Response::Unauthorized</span>(<span class="ident">gen_message</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
+<span class="doccomment">/// Error catcher for 401 - Unauthorized.
+/// Returned on problems with the authentication fairing.
+</span><span class="attribute">#[catch(<span class="number">401</span>)]
+</span><span class="kw">fn </span>unauthorized(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; Response {
+    Response::Unauthorized(gen_message(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
         <span class="string">&quot;This request is unauthorized: {}&quot;</span>,
-        <span class="ident">status</span>.<span class="ident">reason</span>().<span class="ident">unwrap</span>(),
+        status.reason().unwrap(),
     )))
 }
 
-<span class="doccomment">/// Error catcher for 404 - Not Found.</span>
-<span class="attribute">#[<span class="ident">catch</span>(<span class="number">404</span>)]</span>
-<span class="kw">fn</span> <span class="ident">not_found</span>(<span class="ident">status</span>: <span class="ident">Status</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) -&gt; <span class="ident">Response</span> {
-    <span class="ident">Response::NotFound</span>(<span class="ident">gen_message</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
+<span class="doccomment">/// Error catcher for 404 - Not Found.
+</span><span class="attribute">#[catch(<span class="number">404</span>)]
+</span><span class="kw">fn </span>not_found(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; Response {
+    Response::NotFound(gen_message(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
         <span class="string">&quot;The resource you are looking for does not exist: {}&quot;</span>,
-        <span class="ident">status</span>.<span class="ident">reason</span>().<span class="ident">unwrap</span>(),
+        status.reason().unwrap(),
     )))
 }
 
-<span class="doccomment">/// Error catcher for 412 - Unprocessable Entity.</span>
-<span class="doccomment">/// Returned when a JSON body to a request cannot be deserialized.</span>
-<span class="attribute">#[<span class="ident">catch</span>(<span class="number">422</span>)]</span>
-<span class="kw">fn</span> <span class="ident">unprocessable_entity</span>(<span class="ident">status</span>: <span class="ident">Status</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) -&gt; <span class="ident">Response</span> {
-    <span class="ident">Response::UnprocessableEntity</span>(<span class="ident">gen_message</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
+<span class="doccomment">/// Error catcher for 412 - Unprocessable Entity.
+/// Returned when a JSON body to a request cannot be deserialized.
+</span><span class="attribute">#[catch(<span class="number">422</span>)]
+</span><span class="kw">fn </span>unprocessable_entity(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; Response {
+    Response::UnprocessableEntity(gen_message(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
         <span class="string">&quot;The provided data could not be processed: {}&quot;</span>,
-        <span class="ident">status</span>.<span class="ident">reason</span>().<span class="ident">unwrap</span>(),
+        status.reason().unwrap(),
     )))
 }
 
-<span class="doccomment">/// Error catcher for 500 - Internal Server Error.</span>
-<span class="attribute">#[<span class="ident">catch</span>(<span class="number">500</span>)]</span>
-<span class="kw">fn</span> <span class="ident">internal</span>(<span class="ident">status</span>: <span class="ident">Status</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) -&gt; <span class="ident">Response</span> {
-    <span class="ident">Response::InternalServerError</span>(<span class="ident">gen_message</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
+<span class="doccomment">/// Error catcher for 500 - Internal Server Error.
+</span><span class="attribute">#[catch(<span class="number">500</span>)]
+</span><span class="kw">fn </span>internal(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; Response {
+    Response::InternalServerError(gen_message(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
         <span class="string">&quot;There was a problem in the service while processing your request: {}&quot;</span>,
-        <span class="ident">status</span>.<span class="ident">reason</span>().<span class="ident">unwrap</span>(),
+        status.reason().unwrap(),
     )))
 }
 
-<span class="doccomment">/// Error catcher for 503 - Service Unavailable.</span>
-<span class="doccomment">/// Returned whenever a microservice cannot be reached to complete the request.</span>
-<span class="attribute">#[<span class="ident">catch</span>(<span class="number">503</span>)]</span>
-<span class="kw">fn</span> <span class="ident">service_unavailable</span>(<span class="ident">status</span>: <span class="ident">Status</span>, <span class="ident">_req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) -&gt; <span class="ident">Response</span> {
-    <span class="ident">Response::ServiceUnavailable</span>(<span class="ident">gen_message</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
+<span class="doccomment">/// Error catcher for 503 - Service Unavailable.
+/// Returned whenever a microservice cannot be reached to complete the request.
+</span><span class="attribute">#[catch(<span class="number">503</span>)]
+</span><span class="kw">fn </span>service_unavailable(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; Response {
+    Response::ServiceUnavailable(gen_message(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
         <span class="string">&quot;The service is currently unavailable: {}&quot;</span>,
-        <span class="ident">status</span>.<span class="ident">reason</span>().<span class="ident">unwrap</span>(),
+        status.reason().unwrap(),
     )))
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="minerva_rest" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="minerva_rest" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

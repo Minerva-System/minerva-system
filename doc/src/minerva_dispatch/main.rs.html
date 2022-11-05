@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-dispatch/src/main.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_dispatch/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_dispatch/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_dispatch/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-dispatch/src/main.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_dispatch/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_dispatch/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_dispatch/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -94,101 +94,101 @@
 <span id="94">94</span>
 <span id="95">95</span>
 <span id="96">96</span>
-</pre><pre class="rust"><code><span class="doccomment">//! # Minerva System: DISPATCH Service</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## About this service</span>
-<span class="doccomment">//! This service is responsible for dispatching messages from the message broker</span>
-<span class="doccomment">//! (RabbitMQ) to other parts of the system, and sometimes interacting with other</span>
-<span class="doccomment">//! third-party services as well.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Though this service is not created with the intention of managing data</span>
-<span class="doccomment">//! directly, that may still happen, though it is not desired since specific</span>
-<span class="doccomment">//! microservices may manage business rules in an intended way.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! ## Testing</span>
-<span class="doccomment">//! This module currently has no unit nor integration tests. This is because</span>
-<span class="doccomment">//! these kinds of tests are expensive and are not really needed for this</span>
-<span class="doccomment">//! module, since these only perform a dispatch -- if it is being deployed</span>
-<span class="doccomment">//! successfully, then it works. (I know this is not ideal, but hey, I need</span>
-<span class="doccomment">//! to release this...)</span>
+</pre><pre class="rust"><code><span class="doccomment">//! # Minerva System: DISPATCH Service
+//!
+//! ## About this service
+//! This service is responsible for dispatching messages from the message broker
+//! (RabbitMQ) to other parts of the system, and sometimes interacting with other
+//! third-party services as well.
+//!
+//! Though this service is not created with the intention of managing data
+//! directly, that may still happen, though it is not desired since specific
+//! microservices may manage business rules in an intended way.
+//!
+//! ## Testing
+//! This module currently has no unit nor integration tests. This is because
+//! these kinds of tests are expensive and are not really needed for this
+//! module, since these only perform a dispatch -- if it is being deployed
+//! successfully, then it works. (I know this is not ideal, but hey, I need
+//! to release this...)
 
-<span class="attribute">#![<span class="ident">warn</span>(<span class="ident">clippy::all</span>)]</span>
-<span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>)]</span>
+</span><span class="attribute">#![warn(clippy::all)]
+#![warn(missing_docs)]
 
-<span class="kw">use</span> <span class="ident">minerva_broker</span> <span class="kw">as</span> <span class="ident">broker</span>;
-<span class="kw">use</span> <span class="ident">minerva_cache</span> <span class="kw">as</span> <span class="ident">cache</span>;
-<span class="kw">use</span> <span class="ident">minerva_data</span> <span class="kw">as</span> <span class="ident">data</span>;
+</span><span class="kw">use </span>minerva_broker <span class="kw">as </span>broker;
+<span class="kw">use </span>minerva_cache <span class="kw">as </span>cache;
+<span class="kw">use </span>minerva_data <span class="kw">as </span>data;
 
-<span class="kw">use</span> <span class="ident">broker::LapinPool</span>;
-<span class="kw">use</span> <span class="ident">data::db::DBPool</span>;
-<span class="kw">use</span> <span class="ident">dotenv::dotenv</span>;
-<span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
-<span class="kw">use</span> <span class="ident">std::env</span>;
+<span class="kw">use </span>broker::LapinPool;
+<span class="kw">use </span>data::db::DBPool;
+<span class="kw">use </span>dotenv::dotenv;
+<span class="kw">use </span>std::collections::HashMap;
+<span class="kw">use </span>std::env;
 
-<span class="kw">mod</span> <span class="ident">controller</span>;
-<span class="kw">mod</span> <span class="ident">error</span>;
+<span class="kw">mod </span>controller;
+<span class="kw">mod </span>error;
 
-<span class="doccomment">/// Entry point for this module.</span>
-<span class="attribute">#[<span class="ident">tokio::main</span>]</span>
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">main</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::error::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="doccomment">/// Entry point for this module.
+</span><span class="attribute">#[tokio::main]
+</span><span class="kw">async fn </span>main() -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
     <span class="macro">println!</span>(<span class="string">&quot;Minerva System: DISPATCH&quot;</span>);
     <span class="macro">println!</span>(<span class="string">&quot;Copyright (c) 2022 Lucas S. Vieira&quot;</span>);
     <span class="macro">println!</span>();
 
-    <span class="ident">dotenv</span>().<span class="ident">ok</span>();
+    dotenv().ok();
 
-    <span class="kw">let</span> <span class="ident">dbserver</span> <span class="op">=</span> <span class="ident">env::var</span>(<span class="string">&quot;DATABASE_SERVICE_SERVER&quot;</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span>dbserver = env::var(<span class="string">&quot;DATABASE_SERVICE_SERVER&quot;</span>)<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="ident">mongoserver</span> <span class="op">=</span> <span class="ident">env::var</span>(<span class="string">&quot;MONGO_SERVICE_SERVER&quot;</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span>mongoserver = env::var(<span class="string">&quot;MONGO_SERVICE_SERVER&quot;</span>)<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="ident">redisserver</span> <span class="op">=</span> <span class="ident">env::var</span>(<span class="string">&quot;REDIS_SERVICE_SERVER&quot;</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span>redisserver = env::var(<span class="string">&quot;REDIS_SERVICE_SERVER&quot;</span>)<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="ident">rmqserver</span> <span class="op">=</span> <span class="ident">env::var</span>(<span class="string">&quot;RABBITMQ_SERVICE_SERVER&quot;</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span>rmqserver = env::var(<span class="string">&quot;RABBITMQ_SERVICE_SERVER&quot;</span>)<span class="question-mark">?</span>;
 
     <span class="macro">println!</span>(<span class="string">&quot;Loading tenant configuration...&quot;</span>);
-    <span class="kw">let</span> <span class="ident">tenant_config</span> <span class="op">=</span> <span class="ident">data::tenancy::get_tenants</span>(<span class="string">&quot;tenancy.toml&quot;</span>);
+    <span class="kw">let </span>tenant_config = data::tenancy::get_tenants(<span class="string">&quot;tenancy.toml&quot;</span>);
 
     <span class="macro">println!</span>(<span class="string">&quot;Creating service connections...&quot;</span>);
-    <span class="kw">let</span> <span class="ident">mongo_client</span> <span class="op">=</span> <span class="ident">data::mongo::make_client</span>(<span class="kw-2">&amp;</span><span class="ident">mongoserver</span>).<span class="kw">await</span>;
-    <span class="kw">let</span> <span class="ident">redis_client</span> <span class="op">=</span> <span class="ident">cache::build_client</span>(<span class="kw-2">&amp;</span><span class="ident">redisserver</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tenant_clients</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, (<span class="ident">DBPool</span>, <span class="ident">LapinPool</span>)<span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
+    <span class="kw">let </span>mongo_client = data::mongo::make_client(<span class="kw-2">&amp;</span>mongoserver).<span class="kw">await</span>;
+    <span class="kw">let </span>redis_client = cache::build_client(<span class="kw-2">&amp;</span>redisserver)<span class="question-mark">?</span>;
+    <span class="kw">let </span><span class="kw-2">mut </span>tenant_clients: HashMap&lt;String, (DBPool, LapinPool)&gt; = HashMap::new();
 
-    <span class="kw">for</span> <span class="ident">tenant</span> <span class="kw">in</span> <span class="ident">tenant_config</span>.<span class="ident">clone</span>() {
-        <span class="kw">let</span> <span class="ident">dbpool</span> <span class="op">=</span>
-            <span class="ident">data::db::make_connection_pool</span>(<span class="kw-2">&amp;</span><span class="ident">tenant</span>.<span class="ident">database</span>, <span class="kw-2">&amp;</span><span class="ident">dbserver</span>, <span class="ident">tenant</span>.<span class="ident">connections</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> <span class="ident">lapinpool</span> <span class="op">=</span>
-            <span class="ident">broker::make_connection_pool</span>(<span class="kw-2">&amp;</span><span class="ident">rmqserver</span>, <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">tenant</span>.<span class="ident">database</span>), <span class="ident">tenant</span>.<span class="ident">connections</span>)
+    <span class="kw">for </span>tenant <span class="kw">in </span>tenant_config.clone() {
+        <span class="kw">let </span>dbpool =
+            data::db::make_connection_pool(<span class="kw-2">&amp;</span>tenant.database, <span class="kw-2">&amp;</span>dbserver, tenant.connections).<span class="kw">await</span>;
+        <span class="kw">let </span>lapinpool =
+            broker::make_connection_pool(<span class="kw-2">&amp;</span>rmqserver, <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>tenant.database), tenant.connections)
                 .<span class="kw">await</span>;
-        <span class="ident">tenant_clients</span>.<span class="ident">insert</span>(<span class="ident">tenant</span>.<span class="ident">database</span>.<span class="ident">clone</span>(), (<span class="ident">dbpool</span>, <span class="ident">lapinpool</span>));
+        tenant_clients.insert(tenant.database.clone(), (dbpool, lapinpool));
     }
 
-    <span class="kw">let</span> <span class="ident">tenants</span> <span class="op">=</span> <span class="ident">tenant_config</span>
-        .<span class="ident">iter</span>()
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">cfg</span><span class="op">|</span> <span class="ident">cfg</span>.<span class="ident">database</span>.<span class="ident">clone</span>())
-        .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+    <span class="kw">let </span>tenants = tenant_config
+        .iter()
+        .map(|cfg| cfg.database.clone())
+        .collect::&lt;Vec&lt;String&gt;&gt;();
 
     <span class="macro">println!</span>(<span class="string">&quot;Starting listeners for each tenant...&quot;</span>);
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlers</span> <span class="op">=</span> <span class="macro">vec!</span>[];
-    <span class="kw">for</span> <span class="ident">t</span> <span class="kw">in</span> <span class="ident">tenants</span> {
-        <span class="kw">let</span> <span class="ident">tenant</span> <span class="op">=</span> <span class="ident">t</span>.<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="ident">postgres</span> <span class="op">=</span> <span class="ident">data::db::make_connection_pool</span>(<span class="kw-2">&amp;</span><span class="ident">tenant</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="ident">dbserver</span>, <span class="number">15</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> <span class="ident">rabbitmq</span> <span class="op">=</span> <span class="ident">broker::make_connection_pool</span>(<span class="kw-2">&amp;</span><span class="ident">rmqserver</span>, <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">tenant</span>), <span class="number">15</span>).<span class="kw">await</span>;
-        <span class="kw">let</span> <span class="ident">redis</span> <span class="op">=</span> <span class="ident">redis_client</span>.<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="ident">mongo</span> <span class="op">=</span> <span class="ident">mongo_client</span>.<span class="ident">clone</span>();
+    <span class="kw">let </span><span class="kw-2">mut </span>handlers = <span class="macro">vec!</span>[];
+    <span class="kw">for </span>t <span class="kw">in </span>tenants {
+        <span class="kw">let </span>tenant = t.clone();
+        <span class="kw">let </span>postgres = data::db::make_connection_pool(<span class="kw-2">&amp;</span>tenant.clone(), <span class="kw-2">&amp;</span>dbserver, <span class="number">15</span>).<span class="kw">await</span>;
+        <span class="kw">let </span>rabbitmq = broker::make_connection_pool(<span class="kw-2">&amp;</span>rmqserver, <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>tenant), <span class="number">15</span>).<span class="kw">await</span>;
+        <span class="kw">let </span>redis = redis_client.clone();
+        <span class="kw">let </span>mongo = mongo_client.clone();
 
-        <span class="ident">handlers</span>.<span class="ident">push</span>(<span class="ident">tokio::spawn</span>(<span class="kw">async</span> <span class="kw">move</span> {
-            <span class="macro">println!</span>(<span class="string">&quot;Running queue listener for {}.&quot;</span>, <span class="ident">tenant</span>);
-            <span class="ident">controller::queue_consume</span>(<span class="ident">tenant</span>, <span class="ident">rabbitmq</span>, <span class="ident">postgres</span>, <span class="ident">mongo</span>, <span class="ident">redis</span>)
-                .<span class="kw">await</span>
-                .<span class="ident">unwrap</span>();
+        handlers.push(tokio::spawn(<span class="kw">async move </span>{
+            <span class="macro">println!</span>(<span class="string">&quot;Running queue listener for {}.&quot;</span>, tenant);
+            controller::queue_consume(tenant, rabbitmq, postgres, mongo, redis)
+                .<span class="kw">await
+                </span>.unwrap();
         }))
     }
 
-    <span class="kw">for</span> <span class="ident">handler</span> <span class="kw">in</span> <span class="ident">handlers</span> {
-        <span class="ident">handler</span>.<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="kw">for </span>handler <span class="kw">in </span>handlers {
+        handler.<span class="kw">await</span><span class="question-mark">?</span>;
     }
 
     <span class="prelude-val">Ok</span>(())
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_dispatch" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_dispatch" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-data/src/syslog.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>syslog.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_data/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `minerva-data/src/syslog.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>syslog.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../minerva_data/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../minerva_data/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
 <span id="4">4</span>
@@ -57,64 +57,64 @@
 <span id="57">57</span>
 <span id="58">58</span>
 <span id="59">59</span>
-</pre><pre class="rust"><code><span class="doccomment">//! This module contains Data Transfer Objects for the `syslog` table, which</span>
-<span class="doccomment">//! represents the audit logs of the service.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! `syslog` holds information of insertions, updates and deletions from any</span>
-<span class="doccomment">//! table, and also describes which service did it and which user of this given</span>
-<span class="doccomment">//! tenance requested the operation.</span>
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::extra_unused_lifetimes</span>)]</span>
+</pre><pre class="rust"><code><span class="doccomment">//! This module contains Data Transfer Objects for the `syslog` table, which
+//! represents the audit logs of the service.
+//!
+//! `syslog` holds information of insertions, updates and deletions from any
+//! table, and also describes which service did it and which user of this given
+//! tenance requested the operation.
+</span><span class="attribute">#![allow(clippy::extra_unused_lifetimes)]
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::schema::syslog</span>;
-<span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">DateTime</span>, <span class="ident">Utc</span>};
+</span><span class="kw">use </span><span class="kw">crate</span>::schema::syslog;
+<span class="kw">use </span>chrono::{DateTime, Utc};
 
-<span class="doccomment">/// Enumeration for the type of operation registered on `syslog`.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">DbEnum</span>, <span class="ident">Serialize</span>)]</span>
-<span class="attribute">#[<span class="ident">DieselType</span> <span class="op">=</span> <span class="string">&quot;Op_type&quot;</span>]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">OpType</span> {
-    <span class="doccomment">/// Operation for inserting new entities.</span>
-    <span class="ident">Insert</span>,
-    <span class="doccomment">/// Operation for updating entities.</span>
-    <span class="ident">Update</span>,
-    <span class="doccomment">/// Operation for removing entities.</span>
-    <span class="ident">Delete</span>,
+<span class="doccomment">/// Enumeration for the type of operation registered on `syslog`.
+</span><span class="attribute">#[derive(Debug, Clone, Copy, PartialEq, Eq, DbEnum, Serialize)]
+#[DieselType = <span class="string">&quot;Op_type&quot;</span>]
+</span><span class="kw">pub enum </span>OpType {
+    <span class="doccomment">/// Operation for inserting new entities.
+    </span>Insert,
+    <span class="doccomment">/// Operation for updating entities.
+    </span>Update,
+    <span class="doccomment">/// Operation for removing entities.
+    </span>Delete,
 }
 
-<span class="doccomment">/// DTO representing a single entry on the `syslog` table.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Queryable</span>, <span class="ident">Serialize</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Syslog</span> {
-    <span class="doccomment">/// ID of the entry on the table.</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">i32</span>,
-    <span class="doccomment">/// Name of the service that performed the operation.</span>
-    <span class="kw">pub</span> <span class="ident">service</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Username of whom requested the operation.</span>
-    <span class="kw">pub</span> <span class="ident">requestor</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Name of the entity that was manipulated, usually the same as a table.</span>
-    <span class="kw">pub</span> <span class="ident">entity</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Operation performed.</span>
-    <span class="kw">pub</span> <span class="ident">operation</span>: <span class="ident">OpType</span>,
-    <span class="doccomment">/// Date and time of the performed operation.</span>
-    <span class="kw">pub</span> <span class="ident">datetime</span>: <span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Optional description of the performed operation.</span>
-    <span class="kw">pub</span> <span class="ident">description</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+<span class="doccomment">/// DTO representing a single entry on the `syslog` table.
+</span><span class="attribute">#[derive(Queryable, Serialize, Clone, Debug, PartialEq, Eq)]
+</span><span class="kw">pub struct </span>Syslog {
+    <span class="doccomment">/// ID of the entry on the table.
+    </span><span class="kw">pub </span>id: i32,
+    <span class="doccomment">/// Name of the service that performed the operation.
+    </span><span class="kw">pub </span>service: String,
+    <span class="doccomment">/// Username of whom requested the operation.
+    </span><span class="kw">pub </span>requestor: String,
+    <span class="doccomment">/// Name of the entity that was manipulated, usually the same as a table.
+    </span><span class="kw">pub </span>entity: String,
+    <span class="doccomment">/// Operation performed.
+    </span><span class="kw">pub </span>operation: OpType,
+    <span class="doccomment">/// Date and time of the performed operation.
+    </span><span class="kw">pub </span>datetime: DateTime&lt;Utc&gt;,
+    <span class="doccomment">/// Optional description of the performed operation.
+    </span><span class="kw">pub </span>description: <span class="prelude-ty">Option</span>&lt;String&gt;,
 }
 
-<span class="doccomment">/// DTO for adding a new entry on the `syslog` table.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Insertable</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">table_name</span> <span class="op">=</span> <span class="string">&quot;syslog&quot;</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NewLog</span> {
-    <span class="doccomment">/// Name of the service performing the operation.</span>
-    <span class="kw">pub</span> <span class="ident">service</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Username of whom is requesting the operation.</span>
-    <span class="kw">pub</span> <span class="ident">requestor</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Name of the entity being manipulated, usually the same as a table.</span>
-    <span class="kw">pub</span> <span class="ident">entity</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Operation being performed.</span>
-    <span class="kw">pub</span> <span class="ident">operation</span>: <span class="ident">OpType</span>,
-    <span class="doccomment">/// Date and time of the operation being performed.</span>
-    <span class="kw">pub</span> <span class="ident">datetime</span>: <span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Optional description of the operation being performed.</span>
-    <span class="kw">pub</span> <span class="ident">description</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+<span class="doccomment">/// DTO for adding a new entry on the `syslog` table.
+</span><span class="attribute">#[derive(Insertable, Clone, Debug, PartialEq, Eq)]
+#[table_name = <span class="string">&quot;syslog&quot;</span>]
+</span><span class="kw">pub struct </span>NewLog {
+    <span class="doccomment">/// Name of the service performing the operation.
+    </span><span class="kw">pub </span>service: String,
+    <span class="doccomment">/// Username of whom is requesting the operation.
+    </span><span class="kw">pub </span>requestor: String,
+    <span class="doccomment">/// Name of the entity being manipulated, usually the same as a table.
+    </span><span class="kw">pub </span>entity: String,
+    <span class="doccomment">/// Operation being performed.
+    </span><span class="kw">pub </span>operation: OpType,
+    <span class="doccomment">/// Date and time of the operation being performed.
+    </span><span class="kw">pub </span>datetime: DateTime&lt;Utc&gt;,
+    <span class="doccomment">/// Optional description of the operation being performed.
+    </span><span class="kw">pub </span>description: <span class="prelude-ty">Option</span>&lt;String&gt;,
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_data" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.64.0 (a55dd71d5 2022-09-19)" ></div></body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_data" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>
