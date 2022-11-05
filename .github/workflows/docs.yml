@@ -30,7 +30,7 @@ jobs:
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
         with:
-          toolchain: stable
+          toolchain: 1.65.0
           profile: minimal
 
       - name: Install Flutter

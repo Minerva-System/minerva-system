@@ -1,9 +1,10 @@
 ## Compilation and preparation
 
 # Base container for compilation
-FROM rust:1.62.0-alpine3.16 AS rust_base
+FROM rust:1.65.0-alpine3.16 AS rust_base
 WORKDIR /
-RUN apk add --no-cache cmake make musl-dev file build-base libpq libpq-dev openssl-dev postgresql-dev
+RUN apk add --no-cache cmake make musl-dev file build-base libpq libpq-dev openssl-dev postgresql-dev git
+ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
 RUN cargo install cargo-chef
 ENV RUSTFLAGS="-C target-feature=-crt-static"
 
