@@ -1,10 +1,13 @@
 name: Release images
 
 on:
-  push:
-    branches: [master]
-  workflow_dispatch:
+  pull_request:
+    branches:
+      - master
 
+env:
+  PLATFORMS: 'linux/amd64,linux/arm64'
+    
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -28,6 +31,93 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Build and push
-        run: ./generate_cross_push.sh
+      # Ensure pushes to Docker only when creating tags
+      - name: Set push flag
+        run: |
+          if ${{ github.event-name == 'push' && contains(github.ref, 'refs/tags/') }};
+          then
+              echo "PUSHFLAG=--push" >> $GITHUB_ENV
+          else
+              echo "PUSHFLAG=" >> $GITHUB_ENV
+          fi
+
+      - name: Build and push REST
+        run: |
+          TARGET="minerva_rest"
+
+          DIRNAME=${TARGET/_/-}
+          IMGNAME="luksamuk/$DIRNAME"
+          IMGVERSION=`awk '/^version/{print $3}' ./$DIRNAME/Cargo.toml | tr -d '"'`
+          
+          docker buildx build -f build/Dockerfile \
+          --platform=$PLATFORMS \
+          --target $TARGET \
+          -t $IMGNAME:$IMGVERSION \
+          -t $IMGNAME:latest \
+          $PUSHFLAG \
+          .
+
+      - name: Build and push RUNONCE
+        run: |
+          TARGET="minerva_runonce"
+
+          DIRNAME=${TARGET/_/-}
+          IMGNAME="luksamuk/$DIRNAME"
+          IMGVERSION=`awk '/^version/{print $3}' ./$DIRNAME/Cargo.toml | tr -d '"'`
+          
+          docker buildx build -f build/Dockerfile \
+          --platform=$PLATFORMS \
+          --target $TARGET \
+          -t $IMGNAME:$IMGVERSION \
+          -t $IMGNAME:latest \
+          $PUSHFLAG \
+          .
+
+      - name: Build and push SESSION
+        run: |
+          TARGET="minerva_session"
+
+          DIRNAME=${TARGET/_/-}
+          IMGNAME="luksamuk/$DIRNAME"
+          IMGVERSION=`awk '/^version/{print $3}' ./$DIRNAME/Cargo.toml | tr -d '"'`
+          
+          docker buildx build -f build/Dockerfile \
+          --platform=$PLATFORMS \
+          --target $TARGET \
+          -t $IMGNAME:$IMGVERSION \
+          -t $IMGNAME:latest \
+          $PUSHFLAG \
+          .
+
+      - name: Build and push USER
+        run: |
+          TARGET="minerva_user"
+
+          DIRNAME=${TARGET/_/-}
+          IMGNAME="luksamuk/$DIRNAME"
+          IMGVERSION=`awk '/^version/{print $3}' ./$DIRNAME/Cargo.toml | tr -d '"'`
+          
+          docker buildx build -f build/Dockerfile \
+          --platform=$PLATFORMS \
+          --target $TARGET \
+          -t $IMGNAME:$IMGVERSION \
+          -t $IMGNAME:latest \
+          $PUSHFLAG \
+          .
+
+      - name: Build and push DISPATCH
+        run: |
+          TARGET="minerva_dispatch"
+
+          DIRNAME=${TARGET/_/-}
+          IMGNAME="luksamuk/$DIRNAME"
+          IMGVERSION=`awk '/^version/{print $3}' ./$DIRNAME/Cargo.toml | tr -d '"'`
+          
+          docker buildx build -f build/Dockerfile \
+          --platform=$PLATFORMS \
+          --target $TARGET \
+          -t $IMGNAME:$IMGVERSION \
+          -t $IMGNAME:latest \
+          $PUSHFLAG \
+          .
 
