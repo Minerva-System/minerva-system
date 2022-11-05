@@ -46,7 +46,7 @@ impl User for UserService {
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            repository::get_list(page, &*connection)
+            repository::get_list(page, &connection)
                 .map_err(|e| Status::internal(format!("Cannot recover user list: {}", e)))?
         };
 
@@ -78,7 +78,7 @@ impl User for UserService {
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            repository::get_user(req.get_ref().index, &*connection)
+            repository::get_user(req.get_ref().index, &connection)
                 .map_err(|e| Status::internal(format!("Cannot recover user: {}", e)))?
         };
 
@@ -116,7 +116,7 @@ impl User for UserService {
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            repository::add_user(data, requestor, &*connection)
+            repository::add_user(data, requestor, &connection)
         };
 
         result
@@ -151,7 +151,7 @@ impl User for UserService {
                 .await
                 .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
 
-            repository::update_user(data, requestor, &*connection)
+            repository::update_user(data, requestor, &connection)
         };
 
         result

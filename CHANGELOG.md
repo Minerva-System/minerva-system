@@ -34,6 +34,7 @@ Relação de versões de microsserviços:
 
 ### Modificado
 
+- Rust: Specify toolchain varsion to 1.62.0.
 - *`RUNONCE`:* Spinlocks de aguardo de disponibilidade de serviços agora realizam
   _sleep_ assíncrono de dois segundos após cada falha.
 - *`RUNONCE`:* Spinlocks de disponibilidade agora também operam de forma assíncrona.
@@ -76,6 +77,9 @@ Relação de versões de microsserviços:
   necessário para realizar deploy em K3s, com Traefik sendo utilizado como
   backend para Ingresses. Isso inviabiliza um pouco o uso de Minikube e
   Microk8s.
+- Builds de imagens Docker com Rust v1.65.0 (provavelmente >1.62.0) quebram o
+  Qemu para targets arm64. Por esse motivo, foi necessário fixar a versão do Rust
+  nesta toolchain em específico.
 
 
 ## [v2] - 2022-06-05
