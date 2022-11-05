@@ -15,12 +15,15 @@ WORKDIR /minerva
 COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 
-# Build all modules
-FROM rust_base AS builder
+# Cook cache
+FROM rust_base AS cook
 RUN mkdir /minerva
 WORKDIR /minerva
 COPY --from=chef /minerva/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
+
+# Build all modules
+FROM cook AS builder
 COPY . .
 RUN apk add --no-cache protobuf protobuf-dev
 RUN cargo build --release

@@ -59,6 +59,15 @@ jobs:
           --target chef \
           .
 
+      - name: Cook build dependencies
+        run: |
+          docker buildx build -f build/Dockerfile \
+          --cache-to type=gha \
+          --cache-from type=gha \
+          --platform=$PLATFORMS \
+          --target cook \
+          .
+
       - name: Build all modules
         run: |
           docker buildx build -f build/Dockerfile \
