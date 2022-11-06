@@ -149,6 +149,10 @@
 <p>A ferramenta Redis é extensamente usada no Minerva System para armazenamento de
 informações em <em>cache</em>. Este capítulo descreve algumas das situações e entidades
 para as quais o <em>cache</em> é feito, e as regras de negócio envolvidas.</p>
+<p>Lembre-se de que <strong>o Redis é utilizado em ambientes onde o acesso é feito por
+aplicações seguras</strong>, o que significa que, por design, o mesmo deverá ser
+capaz de armazenar informações sensíveis sem maiores problemas. Sendo um banco
+de dados <em>in-memory</em>, deve-se esperar que sua reinicialização apague seus dados.</p>
 <h2 id="cache-de-sessão"><a class="header" href="#cache-de-sessão">Cache de sessão</a></h2>
 <p>Uma <em>sessão do usuário</em> é armazenada no banco de dados não-relacional (MongoDB)
 na forma de um documento, na coleção <code>session</code>, com um prazo de expiração de

@@ -238,6 +238,10 @@ do mesmo (cache e coleção de sessões).</li>
 </ul>
 <h3 id="removido"><a class="header" href="#removido">Removido</a></h3>
 <h3 id="segurança"><a class="header" href="#segurança">Segurança</a></h3>
+<ul>
+<li>Chaves dos dados de sessão armazenados no Redis agora são codificados usando
+Base64 para reduzir legibilidade.</li>
+</ul>
 <h3 id="problemas-conhecidos"><a class="header" href="#problemas-conhecidos">Problemas conhecidos</a></h3>
 <ul>
 <li>A ferramenta <em>Redis Commander</em> conhecidamente funciona apenas em arquitetura
@@ -833,6 +837,10 @@ Caso o documento não possua esse campo, o MongoDB, por padrão, acaba não expi
 <p>A ferramenta Redis é extensamente usada no Minerva System para armazenamento de
 informações em <em>cache</em>. Este capítulo descreve algumas das situações e entidades
 para as quais o <em>cache</em> é feito, e as regras de negócio envolvidas.</p>
+<p>Lembre-se de que <strong>o Redis é utilizado em ambientes onde o acesso é feito por
+aplicações seguras</strong>, o que significa que, por design, o mesmo deverá ser
+capaz de armazenar informações sensíveis sem maiores problemas. Sendo um banco
+de dados <em>in-memory</em>, deve-se esperar que sua reinicialização apague seus dados.</p>
 <h2 id="cache-de-sessão"><a class="header" href="#cache-de-sessão">Cache de sessão</a></h2>
 <p>Uma <em>sessão do usuário</em> é armazenada no banco de dados não-relacional (MongoDB)
 na forma de um documento, na coleção <code>session</code>, com um prazo de expiração de
