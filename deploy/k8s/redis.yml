@@ -131,8 +131,8 @@ spec:
             - containerPort: 6379
               name: redis
           volumeMounts:
-            - name: redis-data
-              mountPath: /data
+            # - name: redis-data
+            #   mountPath: /data
             - name: redis-config
               mountPath: /etc/redis/
           resources:
@@ -148,15 +148,15 @@ spec:
         - name: redis-initial-config
           configMap:
             name: redis-configmap
-  volumeClaimTemplates:
-    - metadata:
-        name: redis-data
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 500Mi
+  # volumeClaimTemplates:
+  #   - metadata:
+  #       name: redis-data
+  #     spec:
+  #       accessModes:
+  #         - ReadWriteOnce
+  #       resources:
+  #         requests:
+  #           storage: 500Mi
 ---
 # Redis: Service
 apiVersion: v1

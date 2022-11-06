@@ -191,8 +191,8 @@ with Diagram("Provisionamento do banco de dados in-memory Redis", show=False, ou
             pod0 = Pod("redis-0\n(master)")
             pod1 = Pod("redis-1")
             pods = [pod0, pod1]
-            pod0 - Edge(style="dotted") - PVC("redis-data-redis-0\n(dynamic)") - Edge(style="dotted") - PV("500Mi volume\n(dynamic)")
-            pod1 - Edge(style="dotted") - PVC("redis-data-redis-1\n(dynamic)") - Edge(style="dotted") - PV("500Mi volume\n(dynamic)")
+            #pod0 - Edge(style="dotted") - PVC("redis-data-redis-0\n(dynamic)") - Edge(style="dotted") - PV("500Mi volume\n(dynamic)")
+            #pod1 - Edge(style="dotted") - PVC("redis-data-redis-1\n(dynamic)") - Edge(style="dotted") - PV("500Mi volume\n(dynamic)")
             statefulset - Edge(style="dashed") - pods << configmap
             
             
