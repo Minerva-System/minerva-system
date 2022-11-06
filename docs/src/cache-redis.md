@@ -8,6 +8,11 @@ A ferramenta Redis é extensamente usada no Minerva System para armazenamento de
 informações em _cache_. Este capítulo descreve algumas das situações e entidades
 para as quais o _cache_ é feito, e as regras de negócio envolvidas.
 
+Lembre-se de que **o Redis é utilizado em ambientes onde o acesso é feito por
+aplicações seguras**, o que significa que, por design, o mesmo deverá ser
+capaz de armazenar informações sensíveis sem maiores problemas. Sendo um banco
+de dados _in-memory_, deve-se esperar que sua reinicialização apague seus dados.
+
 
 ## Cache de sessão
 
