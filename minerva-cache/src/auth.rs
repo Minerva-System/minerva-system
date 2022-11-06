@@ -3,7 +3,8 @@
 
 use redis::AsyncCommands;
 use redis::Client;
-use redis::RedisResult;
+use redis::ErrorKind;
+use redis::{RedisError, RedisResult};
 
 /// Session data expiration time. Counts exactly to 24 hours.
 const EXPIRATION: usize = 24 * 60 * 60;
@@ -13,7 +14,11 @@ const EXPIRATION: usize = 24 * 60 * 60;
 /// The output has a format such as `<TENANT>$SESSION:<TOKEN>`.
 fn gen_session_key(tenant: &str, token: &str) -> String {
     let clean_info = |info: &str| info.replace('$', "-").replace(':', "_");
-    format!("{}$SESSION:{}", clean_info(tenant), clean_info(token))
+    base64::encode(format!(
+        "{}$SESSION:{}",
+        clean_info(tenant),
+        clean_info(token)
+    ))
 }
 
 /// Retrieves session data from Redis, given a tenant and the session token.
@@ -21,7 +26,31 @@ fn gen_session_key(tenant: &str, token: &str) -> String {
 pub async fn get_session(client: &Client, tenant: &str, token: &str) -> RedisResult<String> {
     let key = gen_session_key(tenant, token);
     let mut conn = client.get_async_connection().await?;
-    conn.get(key).await
+    let val = conn.get(key).await?;
+
+    let val = String::from_utf8(val).map_err(|e| {
+        RedisError::from((
+            ErrorKind::ClientError,
+            "Error while recovering encoded value",
+            format!("{:?}", e),
+        ))
+    })?;
+
+    let val = base64::decode(val).map_err(|e| {
+        RedisError::from((
+            ErrorKind::ClientError,
+            "Error while decoding value",
+            format!("{:?}", e),
+        ))
+    })?;
+
+    String::from_utf8(val).map_err(|e| {
+        RedisError::from((
+            ErrorKind::ClientError,
+            "Error while transforming encoded value",
+            format!("{:?}", e),
+        ))
+    })
 }
 
 /// Saves session data to Redis, given a tenant, the session token, and its data

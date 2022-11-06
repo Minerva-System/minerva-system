@@ -66,6 +66,10 @@ Relação de versões de microsserviços:
 
 ### Removido
 ### Segurança
+
+- Chaves dos dados de sessão armazenados no Redis agora são codificados usando
+  Base64 para reduzir legibilidade.
+
 ### Problemas conhecidos
 
 - A ferramenta *Redis Commander* conhecidamente funciona apenas em arquitetura
