@@ -13,7 +13,11 @@ const EXPIRATION: usize = 24 * 60 * 60;
 /// The output has a format such as `<TENANT>$SESSION:<TOKEN>`.
 fn gen_session_key(tenant: &str, token: &str) -> String {
     let clean_info = |info: &str| info.replace('$', "-").replace(':', "_");
-    format!("{}$SESSION:{}", clean_info(tenant), clean_info(token))
+    base64::encode(format!(
+        "{}$SESSION:{}",
+        clean_info(tenant),
+        clean_info(token)
+    ))
 }
 
 /// Retrieves session data from Redis, given a tenant and the session token.
