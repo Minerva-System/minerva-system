@@ -13,6 +13,8 @@ FROM rust_base AS chef
 RUN mkdir /minerva
 WORKDIR /minerva
 COPY . .
+RUN apk add --no-cache bash
+RUN mv ./build/clean.sh clean.sh && ./clean.sh && rm clean.sh
 RUN cargo chef prepare --recipe-path recipe.json
 
 # Cook cache

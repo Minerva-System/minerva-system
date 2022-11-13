@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+  # PostgreSQL 15
+  postgresql:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    restart: on-failure:5
+
+  # MongoDB 4
+  mongodb:
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=mongo
+    image: mongo:4
+    command: mongod --quiet --logpath /dev/null
+    volumes:
+      - mongodb-data:/data/db
+    ports:
+      - "27017:27017"
+    restart: on-failure:5
+
+  # Redis 7
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    restart: on-failure:5
+
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_PASS=minerva
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: on-failure:5
+
+volumes:
+  db-data:
+  mongodb-data:
+  redis-data:
