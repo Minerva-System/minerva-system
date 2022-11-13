@@ -20,6 +20,10 @@ services:
     environment:
       - USER_SERVICE_SERVER=user
       - SESSION_SERVICE_SERVER=session
+      - LOG_CONFIG_FILE=/cfg/logging.yml
+    volumes:
+      - ../logging.yml:/cfg/logging.yml
+      - ./log:/usr/src/app/log
     ports:
       - 9000:9000
     depends_on:
@@ -49,6 +53,10 @@ services:
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - RABBITMQ_SERVICE_SERVER=rabbitmq
+      - LOG_CONFIG_FILE=/cfg/logging.yml
+    volumes:
+      - ../logging.yml:/cfg/logging.yml
+      - ./log:/usr/src/app/log
     networks:
       - minerva_system
     restart: on-failure:5
