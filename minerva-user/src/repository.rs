@@ -3,6 +3,7 @@
 use diesel::prelude::*;
 use diesel::result::Error;
 use lapin::{options::BasicPublishOptions, BasicProperties};
+use log::{debug, error, trace};
 use minerva_broker as broker;
 use minerva_data::db::DBConnection;
 use minerva_data::db::DBPool;
@@ -16,6 +17,7 @@ const USER_PAGE_SIZE: i64 = 20;
 /// Grabs a list of users, paged. Expects a page number. If none or a negative
 /// value is provided, returns page 0.
 pub fn get_list(page: i64, connection: &DBConnection) -> Result<Vec<model::User>, Error> {
+    trace!("Get user list page {}", page);
     use minerva_data::schema::user::dsl::*;
     let page = if page < 0 { 0 } else { page };
     let offset = page * USER_PAGE_SIZE;
@@ -27,6 +29,7 @@ pub fn get_list(page: i64, connection: &DBConnection) -> Result<Vec<model::User>
 
 /// Grabs a specific user, given its ID on the database.
 pub fn get_user(user_id: i32, connection: &DBConnection) -> Result<Option<model::User>, Error> {
+    trace!("Get user ID {}", user_id);
     use minerva_data::schema::user::dsl::*;
     user.filter(id.eq(user_id))
         .first::<model::User>(connection)
@@ -39,6 +42,7 @@ pub fn add_user(
     requestor: String,
     connection: &DBConnection,
 ) -> Result<model::User, Error> {
+    trace!("Add new user");
     use minerva_data::schema::syslog;
     use minerva_data::schema::user;
 
@@ -71,12 +75,14 @@ pub fn update_user(
     requestor: String,
     connection: &DBConnection,
 ) -> Result<model::User, Error> {
+    trace!("Update user ID {}", data.id);
     use minerva_data::schema::syslog;
     use minerva_data::schema::user::dsl::*;
 
     let old = if let Some(value) = get_user(data.id, connection)? {
         value
     } else {
+        error!("User {} not updated: not found", data.id);
         return Err(Error::NotFound);
     };
 
@@ -91,6 +97,7 @@ pub fn update_user(
         .run::<model::User, Error, _>(|| {
             let target = user.filter(id.eq(data.id));
 
+            debug!("Updating target user");
             let result = diesel::update(target)
                 .set((
                     login.eq(data.login),
@@ -107,6 +114,7 @@ pub fn update_user(
                     .get_result::<model::User>(connection)?
             };
 
+            debug!("Adding entry to audit log table");
             diesel::insert_into(syslog::table)
                 .values(&NewLog {
                     service: "USER".to_string(),
@@ -129,13 +137,14 @@ pub async fn delete_user(
     dbpool: &DBPool,
     rabbitmq: &lapin::Connection,
 ) -> Result<(), Status> {
+    trace!("Remove user ID {}", user_id);
     use minerva_data::schema::syslog;
     use minerva_data::schema::user::dsl::*;
 
-    let connection = dbpool
-        .get()
-        .await
-        .map_err(|e| Status::internal(format!("Database access error: {}", e)))?;
+    let connection = dbpool.get().await.map_err(|e| {
+        error!("Error accessing the database: {}", e);
+        Status::internal(format!("Database access error: {}", e))
+    })?;
 
     let result = connection
         .build_transaction()
@@ -145,8 +154,10 @@ pub async fn delete_user(
 
             let entity = target.get_result::<model::User>(&*connection)?;
 
+            debug!("Removing user");
             diesel::delete(target).execute(&*connection)?;
 
+            debug!("Adding entry to audit log table");
             diesel::insert_into(syslog::table)
                 .values(&NewLog {
                     service: "USER".to_string(),
@@ -160,11 +171,15 @@ pub async fn delete_user(
 
             Ok(entity)
         })
-        .map_err(|e| Status::internal(format!("Database error: {}", e)))?;
+        .map_err(|e| {
+            error!("Error while running transaction: {}", e);
+            Status::internal(format!("Database error: {}", e))
+        })?;
 
     // Queue message on RabbitMQ so that the session service
     // asynchronously deletes the user's sessions.
     // We can just inform the tenant and the login and that should be it
+    debug!("Attempt to create a channel to RabbitMQ");
     let channel = rabbitmq
         .create_channel()
         .await
@@ -172,6 +187,7 @@ pub async fn delete_user(
 
     let json = broker::model::SessionMessage::Remove { user: result.login }.to_json();
 
+    debug!("Publishing session removal message");
     channel
         .basic_publish(
             "",
@@ -181,9 +197,13 @@ pub async fn delete_user(
             BasicProperties::default(),
         )
         .await
-        .map_err(|e| Status::internal(format!("Session removal publishing failed: {}", e)))?
+        .map_err(|e| {
+            error!("While publishing session removal: {}", e);
+            Status::internal(format!("Session removal publishing failed: {}", e))
+        })?
         .await
         .map_err(|e| {
+            error!("While confirming message publishing: {}", e);
             Status::internal(format!("Session removal publishing not confirmed: {}", e))
         })?;
 

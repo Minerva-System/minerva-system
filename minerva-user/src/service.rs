@@ -1,6 +1,7 @@
 //! This module contains the actual implementation for the `User` gRPC service.
 
 use crate::repository;
+use log::info;
 use minerva_broker as broker;
 use minerva_data as lib_data;
 use minerva_data::db::DBPool;
@@ -29,11 +30,14 @@ impl User for UserService {
         let requestor = metadata::get_value(req.metadata(), "requestor")
             .ok_or_else(|| Status::failed_precondition("Missing requestor on request metadata"))?;
 
-        lib_data::log::print(
-            lib_rpc::get_address(&req),
-            requestor.clone(),
-            tenant.clone(),
-            "USER::INDEX",
+        info!(
+            "{}",
+            lib_data::log::format(
+                lib_rpc::get_address(&req),
+                &requestor,
+                &tenant,
+                "get user index"
+            )
         );
 
         let page = req.into_inner().index.unwrap_or(0);
@@ -63,11 +67,9 @@ impl User for UserService {
         let requestor = metadata::get_value(req.metadata(), "requestor")
             .ok_or_else(|| Status::failed_precondition("Missing requestor on request metadata"))?;
 
-        lib_data::log::print(
-            lib_rpc::get_address(&req),
-            requestor.clone(),
-            tenant.clone(),
-            "USER::SHOW",
+        info!(
+            "{}",
+            lib_data::log::format(lib_rpc::get_address(&req), &requestor, &tenant, "show user")
         );
 
         let result = {
@@ -99,11 +101,14 @@ impl User for UserService {
         let requestor = metadata::get_value(req.metadata(), "requestor")
             .ok_or_else(|| Status::failed_precondition("Missing requestor on request metadata"))?;
 
-        lib_data::log::print(
-            lib_rpc::get_address(&req),
-            requestor.clone(),
-            tenant.clone(),
-            "USER::STORE",
+        info!(
+            "{}",
+            lib_data::log::format(
+                lib_rpc::get_address(&req),
+                &requestor,
+                &tenant,
+                "store user"
+            )
         );
 
         let result = {
@@ -134,11 +139,14 @@ impl User for UserService {
         let requestor = metadata::get_value(req.metadata(), "requestor")
             .ok_or_else(|| Status::failed_precondition("Missing requestor on request metadata"))?;
 
-        lib_data::log::print(
-            lib_rpc::get_address(&req),
-            requestor.clone(),
-            tenant.clone(),
-            "USER::UPDATE",
+        info!(
+            "{}",
+            lib_data::log::format(
+                lib_rpc::get_address(&req),
+                &requestor,
+                &tenant,
+                "update user"
+            )
         );
 
         let result = {
@@ -166,11 +174,14 @@ impl User for UserService {
         let requestor = metadata::get_value(req.metadata(), "requestor")
             .ok_or_else(|| Status::failed_precondition("Missing requestor on request metadata"))?;
 
-        lib_data::log::print(
-            lib_rpc::get_address(&req),
-            requestor.clone(),
-            tenant.clone(),
-            "USER::DELETE",
+        info!(
+            "{}",
+            lib_data::log::format(
+                lib_rpc::get_address(&req),
+                &requestor,
+                &tenant,
+                "delete user"
+            )
         );
 
         let result = {

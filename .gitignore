@@ -2,4 +2,4 @@
 **/*~
 target/
 postgres-data/
-
+log/
