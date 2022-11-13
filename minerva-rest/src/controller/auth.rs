@@ -4,6 +4,7 @@
 use super::response;
 use crate::fairings::auth::SessionInfo;
 use crate::utils;
+use log::info;
 use minerva_data as data;
 use minerva_rpc as rpc;
 use response::Response;
@@ -48,11 +49,14 @@ async fn login(tenant: &str, body: Json<data::session::RecvSession>) -> Response
     let body = body.as_new(tenant);
     let tenant = tenant.to_string();
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        &format!("REST::LOGIN > SESSION::GENERATE @ {}", endpoint),
+    info!(
+        "{}",
+        data::log::format(
+            utils::get_ip(),
+            &requestor,
+            &tenant,
+            &format!("POST /login: request SESSION.generate ({})", endpoint),
+        )
     );
 
     let client = rpc::session::make_client(endpoint, tenant.clone(), requestor).await;
@@ -90,11 +94,14 @@ async fn logout(session: SessionInfo) -> Response {
     let requestor = "unknown".to_string();
     let tenant = session.info.tenant;
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        &format!("REST::LOGOUT > SESSION::REMOVE @ {}", endpoint),
+    info!(
+        "{}",
+        data::log::format(
+            utils::get_ip(),
+            &requestor,
+            &tenant,
+            &format!("POST /logout: request SESSION.remove ({})", endpoint),
+        )
     );
 
     match rpc::session::make_client(endpoint, tenant.clone(), requestor).await {

@@ -28,14 +28,24 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 9000
+          env:
+            - name: LOG_CONFIG_FILE
+              value: "/cfg/logging.yml"
           envFrom:
             - configMapRef:
                 name: servers-configmap
             - configMapRef:
                 name: ports-configmap
+          volumeMounts:
+            - name: log-config
+              mountPath: /cfg/
           resources:
             requests:
               cpu: 50m
+      volumes:
+        - name: log-config
+          configMap:
+            name: log-configmap
   replicas: 2
   selector:
     matchLabels:

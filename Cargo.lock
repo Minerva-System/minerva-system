@@ -1672,6 +1672,8 @@ name = "minerva-rest"
 version = "0.3.0"
 dependencies = [
  "dotenv",
+ "log",
+ "log4rs",
  "minerva-data",
  "minerva-rpc",
  "rocket",

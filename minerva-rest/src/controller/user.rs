@@ -4,6 +4,7 @@
 use super::response;
 use crate::fairings::auth::SessionInfo;
 use crate::utils;
+use log::info;
 use minerva_data as data;
 use minerva_rpc as rpc;
 use response::Response;
@@ -50,11 +51,14 @@ async fn index(session: SessionInfo, page: Option<i64>) -> Response {
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        &format!("REST::INDEX > USER::INDEX @ {}", endpoint),
+    info!(
+        "{}",
+        data::log::format(
+            utils::get_ip(),
+            &requestor,
+            &tenant,
+            &format!("GET /user: request USER.index ({})", endpoint),
+        )
     );
 
     let client = rpc::user::make_client(endpoint, tenant, requestor).await;
@@ -89,11 +93,14 @@ async fn show(session: SessionInfo, id: i32) -> Response {
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        &format!("REST::SHOW > USER::SHOW @ {}", endpoint),
+    info!(
+        "{}",
+        data::log::format(
+            utils::get_ip(),
+            &requestor,
+            &tenant,
+            &format!("GET /user/<id>: request USER.show ({})", endpoint),
+        )
     );
 
     let client = rpc::user::make_client(endpoint, tenant, requestor).await;
@@ -140,11 +147,14 @@ async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Respon
         );
     }
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        &format!("REST::STORE > USER::STORE @ {}", endpoint),
+    info!(
+        "{}",
+        data::log::format(
+            utils::get_ip(),
+            &requestor,
+            &tenant,
+            &format!("POST /user: request USER.store ({})", endpoint),
+        )
     );
 
     let client = rpc::user::make_client(endpoint, tenant, requestor).await;
@@ -185,11 +195,14 @@ async fn update(session: SessionInfo, id: i32, body: Json<data::user::RecvUser>)
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        &format!("REST::UPDATE > USER::UPDATE @ {}", endpoint),
+    info!(
+        "{}",
+        data::log::format(
+            utils::get_ip(),
+            &requestor,
+            &tenant,
+            &format!("PUT /user/<id>: request USER.update ({})", endpoint),
+        )
     );
 
     let client = rpc::user::make_client(endpoint, tenant, requestor).await;
@@ -226,11 +239,14 @@ async fn delete(session: SessionInfo, index: i32) -> Response {
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        &format!("REST::DELETE > USER::DELETE @ {}", endpoint),
+    info!(
+        "{}",
+        data::log::format(
+            utils::get_ip(),
+            &requestor,
+            &tenant,
+            &format!("DELETE /user/<id>: request USER.delete ({})", endpoint),
+        )
     );
 
     let client = rpc::user::make_client(endpoint, tenant, requestor).await;
