@@ -19,6 +19,8 @@ Relação de versões de microsserviços:
 ### Adicionado
 
 - *Geração de imagens:* Reabilitado target de compilação para ARM64.
+- *Geração de imagens:* Adicionado script que gera uma working tree limpa ao
+  gerar recipe do Cargo Chef.
 - *`RUNONCE`:* Estruturas para preparação de message broker (virtual hosts e filas
   fixas).
 - *`DISPATCH`:* Criação do microsserviço.
@@ -65,6 +67,10 @@ Relação de versões de microsserviços:
   do mesmo (cache e coleção de sessões).
 
 ### Removido
+
+- Removidos projetos Rust de módulos ainda não-iniciados, que causavam lentidão
+  desnecessária na compilação.
+
 ### Segurança
 
 - Chaves dos dados de sessão armazenados no Redis agora são codificados usando

@@ -12,3 +12,6 @@ docker-compose.yml
 docker-stack.yml
 *.sh
 .devcontainer
+
+
+!./build/clean.sh

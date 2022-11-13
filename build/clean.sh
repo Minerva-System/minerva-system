@@ -5,13 +5,10 @@ declare -a DIRECTORIES=(
     "minerva-cache"
     "minerva-data"
     "minerva-dispatch"
-    "minerva-product"
-    "minerva-report"
     "minerva-rest"
     "minerva-rpc"
     "minerva-runonce"
     "minerva-session"
-    "minerva-stock"
     "minerva-user"
 )
 

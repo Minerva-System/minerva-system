@@ -1631,6 +1631,8 @@ dependencies = [
  "dotenv",
  "futures",
  "lapin",
+ "log",
+ "log4rs",
  "minerva-broker",
  "minerva-cache",
  "minerva-data",
@@ -1640,31 +1642,6 @@ dependencies = [
  "snafu",
  "tokio",
  "tonic",
-]
-
-[[package]]
-name = "minerva-product"
-version = "0.0.3"
-dependencies = [
- "chrono",
- "diesel",
- "dotenv",
- "log",
- "log4rs",
- "minerva-data",
- "minerva-rpc",
- "tokio",
- "tonic",
-]
-
-[[package]]
-name = "minerva-report"
-version = "0.0.0"
-dependencies = [
- "dotenv",
- "minerva-data",
- "minerva-rpc",
- "tokio",
 ]
 
 [[package]]
@@ -1728,18 +1705,6 @@ dependencies = [
  "serde_json",
  "tokio",
  "tonic",
-]
-
-[[package]]
-name = "minerva-stock"
-version = "0.0.1"
-dependencies = [
- "chrono",
- "diesel",
- "dotenv",
- "minerva-data",
- "minerva-rpc",
- "tokio",
 ]
 
 [[package]]

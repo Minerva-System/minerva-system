@@ -6,11 +6,8 @@ members = [
         "minerva-broker",
         "minerva-user",
         "minerva-session",
-        "minerva-product",
-        "minerva-stock",
         "minerva-rest",
         "minerva-runonce",
-        "minerva-report",
         "minerva-dispatch",
 ]
 
