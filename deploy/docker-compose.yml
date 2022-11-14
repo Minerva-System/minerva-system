@@ -5,8 +5,8 @@ services:
   rest:
     image: luksamuk/minerva_rest:latest
     environment:
-      - USER_SERVICE_SERVER=user
-      - SESSION_SERVICE_SERVER=session
+      - USER_SERVICE_SERVER=localhost
+      - SESSION_SERVICE_SERVER=localhost
       - LOG_CONFIG_FILE=/cfg/logging.yml
     volumes:
       - ../logging.yml:/cfg/logging.yml
@@ -35,7 +35,6 @@ services:
       - DATABASE_SERVICE_SERVER=localhost
       - RABBITMQ_SERVICE_SERVER=localhost
       - LOG_CONFIG_FILE=/cfg/logging.yml
-    user: appuser
     volumes:
       - ../logging.yml:/cfg/logging.yml
     network_mode: "host"
@@ -48,9 +47,8 @@ services:
       - DATABASE_SERVICE_SERVER=localhost
       - MONGO_SERVICE_SERVER=localhost
       - REDIS_SERVICE_SERVER=localhost
-      - RABBITMQ_SERVICE_SERVER=rabbitmq
+      - RABBITMQ_SERVICE_SERVER=localhost
       - LOG_CONFIG_FILE=/cfg/logging.yml
-    user: appuser
     volumes:
       - ../logging.yml:/cfg/logging.yml
     network_mode: "host"
@@ -66,7 +64,9 @@ services:
       - RABBITMQ_SERVICE_SERVER=localhost
       - SESSION_SERVICE_SERVER=session
       - SESSION_SERVICE_PORT=9011
-    user: appuser
+      - LOG_CONFIG_FILE=/cfg/logging.yml
+    volumes:
+      - ../logging.yml:/cfg/logging.yml
     network_mode: "host"
     restart: on-failure:5
 
