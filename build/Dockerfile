@@ -59,8 +59,9 @@ ENV TZ=Etc/UTC \
     APP_USER=appuser
 RUN addgroup -g 1000 $APP_USER \
     && mkdir -p $APP \
+    && mkdir -p $APP/log \
     && adduser -u 1000 -G $APP_USER -h $APP -D $APP_USER
-RUN chown -R $APP_USER:$APP_USER ${APP}
+RUN chown -R $APP_USER ${APP}
 USER $APP_USER
 ENV USER_SERVICE_PORT=9010
 ENV SESSION_SERVICE_PORT=9011
@@ -72,8 +73,6 @@ ENV SESSION_SERVICE_SERVER=session
 ENV DATABASE_SERVICE_SERVER=postgresql
 ENV MONGO_SERVICE_SERVER=mongodb
 ENV REDIS_SERVICE_SERVER=redis
-ENV ROCKET_KEEP_ALIVE=0
-ENV ROCKET_ENV=production
 WORKDIR ${APP}
 
 ## Service containers
@@ -81,6 +80,8 @@ WORKDIR ${APP}
 # REST
 FROM deploy AS minerva_rest
 EXPOSE 9000
+ENV ROCKET_KEEP_ALIVE=0
+ENV ROCKET_ENV=production
 COPY ./tenancy.toml ./tenancy.toml
 COPY ./minerva-rest/Rocket.toml ./Rocket.toml
 COPY --from=builder /minerva/target/release/minerva-rest ./minerva-rest

@@ -8,7 +8,7 @@ appenders:
 
   logfile:
     kind: rolling_file
-    path: "log/user-0.log"
+    path: "./log/minerva-0.log"
     append: true
     encoder:
       pattern: "{d(%+)(utc)} [{f}:{L}] {h({l})} {M}: {m}{n}"
@@ -18,7 +18,7 @@ appenders:
         limit: 10 mb
       roller:
         kind: fixed_window
-        pattern: log/user-{}.log
+        pattern: ./log/minerva-{}.log
         count: 2
         base: 1
 

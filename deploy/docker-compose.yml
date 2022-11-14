@@ -1,17 +1,6 @@
 version: "3"
 
 services:
-  # Front-End service
-  # frontend:
-  #   image: luksamuk/minerva_frontend:latest
-  #   environment:
-  #     - NGINX_PORT=80
-  #   ports:
-  #     - 80:80
-  #   depends_on:
-  #     - "rest"
-  #   restart: on-failure:5
-  
   # REST service
   rest:
     image: luksamuk/minerva_rest:latest
@@ -21,11 +10,9 @@ services:
       - LOG_CONFIG_FILE=/cfg/logging.yml
     volumes:
       - ../logging.yml:/cfg/logging.yml
-      - ./log:/usr/src/app/log
     ports:
       - 9000:9000
-    networks:
-      - minerva_system
+    network_mode: "host"
     restart: on-failure:5
   
   # RUNONCE service
@@ -48,9 +35,10 @@ services:
       - DATABASE_SERVICE_SERVER=localhost
       - RABBITMQ_SERVICE_SERVER=localhost
       - LOG_CONFIG_FILE=/cfg/logging.yml
+    user: appuser
     volumes:
       - ../logging.yml:/cfg/logging.yml
-      - ./log:/usr/src/app/log
+    network_mode: "host"
     restart: on-failure:5
 
   # SESSION service
@@ -62,9 +50,10 @@ services:
       - REDIS_SERVICE_SERVER=localhost
       - RABBITMQ_SERVICE_SERVER=rabbitmq
       - LOG_CONFIG_FILE=/cfg/logging.yml
+    user: appuser
     volumes:
       - ../logging.yml:/cfg/logging.yml
-      - ./log:/usr/src/app/log
+    network_mode: "host"
     restart: on-failure:5
 
   # DISPATCH service
@@ -77,6 +66,8 @@ services:
       - RABBITMQ_SERVICE_SERVER=localhost
       - SESSION_SERVICE_SERVER=session
       - SESSION_SERVICE_PORT=9011
+    user: appuser
+    network_mode: "host"
     restart: on-failure:5
 
 
