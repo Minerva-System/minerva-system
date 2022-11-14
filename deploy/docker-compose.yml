@@ -61,6 +61,10 @@ services:
       - MONGO_SERVICE_SERVER=localhost
       - REDIS_SERVICE_SERVER=localhost
       - RABBITMQ_SERVICE_SERVER=rabbitmq
+      - LOG_CONFIG_FILE=/cfg/logging.yml
+    volumes:
+      - ../logging.yml:/cfg/logging.yml
+      - ./log:/usr/src/app/log
     restart: on-failure:5
 
   # DISPATCH service

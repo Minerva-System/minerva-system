@@ -2,6 +2,7 @@
 //! gRPC service.
 
 use crate::repository;
+use log::{error, info};
 use minerva_data as lib_data;
 use minerva_data::db::DBPool;
 use minerva_rpc as lib_rpc;
@@ -24,17 +25,24 @@ impl Session for SessionService {
         &self,
         req: Request<messages::SessionCreationData>,
     ) -> Result<Response<messages::SessionToken>, Status> {
-        let tenant = metadata::get_value(req.metadata(), "tenant")
-            .ok_or_else(|| Status::failed_precondition("Missing tenant on request metadata"))?;
+        let tenant = metadata::get_value(req.metadata(), "tenant").ok_or_else(|| {
+            error!("Tenant not found on request metadata!");
+            Status::failed_precondition("Missing tenant on request metadata")
+        })?;
 
-        let requestor = metadata::get_value(req.metadata(), "requestor")
-            .ok_or_else(|| Status::failed_precondition("Missing requestor on request metadata"))?;
+        let requestor = metadata::get_value(req.metadata(), "requestor").ok_or_else(|| {
+            error!("Requestor not found on request metadata!");
+            Status::failed_precondition("Missing requestor on request metadata")
+        })?;
 
-        lib_data::log::print(
-            lib_rpc::get_address(&req),
-            requestor.clone(),
-            tenant.clone(),
-            "SESSION::GENERATE",
+        info!(
+            "{}",
+            lib_data::log::format(
+                lib_rpc::get_address(&req),
+                &requestor,
+                &tenant,
+                "generate user session",
+            )
         );
 
         let data = req.into_inner().into();
@@ -53,17 +61,24 @@ impl Session for SessionService {
         &self,
         req: Request<messages::SessionToken>,
     ) -> Result<Response<messages::SessionData>, Status> {
-        let tenant = metadata::get_value(req.metadata(), "tenant")
-            .ok_or_else(|| Status::failed_precondition("Missing tenant on request metadata"))?;
+        let tenant = metadata::get_value(req.metadata(), "tenant").ok_or_else(|| {
+            error!("Tenant not found on request metadata!");
+            Status::failed_precondition("Missing tenant on request metadata")
+        })?;
 
-        let requestor = metadata::get_value(req.metadata(), "requestor")
-            .ok_or_else(|| Status::failed_precondition("Missing requestor on request metadata"))?;
+        let requestor = metadata::get_value(req.metadata(), "requestor").ok_or_else(|| {
+            error!("Requestor not found on request metadata!");
+            Status::failed_precondition("Missing requestor on request metadata")
+        })?;
 
-        lib_data::log::print(
-            lib_rpc::get_address(&req),
-            requestor.clone(),
-            tenant.clone(),
-            "SESSION::RETRIEVE",
+        info!(
+            "{}",
+            lib_data::log::format(
+                lib_rpc::get_address(&req),
+                &requestor,
+                &tenant,
+                "retrieve user session",
+            )
         );
 
         let token = req.into_inner().token;
@@ -74,17 +89,24 @@ impl Session for SessionService {
     }
 
     async fn remove(&self, req: Request<messages::SessionToken>) -> Result<Response<()>, Status> {
-        let tenant = metadata::get_value(req.metadata(), "tenant")
-            .ok_or_else(|| Status::failed_precondition("Missing tenant on request metadata"))?;
+        let tenant = metadata::get_value(req.metadata(), "tenant").ok_or_else(|| {
+            error!("Tenant not found on request metadata!");
+            Status::failed_precondition("Missing tenant on request metadata")
+        })?;
 
-        let requestor = metadata::get_value(req.metadata(), "requestor")
-            .ok_or_else(|| Status::failed_precondition("Missing requestor on request metadata"))?;
+        let requestor = metadata::get_value(req.metadata(), "requestor").ok_or_else(|| {
+            error!("Requestor not found on request metadata!");
+            Status::failed_precondition("Missing requestor on request metadata")
+        })?;
 
-        lib_data::log::print(
-            lib_rpc::get_address(&req),
-            requestor.clone(),
-            tenant.clone(),
-            "SESSION::REMOVE",
+        info!(
+            "{}",
+            lib_data::log::format(
+                lib_rpc::get_address(&req),
+                &requestor,
+                &tenant,
+                "remove user session",
+            )
         );
 
         let token = req.into_inner().token;

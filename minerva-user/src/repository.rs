@@ -143,7 +143,7 @@ pub async fn delete_user(
 
     let connection = dbpool.get().await.map_err(|e| {
         error!("Error accessing the database: {}", e);
-        Status::internal(format!("Database access error: {}", e))
+        Status::internal("There was an error while trying to access the database")
     })?;
 
     let result = connection
@@ -173,7 +173,7 @@ pub async fn delete_user(
         })
         .map_err(|e| {
             error!("Error while running transaction: {}", e);
-            Status::internal(format!("Database error: {}", e))
+            Status::internal("There was an error while trying to access the database")
         })?;
 
     // Queue message on RabbitMQ so that the session service
@@ -199,12 +199,12 @@ pub async fn delete_user(
         .await
         .map_err(|e| {
             error!("While publishing session removal: {}", e);
-            Status::internal(format!("Session removal publishing failed: {}", e))
+            Status::internal("There was an error while scheduling session removal")
         })?
         .await
         .map_err(|e| {
             error!("While confirming message publishing: {}", e);
-            Status::internal(format!("Session removal publishing not confirmed: {}", e))
+            Status::internal("There was an error while scheduling session removal")
         })?;
 
     Ok(())

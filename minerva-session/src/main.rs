@@ -14,6 +14,7 @@
 #![warn(missing_docs)]
 
 use dotenv::dotenv;
+use log::{debug, info};
 use minerva_cache as cache;
 use minerva_data::{db, mongo};
 use minerva_rpc::session::session_server::SessionServer;
@@ -36,6 +37,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     dotenv().ok();
 
+    let logconfig = env::var("LOG_CONFIG_FILE").unwrap_or("./logging.yml".to_owned());
+    log4rs::init_file(logconfig, Default::default())?;
+
     let port = env::var("SESSION_SERVICE_PORT").expect("Unable to read SESSION_SERVICE_PORT");
     let dbserver =
         env::var("DATABASE_SERVICE_SERVER").expect("Unable to read DATABASE_SERVICE_SERVER");
@@ -53,7 +57,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             tenant.database.clone(),
             (pool, mongo.clone(), redis.clone()),
         );
-        println!(
+        debug!(
             "Added database connections for tenant {} ({} connections + 1 MongoDB client + 1 Redis client).",
             tenant.name, tenant.connections
         );
@@ -61,14 +65,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let addr = format!("0.0.0.0:{}", port).parse()?;
 
-    println!("Starting SESSION on {}...", addr);
+    info!("Starting SESSION on {}...", addr);
 
     let server = Server::builder()
         .add_service(SessionServer::new(service::SessionService { pools }))
         .serve(addr);
 
-    println!("SESSION is ready to accept connections.");
+    info!("SESSION is ready to accept connections.");
     server.await?;
-    println!("SESSION shut down.");
+    info!("SESSION shut down.");
     Ok(())
 }

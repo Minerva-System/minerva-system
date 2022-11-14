@@ -19,3 +19,5 @@ diesel = { version = "1.4.4", features = ["postgres"] }
 chrono = {version = "0.4", features = ["serde"]}
 redis = {version = "0.21.5", features = ["tokio-comp", "aio"]}
 serde_json = "1.0"
+log4rs = "1.2.0"
+log = "0.4"
