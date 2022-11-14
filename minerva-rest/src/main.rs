@@ -35,7 +35,7 @@ fn launch() -> rocket::Rocket<rocket::Build> {
 
     dotenv().ok();
 
-    let logconfig = env::var("LOG_CONFIG_FILE").unwrap_or("./logging.yml".to_owned());
+    let logconfig = env::var("LOG_CONFIG_FILE").unwrap_or_else(|_| "./logging.yml".to_owned());
     log4rs::init_file(logconfig, Default::default()).expect("Could not initialize logs");
 
     rocket::build()
