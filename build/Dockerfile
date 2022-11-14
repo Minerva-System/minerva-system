@@ -12,9 +12,25 @@ ENV RUSTFLAGS="-C target-feature=-crt-static"
 FROM rust_base AS chef
 RUN mkdir /minerva
 WORKDIR /minerva
-COPY . .
-RUN apk add --no-cache bash
-RUN mv ./build/clean.sh clean.sh && ./clean.sh && rm clean.sh
+RUN cargo new --lib minerva-broker \
+    && cargo new --lib minerva-cache \
+    && cargo new --lib minerva-data \
+    && cargo new --bin minerva-dispatch \
+    && cargo new --bin minerva-rest \
+    && cargo new --lib minerva-rpc \
+    && cargo new --bin minerva-runonce \
+    && cargo new --bin minerva-session \
+    && cargo new --bin minerva-user
+COPY ./Cargo.toml ./Cargo.toml
+COPY ./minerva-broker/Cargo.toml ./minerva-broker/Cargo.toml
+COPY ./minerva-cache/Cargo.toml ./minerva-cache/Cargo.toml
+COPY ./minerva-data/Cargo.toml ./minerva-data/Cargo.toml
+COPY ./minerva-dispatch/Cargo.toml ./minerva-dispatch/Cargo.toml
+COPY ./minerva-rest/Cargo.toml ./minerva-rest/Cargo.toml
+COPY ./minerva-rpc/Cargo.toml ./minerva-rpc/Cargo.toml
+COPY ./minerva-runonce/Cargo.toml ./minerva-runonce/Cargo.toml
+COPY ./minerva-session/Cargo.toml ./minerva-session/Cargo.toml
+COPY ./minerva-user/Cargo.toml ./minerva-user/Cargo.toml
 RUN cargo chef prepare --recipe-path recipe.json
 
 # Cook cache
