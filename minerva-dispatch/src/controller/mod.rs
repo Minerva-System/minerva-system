@@ -4,6 +4,7 @@ use lapin::{
     options::{BasicAckOptions, BasicConsumeOptions},
     types::FieldTable,
 };
+use log::{debug, error, info, trace};
 use minerva_broker as broker;
 use minerva_broker::LapinPool;
 use minerva_data::db::DBPool;
@@ -30,33 +31,46 @@ pub async fn queue_consume(
     mongodb: MongoClient,
     _redis: RedisClient,
 ) -> Result<(), Box<dyn std::error::Error>> {
+    trace!("Start queue consumer for {}", tenant);
     let mut handlers = vec![];
     for queue in broker::QUEUES {
         let tenant = tenant.clone();
         let rabbitmq = rabbitmq.clone();
         let mongodb = mongodb.clone();
-        handlers.push(tokio::spawn(async move {
-            loop {
-                let consumer_name = format!("{}.{}.consumer", tenant, queue);
 
+        handlers.push(tokio::spawn(async move {
+            let consumer_name = format!("{}.{}.consumer", tenant, queue);
+            debug!("Starting consumer {}", consumer_name);
+            loop {
+                trace!("Begin broker connection loop");
                 let conn = rabbitmq
                     .get()
                     .await
-                    .map_err(|_| DispatchError::Connection {
-                        consumer_name: consumer_name.clone(),
-                        service_name: "RabbitMQ".to_string(),
+                    .map_err(|_| {
+                        let error = DispatchError::Connection {
+                            consumer_name: consumer_name.clone(),
+                            service_name: "RabbitMQ".to_string(),
+                        };
+                        error!("{}", error);
+                        error
                     })
                     .unwrap();
 
+                debug!("Create channel");
                 let channel = conn
                     .create_channel()
                     .await
-                    .map_err(|_| DispatchError::Connection {
-                        consumer_name: consumer_name.clone(),
-                        service_name: "RabbitMQ channel".to_string(),
+                    .map_err(|_| {
+                        let error = DispatchError::Connection {
+                            consumer_name: consumer_name.clone(),
+                            service_name: "RabbitMQ channel".to_string(),
+                        };
+                        error!("{}", error);
+                        error
                     })
                     .unwrap();
 
+                debug!("Create basic consumer");
                 let mut consumer = channel
                     .basic_consume(
                         queue,
@@ -65,19 +79,29 @@ pub async fn queue_consume(
                         FieldTable::default(),
                     )
                     .await
-                    .map_err(|_| DispatchError::Connection {
-                        consumer_name: consumer_name.clone(),
-                        service_name: "queue using a new consumer".to_string(),
+                    .map_err(|_| {
+                        let error = DispatchError::Connection {
+                            consumer_name: consumer_name.clone(),
+                            service_name: "queue using a new consumer".to_string(),
+                        };
+                        error!("{}", error);
+                        error
                     })
                     .unwrap();
 
+                debug!("Await next delivery");
                 while let Some(delivery) = consumer.next().await {
                     let delivery = delivery
-                        .map_err(|_| DispatchError::Delivery {
-                            consumer_name: consumer_name.clone(),
+                        .map_err(|_| {
+                            let error = DispatchError::Delivery {
+                                consumer_name: consumer_name.clone(),
+                            };
+                            error!("{}", error);
+                            error
                         })
                         .unwrap();
 
+                    debug!("Process delivered message");
                     if (queue == &"session_management")
                         && session_management::dispatch(
                             &tenant,
@@ -88,21 +112,26 @@ pub async fn queue_consume(
                         .await
                         .unwrap()
                     {
+                        trace!("Ack session_management delivery");
                         // If message is known, then we send back an
                         // ack signal. If not, well... leave it to
                         // another consumer
                         delivery
                             .ack(BasicAckOptions::default())
                             .await
-                            .map_err(|_| DispatchError::Ack {
-                                consumer_name: consumer_name.clone(),
+                            .map_err(|_| {
+                                let error = DispatchError::Ack {
+                                    consumer_name: consumer_name.clone(),
+                                };
+                                error!("{}", error);
+                                error
                             })
                             .unwrap();
                     }
                 }
 
                 // End of queue processing. Let's wait for a while.
-                println!("{}: Processed.", consumer_name);
+                info!("{}: Processed.", consumer_name);
                 tokio::time::sleep(Duration::from_secs(QUEUE_PROCESSING_WAIT_SECS)).await;
             }
         }))
@@ -112,5 +141,6 @@ pub async fn queue_consume(
         handle.await?;
     }
 
+    info!("All handlers terminated.");
     Ok(())
 }

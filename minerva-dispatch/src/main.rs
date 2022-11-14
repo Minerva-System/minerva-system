@@ -26,6 +26,7 @@ use minerva_data as data;
 use broker::LapinPool;
 use data::db::DBPool;
 use dotenv::dotenv;
+use log::info;
 use std::collections::HashMap;
 use std::env;
 
@@ -41,6 +42,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     dotenv().ok();
 
+    let logconfig = env::var("LOG_CONFIG_FILE").unwrap_or("./logging.yml".to_owned());
+    log4rs::init_file(logconfig, Default::default())?;
+
     let dbserver = env::var("DATABASE_SERVICE_SERVER")?;
 
     let mongoserver = env::var("MONGO_SERVICE_SERVER")?;
@@ -49,10 +53,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let rmqserver = env::var("RABBITMQ_SERVICE_SERVER")?;
 
-    println!("Loading tenant configuration...");
+    info!("Loading tenant configuration...");
     let tenant_config = data::tenancy::get_tenants("tenancy.toml");
 
-    println!("Creating service connections...");
+    info!("Creating service connections...");
     let mongo_client = data::mongo::make_client(&mongoserver).await;
     let redis_client = cache::build_client(&redisserver)?;
     let mut tenant_clients: HashMap<String, (DBPool, LapinPool)> = HashMap::new();
@@ -71,7 +75,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .map(|cfg| cfg.database.clone())
         .collect::<Vec<String>>();
 
-    println!("Starting listeners for each tenant...");
+    info!("Starting listeners for each tenant...");
     let mut handlers = vec![];
     for t in tenants {
         let tenant = t.clone();
@@ -81,7 +85,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let mongo = mongo_client.clone();
 
         handlers.push(tokio::spawn(async move {
-            println!("Running queue listener for {}.", tenant);
+            info!("Running queue listener for {}.", tenant);
             controller::queue_consume(tenant, rabbitmq, postgres, mongo, redis)
                 .await
                 .unwrap();
