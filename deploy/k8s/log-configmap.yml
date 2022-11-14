@@ -6,13 +6,11 @@ metadata:
 data:
   logging.yml: |
     refresh_rate: 30 seconds
-
     appenders:
       stdout:
         kind: console
-      encoder:
-        pattern: "{d(%+)(utc)} [{f}:{L}] {h({l})} {m}{n}"
-
+        encoder:
+          pattern: "{d(%+)(utc)} [{f}:{L}] {h({l})} {m}{n}"
     root:
       level: info
       appenders:

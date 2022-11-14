@@ -16,14 +16,24 @@ spec:
         - name: dispatch-container
           image: luksamuk/minerva_dispatch:0.1.0
           imagePullPolicy: Always
+          env:
+            - name: LOG_CONFIG_FILE
+              value: "/cfg/logging.yml"
           envFrom:
             - configMapRef:
                 name: ports-configmap
             - configMapRef:
                 name: servers-configmap
+          volumeMounts:
+            - name: log-config
+              mountPath: /cfg/
           resources:
             requests:
               cpu: 50m
+      volumes:
+        - name: log-config
+          configMap:
+            name: log-configmap
   replicas: 3
   selector:
     matchLabels:
