@@ -9,7 +9,7 @@ services:
       - SESSION_SERVICE_SERVER=localhost
       - LOG_CONFIG_FILE=/cfg/logging.yml
     volumes:
-      - ../logging.yml:/cfg/logging.yml
+      - ./logging.yml:/cfg/logging.yml
     ports:
       - 9000:9000
     network_mode: "host"
@@ -36,7 +36,7 @@ services:
       - RABBITMQ_SERVICE_SERVER=localhost
       - LOG_CONFIG_FILE=/cfg/logging.yml
     volumes:
-      - ../logging.yml:/cfg/logging.yml
+      - ./logging.yml:/cfg/logging.yml
     network_mode: "host"
     restart: on-failure:5
 
@@ -62,11 +62,11 @@ services:
       - MONGO_SERVICE_SERVER=localhost
       - REDIS_SERVICE_SERVER=localhost
       - RABBITMQ_SERVICE_SERVER=localhost
-      - SESSION_SERVICE_SERVER=session
+      - SESSION_SERVICE_SERVER=localhost
       - SESSION_SERVICE_PORT=9011
       - LOG_CONFIG_FILE=/cfg/logging.yml
     volumes:
-      - ../logging.yml:/cfg/logging.yml
+      - ./logging.yml:/cfg/logging.yml
     network_mode: "host"
     restart: on-failure:5
 
