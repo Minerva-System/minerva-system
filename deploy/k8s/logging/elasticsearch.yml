@@ -1,14 +1,4 @@
 ---
-# Elasticsearch: Secret
-apiVersion: v1
-kind: Secret
-type: Opaque
-metadata:
-  name: elasticsearch-secret
-  namespace: minerva
-data:
-  ELASTIC_PASSWORD: bWluZXJ2YQ==
----
 # Elasticsearch: Service
 apiVersion: v1
 kind: Service
@@ -82,9 +72,6 @@ spec:
             runAsUser: 1000
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
-          envFrom:
-            - secretRef:
-                name: elasticsearch-secret
           env:
             - name: cluster.name
               value: elasticsearch-cluster
@@ -93,6 +80,8 @@ spec:
             - name: ES_JAVA_OPTS
               value: -Xms1g -Xmx1g
             - name: bootstrap.memory_lock
+              value: "false"
+            - name: xpack.security.enabled
               value: "false"
           volumeMounts:
             - name: elasticsearch-data
