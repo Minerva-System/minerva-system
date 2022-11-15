@@ -46,7 +46,7 @@ data:
   FLUENT_ELASTICSEARCH_SCHEME: "http"
   FLUENT_UID: "0"
 ---
-# Fluentd: DaemonSet
+# Fluentd: DaemonSet (for Arm64)
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -72,6 +72,11 @@ spec:
         - name: fluentd
           # NOTE: THIS IMAGE WORKS ONLY WITH ARM64!
           image: fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch-arm64
+          env:
+            - name: FLUENT_CONTAINER_TAIL_PARSER_TYPE
+              value: "/^(?<time>.+?) (?<stream>stdout|stderr) (?<logtag>[FP]) (?<log>.*)$/"
+            - name: FLUENT_CONTAINER_TAIL_PARSER_TIME_FORMAT
+              value: "%Y-%m-%dT%H:%M:%S.%N%:z"
           envFrom:
             - configMapRef:
                 name: fluentd-configmap
@@ -84,17 +89,10 @@ spec:
           volumeMounts:
             - name: default-log
               mountPath: /var/log
-            - name: container-log
-              mountPath: /var/lib/docker/containers
-              readOnly: true
       volumes:
         - name: default-log
           hostPath:
             path: /var/log
-        - name: container-log
-          hostPath:
-            # Default k3s path
-            path: /var/log/containers
   selector:
     matchLabels:
       app: fluentd
