@@ -34,17 +34,6 @@ subjects:
     name: fluentd-serviceaccount
     namespace: minerva
 ---
-# Fluentd: Secret
-apiVersion: v1
-kind: Secret
-type: Opaque
-metadata:
-  name: fluentd-secret
-  namespace: minerva
-data:
-  FLUENT_ELASTICSEARCH_USER: ZWxhc3RpYw==
-  FLUENT_ELASTICSEARCH_PASSWORD: bWluZXJ2YQ==
----
 # Fluentd: Config Map
 apiVersion: v1
 kind: ConfigMap
@@ -84,8 +73,6 @@ spec:
           # NOTE: THIS IMAGE WORKS ONLY WITH ARM64!
           image: fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch-arm64
           envFrom:
-            - secretRef:
-                name: fluentd-secret
             - configMapRef:
                 name: fluentd-configmap
           resources:

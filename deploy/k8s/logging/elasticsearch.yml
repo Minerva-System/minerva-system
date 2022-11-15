@@ -64,9 +64,9 @@ spec:
               name: transport
           resources:
             requests:
-              memory: 1Gi
+              memory: 512Mi
             limits:
-              memory: 2Gi
+              memory: 1Gi
           securityContext:
             privileged: true
             runAsUser: 1000
@@ -78,7 +78,7 @@ spec:
             - name: discovery.type
               value: single-node
             - name: ES_JAVA_OPTS
-              value: -Xms1g -Xmx1g
+              value: -Xms512m -Xmx1g
             - name: bootstrap.memory_lock
               value: "false"
             - name: xpack.security.enabled

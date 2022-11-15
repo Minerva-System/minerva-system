@@ -10,7 +10,7 @@ data:
       stdout:
         kind: console
         encoder:
-          pattern: "{d(%+)(utc)} [{f}:{L}] {h({l})} {m}{n}"
+          pattern: "{h({l})} {m} [{f}:{L}]{n}"
     root:
       level: info
       appenders:
