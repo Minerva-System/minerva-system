@@ -10,13 +10,14 @@ use minerva_rpc as rpc;
 use response::Response;
 use rocket::serde::json::Json;
 use rocket::Route;
+use rocket_okapi::{okapi::openapi3::OpenApi, openapi, openapi_get_routes_spec};
 use serde_json::json;
 use std::env;
 use tonic::Request;
 
 /// Returns the list of routes for this module.
-pub fn routes() -> Vec<Route> {
-    routes![index, show, store, update, delete]
+pub fn routes() -> (Vec<Route>, OpenApi) {
+    openapi_get_routes_spec![index, show, store, update, delete]
 }
 
 /// Retrieves the endpoint for the gRPC users service. Requires that the proper
@@ -45,8 +46,9 @@ pub fn get_endpoint() -> String {
 /// curl -X GET 'http://localhost:9000/minerva/user?page=0' \
 ///      -H 'Authorization: Bearer {token}'
 /// ```
-#[get("/<_>/user?<page>")]
-async fn index(session: SessionInfo, page: Option<i64>) -> Response {
+#[openapi(tag = "User")]
+#[get("/<_tenant>/user?<page>")]
+async fn index(_tenant: String, session: SessionInfo, page: Option<i64>) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
@@ -87,8 +89,9 @@ async fn index(session: SessionInfo, page: Option<i64>) -> Response {
 /// curl -X GET 'http://localhost:9000/user/1' \
 ///      -H 'Authorization: Bearer {token}'
 /// ```
-#[get("/<_>/user/<id>")]
-async fn show(session: SessionInfo, id: i32) -> Response {
+#[openapi(tag = "User")]
+#[get("/<_tenant>/user/<id>")]
+async fn show(_tenant: String, session: SessionInfo, id: i32) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
@@ -133,8 +136,13 @@ async fn show(session: SessionInfo, id: i32) -> Response {
 ///      -H 'Authorization: Bearer {token}'
 ///      -d '{"login": "fulano", "name": "Fulano da Silva", "email": null, "password": "senha123"}'
 /// ```
-#[post("/<_>/user", data = "<body>")]
-async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Response {
+#[openapi(tag = "User")]
+#[post("/<_tenant>/user", data = "<body>")]
+async fn store(
+    _tenant: String,
+    session: SessionInfo,
+    body: Json<data::user::RecvUser>,
+) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
@@ -189,8 +197,14 @@ async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Respon
 ///      -H 'Authorization: Bearer {token}'
 ///      -d '{"login": "fulano", "name": "Fulano da Silva", "email": null, "password": null}'
 /// ```
-#[put("/<_>/user/<id>", data = "<body>")]
-async fn update(session: SessionInfo, id: i32, body: Json<data::user::RecvUser>) -> Response {
+#[openapi(tag = "User")]
+#[put("/<_tenant>/user/<id>", data = "<body>")]
+async fn update(
+    _tenant: String,
+    session: SessionInfo,
+    id: i32,
+    body: Json<data::user::RecvUser>,
+) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
@@ -233,8 +247,9 @@ async fn update(session: SessionInfo, id: i32, body: Json<data::user::RecvUser>)
 /// curl -X DELETE 'http://localhost:9000/user/2' \
 ///      -H 'Authorization: Bearer {token}'
 /// ```
-#[delete("/<_>/user/<index>")]
-async fn delete(session: SessionInfo, index: i32) -> Response {
+#[openapi(tag = "User")]
+#[delete("/<_tenant>/user/<index>")]
+async fn delete(_tenant: String, session: SessionInfo, index: i32) -> Response {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();

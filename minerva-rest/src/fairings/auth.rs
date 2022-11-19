@@ -4,6 +4,8 @@ use minerva_data::session::Session;
 use minerva_rpc as rpc;
 use rocket::http::Status;
 use rocket::request::{FromRequest, Outcome, Request};
+use rocket_okapi::okapi::openapi3::{Object, SecurityRequirement, SecurityScheme};
+use rocket_okapi::request::OpenApiFromRequest;
 
 /// Struct for session information that can be retrieved for every access to a
 /// route that explicitly retrieves it.
@@ -27,6 +29,31 @@ impl SessionInfo {
             info: info.into(),
             token,
         }
+    }
+}
+
+impl<'a> OpenApiFromRequest<'a> for SessionInfo {
+    fn from_request_input(
+        _gen: &mut rocket_okapi::gen::OpenApiGenerator,
+        _name: String,
+        _required: bool,
+    ) -> rocket_okapi::Result<rocket_okapi::request::RequestHeaderInput> {
+        let security_scheme = SecurityScheme {
+            description: Some("Requires a Bearer Token to access.".to_owned()),
+            data: rocket_okapi::okapi::openapi3::SecuritySchemeData::Http {
+                scheme: "bearer".to_owned(),
+                bearer_format: Some("bearer".to_owned()),
+            },
+            extensions: Object::default(),
+        };
+
+        let mut security_req = SecurityRequirement::new();
+        security_req.insert("HttpAuth".to_owned(), Vec::new());
+        Ok(rocket_okapi::request::RequestHeaderInput::Security(
+            "HttpAuth".to_owned(),
+            security_scheme,
+            security_req,
+        ))
     }
 }
 

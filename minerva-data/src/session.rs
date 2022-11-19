@@ -4,6 +4,7 @@
 
 use minerva_rpc::messages;
 use mongodb::bson::DateTime;
+use rocket_okapi::okapi::schemars::{self, JsonSchema};
 use serde::{Deserialize, Serialize};
 
 /// DTO representing the data for a user session.
@@ -21,7 +22,7 @@ pub struct Session {
 
 /// DTO representing the data for a new session, to be received by the
 /// gRPC session service.
-#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
+#[derive(Debug, Clone, Deserialize, Eq, PartialEq, JsonSchema)]
 pub struct NewSession {
     /// Tenant of the required session.
     pub tenant: String,
@@ -33,7 +34,7 @@ pub struct NewSession {
 
 /// DTO representing the data for a new session, to be received by the
 /// REST gateway endpoint.
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, JsonSchema)]
 pub struct RecvSession {
     /// User attempting to log in.
     pub login: String,
@@ -43,7 +44,7 @@ pub struct RecvSession {
 
 /// DTO representing the data returned from the login route on the REST
 /// endpoint, which should have a token and the tenant name.
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, JsonSchema)]
 pub struct SessionResponse {
     /// Access token for the user.
     pub token: String,

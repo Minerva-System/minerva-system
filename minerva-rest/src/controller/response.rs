@@ -2,6 +2,7 @@
 //! responses for a request.
 
 use rocket::response::Responder;
+use rocket_okapi::{okapi::openapi3::Responses, response::OpenApiResponderInner};
 use serde::Serialize;
 use serde_json::json;
 use tonic::{Code, Status};
@@ -136,5 +137,16 @@ impl Response {
             Code::Unknown => Self::InternalServerError(message),
             _ => panic!("Unhandled return status: {}", status),
         }
+    }
+}
+
+// TODO: The correct way to handle this is to actually have the API return something like
+// Result<Json<WhateverResponsePayload>, Json<ErrorResponse>>.
+// This would need refactoring of Response into ErrorResponse.
+impl OpenApiResponderInner for Response {
+    fn responses(
+        _gen: &mut rocket_okapi::gen::OpenApiGenerator,
+    ) -> rocket_okapi::Result<Responses> {
+        Ok(Responses::default())
     }
 }

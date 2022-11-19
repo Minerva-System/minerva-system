@@ -10,13 +10,14 @@ use minerva_rpc as rpc;
 use response::Response;
 use rocket::serde::json::Json;
 use rocket::Route;
+use rocket_okapi::{okapi::openapi3::OpenApi, openapi, openapi_get_routes_spec};
 use serde_json::json;
 use std::env;
 use tonic::Request;
 
 /// Returns the list of routes for this module.
-pub fn routes() -> Vec<Route> {
-    routes![login, logout]
+pub fn routes() -> (Vec<Route>, OpenApi) {
+    openapi_get_routes_spec![login, logout]
 }
 
 /// Retrieves the endpoint for the gRPC session service. Requires that the proper
@@ -41,6 +42,7 @@ pub fn get_endpoint() -> String {
 ///      -H 'Content-Type: application/json' \
 ///      -d '{"login": "admin", "password": "admin"}'
 /// ```
+#[openapi(tag = "Authentication")]
 #[post("/<tenant>/login", data = "<body>")]
 async fn login(tenant: &str, body: Json<data::session::RecvSession>) -> Response {
     use data::session::SessionResponse;
@@ -88,8 +90,9 @@ async fn login(tenant: &str, body: Json<data::session::RecvSession>) -> Response
 /// curl -X POST http://localhost:9000/minerva/logout \
 ///      -H 'Authorization: Bearer {token}'
 /// ```
-#[post("/<_>/logout")]
-async fn logout(session: SessionInfo) -> Response {
+#[openapi(tag = "Authentication")]
+#[post("/<_tenant>/logout")]
+async fn logout(_tenant: String, session: SessionInfo) -> Response {
     let endpoint = get_endpoint();
     let requestor = "unknown".to_string();
     let tenant = session.info.tenant;

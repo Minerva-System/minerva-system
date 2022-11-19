@@ -33,6 +33,8 @@ Relação de versões de microsserviços:
 - *Minerva9:* Adicionada documentação para o MVC e repositório do projeto.
 - *Kubernetes:* Adição de configurações para deploy em ambientes IoT.
 - *`DATA`*: Adicionado DTO fixo para retorno de dados de sessão durante login.
+- *REST:* API agora possui documentação e ferramentas para teste através de Swagger
+  e RapiDoc (respectivamente através das rotas `/swagger` e `/rapidoc`).
 
 ### Modificado
 

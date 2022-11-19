@@ -16,6 +16,12 @@
 extern crate rocket;
 
 use dotenv::dotenv;
+use rocket_okapi::{
+    mount_endpoints_and_merged_docs,
+    rapidoc::*,
+    settings::{OpenApiSettings, UrlObject},
+    swagger_ui::*,
+};
 use std::env;
 
 mod controller;
@@ -38,8 +44,36 @@ fn launch() -> rocket::Rocket<rocket::Build> {
     let logconfig = env::var("LOG_CONFIG_FILE").unwrap_or_else(|_| "./logging.yml".to_owned());
     log4rs::init_file(logconfig, Default::default()).expect("Could not initialize logs");
 
-    rocket::build()
+    let swagger_config = SwaggerUIConfig {
+        url: "../openapi.json".to_owned(),
+        ..Default::default()
+    };
+
+    let rapidoc_config = RapiDocConfig {
+        general: GeneralConfig {
+            spec_urls: vec![UrlObject::new("General", "../openapi.json")],
+            ..Default::default()
+        },
+        hide_show: HideShowConfig {
+            allow_spec_url_load: false,
+            allow_spec_file_load: false,
+            ..Default::default()
+        },
+        ..Default::default()
+    };
+
+    let mut building_rocket = rocket::build()
         .register("/", controller::handlers::catchers())
-        .mount("/", controller::auth::routes())
-        .mount("/", controller::user::routes())
+        .mount("/swagger", make_swagger_ui(&swagger_config))
+        .mount("/rapidoc", make_rapidoc(&rapidoc_config));
+
+    let openapi_settings = OpenApiSettings::default();
+
+    mount_endpoints_and_merged_docs! {
+    building_rocket, "/", openapi_settings,
+    "" => controller::auth::routes(),
+    "" => controller::user::routes(),
+    };
+
+    building_rocket
 }
