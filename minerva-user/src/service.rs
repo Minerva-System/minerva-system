@@ -141,8 +141,11 @@ impl User for UserService {
         };
 
         result.map(|u| Response::new(u.into())).map_err(|e| {
-            error!("Unable to register user: {}", e);
-            Status::failed_precondition("There was an error while trying to register the user")
+            error!("Unable to register user (possibly already exists): {}", e);
+
+            // Assume that the user already exists, at this point.
+            // Possibly a conflict on unique keys.
+            Status::already_exists("This username or e-mail already exists")
         })
     }
 

@@ -57,20 +57,22 @@ Relação de versões de microsserviços:
   pgAdmin4, já que essas configurações são pensadas primariamente como debug.
   Para monitorar e inspecionar o MongoDB, o Redis e o PostgreSQL, veja ferramentas
   ad-hoc como MongoDB Compass, RESP.app ou DBeaver, respectivamente.
-- *PostgreSQL*: Atualizado para versão 15.
-- *Documentação*: Adicionados diagramas separados para cada _deployment_ no Kubernetes,
+- *PostgreSQL:* Atualizado para versão 15.
+- *Documentação:* Adicionados diagramas separados para cada _deployment_ no Kubernetes,
   bem como um diagrama geral da arquitetura do mesmo.
-- *`REST`*: Requisições agora exigem token através de Bearer Token.
-- *`REST`*: Requisições agora demandam _tenant_ no início das rotas.
-- *`REST`*: Todas as rotas agora possuem tipos de resposta bem-definidos, possibilitando
+- *`REST`:* Requisições agora exigem token através de Bearer Token.
+- *`REST`:* Requisições agora demandam _tenant_ no início das rotas.
+- *`REST`:* Todas as rotas agora possuem tipos de resposta bem-definidos, possibilitando
   extração de schema para OpenAPI.
-- *`REST`*: Alteradas as variáveis de ambiente designando profile e nível de log do
+- *`REST`:* Alteradas as variáveis de ambiente designando profile e nível de log do
   Rocket nos vários tipos de deploy (local, Compose, Swarm, K8s)
 
 ### Consertado
 
 - *`USER`:* Ao remover um usuário, envia mensagem requisitando remoção das sessões
   do mesmo (cache e coleção de sessões).
+- *`USER`:* Caso um usuário falhe em ser criado (ao final da inserção), será considerado
+  como se já existisse.
 
 ### Removido
 
