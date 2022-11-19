@@ -25,6 +25,8 @@ services:
     environment:
       - USER_SERVICE_SERVER=user
       - SESSION_SERVICE_SERVER=session
+      - ROCKET_PROFILE=production
+      - ROCKET_LOG_LEVEL=normal
     ports:
       - 9000:9000
     depends_on:

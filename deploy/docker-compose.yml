@@ -8,6 +8,8 @@ services:
       - USER_SERVICE_SERVER=localhost
       - SESSION_SERVICE_SERVER=localhost
       - LOG_CONFIG_FILE=/cfg/logging.yml
+      - ROCKET_PROFILE=debug
+      - ROCKET_LOG_LEVEL=debug
     volumes:
       - ./logging.yml:/cfg/logging.yml
     ports:

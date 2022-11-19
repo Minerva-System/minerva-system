@@ -64,6 +64,8 @@ Relação de versões de microsserviços:
 - *`REST`*: Requisições agora demandam _tenant_ no início das rotas.
 - *`REST`*: Todas as rotas agora possuem tipos de resposta bem-definidos, possibilitando
   extração de schema para OpenAPI.
+- *`REST`*: Alteradas as variáveis de ambiente designando profile e nível de log do
+  Rocket nos vários tipos de deploy (local, Compose, Swarm, K8s)
 
 ### Consertado
 

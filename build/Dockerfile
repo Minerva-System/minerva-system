@@ -80,8 +80,6 @@ WORKDIR ${APP}
 # REST
 FROM deploy AS minerva_rest
 EXPOSE 9000
-ENV ROCKET_KEEP_ALIVE=0
-ENV ROCKET_ENV=production
 COPY ./tenancy.toml ./tenancy.toml
 COPY ./minerva-rest/Rocket.toml ./Rocket.toml
 COPY --from=builder /minerva/target/release/minerva-rest ./minerva-rest

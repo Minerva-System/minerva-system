@@ -7,7 +7,8 @@ metadata:
   namespace: minerva
 data:
   ROCKET_KEEP_ALIVE: "0"
-  ROCKET_ENV: production
+  ROCKET_PROFILE: release
+  ROCKET_LOG_LEVEL: "normal"
 ---
 # Minerva System -- REST: Deployment
 apiVersion: apps/v1
