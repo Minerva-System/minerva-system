@@ -36,16 +36,6 @@ pub fn get_endpoint() -> String {
 ///
 /// Upon success, returns a list of users in JSON format, containing up to the
 /// number of users per page as defined in the `USER` microservice.
-///
-/// # Request examples
-///
-/// ```bash
-/// curl -X GET 'http://localhost:9000/minerva/user' \
-///      -H 'Authorization: Bearer {token}'
-///
-/// curl -X GET 'http://localhost:9000/minerva/user?page=0' \
-///      -H 'Authorization: Bearer {token}'
-/// ```
 #[openapi(tag = "User")]
 #[get("/<_tenant>/user?<page>")]
 async fn index(_tenant: String, session: SessionInfo, page: Option<i64>) -> Response {
@@ -82,13 +72,6 @@ async fn index(_tenant: String, session: SessionInfo, page: Option<i64>) -> Resp
 ///
 /// Upon success, retrieves data for a single user of the given ID in JSON
 /// format.
-///
-/// # Request example
-///
-/// ```bash
-/// curl -X GET 'http://localhost:9000/user/1' \
-///      -H 'Authorization: Bearer {token}'
-/// ```
 #[openapi(tag = "User")]
 #[get("/<_tenant>/user/<id>")]
 async fn show(_tenant: String, session: SessionInfo, id: i32) -> Response {
@@ -127,15 +110,6 @@ async fn show(_tenant: String, session: SessionInfo, id: i32) -> Response {
 ///
 /// Upon success, returns the data for the created user as if it were requested
 /// through the `show` method.
-///
-/// # Request example
-///
-/// ```bash
-/// curl -X POST 'http://localhost:9000/user' \
-///      -H 'Content-Type: application/json' \
-///      -H 'Authorization: Bearer {token}'
-///      -d '{"login": "fulano", "name": "Fulano da Silva", "email": null, "password": "senha123"}'
-/// ```
 #[openapi(tag = "User")]
 #[post("/<_tenant>/user", data = "<body>")]
 async fn store(
@@ -188,15 +162,6 @@ async fn store(
 ///
 /// Upon success, returns the data for the created user as if it were requested
 /// through the `show` method.
-///
-/// # Request example
-///
-/// ```bash
-/// curl -X PUT 'http://localhost:9000/user/2' \
-///      -H 'Content-Type: application/json'  \
-///      -H 'Authorization: Bearer {token}'
-///      -d '{"login": "fulano", "name": "Fulano da Silva", "email": null, "password": null}'
-/// ```
 #[openapi(tag = "User")]
 #[put("/<_tenant>/user/<id>", data = "<body>")]
 async fn update(
@@ -240,13 +205,6 @@ async fn update(
 /// should also be passed through the URL.
 ///
 /// Upon success, returns an empty object.
-///
-/// # Request example
-///
-/// ```bash
-/// curl -X DELETE 'http://localhost:9000/user/2' \
-///      -H 'Authorization: Bearer {token}'
-/// ```
 #[openapi(tag = "User")]
 #[delete("/<_tenant>/user/<index>")]
 async fn delete(_tenant: String, session: SessionInfo, index: i32) -> Response {

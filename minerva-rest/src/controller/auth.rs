@@ -35,13 +35,6 @@ pub fn get_endpoint() -> String {
 ///
 /// Upon a successful login attempt, the route will return the tenant and the
 /// session token data for the current user.
-///
-/// # Request example
-/// ```bash
-/// curl -X POST 'http://localhost:9000/minerva/login' \
-///      -H 'Content-Type: application/json' \
-///      -d '{"login": "admin", "password": "admin"}'
-/// ```
 #[openapi(tag = "Authentication")]
 #[post("/<tenant>/login", data = "<body>")]
 async fn login(tenant: &str, body: Json<data::session::RecvSession>) -> Response {
@@ -84,12 +77,6 @@ async fn login(tenant: &str, body: Json<data::session::RecvSession>) -> Response
 /// This route requires that session cookies exist on the client requesting
 /// logoff. These cookies will be then accessed by the server and, upon
 /// successful logoff, will be deleted from the client's cookie jar.
-///
-/// # Request example
-/// ```bash
-/// curl -X POST http://localhost:9000/minerva/logout \
-///      -H 'Authorization: Bearer {token}'
-/// ```
 #[openapi(tag = "Authentication")]
 #[post("/<_tenant>/logout")]
 async fn logout(_tenant: String, session: SessionInfo) -> Response {
