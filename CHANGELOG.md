@@ -62,6 +62,8 @@ Relação de versões de microsserviços:
   bem como um diagrama geral da arquitetura do mesmo.
 - *`REST`*: Requisições agora exigem token através de Bearer Token.
 - *`REST`*: Requisições agora demandam _tenant_ no início das rotas.
+- *`REST`*: Todas as rotas agora possuem tipos de resposta bem-definidos, possibilitando
+  extração de schema para OpenAPI.
 
 ### Consertado
 

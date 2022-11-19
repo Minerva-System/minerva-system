@@ -1,112 +1,79 @@
 //! This submodule contains structures and helper functions for creating
 //! responses for a request.
 
+use crate::generic::Message;
 use rocket::response::Responder;
+use rocket::serde::json::Json;
 use rocket_okapi::{okapi::openapi3::Responses, response::OpenApiResponderInner};
-use serde::Serialize;
-use serde_json::json;
 use tonic::{Code, Status};
 
-/// Enumeration containing many kinds of responses to a REST request that was
-/// received. All of these responses should contain an embedded JSON in String
-/// format. These responses are modelled after HTTP response codes.
+/// Enumeration containing many kinds of error responses to a REST request that
+/// was received. All of these responses should contain an embedded JSON in
+/// String format. These error responses are modelled after HTTP response codes.
 #[allow(dead_code)]
 #[derive(Responder, Debug, Clone)]
-pub enum Response {
-    /// 200 OK
-    #[response(status = 200, content_type = "json")]
-    Ok(String),
-
+pub enum ErrorResponse {
     /// 304 Not Modified
     #[response(status = 304, content_type = "json")]
-    NotModified(String),
+    NotModified(Message),
 
     /// 400 Bad Request
     #[response(status = 400, content_type = "json")]
-    BadRequest(String),
+    BadRequest(Message),
 
     /// 401 Unauthorized
     #[response(status = 401, content_type = "json")]
-    Unauthorized(String),
+    Unauthorized(Message),
 
     /// 404 Not Found
     #[response(status = 404, content_type = "json")]
-    NotFound(String),
+    NotFound(Message),
 
     /// 408 Request Timeout
     #[response(status = 408, content_type = "json")]
-    RequestTimeout(String),
+    RequestTimeout(Message),
 
     /// 409 Conflict
     #[response(status = 409, content_type = "json")]
-    Conflict(String),
+    Conflict(Message),
 
     /// 412 Precondition Failed
     #[response(status = 412, content_type = "json")]
-    PreconditionFailed(String),
+    PreconditionFailed(Message),
 
     /// 422 Unprocessable Entity
     #[response(status = 422, content_type = "json")]
-    UnprocessableEntity(String),
+    UnprocessableEntity(Message),
 
     /// 444 No Response
     #[response(status = 444, content_type = "json")]
-    NoResponse(String),
+    NoResponse(Message),
 
     /// 499 Client Closed Request
     #[response(status = 499, content_type = "json")]
-    ClientClosedRequest(String),
+    ClientClosedRequest(Message),
 
     /// 500 Internal Server Error
     #[response(status = 500, content_type = "json")]
-    InternalServerError(String),
+    InternalServerError(Message),
 
     /// 501 Not Implemented
     #[response(status = 501, content_type = "json")]
-    NotImplemented(String),
+    NotImplemented(Message),
 
     /// 503 Service Unavailable
     #[response(status = 503, content_type = "json")]
-    ServiceUnavailable(String),
+    ServiceUnavailable(Message),
 
     /// 511 Network Authentication Required
     #[response(status = 511, content_type = "json")]
-    NetworkAuthenticationRequired(String),
+    NetworkAuthenticationRequired(Message),
 }
 
-impl Response {
-    /// Generates a `Response` from a gRPC response. This assumes that the
-    /// gRPC response is a `Result` that either holds a serializable success
-    /// value that will be serialized to JSON, or an error `Status` in case of
-    /// failure which will be converted to an appropriate HTTP error, containing
-    /// the `Status`'s message.
-    pub fn respond<T: Serialize>(response: Result<T, Status>) -> Self {
-        match response {
-            Ok(object) => Response::Ok(serde_json::to_string(&object).unwrap()),
-            Err(status) => Self::convert(status),
-        }
-    }
+/// Generic Result type for responses on REST routes.
+pub type RestResult<T> = Result<Json<T>, ErrorResponse>;
 
-    /// Generates a `Response` from a gRPC response, whenever the response
-    /// success result is empty. In that case, an empty JSON object is returned.
-    /// If the gRPC response is an error `Status`, that error will be converted
-    /// to an appropriate HTTP error, containing the `Status`'s message.
-    pub fn respond_empty(response: Result<tonic::Response<()>, Status>) -> Self {
-        match response {
-            Ok(_) => Response::Ok("{}".into()),
-            Err(status) => Self::convert(status),
-        }
-    }
-
-    /// Generates a `Response` from a gRPC response, assuming that the gRPC
-    /// response is an error. Must only be used whenever it is well known that
-    /// the response's error can be unwrapped, otherwise panics. The error will
-    /// be converted to an appropriate HTTP error, containing the `Status`'s
-    /// message.
-    pub fn generate_error<T: std::fmt::Debug>(response: Result<T, Status>) -> Self {
-        Self::convert(response.unwrap_err())
-    }
-
+impl ErrorResponse {
     /// Actual internal conversion function for generating an error `Response`
     /// from a gRPC `Status`. The `Status` message will be converted into a JSON
     /// object containing a single `"message"` field, which will be the response
@@ -117,7 +84,8 @@ impl Response {
     /// status code is "`Ok`", in which case it should have been a successful
     /// response instead.
     fn convert(status: Status) -> Self {
-        let message = json!({ "message": status.message() }).to_string();
+        let message = Message::from(status.message());
+
         match status.code() {
             Code::Aborted => Self::NoResponse(message),
             Code::AlreadyExists => Self::Conflict(message),
@@ -140,10 +108,16 @@ impl Response {
     }
 }
 
+impl From<Status> for ErrorResponse {
+    fn from(status: Status) -> Self {
+        Self::convert(status)
+    }
+}
+
 // TODO: The correct way to handle this is to actually have the API return something like
 // Result<Json<WhateverResponsePayload>, Json<ErrorResponse>>.
 // This would need refactoring of Response into ErrorResponse.
-impl OpenApiResponderInner for Response {
+impl OpenApiResponderInner for ErrorResponse {
     fn responses(
         _gen: &mut rocket_okapi::gen::OpenApiGenerator,
     ) -> rocket_okapi::Result<Responses> {

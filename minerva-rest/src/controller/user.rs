@@ -7,11 +7,10 @@ use crate::utils;
 use log::info;
 use minerva_data as data;
 use minerva_rpc as rpc;
-use response::Response;
+use response::{ErrorResponse, RestResult};
 use rocket::serde::json::Json;
 use rocket::Route;
 use rocket_okapi::{okapi::openapi3::OpenApi, openapi, openapi_get_routes_spec};
-use serde_json::json;
 use std::env;
 use tonic::Request;
 
@@ -38,7 +37,11 @@ pub fn get_endpoint() -> String {
 /// number of users per page as defined in the `USER` microservice.
 #[openapi(tag = "User")]
 #[get("/<_tenant>/user?<page>")]
-async fn index(_tenant: String, session: SessionInfo, page: Option<i64>) -> Response {
+async fn index(
+    _tenant: String,
+    session: SessionInfo,
+    page: Option<i64>,
+) -> RestResult<Vec<data::user::User>> {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
@@ -53,17 +56,17 @@ async fn index(_tenant: String, session: SessionInfo, page: Option<i64>) -> Resp
         )
     );
 
-    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
-    if client.is_err() {
-        return Response::generate_error(client);
-    }
-    let mut client = client.unwrap();
+    let mut client = rpc::user::make_client(endpoint, tenant, requestor)
+        .await
+        .map_err(|status| ErrorResponse::from(status))?;
 
     let response = client
         .index(Request::new(rpc::messages::PageIndex { index: page }))
         .await
-        .map(|msg| data::user::message_to_vec(msg.into_inner()));
-    Response::respond(response)
+        .map(|msg| Json(data::user::message_to_vec(msg.into_inner())))
+        .map_err(|status| ErrorResponse::from(status))?;
+
+    Ok(response)
 }
 
 /// Route for fetching data of a single user.
@@ -74,7 +77,7 @@ async fn index(_tenant: String, session: SessionInfo, page: Option<i64>) -> Resp
 /// format.
 #[openapi(tag = "User")]
 #[get("/<_tenant>/user/<id>")]
-async fn show(_tenant: String, session: SessionInfo, id: i32) -> Response {
+async fn show(_tenant: String, session: SessionInfo, id: i32) -> RestResult<data::user::User> {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
@@ -89,18 +92,18 @@ async fn show(_tenant: String, session: SessionInfo, id: i32) -> Response {
         )
     );
 
-    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
-    if client.is_err() {
-        return Response::generate_error(client);
-    }
-    let mut client = client.unwrap();
+    let mut client = rpc::user::make_client(endpoint, tenant, requestor)
+        .await
+        .map_err(|status| ErrorResponse::from(status))?;
 
     let index = id;
-    let response: Result<data::user::User, tonic::Status> = client
+    let response = client
         .show(Request::new(rpc::messages::EntityIndex { index }))
         .await
-        .map(|msg| msg.into_inner().into());
-    Response::respond(response)
+        .map(|msg| Json(msg.into_inner().into()))
+        .map_err(|status| ErrorResponse::from(status))?;
+
+    Ok(response)
 }
 
 /// Route for creating a new user.
@@ -116,7 +119,7 @@ async fn store(
     _tenant: String,
     session: SessionInfo,
     body: Json<data::user::RecvUser>,
-) -> Response {
+) -> RestResult<data::user::User> {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
@@ -124,9 +127,9 @@ async fn store(
     let message: rpc::messages::User = body.0.into();
 
     if message.login == *"unknown" {
-        return Response::BadRequest(
-            json!({ "message": "Username \"unknown\" is reserved" }).to_string(),
-        );
+        return Err(ErrorResponse::BadRequest(crate::generic::Message::from(
+            "Username \"unknown\" is reserved",
+        )));
     }
 
     info!(
@@ -139,17 +142,17 @@ async fn store(
         )
     );
 
-    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
-    if client.is_err() {
-        return Response::generate_error(client);
-    }
-    let mut client = client.unwrap();
+    let mut client = rpc::user::make_client(endpoint, tenant, requestor)
+        .await
+        .map_err(|status| ErrorResponse::from(status))?;
 
-    let response: Result<data::user::User, tonic::Status> = client
+    let response = client
         .store(Request::new(message))
         .await
-        .map(|msg| msg.into_inner().into());
-    Response::respond(response)
+        .map(|msg| Json(msg.into_inner().into()))
+        .map_err(|status| ErrorResponse::from(status))?;
+
+    Ok(response)
 }
 
 /// Route for updating data for a user.
@@ -169,7 +172,7 @@ async fn update(
     session: SessionInfo,
     id: i32,
     body: Json<data::user::RecvUser>,
-) -> Response {
+) -> RestResult<data::user::User> {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
@@ -184,19 +187,20 @@ async fn update(
         )
     );
 
-    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
-    if client.is_err() {
-        return Response::generate_error(client);
-    }
-    let mut client = client.unwrap();
+    let mut client = rpc::user::make_client(endpoint, tenant, requestor)
+        .await
+        .map_err(|status| ErrorResponse::from(status))?;
 
     let mut message: rpc::messages::User = body.0.into();
     message.id = Some(id);
-    let response: Result<data::user::User, tonic::Status> = client
+
+    let response = client
         .update(Request::new(message))
         .await
-        .map(|msg| msg.into_inner().into());
-    Response::respond(response)
+        .map(|msg| Json(msg.into_inner().into()))
+        .map_err(|status| ErrorResponse::from(status))?;
+
+    Ok(response)
 }
 
 /// Route for removing a user altogether.
@@ -207,7 +211,11 @@ async fn update(
 /// Upon success, returns an empty object.
 #[openapi(tag = "User")]
 #[delete("/<_tenant>/user/<index>")]
-async fn delete(_tenant: String, session: SessionInfo, index: i32) -> Response {
+async fn delete(
+    _tenant: String,
+    session: SessionInfo,
+    index: i32,
+) -> RestResult<crate::generic::Message> {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
@@ -222,14 +230,15 @@ async fn delete(_tenant: String, session: SessionInfo, index: i32) -> Response {
         )
     );
 
-    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
-    if client.is_err() {
-        return Response::generate_error(client);
-    }
-    let mut client = client.unwrap();
+    let mut client = rpc::user::make_client(endpoint, tenant, requestor)
+        .await
+        .map_err(|status| ErrorResponse::from(status))?;
 
     let response = client
         .delete(Request::new(rpc::messages::EntityIndex { index }))
-        .await;
-    Response::respond_empty(response)
+        .await
+        .map(|_| Json(crate::generic::Message::from("User removed successfully")))
+        .map_err(|status| ErrorResponse::from(status))?;
+
+    Ok(response)
 }

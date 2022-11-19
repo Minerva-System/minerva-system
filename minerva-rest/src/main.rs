@@ -26,6 +26,7 @@ use std::env;
 
 mod controller;
 mod fairings;
+mod generic;
 mod utils;
 
 #[cfg(test)]
