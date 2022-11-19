@@ -74,10 +74,11 @@ fn launch() -> rocket::Rocket<rocket::Build> {
 
     let openapi_settings = OpenApiSettings::default();
 
+    #[rustfmt::skip]
     mount_endpoints_and_merged_docs! {
-    building_rocket, "/", openapi_settings,
-    "" => controller::auth::routes(),
-    "" => controller::user::routes(),
+	building_rocket, "/", openapi_settings,
+	"" => controller::auth::routes(),
+	"" => controller::user::routes(),
     };
 
     building_rocket
