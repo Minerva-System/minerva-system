@@ -2,8 +2,7 @@
 //! responses for a request.
 
 use crate::generic::Message;
-use rocket::response::Responder;
-use rocket::serde::json::Json;
+use rocket::{response::Responder, serde::json::Json};
 use rocket_okapi::{
     gen::OpenApiGenerator,
     okapi::openapi3::{MediaType, Responses},
@@ -18,55 +17,55 @@ use tonic::{Code, Status};
 pub enum ErrorResponse {
     /// 400 Bad Request
     #[response(status = 400, content_type = "json")]
-    BadRequest(Message),
+    BadRequest(String),
 
     /// 401 Unauthorized
     #[response(status = 401, content_type = "json")]
-    Unauthorized(Message),
+    Unauthorized(String),
 
     /// 404 Not Found
     #[response(status = 404, content_type = "json")]
-    NotFound(Message),
+    NotFound(String),
 
     /// 408 Request Timeout
     #[response(status = 408, content_type = "json")]
-    RequestTimeout(Message),
+    RequestTimeout(String),
 
     /// 409 Conflict
     #[response(status = 409, content_type = "json")]
-    Conflict(Message),
+    Conflict(String),
 
     /// 412 Precondition Failed
     #[response(status = 412, content_type = "json")]
-    PreconditionFailed(Message),
+    PreconditionFailed(String),
 
     /// 422 Unprocessable Entity
     #[response(status = 422, content_type = "json")]
-    UnprocessableEntity(Message),
+    UnprocessableEntity(String),
 
     /// 444 No Response
     #[response(status = 444, content_type = "json")]
-    NoResponse(Message),
+    NoResponse(String),
 
     /// 499 Client Closed Request
     #[response(status = 499, content_type = "json")]
-    ClientClosedRequest(Message),
+    ClientClosedRequest(String),
 
     /// 500 Internal Server Error
     #[response(status = 500, content_type = "json")]
-    InternalServerError(Message),
+    InternalServerError(String),
 
     /// 501 Not Implemented
     #[response(status = 501, content_type = "json")]
-    NotImplemented(Message),
+    NotImplemented(String),
 
     /// 503 Service Unavailable
     #[response(status = 503, content_type = "json")]
-    ServiceUnavailable(Message),
+    ServiceUnavailable(String),
 
     /// 511 Network Authentication Required
     #[response(status = 511, content_type = "json")]
-    NetworkAuthenticationRequired(Message),
+    NetworkAuthenticationRequired(String),
 }
 
 /// Generic Result type for responses on REST routes.
@@ -83,7 +82,7 @@ impl ErrorResponse {
     /// status code is "`Ok`", in which case it should have been a successful
     /// response instead.
     fn convert(status: Status) -> Self {
-        let message = Message::from(status.message());
+        let message = Message::from(status.message()).json();
 
         match status.code() {
             Code::Aborted => Self::NoResponse(message),

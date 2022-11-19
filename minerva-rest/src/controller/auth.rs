@@ -58,17 +58,22 @@ async fn login(
 
     let mut client = rpc::session::make_client(endpoint, tenant.clone(), requestor)
         .await
-        .map_err(|status| ErrorResponse::from(status))?;
+        .map_err(|status| {
+            error!("Error while connecting to SESSION: {:?}", status);
+            ErrorResponse::from(status)
+        })?;
 
     let response = client
         .generate(Request::new(body.clone().into()))
         .await
         .map(|msg| {
             let token = msg.into_inner().token;
-
             Json(SessionResponse { token, tenant })
         })
-        .map_err(|status| ErrorResponse::from(status))?;
+        .map_err(|status| {
+            error!("Error while creating session: {:?}", status);
+            ErrorResponse::from(status)
+        })?;
 
     Ok(response)
 }
@@ -78,9 +83,10 @@ async fn login(
 /// This route requires that session cookies exist on the client requesting
 /// logoff. These cookies will be then accessed by the server and, upon
 /// successful logoff, will be deleted from the client's cookie jar.
+#[allow(unused_variables)]
 #[openapi(tag = "Authentication")]
-#[post("/<_tenant>/logout")]
-async fn logout(_tenant: String, session: SessionInfo) -> RestResult<crate::generic::Message> {
+#[post("/<tenant>/logout")]
+async fn logout(tenant: String, session: SessionInfo) -> RestResult<crate::generic::Message> {
     let endpoint = get_endpoint();
     let requestor = "unknown".to_string();
     let tenant = session.info.tenant;

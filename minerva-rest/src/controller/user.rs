@@ -35,10 +35,11 @@ pub fn get_endpoint() -> String {
 ///
 /// Upon success, returns a list of users in JSON format, containing up to the
 /// number of users per page as defined in the `USER` microservice.
+#[allow(unused_variables)]
 #[openapi(tag = "User")]
-#[get("/<_tenant>/user?<page>")]
+#[get("/<tenant>/user?<page>")]
 async fn index(
-    _tenant: String,
+    tenant: String,
     session: SessionInfo,
     page: Option<i64>,
 ) -> RestResult<Vec<data::user::User>> {
@@ -75,9 +76,10 @@ async fn index(
 ///
 /// Upon success, retrieves data for a single user of the given ID in JSON
 /// format.
+#[allow(unused_variables)]
 #[openapi(tag = "User")]
-#[get("/<_tenant>/user/<id>")]
-async fn show(_tenant: String, session: SessionInfo, id: i32) -> RestResult<data::user::User> {
+#[get("/<tenant>/user/<id>")]
+async fn show(tenant: String, session: SessionInfo, id: i32) -> RestResult<data::user::User> {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
@@ -113,10 +115,11 @@ async fn show(_tenant: String, session: SessionInfo, id: i32) -> RestResult<data
 ///
 /// Upon success, returns the data for the created user as if it were requested
 /// through the `show` method.
+#[allow(unused_variables)]
 #[openapi(tag = "User")]
-#[post("/<_tenant>/user", data = "<body>")]
+#[post("/<tenant>/user", data = "<body>")]
 async fn store(
-    _tenant: String,
+    tenant: String,
     session: SessionInfo,
     body: Json<data::user::RecvUser>,
 ) -> RestResult<data::user::User> {
@@ -127,9 +130,9 @@ async fn store(
     let message: rpc::messages::User = body.0.into();
 
     if message.login == *"unknown" {
-        return Err(ErrorResponse::BadRequest(crate::generic::Message::from(
-            "Username \"unknown\" is reserved",
-        )));
+        return Err(ErrorResponse::BadRequest(
+            crate::generic::Message::from("Username \"unknown\" is reserved").json(),
+        ));
     }
 
     info!(
@@ -165,10 +168,11 @@ async fn store(
 ///
 /// Upon success, returns the data for the created user as if it were requested
 /// through the `show` method.
+#[allow(unused_variables)]
 #[openapi(tag = "User")]
-#[put("/<_tenant>/user/<id>", data = "<body>")]
+#[put("/<tenant>/user/<id>", data = "<body>")]
 async fn update(
-    _tenant: String,
+    tenant: String,
     session: SessionInfo,
     id: i32,
     body: Json<data::user::RecvUser>,
@@ -209,10 +213,11 @@ async fn update(
 /// should also be passed through the URL.
 ///
 /// Upon success, returns an empty object.
+#[allow(unused_variables)]
 #[openapi(tag = "User")]
-#[delete("/<_tenant>/user/<index>")]
+#[delete("/<tenant>/user/<index>")]
 async fn delete(
-    _tenant: String,
+    tenant: String,
     session: SessionInfo,
     index: i32,
 ) -> RestResult<crate::generic::Message> {
