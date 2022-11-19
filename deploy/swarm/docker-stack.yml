@@ -21,7 +21,7 @@ services:
   
   # REST service
   rest:
-    image: luksamuk/minerva_rest:0.3.0
+    image: luksamuk/minerva_rest:0.3.1
     environment:
       - USER_SERVICE_SERVER=user
       - SESSION_SERVICE_SERVER=session

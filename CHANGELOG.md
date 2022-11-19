@@ -12,7 +12,7 @@ Relação de versões de microsserviços:
 - `USER` - v0.3.0
 - `SESSION` - v0.1.2
 - `RUNONCE` - v0.3.0
-- `REST` - v0.3.0
+- `REST` - v0.3.1
 - `DISPATCH`- v0.1.0
 - Front-End - v0.1.1 (pré-alfa)
 

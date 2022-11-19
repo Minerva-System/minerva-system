@@ -1606,7 +1606,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-data"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "argon2",
  "bb8 0.7.1",
@@ -1653,7 +1653,7 @@ dependencies = [
 
 [[package]]
 name = "minerva-rest"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "dotenv",
  "log",

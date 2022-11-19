@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: rest-container
-          image: luksamuk/minerva_rest:0.3.0
+          image: luksamuk/minerva_rest:0.3.1
           imagePullPolicy: Always
           ports:
             - containerPort: 9000
