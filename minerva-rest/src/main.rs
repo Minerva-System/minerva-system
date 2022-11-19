@@ -59,6 +59,10 @@ fn launch() -> rocket::Rocket<rocket::Build> {
             allow_spec_file_load: false,
             ..Default::default()
         },
+        ui: UiConfig {
+            theme: Theme::Dark,
+            ..Default::default()
+        },
         ..Default::default()
     };
 
