@@ -73,6 +73,10 @@ Relação de versões de microsserviços:
   do mesmo (cache e coleção de sessões).
 - *`USER`:* Caso um usuário falhe em ser criado (ao final da inserção), será considerado
   como se já existisse.
+- *`REST` (K8s):* ConfigMap próprio estava sendo ignorado e agora é utilizado.
+- *`REST`:* A API agora é capaz de lidar com a exposição de suas próprias rotas
+  sob um endpoint específico (como `/api`, por exemplo; isso também funciona para a
+  especificação OpenAPI e para Swagger e Rapidoc).
 
 ### Removido
 

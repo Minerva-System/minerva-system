@@ -1,15 +1,4 @@
 ---
-# API prefix middleware
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: api-ingress-middleware
-  namespace: minerva
-spec:
-  replacePathRegex:
-    regex: ^/api/(.*)
-    replacement: /$1
----
 # Grafana prefix middleware
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
@@ -29,7 +18,6 @@ metadata:
   namespace: minerva
   annotations:
     kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/router.middlewares: minerva-api-ingress-middleware@kubernetescrd
 spec:
   rules:
     - http:

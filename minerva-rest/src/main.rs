@@ -43,18 +43,20 @@ fn launch() -> rocket::Rocket<rocket::Build> {
     dotenv().ok();
 
     let logconfig = env::var("LOG_CONFIG_FILE").unwrap_or_else(|_| "./logging.yml".to_owned());
-    let api_root = env::var("API_ROOT").unwrap_or_else(|_| String::from("/"));
+    let api_root = env::var("API_ROOT").unwrap_or_else(|_| String::new());
 
     log4rs::init_file(logconfig, Default::default()).expect("Could not initialize logs");
 
+    let openapi_route = format!("{}/openapi.json", api_root);
+
     let swagger_config = SwaggerUIConfig {
-        url: "/openapi.json".to_owned(),
+        url: openapi_route.clone(),
         ..Default::default()
     };
 
     let rapidoc_config = RapiDocConfig {
         general: GeneralConfig {
-            spec_urls: vec![UrlObject::new("General", "/openapi.json")],
+            spec_urls: vec![UrlObject::new("General", &openapi_route)],
             ..Default::default()
         },
         hide_show: HideShowConfig {
@@ -82,9 +84,11 @@ fn launch() -> rocket::Rocket<rocket::Build> {
 
     let openapi_settings = OpenApiSettings::default();
 
+    let endpoint_root = if api_root.is_empty() { "/" } else { &api_root };
+
     #[rustfmt::skip]
     mount_endpoints_and_merged_docs! {
-	building_rocket, "/", openapi_settings,
+	building_rocket, endpoint_root, openapi_settings,
 	"" => controller::auth::routes(),
 	"" => controller::user::routes(),
     };

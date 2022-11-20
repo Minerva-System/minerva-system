@@ -38,6 +38,8 @@ spec:
                 name: servers-configmap
             - configMapRef:
                 name: ports-configmap
+            - configMapRef:
+                name: rest-configmap
           volumeMounts:
             - name: log-config
               mountPath: /cfg/
