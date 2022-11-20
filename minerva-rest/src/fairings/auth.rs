@@ -1,11 +1,14 @@
 //! This submodule contains the implementation of an authentication fairing.
 
+use log::debug;
 use minerva_data::session::Session;
 use minerva_rpc as rpc;
+use rocket::http::uri::Origin;
 use rocket::http::Status;
 use rocket::request::{FromRequest, Outcome, Request};
 use rocket_okapi::okapi::openapi3::{Object, SecurityRequirement, SecurityScheme};
 use rocket_okapi::request::OpenApiFromRequest;
+use std::env;
 
 /// Struct for session information that can be retrieved for every access to a
 /// route that explicitly retrieves it.
@@ -86,8 +89,18 @@ impl<'r> FromRequest<'r> for SessionInfo {
     type Error = SessionError;
 
     async fn from_request(req: &'r Request<'_>) -> Outcome<Self, Self::Error> {
+        // Strip API_ROOT from path
+        let api_root = env::var("API_ROOT").unwrap_or_else(|_| String::new());
+        let mut path = req.uri().path().to_string();
+        if path.starts_with(&api_root) {
+            path = path[api_root.len()..].to_owned();
+        }
+        let uri = Origin::parse(&path).expect("Stripped URI for auth is valid");
+
+        debug!("Matched URI path (without api root): {}", uri);
+
         // Get tenant from first segment of uri, e.g. /<tenant>/...
-        let tenant = match req.uri().path().segments().get(0) {
+        let tenant = match uri.path().segments().get(0) {
             Some(tenant) => tenant.to_owned(),
             None => return Outcome::Failure((Status::Unauthorized, SessionError::MissingTenant)),
         };

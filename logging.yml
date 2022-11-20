@@ -23,7 +23,7 @@ appenders:
         base: 1
 
 root:
-  level: info
+  level: debug
   appenders:
     - stdout
     - logfile
