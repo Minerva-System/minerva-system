@@ -71,6 +71,7 @@
 	- [Deploy via Docker Swarm + Docker Machine](./deploy-swarm-machine.md)
   - [Deploy via Kubernetes](./deploy-kubernetes.md)
     - [Monitoramento externo](./ferramentas-monitoramento-externas.md)
+	  - [Swagger e RapiDoc](./monitoramento-swagger.md)
 	  - [Grafana](./monitoramento-grafana.md)
 	  - [MongoDB Compass](./monitoramento-mongodb.md)
 	  - [RESP.app (para Redis)](./monitoramento-redis.md)
