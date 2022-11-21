@@ -76,6 +76,7 @@
 	  - [RESP.app (para Redis)](./monitoramento-redis.md)
 	  - [DBeaver CE (para PostgreSQL)](./monitoramento-postgres.md)
 	  - [RabbitMQ](./monitoramento-rabbitmq.md)
+	  - [ElasticSearch](./monitoramento-elasticsearch.md)
     - [Diagramas de arquitetura do cluster](./diagramas/diagrama-arquitetura.md)
 	  - [REST](./diagramas/rest.md)
 	  - [SESSION](./diagramas/session.md)
