@@ -82,8 +82,9 @@ Relação de versões de microsserviços:
 
 - Removidos projetos Rust de módulos ainda não-iniciados, que causavam lentidão
   desnecessária na compilação.
-- Removidos exemplos de requisições na documentação das rotas (prefira a documentação
-  via Postman ou use Swagger ou RapiDoc).
+- *`REST`:* Removidos exemplos de requisições na documentação das rotas (prefira a
+  documentação via Postman ou use Swagger ou RapiDoc).
+- *`REST`:* Removidas cores no texto do console durante deploy em k8s.
 
 ### Segurança
 

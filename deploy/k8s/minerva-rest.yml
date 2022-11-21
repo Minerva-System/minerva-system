@@ -9,6 +9,7 @@ data:
   ROCKET_KEEP_ALIVE: "0"
   ROCKET_PROFILE: release
   ROCKET_LOG_LEVEL: "normal"
+  ROCKET_CLI_COLORS: "false"
   API_ROOT: "/api"
 ---
 # Minerva System -- REST: Deployment
