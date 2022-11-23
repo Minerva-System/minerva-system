@@ -11,8 +11,8 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
-    restart: on-failure:5
-
+    network_mode: "host"
+      
   # MongoDB 4
   mongodb:
     environment:
@@ -24,8 +24,8 @@ services:
       - mongodb-data:/data/db
     ports:
       - "27017:27017"
-    restart: on-failure:5
-
+    network_mode: "host"
+      
   # Redis 7
   redis:
     image: redis:7-alpine
@@ -33,8 +33,8 @@ services:
       - redis-data:/data
     ports:
       - "6379:6379"
-    restart: on-failure:5
-
+    network_mode: "host"
+    
   # RabbitMQ
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -44,8 +44,8 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-    restart: on-failure:5
-
+    network_mode: "host"
+      
 volumes:
   db-data:
   mongodb-data:
