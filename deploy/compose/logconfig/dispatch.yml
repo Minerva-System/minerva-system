@@ -4,21 +4,21 @@ appenders:
   stdout:
     kind: console
     encoder:
-      pattern: "{d(%+)(utc)} [{f}:{L}] {h({l})} {m}{n}"
+      pattern: "[{t}] {h({l})} {m}{n}"
 
   logfile:
     kind: rolling_file
-    path: "./log/minerva-0.log"
+    path: "./log/dispatch-0.log"
     append: true
     encoder:
-      pattern: "{d(%+)(utc)} [{f}:{L}] {h({l})} {M}: {m}{n}"
+      pattern: "{d(%+)(utc)} [{t}] {h({l})} {M}: {m}{n}"
     policy:
       trigger:
         kind: size
         limit: 10 mb
       roller:
         kind: fixed_window
-        pattern: ./log/minerva-{}.log
+        pattern: ./log/dispatch-{}.log
         count: 2
         base: 1
 

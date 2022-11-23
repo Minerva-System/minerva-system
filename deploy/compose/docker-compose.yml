@@ -10,25 +10,23 @@ services:
       - LOG_CONFIG_FILE=/cfg/logging.yml
       - ROCKET_PROFILE=debug
       - ROCKET_LOG_LEVEL=debug
+      - API_ROOT=/api
+      - ROCKET_CLI_COLORS=false
     volumes:
-      - ./logging.yml:/cfg/logging.yml
+      - ./logconfig/rest.yml:/cfg/logging.yml
+      - ./log:/usr/src/app/log
     ports:
       - 9000:9000
     network_mode: "host"
-    restart: on-failure:5
   
   # RUNONCE service
-  # runonce:
-  #   image: luksamuk/minerva_runonce:latest
-  #   environment:
-  #     - DATABASE_SERVICE_SERVER=localhost
-  #     - MONGO_SERVICE_SERVER=localhost
-  #     - RABBITMQ_SERVICE_SERVER=rabbitmq
-  #   depends_on:
-  #     - "postgresql"
-  #     - "mongodb"
-  #     - "rabbitmq"
-  #   restart: on-failure:5
+  runonce:
+    image: luksamuk/minerva_runonce:latest
+    environment:
+      - DATABASE_SERVICE_SERVER=localhost
+      - MONGO_SERVICE_SERVER=localhost
+      - RABBITMQ_SERVICE_SERVER=localhost
+    network_mode: "host"
   
   # USER service
   user:
@@ -38,9 +36,9 @@ services:
       - RABBITMQ_SERVICE_SERVER=localhost
       - LOG_CONFIG_FILE=/cfg/logging.yml
     volumes:
-      - ./logging.yml:/cfg/logging.yml
+      - ./logconfig/user.yml:/cfg/logging.yml
+      - ./log:/usr/src/app/log
     network_mode: "host"
-    restart: on-failure:5
 
   # SESSION service
   session:
@@ -52,9 +50,9 @@ services:
       - RABBITMQ_SERVICE_SERVER=localhost
       - LOG_CONFIG_FILE=/cfg/logging.yml
     volumes:
-      - ../logging.yml:/cfg/logging.yml
+      - ./logconfig/session.yml:/cfg/logging.yml
+      - ./log:/usr/src/app/log
     network_mode: "host"
-    restart: on-failure:5
 
   # DISPATCH service
   dispatch:
@@ -68,8 +66,7 @@ services:
       - SESSION_SERVICE_PORT=9011
       - LOG_CONFIG_FILE=/cfg/logging.yml
     volumes:
-      - ./logging.yml:/cfg/logging.yml
+      - ./logconfig/dispatch.yml:/cfg/logging.yml
+      - ./log:/usr/src/app/log
     network_mode: "host"
-    restart: on-failure:5
-
 
