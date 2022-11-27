@@ -1,4 +1,4 @@
-# Mensageria via RabbitMQ
+# Mensageria
 
 <center>
 <img src="./rabbitmq-logo.png" alt="RabbitMQ" height="150"/>

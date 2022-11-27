@@ -1,4 +1,4 @@
-# Cache via Redis
+# Cache
 
 <center>
 <img src="./redis-logo.png" alt="Redis" height="150"/>

@@ -14,10 +14,11 @@ from diagrams.onprem.network import Traefik
 from diagrams.onprem.database import PostgreSQL, MongoDB
 from diagrams.onprem.inmemory import Redis
 from diagrams.onprem.monitoring import Grafana, Prometheus
+from diagrams.onprem.aggregator import Fluentd
+from diagrams.onprem.client import User
 
 from diagrams.elastic.elasticsearch import Elasticsearch, Kibana
 
-from diagrams.onprem.aggregator import Fluentd
 
 graph_attr = {
     "bgcolor": "transparent"
@@ -317,3 +318,26 @@ with Diagram("Provisionamento da interface Kibana", show=False, outformat="png",
 # PgAdmin4
 # Mongo Express
 # Redis Commander
+
+
+# Fluentd DaemonSet (página sobre logs)
+with Diagram("Coleta de logs no cluster Kubernetes", show=False, outformat="png", graph_attr=graph_attr, filename="log_collect_diagram"):
+    node1 = Node("Cluster Node #1")
+    node2 = Node("Cluster Node #2")
+    node3 = Node("Cluster Node #3")
+
+    with Cluster("Fluentd DaemonSet"):
+        fluentd1 = Fluentd("Node #1 Pod")
+        fluentd2 = Fluentd("Node #2 Pod")
+        fluentd3 = Fluentd("Node #3 Pod")
+        node1 - Edge(style="dashed", label="read node logs") - fluentd1
+        node2 - Edge(style="dashed", label="read node logs") - fluentd2
+        node3 - Edge(style="dashed", label="read node logs") - fluentd3
+
+    with Cluster("Elastic"):
+        elastic = Elasticsearch("Elasticsearch")
+        kibana = Kibana("Kibana")
+        elastic - Edge(style="dashed", label="share info") - kibana
+        
+    [fluentd1, fluentd2, fluentd3] >> elastic
+    kibana >> User("User")
