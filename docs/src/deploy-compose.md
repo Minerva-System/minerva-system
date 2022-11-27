@@ -102,7 +102,7 @@ a seção _Executando os serviços_.
 
 ### Usando Port Forward do Kubernetes
 
-Em seguida, caso você não queira executar os serviços essenciais
+Caso você não queira executar os serviços essenciais
 mais pesados em termos de recursos (PostgreSQL, MongoDB, Redis e
 RabbitMQ), poderá reaproveitá-los caso tenha realizado deploy dos
 mesmos em Kubernetes. Para tanto, você poderá usar um script
