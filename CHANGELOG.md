@@ -107,7 +107,7 @@ Relação de versões de microsserviços:
   como `true`.
 
 
-## [v2] - 2022-06-05
+## [v2] - 2022-07-05
 
 
 Relação de versões de microsserviços:
