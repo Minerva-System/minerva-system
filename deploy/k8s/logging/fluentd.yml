@@ -82,10 +82,9 @@ spec:
                 name: fluentd-configmap
           resources:
             limits:
-              cpu: 50m
               memory: 200Mi
             requests:
-              cpu: 50m
+              cpu: 100m
               memory: 200Mi
           volumeMounts:
             - name: default-log
