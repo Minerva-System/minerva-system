@@ -43,7 +43,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv().ok();
 
     let logconfig = env::var("LOG_CONFIG_FILE").unwrap_or_else(|_| "./logging.yml".to_owned());
-    log4rs::init_file(logconfig, Default::default())?;
+
+    match log4rs::init_file(logconfig, Default::default()) {
+        Ok(_) => info!("Log system initialized."),
+        Err(e) => eprintln!(
+            "Failure while initializing logs: {:?}\n\
+			     You might be flying solo now.",
+            e
+        ),
+    }
 
     let dbserver = env::var("DATABASE_SERVICE_SERVER")?;
 
