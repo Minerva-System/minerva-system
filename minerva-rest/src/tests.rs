@@ -90,8 +90,10 @@ impl Microservices {
                 .collect(),
         }
     }
+}
 
-    fn dispose(&mut self) {
+impl Drop for Microservices {
+    fn drop(&mut self) {
         for (svc, proc) in self.services.iter_mut() {
             proc.kill().expect(&format!(
                 "Successfully send kill signal to {} microservice",
@@ -99,6 +101,8 @@ impl Microservices {
             ));
             proc.wait().unwrap();
         }
+        self.services.clear();
+        println!("Microservices for this test were dropped successfully.");
     }
 }
 
@@ -115,7 +119,7 @@ fn make_client() -> Client {
 #[test]
 #[serial]
 fn login_logout() {
-    let mut svc = Microservices::spawn(vec!["SESSION"]);
+    let _svc = Microservices::spawn(vec!["SESSION"]);
     let client = make_client();
 
     // Login
@@ -148,8 +152,6 @@ fn login_logout() {
         ))
         .dispatch();
     assert_eq!(response.status(), Status::Ok);
-
-    svc.dispose();
 }
 
 /* User API */
@@ -159,7 +161,7 @@ fn login_logout() {
 fn get_user_data() {
     use minerva_data::user::User;
 
-    let mut svc = Microservices::spawn(vec!["SESSION", "USER"]);
+    let _svc = Microservices::spawn(vec!["SESSION", "USER"]);
     let client = make_client();
 
     // Login
@@ -226,8 +228,6 @@ fn get_user_data() {
         ))
         .dispatch();
     assert_eq!(response.status(), Status::Ok);
-
-    svc.dispose();
 }
 
 #[test]
@@ -235,7 +235,7 @@ fn get_user_data() {
 fn crud_user() {
     use minerva_data::user::User;
 
-    let mut svc = Microservices::spawn(vec!["SESSION", "USER"]);
+    let _svc = Microservices::spawn(vec!["SESSION", "USER"]);
     let client = make_client();
 
     // Login
@@ -363,8 +363,6 @@ fn crud_user() {
         ))
         .dispatch();
     assert_eq!(response.status(), Status::Ok);
-
-    svc.dispose();
 }
 
 #[test]
@@ -396,7 +394,7 @@ fn failed_requests() {
     assert_eq!(response.cookies().get_private("token"), None);
 
     // Create microservices
-    let mut svc = Microservices::spawn(vec!["SESSION", "USER"]);
+    let _svc = Microservices::spawn(vec!["SESSION", "USER"]);
 
     // 422 for a malformed login request
     let response = client
@@ -460,6 +458,4 @@ fn failed_requests() {
         ))
         .dispatch();
     assert_eq!(response.status(), Status::Ok);
-
-    svc.dispose();
 }
