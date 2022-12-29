@@ -66,6 +66,12 @@ jobs:
           toolchain: 1.65.0
           components: clippy, rustfmt
 
+      - name: Install cargo-llvm-cov
+        uses: taiki-e/install-action@cargo-llvm-cov
+
+      - name: Install nextest
+        uses: taiki-e/install-action@nextest
+
       - name: Rust build cache
         uses: Swatinem/rust-cache@v2
 
@@ -73,14 +79,24 @@ jobs:
         run: cargo fmt -- --check
 
       - name: Clippy & Warnings
-        run: cargo clippy -- -D clippy::all
+        run: cargo clippy -- -D clippy::all &> clippy.report
         env:
           RUSTFLAGS: -D warnings
 
       - name: Run database migrations
         run: cargo run --bin minerva-runonce
       
-      - name: Run tests
-        run: cargo test
+      - name: Run tests & generate coverage
+        run: cargo llvm-cov nextest --all-features --workspace --lcov --output-path lcov.info
 
-  
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v1
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      
