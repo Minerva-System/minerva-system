@@ -63,7 +63,7 @@ async fn login(
             ErrorResponse::from(status)
         })?;
 
-    let response = client
+    client
         .generate(Request::new(body.clone().into()))
         .await
         .map(|msg| {
@@ -73,9 +73,7 @@ async fn login(
         .map_err(|status| {
             error!("Error while creating session: {:?}", status);
             ErrorResponse::from(status)
-        })?;
-
-    Ok(response)
+        })
 }
 
 /// Route for user logoff.
@@ -106,11 +104,10 @@ async fn logout(tenant: String, session: SessionInfo) -> RestResult<crate::gener
         .map_err(|status| ErrorResponse::from(status))?;
 
     let token = session.token.clone();
-    let response = client
+
+    client
         .remove(Request::new(rpc::messages::SessionToken { token }))
         .await
         .map(|_| Json(crate::generic::Message::from("User logout successful")))
-        .map_err(|status| ErrorResponse::from(status))?;
-
-    Ok(response)
+        .map_err(|status| ErrorResponse::from(status))
 }
