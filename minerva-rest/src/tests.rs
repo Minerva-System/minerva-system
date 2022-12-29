@@ -1,4 +1,5 @@
 use super::launch;
+use crate::generic::Message;
 use minerva_data::session::SessionResponse;
 use rocket::http::{ContentType, Header, Status};
 use rocket::local::blocking::{Client, LocalResponse};
@@ -346,7 +347,12 @@ fn crud_user() {
         .dispatch();
     assert_eq!(response.status(), Status::Ok);
     assert_eq!(response.content_type(), Some(ContentType::JSON));
-    assert_eq!(response.into_string(), Some("{}".into()));
+
+    let message = response
+        .into_json::<Message>()
+        .expect("Deserialize error removal message");
+
+    assert_eq!(message.message, "User removed successfully");
 
     // Logout
     let response = client

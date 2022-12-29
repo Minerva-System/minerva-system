@@ -16,6 +16,7 @@
 extern crate rocket;
 
 use dotenv::dotenv;
+use log::info;
 use rocket_okapi::{
     mount_endpoints_and_merged_docs,
     rapidoc::*,
@@ -45,7 +46,14 @@ fn launch() -> rocket::Rocket<rocket::Build> {
     let logconfig = env::var("LOG_CONFIG_FILE").unwrap_or_else(|_| "./logging.yml".to_owned());
     let api_root = env::var("API_ROOT").unwrap_or_else(|_| String::new());
 
-    log4rs::init_file(logconfig, Default::default()).expect("Could not initialize logs");
+    match log4rs::init_file(logconfig, Default::default()) {
+        Ok(_) => info!("Log system initialized."),
+        Err(e) => eprintln!(
+            "Failure while initializing logs: {:?}\n\
+			     You might be flying solo now.",
+            e
+        ),
+    }
 
     let openapi_route = format!("{}/openapi.json", api_root);
 
