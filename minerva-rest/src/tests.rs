@@ -40,7 +40,7 @@ impl Microservices {
                 // There aren't many lines so slurp them on memory
                 let lines = BufReader::new(stdout).lines().enumerate();
                 for (counter, line) in lines {
-                    if line.unwrap().trim() == expected_text.trim() {
+                    if line.unwrap().trim().contains(expected_text.trim()) {
                         println!(
                             "Microservice {} is ready (as per line output {})",
                             name, counter
