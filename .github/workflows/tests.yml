@@ -82,7 +82,9 @@ jobs:
         run: cargo fmt -- --check
 
       - name: Clippy & Warnings
-        run: cargo clippy -- -D clippy::all &> clippy.report
+        run: |
+          mkdir -p coverage
+          cargo clippy -- -D clippy::all &> coverage/clippy.report
         env:
           RUSTFLAGS: -D warnings
 
@@ -90,7 +92,9 @@ jobs:
         run: cargo run --bin minerva-runonce
       
       - name: Run tests & generate coverage
-        run: cargo llvm-cov nextest --all-features --workspace --lcov --output-path lcov.info
+        run: |
+          mkdir -p coverage
+          cargo llvm-cov nextest --all-features --workspace --lcov --output-path coverage/lcov.info
 
       - name: Connect to Tailscale network
         uses: tailscale/github-action@main
