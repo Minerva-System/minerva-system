@@ -43,11 +43,6 @@ jobs:
           - 15672:15672
 
     steps:
-      - name: Connect to Tailscale
-        uses: tailscale/github-action@main
-        with:
-          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-
       - name: Install misc dependencies
         run: |
           sudo apt update
@@ -95,6 +90,11 @@ jobs:
       - name: Run tests & generate coverage
         run: cargo llvm-cov nextest --all-features --workspace --lcov --output-path lcov.info
 
+      - name: Connect to Tailscale network
+        uses: tailscale/github-action@main
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+        
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
         env:
