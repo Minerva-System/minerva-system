@@ -30,9 +30,7 @@ impl From<&str> for Message {
 
 impl From<String> for Message {
     fn from(msg: String) -> Self {
-        Self {
-            message: msg.clone(),
-        }
+        Self { message: msg }
     }
 }
 

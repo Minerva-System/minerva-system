@@ -101,7 +101,7 @@ async fn logout(tenant: String, session: SessionInfo) -> RestResult<crate::gener
 
     let mut client = rpc::session::make_client(endpoint, tenant.clone(), requestor)
         .await
-        .map_err(|status| ErrorResponse::from(status))?;
+        .map_err(ErrorResponse::from)?;
 
     let token = session.token.clone();
 
@@ -109,5 +109,5 @@ async fn logout(tenant: String, session: SessionInfo) -> RestResult<crate::gener
         .remove(Request::new(rpc::messages::SessionToken { token }))
         .await
         .map(|_| Json(crate::generic::Message::from("User logout successful")))
-        .map_err(|status| ErrorResponse::from(status))
+        .map_err(ErrorResponse::from)
 }

@@ -59,15 +59,13 @@ async fn index(
 
     let mut client = rpc::user::make_client(endpoint, tenant, requestor)
         .await
-        .map_err(|status| ErrorResponse::from(status))?;
+        .map_err(ErrorResponse::from)?;
 
-    let response = client
+    client
         .index(Request::new(rpc::messages::PageIndex { index: page }))
         .await
         .map(|msg| Json(data::user::message_to_vec(msg.into_inner())))
-        .map_err(|status| ErrorResponse::from(status))?;
-
-    Ok(response)
+        .map_err(ErrorResponse::from)
 }
 
 /// Route for fetching data of a single user.
@@ -96,16 +94,14 @@ async fn show(tenant: String, session: SessionInfo, id: i32) -> RestResult<data:
 
     let mut client = rpc::user::make_client(endpoint, tenant, requestor)
         .await
-        .map_err(|status| ErrorResponse::from(status))?;
+        .map_err(ErrorResponse::from)?;
 
     let index = id;
-    let response = client
+    client
         .show(Request::new(rpc::messages::EntityIndex { index }))
         .await
         .map(|msg| Json(msg.into_inner().into()))
-        .map_err(|status| ErrorResponse::from(status))?;
-
-    Ok(response)
+        .map_err(ErrorResponse::from)
 }
 
 /// Route for creating a new user.
@@ -147,15 +143,13 @@ async fn store(
 
     let mut client = rpc::user::make_client(endpoint, tenant, requestor)
         .await
-        .map_err(|status| ErrorResponse::from(status))?;
+        .map_err(ErrorResponse::from)?;
 
-    let response = client
+    client
         .store(Request::new(message))
         .await
         .map(|msg| Json(msg.into_inner().into()))
-        .map_err(|status| ErrorResponse::from(status))?;
-
-    Ok(response)
+        .map_err(ErrorResponse::from)
 }
 
 /// Route for updating data for a user.
@@ -193,18 +187,16 @@ async fn update(
 
     let mut client = rpc::user::make_client(endpoint, tenant, requestor)
         .await
-        .map_err(|status| ErrorResponse::from(status))?;
+        .map_err(ErrorResponse::from)?;
 
     let mut message: rpc::messages::User = body.0.into();
     message.id = Some(id);
 
-    let response = client
+    client
         .update(Request::new(message))
         .await
         .map(|msg| Json(msg.into_inner().into()))
-        .map_err(|status| ErrorResponse::from(status))?;
-
-    Ok(response)
+        .map_err(ErrorResponse::from)
 }
 
 /// Route for removing a user altogether.
@@ -237,13 +229,11 @@ async fn delete(
 
     let mut client = rpc::user::make_client(endpoint, tenant, requestor)
         .await
-        .map_err(|status| ErrorResponse::from(status))?;
+        .map_err(ErrorResponse::from)?;
 
-    let response = client
+    client
         .delete(Request::new(rpc::messages::EntityIndex { index }))
         .await
         .map(|_| Json(crate::generic::Message::from("User removed successfully")))
-        .map_err(|status| ErrorResponse::from(status))?;
-
-    Ok(response)
+        .map_err(ErrorResponse::from)
 }
