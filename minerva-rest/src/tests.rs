@@ -19,11 +19,10 @@ struct Microservices {
 impl Microservices {
     fn spawn_microservice(name: &str, service: &str) -> Child {
         println!("Spawning microservice {}...", name);
-        // Spawn through `cargo run`
-        let mut child = Command::new("cargo")
-            .arg("run")
-            .arg("--bin")
-            .arg(service)
+        let binary_path = format!("./target/debug/{}", service);
+        // Spawn by starting the binary directly.
+        // Ensure that all projects were built workspace-wise prior to this!!!
+        let mut child = Command::new(binary_path)
             .current_dir("../")
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
