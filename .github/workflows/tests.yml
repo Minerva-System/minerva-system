@@ -72,6 +72,9 @@ jobs:
       - name: Rust build cache
         uses: Swatinem/rust-cache@v2
 
+      - name: Setup sonarqube
+        uses: warchant/setup-sonar-scanner@v3
+
       - name: Linter
         run: cargo fmt -- --check
 
@@ -97,9 +100,15 @@ jobs:
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
         
+      # - name: SonarQube Scan
+      #   uses: sonarsource/sonarqube-scan-action@master
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      
+        run: |
+          sonar-scanner \
+          -Dsonar.sources=$GITHUB_WORKSPACE \
+          -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
