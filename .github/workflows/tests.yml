@@ -69,11 +69,6 @@ jobs:
           toolchain: 1.65.0
           components: clippy, rustfmt
 
-      - name: Install LLVM-Cov and Nextest
-        uses: taiki-e/install-action@v2
-        with:
-          tool: cargo-llvm-cov@0.5.3,cargo-nextest@0.9.47
-
       - name: Rust build cache
         uses: Swatinem/rust-cache@v2
 
@@ -85,13 +80,17 @@ jobs:
         env:
           RUSTFLAGS: -D warnings
 
+      - name: Build apps for debug
+        run: cargo build
+
       - name: Run database migrations
         run: cargo run --bin minerva-runonce
-      
-      - name: Run tests & generate coverage
-        run: cargo llvm-cov nextest --all-features --workspace --lcov --output-path ./lcov.info
-        env:
-          LLVM_COV_FLAGS: -r -s=/home/runner/work/minerva-system/minerva-system/
+
+      - name: Run tests
+        uses: actions-rs/tarpaulin@v0.1
+        with:
+          version: '0.22.0'
+          args: '--skip-clean -t 1200 --out Lcov -- --test-threads 1'
 
       - name: Connect to Tailscale network
         uses: tailscale/github-action@main
