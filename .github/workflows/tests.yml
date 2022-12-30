@@ -90,6 +90,8 @@ jobs:
       
       - name: Run tests & generate coverage
         run: cargo llvm-cov nextest --all-features --workspace --lcov --output-path ./lcov.info
+        env:
+          LLVM_COV_FLAGS: -r -s=/home/runner/work/minerva-system/minerva-system/
 
       - name: Connect to Tailscale network
         uses: tailscale/github-action@main
