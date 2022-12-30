@@ -35,6 +35,9 @@ Relação de versões de microsserviços:
 - *`DATA`*: Adicionado DTO fixo para retorno de dados de sessão durante login.
 - *REST:* API agora possui documentação e ferramentas para teste através de Swagger
   e RapiDoc (respectivamente através das rotas `/swagger` e `/rapidoc`).
+- *Sonar:* Adicionados arquivos de configuração do SonarQube para deploy em Kubernetes.
+- *Testes:* Adicionada configuração (projeto e pipeline de testes) para deploy dos
+  dados de testes e coberturas para o Sonar, via Tailscale.
 
 ### Modificado
 
