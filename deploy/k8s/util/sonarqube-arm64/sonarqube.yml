@@ -33,6 +33,20 @@ spec:
           volumeMounts:
             - name: sonarqube-data
               mountPath: /opt/sonarqube/data
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9000
+            periodSeconds: 30
+            failureThreshold: 10
+            initialDelaySeconds: 300
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9000
+            periodSeconds: 30
+            failureThreshold: 10
+            initialDelaySeconds: 600
       volumes:
         - name: sonarqube-data
           persistentVolumeClaim:
