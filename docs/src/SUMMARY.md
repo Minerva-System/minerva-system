@@ -66,6 +66,7 @@
 - [Compilação](./compilacao.md)
   - [Executar com recursos da máquina](./executar-maquina.md)
   - [Gerando imagens via Docker](./gerando-imagens.md)
+  - [SonarQube e Quality Gates](./sonarqube.md)
 - [Deploy](./deploy.md)
   - [Deploy via Docker Compose](./deploy-compose.md)
   - [Deploy via Docker Swarm + Vagrant](./deploy-swarm.md)
