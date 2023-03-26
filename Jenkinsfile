@@ -7,6 +7,24 @@ podTemplate(containers: [
     )
 ]) {
     node(POD_LABEL) {
+	stage('Instalação de dependências') {
+	    container('rust') {
+		stage('Instalar Protobuf Compiler v21.7') {
+		    sh '''
+                        wget https://github.com/protocolbuffers/protobuf/releases/download/v21.7/protoc-21.7-linux-`uname -m`.zip
+                        mv protoc-*.zip protoc.zip
+                        mkdir protoc && cd protoc
+                        unzip ../protoc.zip && rm ../protoc.zip readme.txt
+                        mv bin/protoc /usr/local/bin/protoc
+                        mv include/* /usr/local/include
+                        rm -r bin include
+                        cd .. && rm -r protoc
+                        protoc --version
+                        '''
+		}
+	    }
+	}
+	
         stage('Geração de Versão') {
             container('rust') {
                 stage('Clonar repositório') {
