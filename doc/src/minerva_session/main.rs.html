@@ -72,6 +72,18 @@
 <span id="72">72</span>
 <span id="73">73</span>
 <span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
 </pre><pre class="rust"><code><span class="doccomment">//! # Minerva System: SESSION Service
 //!
 //! ## About this service
@@ -88,6 +100,7 @@
 #![warn(missing_docs)]
 
 </span><span class="kw">use </span>dotenv::dotenv;
+<span class="kw">use </span>log::{debug, info};
 <span class="kw">use </span>minerva_cache <span class="kw">as </span>cache;
 <span class="kw">use </span>minerva_data::{db, mongo};
 <span class="kw">use </span>minerva_rpc::session::session_server::SessionServer;
@@ -110,6 +123,17 @@
 
     dotenv().ok();
 
+    <span class="kw">let </span>logconfig = env::var(<span class="string">&quot;LOG_CONFIG_FILE&quot;</span>).unwrap_or_else(|<span class="kw">_</span>| <span class="string">&quot;./logging.yml&quot;</span>.to_owned());
+
+    <span class="kw">match </span>log4rs::init_file(logconfig, Default::default()) {
+        <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">info!</span>(<span class="string">&quot;Log system initialized.&quot;</span>),
+        <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">eprintln!</span>(
+            <span class="string">&quot;Failure while initializing logs: {:?}\n\
+			     You might be flying solo now.&quot;</span>,
+            e
+        ),
+    }
+
     <span class="kw">let </span>port = env::var(<span class="string">&quot;SESSION_SERVICE_PORT&quot;</span>).expect(<span class="string">&quot;Unable to read SESSION_SERVICE_PORT&quot;</span>);
     <span class="kw">let </span>dbserver =
         env::var(<span class="string">&quot;DATABASE_SERVICE_SERVER&quot;</span>).expect(<span class="string">&quot;Unable to read DATABASE_SERVICE_SERVER&quot;</span>);
@@ -127,7 +151,7 @@
             tenant.database.clone(),
             (pool, mongo.clone(), redis.clone()),
         );
-        <span class="macro">println!</span>(
+        <span class="macro">debug!</span>(
             <span class="string">&quot;Added database connections for tenant {} ({} connections + 1 MongoDB client + 1 Redis client).&quot;</span>,
             tenant.name, tenant.connections
         );
@@ -135,15 +159,15 @@
 
     <span class="kw">let </span>addr = <span class="macro">format!</span>(<span class="string">&quot;0.0.0.0:{}&quot;</span>, port).parse()<span class="question-mark">?</span>;
 
-    <span class="macro">println!</span>(<span class="string">&quot;Starting SESSION on {}...&quot;</span>, addr);
+    <span class="macro">info!</span>(<span class="string">&quot;Starting SESSION on {}...&quot;</span>, addr);
 
     <span class="kw">let </span>server = Server::builder()
         .add_service(SessionServer::new(service::SessionService { pools }))
         .serve(addr);
 
-    <span class="macro">println!</span>(<span class="string">&quot;SESSION is ready to accept connections.&quot;</span>);
+    <span class="macro">info!</span>(<span class="string">&quot;SESSION is ready to accept connections.&quot;</span>);
     server.<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="macro">println!</span>(<span class="string">&quot;SESSION shut down.&quot;</span>);
+    <span class="macro">info!</span>(<span class="string">&quot;SESSION shut down.&quot;</span>);
     <span class="prelude-val">Ok</span>(())
 }
 </code></pre></div>

@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["minerva_broker","minerva_cache","minerva_data","minerva_dispatch","minerva_product","minerva_report","minerva_rest","minerva_rpc","minerva_runonce","minerva_session","minerva_stock","minerva_user"];
+window.ALL_CRATES = ["minerva_broker","minerva_cache","minerva_data","minerva_dispatch","minerva_rest","minerva_rpc","minerva_runonce","minerva_session","minerva_user"];

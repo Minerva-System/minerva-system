@@ -15,22 +15,36 @@
 <span id="15">15</span>
 <span id="16">16</span>
 <span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This module wraps functions related to logging stuff to screen.
 //! These are non-audit logs, which should be related to normal operation of the
 //! system, mainly captured by whatever deploy method is used.
 
-</span><span class="kw">use </span>chrono;
-<span class="kw">use </span>std::net::SocketAddr;
+</span><span class="kw">use </span>std::net::SocketAddr;
 
 <span class="doccomment">/// Prints a log line to the screen. Depends on an address of the service
 /// accessing the server, the username of the service requestor, whatever tenant
 /// is being accessed, and a message to be displayed.
+</span><span class="attribute">#[deprecated(
+    since = <span class="string">&quot;0.3.0&quot;</span>,
+    note = <span class="string">&quot;Use the `log` crate and `format` function instead&quot;
+</span>)]
 </span><span class="kw">pub fn </span>print(addr: SocketAddr, requestor: String, tenant: String, msg: <span class="kw-2">&amp;</span>str) {
     <span class="kw">let </span>msg = msg.to_string();
-    <span class="kw">let </span>time = chrono::offset::Local::now();
-    tokio::spawn(<span class="kw">async move </span>{
-        <span class="macro">println!</span>(<span class="string">&quot;{} :: {}@{:?} :: {}&gt;{}&quot;</span>, time, requestor, addr, tenant, msg);
-    });
+    <span class="macro">println!</span>(<span class="string">&quot;{}@{:?} :: {}&gt;{}&quot;</span>, requestor, addr, tenant, msg);
+}
+
+<span class="doccomment">/// Formats a log line with the default expected text. Depends on an address of
+/// the service accessing the server, the username of the service requestor,
+/// whatever tenant is being accessed, and a message to be displayed.
+</span><span class="kw">pub fn </span>format(addr: SocketAddr, requestor: <span class="kw-2">&amp;</span>str, tenant: <span class="kw-2">&amp;</span>str, msg: <span class="kw-2">&amp;</span>str) -&gt; String {
+    <span class="macro">format!</span>(<span class="string">&quot;{} ({}.{}@{})&quot;</span>, msg, requestor, tenant, addr)
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="minerva_data" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

@@ -100,12 +100,57 @@
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This submodule contains the implementation of an authentication fairing.
 
-</span><span class="kw">use </span>minerva_data::session::Session;
+</span><span class="kw">use </span>log::debug;
+<span class="kw">use </span>minerva_data::session::Session;
 <span class="kw">use </span>minerva_rpc <span class="kw">as </span>rpc;
+<span class="kw">use </span>rocket::http::uri::Origin;
 <span class="kw">use </span>rocket::http::Status;
 <span class="kw">use </span>rocket::request::{FromRequest, Outcome, Request};
+<span class="kw">use </span>rocket_okapi::okapi::openapi3::{Object, SecurityRequirement, SecurityScheme};
+<span class="kw">use </span>rocket_okapi::request::OpenApiFromRequest;
+<span class="kw">use </span>std::env;
 
 <span class="doccomment">/// Struct for session information that can be retrieved for every access to a
 /// route that explicitly retrieves it.
@@ -129,6 +174,31 @@
             info: info.into(),
             token,
         }
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; OpenApiFromRequest&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>SessionInfo {
+    <span class="kw">fn </span>from_request_input(
+        _gen: <span class="kw-2">&amp;mut </span>rocket_okapi::gen::OpenApiGenerator,
+        _name: String,
+        _required: bool,
+    ) -&gt; rocket_okapi::Result&lt;rocket_okapi::request::RequestHeaderInput&gt; {
+        <span class="kw">let </span>security_scheme = SecurityScheme {
+            description: <span class="prelude-val">Some</span>(<span class="string">&quot;Requires a Bearer Token to access.&quot;</span>.to_owned()),
+            data: rocket_okapi::okapi::openapi3::SecuritySchemeData::Http {
+                scheme: <span class="string">&quot;bearer&quot;</span>.to_owned(),
+                bearer_format: <span class="prelude-val">Some</span>(<span class="string">&quot;bearer&quot;</span>.to_owned()),
+            },
+            extensions: Object::default(),
+        };
+
+        <span class="kw">let </span><span class="kw-2">mut </span>security_req = SecurityRequirement::new();
+        security_req.insert(<span class="string">&quot;HttpAuth&quot;</span>.to_owned(), Vec::new());
+        <span class="prelude-val">Ok</span>(rocket_okapi::request::RequestHeaderInput::Security(
+            <span class="string">&quot;HttpAuth&quot;</span>.to_owned(),
+            security_scheme,
+            security_req,
+        ))
     }
 }
 
@@ -161,8 +231,18 @@
     <span class="kw">type </span>Error = SessionError;
 
     <span class="kw">async fn </span>from_request(req: <span class="kw-2">&amp;</span><span class="lifetime">&#39;r </span>Request&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Outcome&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+        <span class="comment">// Strip API_ROOT from path
+        </span><span class="kw">let </span>api_root = env::var(<span class="string">&quot;API_ROOT&quot;</span>).unwrap_or_else(|<span class="kw">_</span>| String::new());
+        <span class="kw">let </span><span class="kw-2">mut </span>path = req.uri().path().to_string();
+        <span class="kw">if </span>path.starts_with(<span class="kw-2">&amp;</span>api_root) {
+            path = path[api_root.len()..].to_owned();
+        }
+        <span class="kw">let </span>uri = Origin::parse(<span class="kw-2">&amp;</span>path).expect(<span class="string">&quot;Stripped URI for auth is valid&quot;</span>);
+
+        <span class="macro">debug!</span>(<span class="string">&quot;Matched URI path (without api root): {}&quot;</span>, uri);
+
         <span class="comment">// Get tenant from first segment of uri, e.g. /&lt;tenant&gt;/...
-        </span><span class="kw">let </span>tenant = <span class="kw">match </span>req.uri().path().segments().get(<span class="number">0</span>) {
+        </span><span class="kw">let </span>tenant = <span class="kw">match </span>uri.path().segments().get(<span class="number">0</span>) {
             <span class="prelude-val">Some</span>(tenant) =&gt; tenant.to_owned(),
             <span class="prelude-val">None </span>=&gt; <span class="kw">return </span>Outcome::Failure((Status::Unauthorized, SessionError::MissingTenant)),
         };

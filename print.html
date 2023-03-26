@@ -9,7 +9,6 @@
 
         <!-- Custom HTML head -->
         
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -34,14 +33,15 @@
 
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -57,7 +57,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -69,12 +69,14 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -82,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="CHANGELOG.html"><strong aria-hidden="true">2.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">3.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> Front-End</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="interface-plan9.html"><strong aria-hidden="true">3.1.1.</strong> Interface para Plan 9 from Bell Labs</a></li><li class="chapter-item expanded "><a href="interface-terminal.html"><strong aria-hidden="true">3.1.2.</strong> Interface para Terminal</a></li></ol></li><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">3.2.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="documentacao.html"><strong aria-hidden="true">4.</strong> Documentação do Software</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> Especificação do Projeto</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="multi-tenancy.html"><strong aria-hidden="true">5.1.</strong> Multi-Tenancy</a></li><li class="chapter-item expanded "><a href="banco-relacional.html"><strong aria-hidden="true">5.2.</strong> Banco de Dados Relacional</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="migrations.html"><strong aria-hidden="true">5.2.1.</strong> Executando migrations</a></li></ol></li><li class="chapter-item expanded "><a href="banco-nao-relacional.html"><strong aria-hidden="true">5.3.</strong> Banco de Dados Não-Relacional</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="colecoes.html"><strong aria-hidden="true">5.3.1.</strong> Coleções</a></li></ol></li><li class="chapter-item expanded "><a href="cache-redis.html"><strong aria-hidden="true">5.4.</strong> Cache via Redis</a></li><li class="chapter-item expanded "><a href="mensageria-rabbitmq.html"><strong aria-hidden="true">5.5.</strong> Mensageria via RabbitMQ</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.</strong> Diagramas</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="diagramas/casos-de-uso.html"><strong aria-hidden="true">5.6.1.</strong> Diagramas de Caso de Uso</a></li><li class="chapter-item expanded "><a href="diagramas-sequencia.html"><strong aria-hidden="true">5.6.2.</strong> Diagramas de Sequência</a></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.1.</strong> Inquilinos (TENANCY)</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.1.1.</strong> Listagem de nomes de inquilinos</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.1.2.</strong> Listagem de inquilinos</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.1.3.</strong> Criar inquilino</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.1.4.</strong> Desativar inquilino</div></li></ol></li><li class="chapter-item expanded "><a href="diagramas-sequencia-sessao.html"><strong aria-hidden="true">5.6.2.2.</strong> Sessão (SESSION)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="diagramas/login.html"><strong aria-hidden="true">5.6.2.2.1.</strong> Login do usuário</a></li><li class="chapter-item expanded "><a href="diagramas/logoff.html"><strong aria-hidden="true">5.6.2.2.2.</strong> Logoff do usuário</a></li></ol></li><li class="chapter-item expanded "><a href="diagramas-sequencia-usuarios.html"><strong aria-hidden="true">5.6.2.3.</strong> Usuários (USER)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="diagramas/cadastro-usuarios.html"><strong aria-hidden="true">5.6.2.3.1.</strong> Cadastro de usuários</a></li><li class="chapter-item expanded "><a href="diagramas/lista-usuarios.html"><strong aria-hidden="true">5.6.2.3.2.</strong> Listagem de usuários</a></li><li class="chapter-item expanded "><a href="diagramas/consultar-usuarios.html"><strong aria-hidden="true">5.6.2.3.3.</strong> Consultar usuário</a></li><li class="chapter-item expanded "><a href="diagramas/alteracao-usuarios.html"><strong aria-hidden="true">5.6.2.3.4.</strong> Alteração de cadastro de usuários</a></li><li class="chapter-item expanded "><a href="diagramas/remocao-usuarios.html"><strong aria-hidden="true">5.6.2.3.5.</strong> Remoção de usuários</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.4.</strong> Produtos (PRODUCT)</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.4.1.</strong> Cadastro de produtos</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.4.2.</strong> Listagem de produtos</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.4.3.</strong> Consultar produto</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.4.4.</strong> Alteração de cadastro de produtos</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.4.5.</strong> Remoção de produtos</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.5.</strong> Estoque (STOCK)</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.5.1.</strong> Início de estoque</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.5.2.</strong> Consulta de estoque</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.5.3.</strong> Listagem de estoques</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.5.4.</strong> Entrada de estoque</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.5.5.</strong> Saída de estoque</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.5.6.</strong> Listagem de movimentações de um estoque</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.6.</strong> Relatórios (REPORT)</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.6.1.</strong> Listagem de Entidades na tela</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.6.2.</strong> Listagem de Entidades em PDF</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.7.</strong> Clientes (CLIENT)</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.7.1.</strong> Cadastro de clientes</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.7.2.</strong> Listagem de clientes</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.7.3.</strong> Consultar cliente</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.7.4.</strong> Alteração de cadastro de cliente</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.7.5.</strong> Remoção de clientes</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.8.</strong> Auditoria (AUDIT)</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.8.1.</strong> Consultar logs de auditoria</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.9.</strong> Comunicação Instantânea (COMM)</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.9.1.</strong> Enviar mensagem via WhatsApp</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.9.2.</strong> Enviar mensagem via Facebook Messenger</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.9.3.</strong> Enviar mensagem via Instagram</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.6.2.9.4.</strong> Enviar mensagem via Telegram</div></li></ol></li></ol></li></ol></li></ol></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">6.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">6.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="gerando-imagens.html"><strong aria-hidden="true">6.2.</strong> Gerando imagens via Docker</a></li></ol></li><li class="chapter-item expanded "><a href="deploy.html"><strong aria-hidden="true">7.</strong> Deploy</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="deploy-compose.html"><strong aria-hidden="true">7.1.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-swarm.html"><strong aria-hidden="true">7.2.</strong> Deploy via Docker Swarm + Vagrant</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="deploy-swarm-machine.html"><strong aria-hidden="true">7.2.1.</strong> Deploy via Docker Swarm + Docker Machine</a></li></ol></li><li class="chapter-item expanded "><a href="deploy-kubernetes.html"><strong aria-hidden="true">7.3.</strong> Deploy via Kubernetes</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ferramentas-monitoramento-externas.html"><strong aria-hidden="true">7.3.1.</strong> Monitoramento externo</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="monitoramento-grafana.html"><strong aria-hidden="true">7.3.1.1.</strong> Grafana</a></li><li class="chapter-item expanded "><a href="monitoramento-mongodb.html"><strong aria-hidden="true">7.3.1.2.</strong> MongoDB Compass</a></li><li class="chapter-item expanded "><a href="monitoramento-redis.html"><strong aria-hidden="true">7.3.1.3.</strong> RESP.app (para Redis)</a></li><li class="chapter-item expanded "><a href="monitoramento-postgres.html"><strong aria-hidden="true">7.3.1.4.</strong> DBeaver CE (para PostgreSQL)</a></li><li class="chapter-item expanded "><a href="monitoramento-rabbitmq.html"><strong aria-hidden="true">7.3.1.5.</strong> RabbitMQ</a></li></ol></li><li class="chapter-item expanded "><a href="diagramas/diagrama-arquitetura.html"><strong aria-hidden="true">7.3.2.</strong> Diagramas de arquitetura do cluster</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="diagramas/rest.html"><strong aria-hidden="true">7.3.2.1.</strong> REST</a></li><li class="chapter-item expanded "><a href="diagramas/session.html"><strong aria-hidden="true">7.3.2.2.</strong> SESSION</a></li><li class="chapter-item expanded "><a href="diagramas/user.html"><strong aria-hidden="true">7.3.2.3.</strong> USER</a></li><li class="chapter-item expanded "><a href="diagramas/dispatch.html"><strong aria-hidden="true">7.3.2.4.</strong> DISPATCH</a></li><li class="chapter-item expanded "><a href="diagramas/postgresql.html"><strong aria-hidden="true">7.3.2.5.</strong> PostgreSQL</a></li><li class="chapter-item expanded "><a href="diagramas/mongodb.html"><strong aria-hidden="true">7.3.2.6.</strong> MongoDB</a></li><li class="chapter-item expanded "><a href="diagramas/redis.html"><strong aria-hidden="true">7.3.2.7.</strong> Redis</a></li><li class="chapter-item expanded "><a href="diagramas/rabbitmq.html"><strong aria-hidden="true">7.3.2.8.</strong> RabbitMQ</a></li><li class="chapter-item expanded "><a href="diagramas/prometheus.html"><strong aria-hidden="true">7.3.2.9.</strong> Prometheus</a></li><li class="chapter-item expanded "><a href="diagramas/grafana.html"><strong aria-hidden="true">7.3.2.10.</strong> Grafana</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.3.2.11.</strong> PgAdmin4</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.3.2.12.</strong> Mongo Express</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">7.3.2.13.</strong> Redis Commander</div></li></ol></li></ol></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Introdução</a></li><li class="chapter-item expanded "><a href="CHANGELOG.html"><strong aria-hidden="true">2.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="estrutura.html"><strong aria-hidden="true">3.</strong> Estrutura geral do projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="frontend.html"><strong aria-hidden="true">3.1.</strong> Front-End</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="interface-plan9.html"><strong aria-hidden="true">3.1.1.</strong> Interface para Plan 9 from Bell Labs</a></li><li class="chapter-item expanded "><a href="interface-terminal.html"><strong aria-hidden="true">3.1.2.</strong> Interface para Terminal</a></li></ol></li><li class="chapter-item expanded "><a href="backend.html"><strong aria-hidden="true">3.2.</strong> Back-End</a></li></ol></li><li class="chapter-item expanded "><a href="documentacao.html"><strong aria-hidden="true">4.</strong> Documentação do Software</a></li><li class="chapter-item expanded "><a href="especificacao-intro.html"><strong aria-hidden="true">5.</strong> Especificação do Projeto</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="multi-tenancy.html"><strong aria-hidden="true">5.1.</strong> Multi-Tenancy</a></li><li class="chapter-item expanded "><a href="banco-relacional.html"><strong aria-hidden="true">5.2.</strong> Banco de Dados Relacional</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="migrations.html"><strong aria-hidden="true">5.2.1.</strong> Executando migrations</a></li></ol></li><li class="chapter-item expanded "><a href="banco-nao-relacional.html"><strong aria-hidden="true">5.3.</strong> Banco de Dados Não-Relacional</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="colecoes.html"><strong aria-hidden="true">5.3.1.</strong> Coleções</a></li></ol></li><li class="chapter-item expanded "><a href="cache-redis.html"><strong aria-hidden="true">5.4.</strong> Cache</a></li><li class="chapter-item expanded "><a href="mensageria-rabbitmq.html"><strong aria-hidden="true">5.5.</strong> Mensageria</a></li><li class="chapter-item expanded "><a href="logs-fluentd.html"><strong aria-hidden="true">5.6.</strong> Coleta de Logs</a></li><li class="chapter-item expanded "><a href="diagramas-intro.html"><strong aria-hidden="true">5.7.</strong> Diagramas de Arquitetura</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="diagramas/casos-de-uso.html"><strong aria-hidden="true">5.7.1.</strong> Diagramas de Caso de Uso</a></li><li class="chapter-item expanded "><a href="diagramas-sequencia.html"><strong aria-hidden="true">5.7.2.</strong> Diagramas de Sequência</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="diagramas-sequencia-sessao.html"><strong aria-hidden="true">5.7.2.1.</strong> Sessão (SESSION)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="diagramas/login.html"><strong aria-hidden="true">5.7.2.1.1.</strong> Login do usuário</a></li><li class="chapter-item expanded "><a href="diagramas/logoff.html"><strong aria-hidden="true">5.7.2.1.2.</strong> Logoff do usuário</a></li></ol></li><li class="chapter-item expanded "><a href="diagramas-sequencia-usuarios.html"><strong aria-hidden="true">5.7.2.2.</strong> Usuários (USER)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="diagramas/cadastro-usuarios.html"><strong aria-hidden="true">5.7.2.2.1.</strong> Cadastro de usuários</a></li><li class="chapter-item expanded "><a href="diagramas/lista-usuarios.html"><strong aria-hidden="true">5.7.2.2.2.</strong> Listagem de usuários</a></li><li class="chapter-item expanded "><a href="diagramas/consultar-usuarios.html"><strong aria-hidden="true">5.7.2.2.3.</strong> Consultar usuário</a></li><li class="chapter-item expanded "><a href="diagramas/alteracao-usuarios.html"><strong aria-hidden="true">5.7.2.2.4.</strong> Alteração de cadastro de usuários</a></li><li class="chapter-item expanded "><a href="diagramas/remocao-usuarios.html"><strong aria-hidden="true">5.7.2.2.5.</strong> Remoção de usuários</a></li></ol></li></ol></li></ol></li></ol></li><li class="chapter-item expanded "><a href="compilacao.html"><strong aria-hidden="true">6.</strong> Compilação</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="executar-maquina.html"><strong aria-hidden="true">6.1.</strong> Executar com recursos da máquina</a></li><li class="chapter-item expanded "><a href="gerando-imagens.html"><strong aria-hidden="true">6.2.</strong> Gerando imagens via Docker</a></li><li class="chapter-item expanded "><a href="sonarqube.html"><strong aria-hidden="true">6.3.</strong> SonarQube e Quality Gates</a></li></ol></li><li class="chapter-item expanded "><a href="deploy.html"><strong aria-hidden="true">7.</strong> Deploy</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="deploy-compose.html"><strong aria-hidden="true">7.1.</strong> Deploy via Docker Compose</a></li><li class="chapter-item expanded "><a href="deploy-swarm.html"><strong aria-hidden="true">7.2.</strong> Deploy via Docker Swarm + Vagrant</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="deploy-swarm-machine.html"><strong aria-hidden="true">7.2.1.</strong> Deploy via Docker Swarm + Docker Machine</a></li></ol></li><li class="chapter-item expanded "><a href="deploy-kubernetes.html"><strong aria-hidden="true">7.3.</strong> Deploy via Kubernetes</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ferramentas-monitoramento-externas.html"><strong aria-hidden="true">7.3.1.</strong> Monitoramento externo</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="monitoramento-swagger.html"><strong aria-hidden="true">7.3.1.1.</strong> Swagger e RapiDoc</a></li><li class="chapter-item expanded "><a href="monitoramento-grafana.html"><strong aria-hidden="true">7.3.1.2.</strong> Grafana</a></li><li class="chapter-item expanded "><a href="monitoramento-mongodb.html"><strong aria-hidden="true">7.3.1.3.</strong> MongoDB Compass</a></li><li class="chapter-item expanded "><a href="monitoramento-redis.html"><strong aria-hidden="true">7.3.1.4.</strong> RESP.app (para Redis)</a></li><li class="chapter-item expanded "><a href="monitoramento-postgres.html"><strong aria-hidden="true">7.3.1.5.</strong> DBeaver CE (para PostgreSQL)</a></li><li class="chapter-item expanded "><a href="monitoramento-rabbitmq.html"><strong aria-hidden="true">7.3.1.6.</strong> RabbitMQ</a></li><li class="chapter-item expanded "><a href="monitoramento-elasticsearch.html"><strong aria-hidden="true">7.3.1.7.</strong> ElasticSearch</a></li></ol></li><li class="chapter-item expanded "><a href="diagramas/diagrama-arquitetura.html"><strong aria-hidden="true">7.3.2.</strong> Diagramas de arquitetura do cluster</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="diagramas/rest.html"><strong aria-hidden="true">7.3.2.1.</strong> REST</a></li><li class="chapter-item expanded "><a href="diagramas/session.html"><strong aria-hidden="true">7.3.2.2.</strong> SESSION</a></li><li class="chapter-item expanded "><a href="diagramas/user.html"><strong aria-hidden="true">7.3.2.3.</strong> USER</a></li><li class="chapter-item expanded "><a href="diagramas/dispatch.html"><strong aria-hidden="true">7.3.2.4.</strong> DISPATCH</a></li><li class="chapter-item expanded "><a href="diagramas/postgresql.html"><strong aria-hidden="true">7.3.2.5.</strong> PostgreSQL</a></li><li class="chapter-item expanded "><a href="diagramas/mongodb.html"><strong aria-hidden="true">7.3.2.6.</strong> MongoDB</a></li><li class="chapter-item expanded "><a href="diagramas/redis.html"><strong aria-hidden="true">7.3.2.7.</strong> Redis</a></li><li class="chapter-item expanded "><a href="diagramas/rabbitmq.html"><strong aria-hidden="true">7.3.2.8.</strong> RabbitMQ</a></li><li class="chapter-item expanded "><a href="diagramas/prometheus.html"><strong aria-hidden="true">7.3.2.9.</strong> Prometheus</a></li><li class="chapter-item expanded "><a href="diagramas/fluentd.html"><strong aria-hidden="true">7.3.2.10.</strong> Fluentd</a></li><li class="chapter-item expanded "><a href="diagramas/elasticsearch.html"><strong aria-hidden="true">7.3.2.11.</strong> Elasticsearch</a></li><li class="chapter-item expanded "><a href="diagramas/grafana.html"><strong aria-hidden="true">7.3.2.12.</strong> Grafana</a></li><li class="chapter-item expanded "><a href="diagramas/kibana.html"><strong aria-hidden="true">7.3.2.13.</strong> Kibana</a></li></ol></li></ol></li></ol></li><li class="chapter-item expanded "><a href="testes.html"><strong aria-hidden="true">8.</strong> Testes</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="testes-unitarios.html"><strong aria-hidden="true">8.1.</strong> Testes unitários</a></li><li class="chapter-item expanded "><a href="testes-integracao.html"><strong aria-hidden="true">8.2.</strong> Testes de integração</a></li><li class="chapter-item expanded "><a href="testes-carga.html"><strong aria-hidden="true">8.3.</strong> Testes de Carga</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -100,7 +102,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -133,7 +135,7 @@
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -181,16 +183,18 @@ e este projeto adere ao <a href="https://semver.org/spec/v2.0.0.html">Versioname
 <h2 id="não-lançado"><a class="header" href="#não-lançado"><a href="https://github.com/luksamuk/minerva-system/compare/v2...HEAD">Não-lançado</a></a></h2>
 <p>Relação de versões de microsserviços:</p>
 <ul>
-<li><code>USER</code> - v0.3.0</li>
-<li><code>SESSION</code> - v0.1.2</li>
+<li><code>REST</code> - v0.3.2</li>
 <li><code>RUNONCE</code> - v0.3.0</li>
-<li><code>REST</code> - v0.3.0</li>
-<li><code>DISPATCH</code>- v0.1.0</li>
+<li><code>USER</code> - v0.3.1</li>
+<li><code>SESSION</code> - v0.1.3</li>
+<li><code>DISPATCH</code>- v0.1.1</li>
 <li>Front-End - v0.1.1 (pré-alfa)</li>
 </ul>
 <h3 id="adicionado"><a class="header" href="#adicionado">Adicionado</a></h3>
 <ul>
 <li><em>Geração de imagens:</em> Reabilitado target de compilação para ARM64.</li>
+<li><em>Geração de imagens:</em> Adicionado script que gera uma working tree limpa ao
+gerar recipe do Cargo Chef.</li>
 <li><em><code>RUNONCE</code>:</em> Estruturas para preparação de message broker (virtual hosts e filas
 fixas).</li>
 <li><em><code>DISPATCH</code>:</em> Criação do microsserviço.</li>
@@ -203,6 +207,14 @@ padronizados.</li>
 <li><em>Minerva9:</em> Adicionada documentação para o MVC e repositório do projeto.</li>
 <li><em>Kubernetes:</em> Adição de configurações para deploy em ambientes IoT.</li>
 <li><em><code>DATA</code></em>: Adicionado DTO fixo para retorno de dados de sessão durante login.</li>
+<li><em>REST:</em> API agora possui documentação e ferramentas para teste através de Swagger
+e RapiDoc (respectivamente através das rotas <code>/swagger</code> e <code>/rapidoc</code>).</li>
+<li><em>Sonar:</em> Adicionados arquivos de configuração do SonarQube para deploy em Kubernetes.</li>
+<li><em>Testes:</em> Adicionada configuração (projeto e pipeline de testes) para deploy dos
+dados de testes e coberturas para o Sonar, via Tailscale.</li>
+<li><em>Testes:</em> Adicionada documentação individual sobre testes, principalmente testes
+de carga.</li>
+<li><em>Sonar:</em> Adicionada documentação sobre Quality Gates do projeto.</li>
 </ul>
 <h3 id="modificado"><a class="header" href="#modificado">Modificado</a></h3>
 <ul>
@@ -225,18 +237,35 @@ no <em>build</em> via Docker e no ambiente de testes do GitHub Actions.</li>
 pgAdmin4, já que essas configurações são pensadas primariamente como debug.
 Para monitorar e inspecionar o MongoDB, o Redis e o PostgreSQL, veja ferramentas
 ad-hoc como MongoDB Compass, RESP.app ou DBeaver, respectivamente.</li>
-<li><em>PostgreSQL</em>: Atualizado para versão 15.</li>
-<li><em>Documentação</em>: Adicionados diagramas separados para cada <em>deployment</em> no Kubernetes,
+<li><em>PostgreSQL:</em> Atualizado para versão 15.</li>
+<li><em>Documentação:</em> Adicionados diagramas separados para cada <em>deployment</em> no Kubernetes,
 bem como um diagrama geral da arquitetura do mesmo.</li>
-<li><em><code>REST</code></em>: Requisições agora exigem token através de Bearer Token.</li>
-<li><em><code>REST</code></em>: Requisições agora demandam <em>tenant</em> no início das rotas.</li>
+<li><em><code>REST</code>:</em> Requisições agora exigem token através de Bearer Token.</li>
+<li><em><code>REST</code>:</em> Requisições agora demandam <em>tenant</em> no início das rotas.</li>
+<li><em><code>REST</code>:</em> Todas as rotas agora possuem tipos de resposta bem-definidos, possibilitando
+extração de schema para OpenAPI.</li>
+<li><em><code>REST</code>:</em> Alteradas as variáveis de ambiente designando profile e nível de log do
+Rocket nos vários tipos de deploy (local, Compose, Swarm, K8s)</li>
 </ul>
 <h3 id="consertado"><a class="header" href="#consertado">Consertado</a></h3>
 <ul>
 <li><em><code>USER</code>:</em> Ao remover um usuário, envia mensagem requisitando remoção das sessões
 do mesmo (cache e coleção de sessões).</li>
+<li><em><code>USER</code>:</em> Caso um usuário falhe em ser criado (ao final da inserção), será considerado
+como se já existisse.</li>
+<li><em><code>REST</code> (K8s):</em> ConfigMap próprio estava sendo ignorado e agora é utilizado.</li>
+<li><em><code>REST</code>:</em> A API agora é capaz de lidar com a exposição de suas próprias rotas
+sob um endpoint específico (como <code>/api</code>, por exemplo; isso também funciona para a
+especificação OpenAPI e para Swagger e Rapidoc).</li>
 </ul>
 <h3 id="removido"><a class="header" href="#removido">Removido</a></h3>
+<ul>
+<li>Removidos projetos Rust de módulos ainda não-iniciados, que causavam lentidão
+desnecessária na compilação.</li>
+<li><em><code>REST</code>:</em> Removidos exemplos de requisições na documentação das rotas (prefira a
+documentação via Postman ou use Swagger ou RapiDoc).</li>
+<li><em><code>REST</code>:</em> Removidas cores no texto do console durante deploy em k8s.</li>
+</ul>
 <h3 id="segurança"><a class="header" href="#segurança">Segurança</a></h3>
 <ul>
 <li>Chaves dos dados de sessão armazenados no Redis agora são codificados usando
@@ -257,7 +286,7 @@ Microk8s.</li>
 caso a variável de ambiente <code>CARGO_NET_GIT_FETCH_WITH_CLI</code> não esteja definida
 como <code>true</code>.</li>
 </ul>
-<h2 id="v2---2022-06-05"><a class="header" href="#v2---2022-06-05"><a href="https://github.com/luksamuk/minerva-system/releases/tag/v2">v2</a> - 2022-06-05</a></h2>
+<h2 id="v2---2022-07-05"><a class="header" href="#v2---2022-07-05"><a href="https://github.com/luksamuk/minerva-system/releases/tag/v2">v2</a> - 2022-07-05</a></h2>
 <p>Relação de versões de microsserviços:</p>
 <ul>
 <li><code>USER</code> - v0.2.2</li>
@@ -387,6 +416,10 @@ svg:not(:root ) {
  --><!-- Pages: 1 --><svg width="365pt" height="228pt"
  viewBox="0.00 0.00 364.50 228.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 224)"><g id="clust2" class="cluster"><title>cluster_webservice</title><polygon fill="#666666" stroke="black" points="8,-98 8,-212 348.5,-212 348.5,-98 8,-98"/><text text-anchor="middle" x="178.25" y="-196.8" font-family="Times,serif" font-size="14.00">Serviço Web</text></g><g id="clust3" class="cluster"><title>cluster_internal</title><polygon fill="#999999" stroke="black" points="164.5,-106 164.5,-181 340.5,-181 340.5,-106 164.5,-106"/><text text-anchor="middle" x="252.5" y="-165.8" font-family="Times,serif" font-size="14.00">Interno</text></g><!-- frontend --><g id="node1" class="node"><title>frontend</title><polygon fill="lightgrey" stroke="black" points="120,-150 16,-150 16,-114 126,-114 126,-144 120,-150"/><polyline fill="none" stroke="black" points="120,-150 120,-144 "/><polyline fill="none" stroke="black" points="126,-144 120,-144 "/><text text-anchor="middle" x="71" y="-128.3" font-family="Times,serif" font-size="14.00">Front&#45;End (Web)</text></g><!-- backend --><g id="node2" class="node"><title>backend</title><polygon fill="lightgrey" stroke="black" points="242.5,-150 176.5,-150 172.5,-146 172.5,-114 238.5,-114 242.5,-118 242.5,-150"/><polyline fill="none" stroke="black" points="238.5,-146 172.5,-146 "/><polyline fill="none" stroke="black" points="238.5,-146 238.5,-114 "/><polyline fill="none" stroke="black" points="238.5,-146 242.5,-150 "/><text text-anchor="middle" x="207.5" y="-128.3" font-family="Times,serif" font-size="14.00">Back&#45;End</text></g><!-- frontend&#45;&#45;backend --><g id="edge3" class="edge"><title>frontend&#45;&#45;backend</title><path fill="none" stroke="darkorange" d="M126.32,-132C141.92,-132 158.49,-132 172.49,-132"/></g><!-- db --><g id="node3" class="node"><title>db</title><path fill="lightgrey" stroke="black" d="M332.5,-146.73C332.5,-148.53 320.4,-150 305.5,-150 290.6,-150 278.5,-148.53 278.5,-146.73 278.5,-146.73 278.5,-117.27 278.5,-117.27 278.5,-115.47 290.6,-114 305.5,-114 320.4,-114 332.5,-115.47 332.5,-117.27 332.5,-117.27 332.5,-146.73 332.5,-146.73"/><path fill="none" stroke="black" d="M332.5,-146.73C332.5,-144.92 320.4,-143.45 305.5,-143.45 290.6,-143.45 278.5,-144.92 278.5,-146.73"/><text text-anchor="middle" x="305.5" y="-128.3" font-family="Times,serif" font-size="14.00">BD</text></g><!-- backend&#45;&#45;db --><g id="edge4" class="edge"><title>backend&#45;&#45;db</title><path fill="none" stroke="darkmagenta" d="M242.62,-132C254.36,-132 267.33,-132 278.34,-132"/></g><!-- desktop --><g id="node4" class="node"><title>desktop</title><polygon fill="lightgrey" stroke="black" points="136.5,-90 5.5,-90 5.5,-54 136.5,-54 136.5,-90"/><text text-anchor="middle" x="71" y="-68.3" font-family="Times,serif" font-size="14.00">Front&#45;End (Desktop)</text></g><!-- desktop&#45;&#45;backend --><g id="edge1" class="edge"><title>desktop&#45;&#45;backend</title><path fill="none" stroke="darkorange" stroke-dasharray="5,2" d="M127.13,-90.1C130.32,-91.37 133.47,-92.67 136.5,-94 149.67,-99.77 163.69,-107.13 175.7,-113.82"/></g><!-- mobile --><g id="node5" class="node"><title>mobile</title><polygon fill="lightgrey" stroke="black" points="133.5,-36 8.5,-36 8.5,0 133.5,0 133.5,-36"/><text text-anchor="middle" x="71" y="-14.3" font-family="Times,serif" font-size="14.00">Front&#45;End (Mobile)</text></g><!-- mobile&#45;&#45;backend --><g id="edge2" class="edge"><title>mobile&#45;&#45;backend</title><path fill="none" stroke="darkorange" stroke-dasharray="5,2" d="M122.32,-36.1C127.31,-38.75 132.13,-41.72 136.5,-45 161.91,-64.11 183.49,-94.44 195.72,-113.77"/></g></g></svg></div>
 </center>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="front-end"><a class="header" href="#front-end">Front-End</a></h1>
+<p>O Minerva System possui vários front-ends para algumas plataformas,
+para Web, console e até mesmo para o sistema operacional Plan 9.</p>
+<p>Os capítulos a seguir falarão de tais interfaces.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="interface-para-plan-9-from-bell-labs"><a class="header" href="#interface-para-plan-9-from-bell-labs">Interface para Plan 9 from Bell Labs</a></h1>
 <center>
 <img src="./space-glenda.png" alt="Glenda, o mascote do Plan 9, em seu traje espacial" width="200"/>
@@ -684,6 +717,9 @@ Biblioteca para uso e acesso ao cache via serviço Redis.</li>
 <li><a href="./doc/minerva_broker/index.html">BROKER</a><br />
 Biblioteca para uso, acesso e configuração do serviço RabbitMQ e mensageria.</li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="especificação-do-projeto"><a class="header" href="#especificação-do-projeto">Especificação do Projeto</a></h1>
+<p>Os capítulos a seguir tratarão de documentação ligada à especificação
+funcional e arquitetural do projeto.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="multi-tenancy"><a class="header" href="#multi-tenancy">Multi-Tenancy</a></h1>
 <p>O Minerva System é um sistema <em>multi-tenant</em>. Isso significa que é
 capaz de gerenciar bancos de dados diferentes dependendo do <em>tenant</em>
@@ -830,7 +866,7 @@ documento, que armazena um <em>timestamp</em> indicando a data de início daquel
 Caso o documento não possua esse campo, o MongoDB, por padrão, acaba não expirando-o.</p>
 <p>A responsabilidade da definição e criação adequada do <code>creationDate</code> é do serviço
 <code>SESSION</code>.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="cache-via-redis"><a class="header" href="#cache-via-redis">Cache via Redis</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cache"><a class="header" href="#cache">Cache</a></h1>
 <center>
 <img src="./redis-logo.png" alt="Redis" height="150"/>
 </center>
@@ -852,7 +888,7 @@ tempo de vida de 24 horas. A chave dessa informação é gerada a partir das
 informações do <em>tenant</em> e do ID do objeto no MongoDB.</p>
 <p>Quando uma sessão for removida, além de realizar a remoção no MongoDB, o sistema
 também fica a cargo de remover a sessão no banco de dados também.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="mensageria-via-rabbitmq"><a class="header" href="#mensageria-via-rabbitmq">Mensageria via RabbitMQ</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mensageria"><a class="header" href="#mensageria">Mensageria</a></h1>
 <center>
 <img src="./rabbitmq-logo.png" alt="RabbitMQ" height="150"/>
 </center>
@@ -894,6 +930,34 @@ remove a sessão do cache no serviço Redis, caso exista.</li>
 <li>O serviço DISPATCH dá a mensagem como consumida e retorna à operação de
 escuta para a próxima mensagem.</li>
 </ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="coleta-de-logs"><a class="header" href="#coleta-de-logs">Coleta de Logs</a></h1>
+<center>
+<img src="./fluentd-logo.png" alt="Fluentd" height="150" style="padding-right:20px"/>
+<img src="./elastic-logo.png" alt="Elastic" height="150" style="padding-left:20px"/>
+</center>
+<p>O Minerva System possui um sistema de coleta de logs especificamente no contexto de um
+deploy para Kubernetes.</p>
+<p>A coleta é feita para cada nó do Kubernetes, através de um DaemonSet, que criará um <em>pod</em>
+em cada nó do cluster. Cada <em>pod</em> terá acesso de leitura aos logs de todos os <em>pods</em> em
+execução no nó; periodicamente, cada <em>pod</em> do Fluentd enviará um log stash para o serviço
+do Elasticsearch. O usuário poderá então consultar logs, realizar queries e montar
+dashboards através do Kibana.</p>
+<p>O diagrama a seguir é uma representação simplificada de como a coleta de logs opera.</p>
+<center>
+<img src="./diagramas/log_collect_diagram.png" alt="Diagrama de coleta de logs"/>
+</center>
+<p>Também é possível utilizar o Grafana para realizar a criação de <em>dashboards</em> com dados
+do Elasticsearch, porém será necessário adicioná-lo como fonte de dados nas configurações
+do Grafana, pois isso não é feito por padrão.</p>
+<p>Para maiores informações, veja <a href="./monitoramento-elasticsearch.html">como utilizar o ElasticSearch para verificar logs</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="diagramas-de-arquitetura"><a class="header" href="#diagramas-de-arquitetura">Diagramas de Arquitetura</a></h1>
+<p>A seguir, serão listados diagramas da arquitetura do sistema, ligados
+à disciplina de Engenharia de Software. Por questões de utilidade e
+por se tratarem de verdadeiros guias para implementação de novas
+funcionalidades, foi escolhido que essa documentação possuísse apenas
+diagramas de caso de uso e diagramas de sequência relacionados às
+regras de negócio de cada domínio da aplicação, o que traduz-se mais
+ou menos como sendo as funcionalidades individuais de cada microsserviço.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="diagramas-de-casos-de-uso"><a class="header" href="#diagramas-de-casos-de-uso">Diagramas de Casos de Uso</a></h1>
 <p>Os diagramas a seguir representam casos de uso para o sistema. Esses diagramas
 não têm a pretensão de serem completos, mas sim de ilustrar funcionalidades
@@ -1048,6 +1112,16 @@ instanciados antes de sua execução.</p>
 <p>É importante lembrar que os métodos a seguir não são considerados
 seguros para persistência de dados. Por isso, use-os apenas com a
 finalidade de testes.</p>
+<h4 id="usando-recursos-por-meio-externo-kubernetes"><a class="header" href="#usando-recursos-por-meio-externo-kubernetes">Usando recursos por meio externo (Kubernetes)</a></h4>
+<p>Caso você não queira executar os serviços essenciais
+mais pesados em termos de recursos (PostgreSQL, MongoDB, Redis e
+RabbitMQ), poderá reaproveitá-los caso tenha realizado deploy dos
+mesmos em Kubernetes. Para tanto, você poderá usar um script
+preparado que realiza esse processo. Veja que esse script assume
+que você possua a ferramenta <code>kubectl</code> com acesso padrão configurado
+para o cluster que seja seu <em>target</em>.</p>
+<p>O script encontra-se excepcionalmente em <code>helpers/port-forwards.sh</code>,
+na raiz do projeto.</p>
 <h4 id="banco-de-dados-relacional-1"><a class="header" href="#banco-de-dados-relacional-1">Banco de dados relacional</a></h4>
 <p>Como primeira dependência, recomenda-se criar o banco de dados relacional
 via Docker. Também seria possível instalar o PostgreSQL 15 na máquina local,
@@ -1282,6 +1356,32 @@ otimizada, sendo o script preerido a ser executado para enviar imagens para
 o DockerHub.</p>
 <p>Use esse script se a intenção for compilar para mais arquiteturas ou gerar
 versão oficial, de forma otimizada.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="sonarqube-e-quality-gates"><a class="header" href="#sonarqube-e-quality-gates">SonarQube e Quality Gates</a></h1>
+<p>O projeto Minerva System atualmente está <a href="https://github.com/Minerva-System/minerva-system">hospedado no GitHub</a> e, por isso,
+utiliza as ferramentas de pipelines e CI/CD do mesmo para execução de testes e
+geração de builds.</p>
+<p>Para garantir a qualidade no processo de entrega de cada pull request, foi
+adicionado suporte a SonarQube, principalmente através do arquivo
+<code>sonar-project.properties</code> que se encontra na raiz desse projeto.</p>
+<p>O GitHub possui acesso ao SonarQube, que está em execução em infraestrutura
+própria que, por enquanto, trata-se de um servidor on-premise em um Raspberry Pi
+4, mais especificamente executando K3s (uma implementação de Kubernetes). Este
+servidor também opera atualmente como o ambiente de testes do Minerva System,
+uma vez que o mesmo não possui um ambiente de QA ou produção.</p>
+<p>Por isso, pelo menos por enquanto, o projeto não possui um portal de métricas
+explícito que possa ser acompanhado por desenvolvedores.</p>
+<p>Para que um pull request passe nos quality gates do projeto, ele deverá garantir
+que o código possua as seguintes estatísticas:</p>
+<div class="table-wrapper"><table><thead><tr><th>Estatística</th><th>Valor para falha</th></tr></thead><tbody>
+<tr><td>Cobertura de testes</td><td>Menor que 50%*</td></tr>
+<tr><td>Linhas duplicadas (%)</td><td>Maior que 3%*</td></tr>
+<tr><td>Code Smells</td><td>Maior que 0</td></tr>
+<tr><td>Vulnerabilidades</td><td>Maior que 0</td></tr>
+</tbody></table>
+</div>
+<p>As estatísticas marcadas com <code>*</code> estão sujeitas a mudança no futuro. Idealmente,
+o código deverá ter uma cobertura de no mínimo 80% e a quantidade de linhas
+duplicadas poderá ser diminuída após mais análise.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="deploy"><a class="header" href="#deploy">Deploy</a></h1>
 <p>As sessões a seguir tratarão do deploy da aplicação, ou mais especificamente, de
 formas escaláveis de subir a aplicação num ambiente que simule produção.</p>
@@ -1332,7 +1432,54 @@ virtual.</p>
 serão baixadas).</li>
 </ul>
 <p>Além disso, <strong>todos os comandos a seguir devem ser executados no
-diretório <code>deploy</code> deste projeto</strong>.</p>
+diretório <code>deploy/coompose</code> deste projeto</strong>.</p>
+<h2 id="preparando-se-para-a-execução-dos-serviços"><a class="header" href="#preparando-se-para-a-execução-dos-serviços">Preparando-se para a execução dos serviços</a></h2>
+<p>Primeiramente, você deverá se preparar para a geração de arquivos de
+log em cada serviço. Para tanto, no Linux, execute o script <code>make_log_dir.sh</code>.
+Esse script criará uma pasta <code>log</code> que será montada para o usuário
+com UID 1000, correspondente ao usuário <code>appuser</code> na maioria das imagens
+dos serviços do Minerva System.</p>
+<h2 id="executando-dependências"><a class="header" href="#executando-dependências">Executando dependências</a></h2>
+<p>O Minerva System depende essencialmente de quatro serviços de terceiros:</p>
+<ul>
+<li>PostgreSQL;</li>
+<li>MongoDB;</li>
+<li>Redis;</li>
+<li>RabbitMQ.</li>
+</ul>
+<p>É possível realizar a execução desses serviços através de algum provedor
+que os facilite, mas, para eventuais testes locais, você poderá usar uma
+configuração de Docker Compose específica ou utilizar diretamente esses
+serviços caso estejam hospedados em um cluster Kubernetes, através de
+port-forward.</p>
+<h3 id="executando-via-docker-compose"><a class="header" href="#executando-via-docker-compose">Executando via Docker Compose</a></h3>
+<p>Para executar os serviços na máquina atual, você deverá navegar até
+a pasta <code>services</code> e iniciar o Docker Compose:</p>
+<pre><code class="language-bash">cd services
+docker compose up
+</code></pre>
+<p>Os serviços estarão expostos nas seguintes portas:</p>
+<div class="table-wrapper"><table><thead><tr><th>Porta</th><th>Serviço</th></tr></thead><tbody>
+<tr><td>8484</td><td>PgAdmin 4</td></tr>
+<tr><td>8686</td><td>Mongo Express</td></tr>
+<tr><td>8787</td><td>Redis Commander</td></tr>
+<tr><td>5672</td><td>RabbitMQ (Serviço)</td></tr>
+<tr><td>15672</td><td>RabbitMQ (Gerenciador)</td></tr>
+</tbody></table>
+</div>
+<p>O gerencialmento funcionará de forma similar aos serviços em si,
+portanto, para maiores informações sobre o uso do Compose, veja
+a seção <em>Executando os serviços</em>.</p>
+<h3 id="usando-port-forward-do-kubernetes"><a class="header" href="#usando-port-forward-do-kubernetes">Usando Port Forward do Kubernetes</a></h3>
+<p>Caso você não queira executar os serviços essenciais
+mais pesados em termos de recursos (PostgreSQL, MongoDB, Redis e
+RabbitMQ), poderá reaproveitá-los caso tenha realizado deploy dos
+mesmos em Kubernetes. Para tanto, você poderá usar um script
+preparado que realiza esse processo. Veja que esse script assume
+que você possua a ferramenta <code>kubectl</code> com acesso padrão configurado
+para o cluster que seja seu <em>target</em>.</p>
+<p>O script encontra-se excepcionalmente em <code>helpers/port-forwards.sh</code>,
+na raiz do projeto.</p>
 <h2 id="executando-os-serviços"><a class="header" href="#executando-os-serviços">Executando os serviços</a></h2>
 <p>Para executar os serviços usando Docker Compose, use o seguinte
 comando:</p>
@@ -1343,15 +1490,11 @@ atual do console, poderá executá-los em forma de <em>daemon</em>:</p>
 <pre><code class="language-bash">docker compose up -d
 </code></pre>
 <p>Neste caso em específico, para <code>localhost</code>, estarão abertas as
-seguintes portas para acesso:</p>
+seguintes portas para acesso aos serviços:</p>
 <div class="table-wrapper"><table><thead><tr><th>Porta</th><th>Serviço</th></tr></thead><tbody>
-<tr><td>80</td><td>Front-End</td></tr>
-<tr><td>9000</td><td>API REST</td></tr>
-<tr><td>8484</td><td>PgAdmin 4</td></tr>
-<tr><td>8686</td><td>Mongo Express</td></tr>
-<tr><td>8787</td><td>Redis Commander</td></tr>
-<tr><td>5672</td><td>RabbitMQ (Serviço)</td></tr>
-<tr><td>15672</td><td>RabbitMQ (Gerenciador)</td></tr>
+<tr><td>9000</td><td>API REST (endpoint <code>/api</code>)</td></tr>
+<tr><td>9010</td><td>USER</td></tr>
+<tr><td>9011</td><td>SESSION</td></tr>
 </tbody></table>
 </div>
 <h2 id="acompanhando-logs"><a class="header" href="#acompanhando-logs">Acompanhando logs</a></h2>
@@ -1382,9 +1525,9 @@ do mesmo, por exemplo.</p>
 em vez do anterior:</p>
 <pre><code class="language-bash">docker compose -v down
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="deploy-via-docker-swarm--hashicorp-vagrant"><a class="header" href="#deploy-via-docker-swarm--hashicorp-vagrant">Deploy via Docker Swarm + HashiCorp Vagrant</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="deploy-via-docker-swarm--vagrant"><a class="header" href="#deploy-via-docker-swarm--vagrant">Deploy via Docker Swarm + Vagrant</a></h1>
 <center>
-<img src="./swarm-vagrant.png" alt="Docker Swarm + HashiCorp Vagrant" width="400"/>
+<img src="./swarm-vagrant.png" alt="Docker Swarm + Vagrant" width="400"/>
 </center>
 <p>Além do deploy via Docker Compose, também é possível disponibilizar a stack do
 Sistema Minerva em um <em>cluster</em> do Docker Swarm.</p>
@@ -2018,6 +2161,44 @@ rápidas de utilização.</p>
 monitoramento dos serviços cujo <em>deploy</em> tenha sido realizado por meio de
 Kubernetes.</p>
 <p>A maioria dos serviços a seguir pode ser acessado através de <em>port-forward</em>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="swagger-e-rapidoc"><a class="header" href="#swagger-e-rapidoc">Swagger e RapiDoc</a></h1>
+<center>
+<img src="./swagger-logo.png" alt="Swagger" height="150" style="padding-right:20px"/>
+<img src="./rapidoc-logo.png" alt="RapiDoc" height="150" style="padding-left:20px"/>
+</center>
+<p>A API do Minerva System possui uma especificação compliant com OpenAPI 3, sendo portanto
+testável a partir de vários serviços. A especificação OAS do Minerva System é sempre
+exportada através do arquivo <code>openapi.json</code>, pela própria API (acessível na raiz do
+<em>subpath</em> no qual a mesma é provisionada; no caso do k8s, como a API opera em <code>/api</code>,
+esse arquivo pode ser encontrado em <code>/api/openapi.json</code>).</p>
+<p>Como forma padrão para testar requisições, a API do Minerva System provisiona também
+duas interfaces: <strong>Swagger</strong> e <strong>RapiDoc</strong>. Ambas são construídas pela API em si e
+não são criadas de forma externa à mesma. Além disso, ambas estarão acessíveis mesmo
+ao executar o Gateway da aplicação (microsserviço <code>minerva-rest</code>) localmente.</p>
+<h2 id="usando-o-swagger"><a class="header" href="#usando-o-swagger">Usando o Swagger</a></h2>
+<p>O Swagger é a interface gráfica mais utilizada atualmente para testar uma API pública.
+Para acessá-la, abra seu navegador de internet e acesse a página pela rota <code>/api/swagger</code>.</p>
+<center>
+<img src="./swagger-1.png" alt="Tela inicial do Swagger" width="600"/>
+</center>
+<p>Após utilizar a requisição de login, você poderá clicar no botão <em>Authorize</em> e, na tela a
+seguir, colar o token de autenticação.</p>
+<center>
+<img src="./swagger-2.png" alt="Tela de autorização do Swagger" width="600"/>
+</center>
+<p>Após clicar no botão <em>Authorize</em> da tela acima, requisições subsequentes serão realizadas
+com um Bearer Token incluído no cabeçalho das mesmas.</p>
+<h2 id="usando-o-rapidoc"><a class="header" href="#usando-o-rapidoc">Usando o RapiDoc</a></h2>
+<p>O RapiDoc é uma interface alternativa ao Swagger, sendo mais compacta e com algumas
+funcionalidades diferentes. Para acessá-la, abra seu navegador de internet e acesse a
+página pela rota <code>/api/rapidoc</code>.</p>
+<center>
+<img src="./rapidoc-1.png" alt="Tela inicial do RapiDoc" width="600"/>
+</center>
+<p>De forma similar ao Swagger, após utilizar a requisição de login, você poderá colar
+o token de autenticação na caixa de texto <code>api-token</code> da seção <em>AUTHENTICATION</em>, e clicar
+no botão <em>SET</em>. Requisições subsequentes serão realizadas com um Bearer Token incluído
+no cabeçalho das mesmas.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="grafana-1"><a class="header" href="#grafana-1">Grafana</a></h1>
 <center>
 <img src="./grafana-logo.png" alt="Grafana" height="150"/>
@@ -2137,6 +2318,57 @@ Para realizar login, use o usuário padrão <code>rabbitmq</code> e a senha <cod
 <center>
 <img src="./rabbitmq-config.png" alt="Painel do RabbitMQ" width="600"/>
 </center>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="elasticsearch"><a class="header" href="#elasticsearch">ElasticSearch</a></h1>
+<center>
+<img src="./elastic-logo.png" alt="Elastic" height="150"/>
+</center>
+<p>A ferramenta ElasticSearch é uma ferramenta de busca e <em>analytics</em> através de
+documentos que podem se interrelacionar, como por exemplo, no caso de logs.
+O Minerva System provisiona o ElasticSearch pelo Kubernetes para indexação e
+armazenamento de logs. Tais dados são alimentados primariamente através do
+serviço Fluentd, que realiza scraping dos logs de cada <em>pod</em>.</p>
+<p>Para realizar <em>queries</em> e analisar os dados armazenados no ElasticSearch,
+o Minerva System também provisiona o Kibana, uma interface gráfica própria
+que se integra com o ElasticSearch.</p>
+<p>O Kibana não exige configuração extra e nem mesmo autenticação para ser acessado
+(note que isso poderá mudar no futuro). Para tanto, você poderá utilizar o
+Ingress exclusivo para o Kibana, que poderá ser acessado na rota <code>/kibana</code> do
+cluster.</p>
+<p>Ao acessar o Kibana, você verá a seguinte tela inicial.</p>
+<center>
+<img src="./kibana-1.png" alt="Página Inicial do Kibana" width="600"/>
+</center>
+<p>Em seguida, no menu lateral, vá até a sessão <em>Analytics</em> e selecione <em>Discover</em>.</p>
+<center>
+<img src="./kibana-2.png" alt="Menu lateral do Kibana" width="600"/>
+</center>
+<p>Você verá a tela de gerenciamento e logs. Para adicionar os logs do cluster
+(enviados ao ElasticSearch via Fluentd através de log stashes), clique no botão
+de data views (canto superior esquerdo) e selecione a opção <em>Create a data view</em>,
+como mostra a seguir.</p>
+<center>
+<img src="./kibana-3.png" alt="Menu de data view na tela Discover" width="600"/>
+</center>
+<p>Na janela que abre, dê o nome que quiser ao data view, e no campo Index pattern,
+escreva <code>logstash-*</code>, para indicar que você deseja consumir dados de todos os
+log stashes criados pelo Fluentd.</p>
+<center>
+<img src="./kibana-4.png" alt="Tela de criação de um Data View" width="600"/>
+</center>
+<p>Após clicar em &quot;Save data view to Kibana&quot;, você poderá realizar queries diretamente
+no data view informado. A tela a seguir exemplifica uma query para exibir logs
+dos microsserviços.</p>
+<center>
+<img src="./kibana-5.png" alt="Criação de uma query no Kibana" width="600"/>
+</center>
+<p>Você poderá também adicionar novos campos à tabela, selecionando campos possíveis
+no menu de filtros que fica à esquerda.</p>
+<center>
+<img src="./kibana-6.png" alt="Seleção de filtros no Discover" width="600"/>
+</center>
+<center>
+<img src="./kibana-7.png" alt="Discover com filtros selecionados" width="600"/>
+</center>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="diagramas-de-arquitetura-do-cluster"><a class="header" href="#diagramas-de-arquitetura-do-cluster">Diagramas de arquitetura do cluster</a></h1>
 <p>Esta seção contém diagramas relacionados à arquitetura do Minerva System, quando
 realizado o seu <em>deploy</em> através do uso de Kubernetes.</p>
@@ -2182,10 +2414,75 @@ de cada um dos componentes necessários no Kubernetes.</p>
 <center>
 <p><img src="diagramas/prometheus_diagram.png" alt="" /></p>
 </center>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="serviço-fluentd"><a class="header" href="#serviço-fluentd">Serviço Fluentd</a></h1>
+<center>
+<p><img src="diagramas/fluentd_diagram.png" alt="" /></p>
+</center>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="serviço-elasticsearch"><a class="header" href="#serviço-elasticsearch">Serviço Elasticsearch</a></h1>
+<center>
+<p><img src="diagramas/elasticsearch_diagram.png" alt="" /></p>
+</center>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="serviço-grafana"><a class="header" href="#serviço-grafana">Serviço Grafana</a></h1>
 <center>
 <p><img src="diagramas/grafana_diagram.png" alt="" /></p>
 </center>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="serviço-kibana"><a class="header" href="#serviço-kibana">Serviço Kibana</a></h1>
+<center>
+<p><img src="diagramas/kibana_diagram.png" alt="" /></p>
+</center>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="testes-1"><a class="header" href="#testes-1">Testes</a></h1>
+<p>As seções a seguir descrevem ferramentas e práticas relacionadas a testes na
+aplicação. Estes testes podem estar relacionados a testes unitários, testes
+de integração e testes de carga e stress.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="testes-unitários"><a class="header" href="#testes-unitários">Testes unitários</a></h1>
+<h2 id="objetivo-3"><a class="header" href="#objetivo-3">Objetivo</a></h2>
+<p>Os testes unitários são criados de acordo com a entrega de cada demanda da
+aplicação. Eles devem ser feitos para testar unidades do projeto que venham
+a ser suficientemente pequenas para tal.</p>
+<h2 id="execução-1"><a class="header" href="#execução-1">Execução</a></h2>
+<p>Os testes unitários são executados juntamente com os de integração ao usar
+o comando <code>cargo test</code> na raiz do projeto.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="testes-de-integração"><a class="header" href="#testes-de-integração">Testes de integração</a></h1>
+<h2 id="objetivo-4"><a class="header" href="#objetivo-4">Objetivo</a></h2>
+<p>Os testes de integração são criados de forma mais rara, por exigirem um pouco
+mais de esforço de implementação, pois geralmente demandam que um ou mais
+serviço esteja em execução para que a integração entre as partes do sistema
+seja testada.</p>
+<p>Atualmente, apenas o módulo <code>minerva-rest</code> possui testes de integração. Estes
+testes geralmente iniciam outros microsserviços com os quais a aplicação se
+comunica.</p>
+<p>Um padrão comum no Minerva System é garantir que os testes de integração sejam
+executados sequencialmente, e não paralelamente, para evitar concorrência
+entre os módulos.</p>
+<h2 id="execução-2"><a class="header" href="#execução-2">Execução</a></h2>
+<p>Os testes de integração são executados juntamente com os unitários ao usar
+o comando <code>cargo test</code> na raiz do projeto.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="testes-de-carga"><a class="header" href="#testes-de-carga">Testes de Carga</a></h1>
+<center>
+<img src="./k6.png" alt="Grafana k6" height="150"/>
+</center>
+<p>A aplicação possui também testes de carga para avaliar como o sistema age
+sob um grande volume de acessos e operações. Para isso, usamos a ferramenta
+<a href="https://k6.io/">Grafana k6</a>.</p>
+<h2 id="requisitos"><a class="header" href="#requisitos">Requisitos</a></h2>
+<p>Para executar os testes, você precisará do k6 instalado e também do Node
+v16.19.1.</p>
+<h2 id="preparando-os-testes"><a class="header" href="#preparando-os-testes">Preparando os testes</a></h2>
+<p>Os testes encontram-se no diretório <code>deploy/tests/k6/load-test</code>. Navegue
+até o mesmo, e então instale as dependências:</p>
+<pre><code class="language-bash">npm install
+</code></pre>
+<p>Em seguida, você poderá, opcionalmente, definir algumas variáveis de ambiente
+para que o teste funcione, de acordo com a tabela a seguir:</p>
+<div class="table-wrapper"><table><thead><tr><th>Variável</th><th>Descrição</th><th>Valor Padrão</th></tr></thead><tbody>
+<tr><td><code>MINERVA_HOST</code></td><td>Host da API do Minerva</td><td><code>http://localhost:9000/api</code></td></tr>
+<tr><td><code>MINERVA_TENANT</code></td><td>Inquilino a ser usado para testes</td><td><code>teste</code></td></tr>
+</tbody></table>
+</div>
+<h2 id="executando-os-testes"><a class="header" href="#executando-os-testes">Executando os testes</a></h2>
+<p>Em seguida, execute os testes usado o comando:</p>
+<pre><code class="language-bash">npm run test
+</code></pre>
 
                     </main>
 
@@ -2207,26 +2504,27 @@ de cada um dos componentes necessários no Kubernetes.</p>
 
 
 
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
 
 
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
 
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
 
         <!-- Custom JS scripts -->
 
-        <script type="text/javascript">
+        <script>
         window.addEventListener('load', function() {
             window.setTimeout(window.print, 100);
         });
         </script>
 
+    </div>
     </body>
 </html>

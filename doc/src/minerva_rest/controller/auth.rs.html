@@ -110,24 +110,28 @@
 <span id="110">110</span>
 <span id="111">111</span>
 <span id="112">112</span>
+<span id="113">113</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This submodule describes routes for authentication and session creation
 //! services.
 
 </span><span class="kw">use </span><span class="kw">super</span>::response;
 <span class="kw">use </span><span class="kw">crate</span>::fairings::auth::SessionInfo;
 <span class="kw">use </span><span class="kw">crate</span>::utils;
+<span class="kw">use </span>data::session::SessionResponse;
+<span class="kw">use </span>log::info;
 <span class="kw">use </span>minerva_data <span class="kw">as </span>data;
 <span class="kw">use </span>minerva_rpc <span class="kw">as </span>rpc;
-<span class="kw">use </span>response::Response;
+<span class="kw">use </span>response::{ErrorResponse, RestResult};
 <span class="kw">use </span>rocket::serde::json::Json;
 <span class="kw">use </span>rocket::Route;
-<span class="kw">use </span>serde_json::json;
+<span class="kw">use </span>rocket_okapi::{okapi::openapi3::OpenApi, openapi, openapi_get_routes_spec};
 <span class="kw">use </span>std::env;
 <span class="kw">use </span>tonic::Request;
 
-<span class="doccomment">/// Returns the list of routes for this module.
-</span><span class="kw">pub fn </span>routes() -&gt; Vec&lt;Route&gt; {
-    <span class="macro">routes!</span>[login, logout]
+<span class="doccomment">/// Returns a tuple containing a vec of routes for this module, plus a structure
+/// containing the OpenAPI specification for these routes.
+</span><span class="kw">pub fn </span>routes() -&gt; (Vec&lt;Route&gt;, OpenApi) {
+    <span class="macro">openapi_get_routes_spec!</span>[login, logout]
 }
 
 <span class="doccomment">/// Retrieves the endpoint for the gRPC session service. Requires that the proper
@@ -145,82 +149,80 @@
 ///
 /// Upon a successful login attempt, the route will return the tenant and the
 /// session token data for the current user.
-///
-/// # Request example
-/// ```bash
-/// curl -X POST &#39;http://localhost:9000/minerva/login&#39; \
-///      -H &#39;Content-Type: application/json&#39; \
-///      -d &#39;{&quot;login&quot;: &quot;admin&quot;, &quot;password&quot;: &quot;admin&quot;}&#39;
-/// ```
-</span><span class="attribute">#[post(<span class="string">&quot;/&lt;tenant&gt;/login&quot;</span>, data = <span class="string">&quot;&lt;body&gt;&quot;</span>)]
-</span><span class="kw">async fn </span>login(tenant: <span class="kw-2">&amp;</span>str, body: Json&lt;data::session::RecvSession&gt;) -&gt; Response {
-    <span class="kw">use </span>data::session::SessionResponse;
+</span><span class="attribute">#[openapi(tag = <span class="string">&quot;Authentication&quot;</span>)]
+#[post(<span class="string">&quot;/&lt;tenant&gt;/login&quot;</span>, data = <span class="string">&quot;&lt;body&gt;&quot;</span>)]
+</span><span class="kw">async fn </span>login(
+    tenant: <span class="kw-2">&amp;</span>str,
+    body: Json&lt;data::session::RecvSession&gt;,
+) -&gt; RestResult&lt;SessionResponse&gt; {
     <span class="kw">let </span>endpoint = get_endpoint();
     <span class="kw">let </span>requestor = <span class="string">&quot;unknown&quot;</span>.to_string();
     <span class="kw">let </span>body = body.as_new(tenant);
     <span class="kw">let </span>tenant = tenant.to_string();
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;REST::LOGIN &gt; SESSION::GENERATE @ {}&quot;</span>, endpoint),
+    <span class="macro">info!</span>(
+        <span class="string">&quot;{}&quot;</span>,
+        data::log::format(
+            utils::get_ip(),
+            <span class="kw-2">&amp;</span>requestor,
+            <span class="kw-2">&amp;</span>tenant,
+            <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;POST /login: request SESSION.generate ({})&quot;</span>, endpoint),
+        )
     );
 
-    <span class="kw">let </span>client = rpc::session::make_client(endpoint, tenant.clone(), requestor).<span class="kw">await</span>;
-    <span class="kw">if </span>client.is_err() {
-        <span class="kw">return </span>Response::generate_error(client);
-    }
-    <span class="kw">let </span><span class="kw-2">mut </span>client = client.unwrap();
+    <span class="kw">let </span><span class="kw-2">mut </span>client = rpc::session::make_client(endpoint, tenant.clone(), requestor)
+        .<span class="kw">await
+        </span>.map_err(|status| {
+            <span class="macro">error!</span>(<span class="string">&quot;Error while connecting to SESSION: {:?}&quot;</span>, status);
+            ErrorResponse::from(status)
+        })<span class="question-mark">?</span>;
 
-    <span class="kw">let </span>response = client
+    client
         .generate(Request::new(body.clone().into()))
         .<span class="kw">await
         </span>.map(|msg| {
             <span class="kw">let </span>token = msg.into_inner().token;
-
-            SessionResponse { token, tenant }
-        });
-
-    Response::respond(response)
+            Json(SessionResponse { token, tenant })
+        })
+        .map_err(|status| {
+            <span class="macro">error!</span>(<span class="string">&quot;Error while creating session: {:?}&quot;</span>, status);
+            ErrorResponse::from(status)
+        })
 }
 
 <span class="doccomment">/// Route for user logoff.
 ///
-/// This route requires that session cookies exist on the client requesting
-/// logoff. These cookies will be then accessed by the server and, upon
-/// successful logoff, will be deleted from the client&#39;s cookie jar.
-///
-/// # Request example
-/// ```bash
-/// curl -X POST http://localhost:9000/minerva/logout \
-///      -H &#39;Authorization: Bearer {token}&#39;
-/// ```
-</span><span class="attribute">#[post(<span class="string">&quot;/&lt;_&gt;/logout&quot;</span>)]
-</span><span class="kw">async fn </span>logout(session: SessionInfo) -&gt; Response {
+/// This route requires a session token passed as Bearer Token. Upon successful
+/// logoff, the session will be invalidated on both database and cache.
+</span><span class="attribute">#[allow(unused_variables)]
+#[openapi(tag = <span class="string">&quot;Authentication&quot;</span>)]
+#[post(<span class="string">&quot;/&lt;tenant&gt;/logout&quot;</span>)]
+</span><span class="kw">async fn </span>logout(tenant: String, session: SessionInfo) -&gt; RestResult&lt;<span class="kw">crate</span>::generic::Message&gt; {
     <span class="kw">let </span>endpoint = get_endpoint();
     <span class="kw">let </span>requestor = <span class="string">&quot;unknown&quot;</span>.to_string();
     <span class="kw">let </span>tenant = session.info.tenant;
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;REST::LOGOUT &gt; SESSION::REMOVE @ {}&quot;</span>, endpoint),
+    <span class="macro">info!</span>(
+        <span class="string">&quot;{}&quot;</span>,
+        data::log::format(
+            utils::get_ip(),
+            <span class="kw-2">&amp;</span>requestor,
+            <span class="kw-2">&amp;</span>tenant,
+            <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;POST /logout: request SESSION.remove ({})&quot;</span>, endpoint),
+        )
     );
 
-    <span class="kw">match </span>rpc::session::make_client(endpoint, tenant.clone(), requestor).<span class="kw">await </span>{
-        <span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>client) =&gt; {
-            <span class="kw">let </span>token = session.token.clone();
-            <span class="kw">let </span>response = client
-                .remove(Request::new(rpc::messages::SessionToken { token }))
-                .<span class="kw">await
-                </span>.map(|<span class="kw">_</span>| <span class="macro">json!</span>({ <span class="string">&quot;message&quot;</span>: <span class="string">&quot;User logout successful&quot; </span>}));
+    <span class="kw">let </span><span class="kw-2">mut </span>client = rpc::session::make_client(endpoint, tenant.clone(), requestor)
+        .<span class="kw">await
+        </span>.map_err(ErrorResponse::from)<span class="question-mark">?</span>;
 
-            Response::respond(response)
-        }
-        err =&gt; Response::generate_error(err),
-    }
+    <span class="kw">let </span>token = session.token.clone();
+
+    client
+        .remove(Request::new(rpc::messages::SessionToken { token }))
+        .<span class="kw">await
+        </span>.map(|<span class="kw">_</span>| Json(<span class="kw">crate</span>::generic::Message::from(<span class="string">&quot;User logout successful&quot;</span>)))
+        .map_err(ErrorResponse::from)
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="minerva_rest" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

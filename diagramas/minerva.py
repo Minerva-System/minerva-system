@@ -1,11 +1,12 @@
 from diagrams import Cluster, Diagram, Edge
 
 from diagrams.k8s.clusterconfig import HPA
-from diagrams.k8s.compute import Deployment, Pod, ReplicaSet, StatefulSet, Job
+from diagrams.k8s.compute import Deployment, Pod, ReplicaSet, StatefulSet, Job, DaemonSet
 from diagrams.k8s.network import Ingress, Service
 from diagrams.k8s.storage import PV, PVC
 from diagrams.k8s.podconfig import ConfigMap, Secret
 from diagrams.k8s.rbac import ClusterRole, ClusterRoleBinding, ServiceAccount
+from diagrams.k8s.infra import Node
 
 from diagrams.onprem.queue import RabbitMQ
 from diagrams.onprem.compute import Server
@@ -13,6 +14,11 @@ from diagrams.onprem.network import Traefik
 from diagrams.onprem.database import PostgreSQL, MongoDB
 from diagrams.onprem.inmemory import Redis
 from diagrams.onprem.monitoring import Grafana, Prometheus
+from diagrams.onprem.aggregator import Fluentd
+from diagrams.onprem.client import User
+
+from diagrams.elastic.elasticsearch import Elasticsearch, Kibana
+
 
 graph_attr = {
     "bgcolor": "transparent"
@@ -44,12 +50,18 @@ with Diagram("Arquitetura do Minerva System", show=False, outformat="png", graph
         
     with Cluster("Monitoring"):
         prometheus = Prometheus("prometheus")
+        elastic = Elasticsearch("elasticsearch")
         grafana = Grafana("grafana")
+        kibana = Kibana("kibana")
+        with Cluster("Logging (per K8s node)"):
+            node = Node("node")
+            fluentd = Fluentd("fluentd")
 
     # Ingress
     ingress >> Edge(color="lightblue") >> rest
     ingress >> Edge(color="lightblue") >> grafana
-
+    ingress >> Edge(color="lightblue") >> kibana
+    
     # Services dispatch
     rest >> Edge(color="black") << users
     rest >> Edge(color="black") << session
@@ -58,6 +70,9 @@ with Diagram("Arquitetura do Minerva System", show=False, outformat="png", graph
     # Messaging
     dispatch >> Edge(color="darkorange") << rabbitmq
     session >> Edge(color="darkorange", style="dashed") >> rabbitmq
+
+    # Log management
+    node >> Edge(color="darkblue", label="Pod logs") >> fluentd >> Edge(color="darkblue", style="dashed") >> elastic
 
     # Cache
     session >> Edge(color="brown", label="Session cache") << redis
@@ -69,8 +84,9 @@ with Diagram("Arquitetura do Minerva System", show=False, outformat="png", graph
 
     # Metrics
     prometheus << Edge(color="brown") << rabbitmq
-    grafana >> Edge(color="darkorange", style="dashed") >> prometheus
-
+    grafana >> Edge(color="darkorange", style="dashed") >> [prometheus, elastic]
+    kibana >> Edge(color="magenta", style="dashed") >> elastic
+    
 # REST
 with Diagram("Provisionamento do serviço REST", show=False, outformat="png", graph_attr=graph_attr, filename="rest_diagram"):
     ports = ConfigMap("ports-configmap")
@@ -258,3 +274,70 @@ with Diagram("Provisionamento do dashboard de monitoramento Grafana", show=False
             pods << configmap
             pods - Edge(style="dotted") - volume
 
+# Fluentd
+with Diagram("Provisionamento do agregador de logs Fluentd", show=False, outformat="png", graph_attr=graph_attr, filename="fluentd_diagram"):
+    node = Node("Node")
+    with Cluster("RBAC"):
+        serviceaccount = ServiceAccount("fluentd-serviceaccount")
+        clusterrole = ClusterRole("fluentd-clusterrole")
+        clusterrolebinding = ClusterRoleBinding("fluentd-clusterrolebinding")
+        clusterrole << Edge(label="binds") << clusterrolebinding >> Edge(label="binds") >> serviceaccount
+
+    with Cluster("Fluentd"):
+        configmap = ConfigMap("fluentd-configmap")
+        daemonset = DaemonSet("fluentd-daemonset")
+        with Cluster("Node Replica"):
+            pod = Pod("fluentd")
+            node - Edge(style="dashed") - pod
+            serviceaccount - pod
+            daemonset - Edge(style="dashed") - pod
+            pod << configmap
+
+# Elasticsearch
+with Diagram("Provisionamento da engine de busca e analytics Elasticsearch", show=False, outformat="png", graph_attr=graph_attr, filename="elasticsearch_diagram"):
+    with Cluster("Elasticsearch"):
+        service = Service("elasticsearch-service")
+        statefulset = StatefulSet("elasticsearch-statefulset")
+        service >> statefulset
+        with Cluster("ReplicaSet"):
+            pod = Pod("elasticsearch-statefulset-0")
+            statefulset - Edge(style="dashed") - pod
+
+# Kibana
+with Diagram("Provisionamento da interface Kibana", show=False, outformat="png", graph_attr=graph_attr, filename="kibana_diagram"):
+    with Cluster("Kibana"):
+        configmap = ConfigMap("kibana-configmap")
+        deployment = Deployment("kibana-deployment")
+        service = Service("kibana-svc")
+        service >> deployment
+        with Cluster("ReplicaSet"):
+            pods = [Pod("kibana")]
+            deployment - Edge(style="dashed") - pods
+            pods << configmap
+
+# PgAdmin4
+# Mongo Express
+# Redis Commander
+
+
+# Fluentd DaemonSet (página sobre logs)
+with Diagram("Coleta de logs no cluster Kubernetes", show=False, outformat="png", graph_attr=graph_attr, filename="log_collect_diagram"):
+    node1 = Node("Cluster Node #1")
+    node2 = Node("Cluster Node #2")
+    node3 = Node("Cluster Node #3")
+
+    with Cluster("Fluentd DaemonSet"):
+        fluentd1 = Fluentd("Node #1 Pod")
+        fluentd2 = Fluentd("Node #2 Pod")
+        fluentd3 = Fluentd("Node #3 Pod")
+        node1 - Edge(style="dashed", label="read node logs") - fluentd1
+        node2 - Edge(style="dashed", label="read node logs") - fluentd2
+        node3 - Edge(style="dashed", label="read node logs") - fluentd3
+
+    with Cluster("Elastic"):
+        elastic = Elasticsearch("Elasticsearch")
+        kibana = Kibana("Kibana")
+        elastic - Edge(style="dashed", label="share info") - kibana
+        
+    [fluentd1, fluentd2, fluentd3] >> elastic
+    kibana >> User("User")

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["Message","DTO representing a generic message to represent anything."]],"type":[["JsonString","A wrapper type to act as a reminder that the current string should be a JSON object in string format."]]};

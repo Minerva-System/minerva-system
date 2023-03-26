@@ -107,14 +107,29 @@
 <span id="107">107</span>
 <span id="108">108</span>
 <span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This submodule contains default status code catchers for errors within the
 //! API.
 
-</span><span class="kw">use </span><span class="kw">super</span>::response::Response;
+</span><span class="kw">use </span><span class="kw">crate</span>::controller::response::ErrorResponse;
+<span class="kw">use </span><span class="kw">crate</span>::generic::Message;
 <span class="kw">use </span>rocket::http::ContentType;
 <span class="kw">use </span>rocket::http::Status;
 <span class="kw">use </span>rocket::Request;
-<span class="kw">use </span>serde_json::json;
 
 <span class="doccomment">/// Exports an array of catcher functions to be used when mounting the server.
 </span><span class="kw">pub fn </span>catchers() -&gt; Vec&lt;rocket::Catcher&gt; {
@@ -148,73 +163,88 @@
     }
 }
 
-<span class="doccomment">/// Generates a simple JSON string from a given message.
-</span><span class="kw">fn </span>gen_message(message: <span class="kw-2">&amp;</span>str) -&gt; String {
-    <span class="macro">json!</span>({ <span class="string">&quot;message&quot;</span>: message }).to_string()
-}
-
 <span class="doccomment">/// Default error catcher for any kind of error that was not treated
 /// specifically.
 </span><span class="attribute">#[catch(default)]
-</span><span class="kw">fn </span>default_catcher(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; DefaultError {
-    DefaultError { status }
+</span><span class="kw">fn </span>default_catcher(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; ErrorResponse {
+    ErrorResponse::InternalServerError(
+        Message::from(<span class="macro">format!</span>(<span class="string">&quot;Error while performing request: {}&quot;</span>, status)).json(),
+    )
 }
 
 <span class="doccomment">/// Error catcher for 400 - Bad Request.
 </span><span class="attribute">#[catch(<span class="number">400</span>)]
-</span><span class="kw">fn </span>bad_request(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; Response {
-    Response::BadRequest(gen_message(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
-        <span class="string">&quot;The request is not valid: {}&quot;</span>,
-        status.reason().unwrap()
-    )))
+</span><span class="kw">fn </span>bad_request(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; ErrorResponse {
+    ErrorResponse::BadRequest(
+        Message::from(<span class="macro">format!</span>(
+            <span class="string">&quot;The request is not valid: {}&quot;</span>,
+            status.reason().unwrap()
+        ))
+        .json(),
+    )
 }
 
 <span class="doccomment">/// Error catcher for 401 - Unauthorized.
 /// Returned on problems with the authentication fairing.
 </span><span class="attribute">#[catch(<span class="number">401</span>)]
-</span><span class="kw">fn </span>unauthorized(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; Response {
-    Response::Unauthorized(gen_message(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
-        <span class="string">&quot;This request is unauthorized: {}&quot;</span>,
-        status.reason().unwrap(),
-    )))
+</span><span class="kw">fn </span>unauthorized(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; ErrorResponse {
+    ErrorResponse::Unauthorized(
+        Message::from(<span class="macro">format!</span>(
+            <span class="string">&quot;This request is unauthorized: {}&quot;</span>,
+            status.reason().unwrap(),
+        ))
+        .json(),
+    )
 }
 
 <span class="doccomment">/// Error catcher for 404 - Not Found.
 </span><span class="attribute">#[catch(<span class="number">404</span>)]
-</span><span class="kw">fn </span>not_found(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; Response {
-    Response::NotFound(gen_message(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
-        <span class="string">&quot;The resource you are looking for does not exist: {}&quot;</span>,
-        status.reason().unwrap(),
-    )))
+</span><span class="kw">fn </span>not_found(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; ErrorResponse {
+    ErrorResponse::NotFound(
+        Message::from(<span class="macro">format!</span>(
+            <span class="string">&quot;The resource you are looking for does not exist: {}&quot;</span>,
+            status.reason().unwrap(),
+        ))
+        .json(),
+    )
 }
 
 <span class="doccomment">/// Error catcher for 412 - Unprocessable Entity.
 /// Returned when a JSON body to a request cannot be deserialized.
 </span><span class="attribute">#[catch(<span class="number">422</span>)]
-</span><span class="kw">fn </span>unprocessable_entity(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; Response {
-    Response::UnprocessableEntity(gen_message(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
-        <span class="string">&quot;The provided data could not be processed: {}&quot;</span>,
-        status.reason().unwrap(),
-    )))
+</span><span class="kw">fn </span>unprocessable_entity(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; ErrorResponse {
+    ErrorResponse::UnprocessableEntity(
+        Message::from(<span class="macro">format!</span>(
+            <span class="string">&quot;The provided data could not be processed: {}&quot;</span>,
+            status.reason().unwrap(),
+        ))
+        .json(),
+    )
 }
 
 <span class="doccomment">/// Error catcher for 500 - Internal Server Error.
 </span><span class="attribute">#[catch(<span class="number">500</span>)]
-</span><span class="kw">fn </span>internal(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; Response {
-    Response::InternalServerError(gen_message(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
-        <span class="string">&quot;There was a problem in the service while processing your request: {}&quot;</span>,
-        status.reason().unwrap(),
-    )))
+</span><span class="kw">fn </span>internal(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; ErrorResponse {
+    ErrorResponse::InternalServerError(
+        Message::from(<span class="macro">format!</span>(
+            <span class="string">&quot;There was a problem in the service while processing your request: {}&quot;</span>,
+            status.reason().unwrap(),
+        ))
+        .json(),
+    )
 }
 
 <span class="doccomment">/// Error catcher for 503 - Service Unavailable.
 /// Returned whenever a microservice cannot be reached to complete the request.
 </span><span class="attribute">#[catch(<span class="number">503</span>)]
-</span><span class="kw">fn </span>service_unavailable(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; Response {
-    Response::ServiceUnavailable(gen_message(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
-        <span class="string">&quot;The service is currently unavailable: {}&quot;</span>,
-        status.reason().unwrap(),
-    )))
+</span><span class="kw">fn </span>service_unavailable(status: Status, _req: <span class="kw-2">&amp;</span>Request) -&gt; ErrorResponse {
+    ErrorResponse::ServiceUnavailable(
+        Message::from(<span class="macro">format!</span>(
+            <span class="string">&quot;The service is currently unavailable: {}&quot;</span>,
+            status.reason().unwrap(),
+        ))
+        .json(),
+    )
 }
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="minerva_rest" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

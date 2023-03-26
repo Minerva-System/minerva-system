@@ -1,3 +1,0 @@
-(function() {var implementors = {
-"minerva_product":[["impl <a class=\"trait\" href=\"minerva_rpc/products/products_server/trait.Products.html\" title=\"trait minerva_rpc::products::products_server::Products\">Products</a> for <a class=\"struct\" href=\"minerva_product/service/struct.ProductsService.html\" title=\"struct minerva_product::service::ProductsService\">ProductsService</a>"]]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

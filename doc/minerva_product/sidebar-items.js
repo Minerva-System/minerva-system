@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":[["main","Entry point for this service."]],"mod":[["service","This module encloses the implementation of the PRODUCTS service and the implementation of its gRPC protocol."]]};

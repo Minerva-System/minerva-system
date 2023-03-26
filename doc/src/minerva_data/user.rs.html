@@ -433,6 +433,7 @@
 <span id="433">433</span>
 <span id="434">434</span>
 <span id="435">435</span>
+<span id="436">436</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This module contains Data Transfer Objects for the `user` table, which
 //! represents the registered users for this tenancy.
 </span><span class="attribute">#![allow(clippy::extra_unused_lifetimes)]
@@ -440,10 +441,11 @@
 </span><span class="kw">use </span><span class="kw">crate</span>::encryption;
 <span class="kw">use </span><span class="kw">crate</span>::schema::user;
 <span class="kw">use </span>minerva_rpc::messages;
+<span class="kw">use </span>rocket_okapi::okapi::schemars::{<span class="self">self</span>, JsonSchema};
 <span class="kw">use </span>std::str;
 
 <span class="doccomment">/// DTO representing a single entry on the `user` table.
-</span><span class="attribute">#[derive(Queryable, Serialize, Deserialize, Clone, Debug)]
+</span><span class="attribute">#[derive(Queryable, Serialize, Deserialize, Clone, Debug, JsonSchema)]
 </span><span class="kw">pub struct </span>User {
     <span class="doccomment">/// ID of the entry on the table.
     </span><span class="kw">pub </span>id: i32,
@@ -460,7 +462,7 @@
 }
 
 <span class="doccomment">/// DTO representing user data received through a REST request.
-</span><span class="attribute">#[derive(Serialize, Deserialize, Default)]
+</span><span class="attribute">#[derive(Serialize, Deserialize, Default, JsonSchema)]
 </span><span class="kw">pub struct </span>RecvUser {
     <span class="doccomment">/// Username of the user being emplaced.
     </span><span class="kw">pub </span>login: String,
@@ -475,7 +477,7 @@
 }
 
 <span class="doccomment">/// DTO representing a new entry on the `user` table.
-</span><span class="attribute">#[derive(Insertable, Default, Debug)]
+</span><span class="attribute">#[derive(Insertable, Default, Debug, JsonSchema)]
 #[table_name = <span class="string">&quot;user&quot;</span>]
 </span><span class="kw">pub struct </span>NewUser {
     <span class="doccomment">/// Username of the user being created.

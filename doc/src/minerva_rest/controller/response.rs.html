@@ -138,114 +138,165 @@
 <span id="138">138</span>
 <span id="139">139</span>
 <span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This submodule contains structures and helper functions for creating
 //! responses for a request.
 
-</span><span class="kw">use </span>rocket::response::Responder;
-<span class="kw">use </span>serde::Serialize;
-<span class="kw">use </span>serde_json::json;
+</span><span class="kw">use </span><span class="kw">crate</span>::generic::{JsonString, Message};
+<span class="kw">use </span>rocket::{response::Responder, serde::json::Json};
+<span class="kw">use </span>rocket_okapi::{
+    gen::OpenApiGenerator,
+    okapi::openapi3::{MediaType, Responses},
+    response::OpenApiResponderInner,
+};
 <span class="kw">use </span>tonic::{Code, Status};
 
-<span class="doccomment">/// Enumeration containing many kinds of responses to a REST request that was
-/// received. All of these responses should contain an embedded JSON in String
-/// format. These responses are modelled after HTTP response codes.
-</span><span class="attribute">#[allow(dead_code)]
-#[derive(Responder, Debug, Clone)]
-</span><span class="kw">pub enum </span>Response {
-    <span class="doccomment">/// 200 OK
-    </span><span class="attribute">#[response(status = <span class="number">200</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span><span class="prelude-val">Ok</span>(String),
-
-    <span class="doccomment">/// 304 Not Modified
-    </span><span class="attribute">#[response(status = <span class="number">304</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span>NotModified(String),
-
+<span class="doccomment">/// Enumeration containing many kinds of error responses to a REST request that
+/// was received. All of these responses should contain an embedded JSON in
+/// String format. These error responses are modelled after HTTP response codes.
+</span><span class="attribute">#[derive(Responder, Debug, Clone)]
+</span><span class="kw">pub enum </span>ErrorResponse {
     <span class="doccomment">/// 400 Bad Request
     </span><span class="attribute">#[response(status = <span class="number">400</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span>BadRequest(String),
+    </span>BadRequest(JsonString),
 
     <span class="doccomment">/// 401 Unauthorized
     </span><span class="attribute">#[response(status = <span class="number">401</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span>Unauthorized(String),
+    </span>Unauthorized(JsonString),
 
     <span class="doccomment">/// 404 Not Found
     </span><span class="attribute">#[response(status = <span class="number">404</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span>NotFound(String),
+    </span>NotFound(JsonString),
 
     <span class="doccomment">/// 408 Request Timeout
     </span><span class="attribute">#[response(status = <span class="number">408</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span>RequestTimeout(String),
+    </span>RequestTimeout(JsonString),
 
     <span class="doccomment">/// 409 Conflict
     </span><span class="attribute">#[response(status = <span class="number">409</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span>Conflict(String),
+    </span>Conflict(JsonString),
 
     <span class="doccomment">/// 412 Precondition Failed
     </span><span class="attribute">#[response(status = <span class="number">412</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span>PreconditionFailed(String),
+    </span>PreconditionFailed(JsonString),
 
     <span class="doccomment">/// 422 Unprocessable Entity
     </span><span class="attribute">#[response(status = <span class="number">422</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span>UnprocessableEntity(String),
+    </span>UnprocessableEntity(JsonString),
 
     <span class="doccomment">/// 444 No Response
     </span><span class="attribute">#[response(status = <span class="number">444</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span>NoResponse(String),
+    </span>NoResponse(JsonString),
 
     <span class="doccomment">/// 499 Client Closed Request
     </span><span class="attribute">#[response(status = <span class="number">499</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span>ClientClosedRequest(String),
+    </span>ClientClosedRequest(JsonString),
 
     <span class="doccomment">/// 500 Internal Server Error
     </span><span class="attribute">#[response(status = <span class="number">500</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span>InternalServerError(String),
+    </span>InternalServerError(JsonString),
 
     <span class="doccomment">/// 501 Not Implemented
     </span><span class="attribute">#[response(status = <span class="number">501</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span>NotImplemented(String),
+    </span>NotImplemented(JsonString),
 
     <span class="doccomment">/// 503 Service Unavailable
     </span><span class="attribute">#[response(status = <span class="number">503</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span>ServiceUnavailable(String),
+    </span>ServiceUnavailable(JsonString),
 
     <span class="doccomment">/// 511 Network Authentication Required
     </span><span class="attribute">#[response(status = <span class="number">511</span>, content_type = <span class="string">&quot;json&quot;</span>)]
-    </span>NetworkAuthenticationRequired(String),
+    </span>NetworkAuthenticationRequired(JsonString),
 }
 
-<span class="kw">impl </span>Response {
-    <span class="doccomment">/// Generates a `Response` from a gRPC response. This assumes that the
-    /// gRPC response is a `Result` that either holds a serializable success
-    /// value that will be serialized to JSON, or an error `Status` in case of
-    /// failure which will be converted to an appropriate HTTP error, containing
-    /// the `Status`&#39;s message.
-    </span><span class="kw">pub fn </span>respond&lt;T: Serialize&gt;(response: <span class="prelude-ty">Result</span>&lt;T, Status&gt;) -&gt; <span class="self">Self </span>{
-        <span class="kw">match </span>response {
-            <span class="prelude-val">Ok</span>(object) =&gt; Response::Ok(serde_json::to_string(<span class="kw-2">&amp;</span>object).unwrap()),
-            <span class="prelude-val">Err</span>(status) =&gt; <span class="self">Self</span>::convert(status),
-        }
-    }
+<span class="doccomment">/// Generic Result type for responses on REST routes.
+</span><span class="kw">pub type </span>RestResult&lt;T&gt; = <span class="prelude-ty">Result</span>&lt;Json&lt;T&gt;, ErrorResponse&gt;;
 
-    <span class="doccomment">/// Generates a `Response` from a gRPC response, whenever the response
-    /// success result is empty. In that case, an empty JSON object is returned.
-    /// If the gRPC response is an error `Status`, that error will be converted
-    /// to an appropriate HTTP error, containing the `Status`&#39;s message.
-    </span><span class="kw">pub fn </span>respond_empty(response: <span class="prelude-ty">Result</span>&lt;tonic::Response&lt;()&gt;, Status&gt;) -&gt; <span class="self">Self </span>{
-        <span class="kw">match </span>response {
-            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; Response::Ok(<span class="string">&quot;{}&quot;</span>.into()),
-            <span class="prelude-val">Err</span>(status) =&gt; <span class="self">Self</span>::convert(status),
-        }
-    }
-
-    <span class="doccomment">/// Generates a `Response` from a gRPC response, assuming that the gRPC
-    /// response is an error. Must only be used whenever it is well known that
-    /// the response&#39;s error can be unwrapped, otherwise panics. The error will
-    /// be converted to an appropriate HTTP error, containing the `Status`&#39;s
-    /// message.
-    </span><span class="kw">pub fn </span>generate_error&lt;T: std::fmt::Debug&gt;(response: <span class="prelude-ty">Result</span>&lt;T, Status&gt;) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::convert(response.unwrap_err())
-    }
-
+<span class="kw">impl </span>ErrorResponse {
     <span class="doccomment">/// Actual internal conversion function for generating an error `Response`
     /// from a gRPC `Status`. The `Status` message will be converted into a JSON
     /// object containing a single `&quot;message&quot;` field, which will be the response
@@ -256,7 +307,8 @@
     /// status code is &quot;`Ok`&quot;, in which case it should have been a successful
     /// response instead.
     </span><span class="kw">fn </span>convert(status: Status) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>message = <span class="macro">json!</span>({ <span class="string">&quot;message&quot;</span>: status.message() }).to_string();
+        <span class="kw">let </span>message = Message::from(status.message()).json();
+
         <span class="kw">match </span>status.code() {
             Code::Aborted =&gt; <span class="self">Self</span>::NoResponse(message),
             Code::AlreadyExists =&gt; <span class="self">Self</span>::Conflict(message),
@@ -276,6 +328,124 @@
             Code::Unknown =&gt; <span class="self">Self</span>::InternalServerError(message),
             <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;Unhandled return status: {}&quot;</span>, status),
         }
+    }
+}
+
+<span class="kw">impl </span>From&lt;Status&gt; <span class="kw">for </span>ErrorResponse {
+    <span class="kw">fn </span>from(status: Status) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::convert(status)
+    }
+}
+
+<span class="doccomment">/// Generates an OpenAPI 3 response object, given a title and a body.
+/// This function also expects that the response content is always in JSON format.
+</span><span class="kw">fn </span>gen_response(
+    gen: <span class="kw-2">&amp;mut </span>OpenApiGenerator,
+    title: <span class="kw-2">&amp;</span>str,
+    body: <span class="kw-2">&amp;</span>str,
+) -&gt; rocket_okapi::okapi::openapi3::Response {
+    <span class="kw">use </span>rocket_okapi::okapi::{<span class="self">self</span>, map};
+    <span class="kw">let </span>schema = gen.json_schema::&lt;<span class="kw">crate</span>::generic::Message&gt;();
+    rocket_okapi::okapi::openapi3::Response {
+        description: <span class="macro">format!</span>(<span class="string">&quot;### {}\n{}&quot;</span>, title, body),
+        content: <span class="macro">map! </span>{
+            <span class="string">&quot;application/json&quot;</span>.to_owned() =&gt; MediaType {
+            schema: <span class="prelude-val">Some</span>(schema),
+            ..Default::default()
+            }
+        },
+        ..Default::default()
+    }
+}
+
+<span class="kw">impl </span>OpenApiResponderInner <span class="kw">for </span>ErrorResponse {
+    <span class="kw">fn </span>responses(gen: <span class="kw-2">&amp;mut </span>rocket_okapi::gen::OpenApiGenerator) -&gt; rocket_okapi::Result&lt;Responses&gt; {
+        <span class="kw">use </span>rocket_okapi::okapi::openapi3::RefOr;
+        <span class="kw">use </span>rocket_okapi::okapi::{<span class="self">self</span>, map};
+
+        <span class="kw">let </span>r400 = gen_response(
+            gen,
+            <span class="string">&quot;Bad Request&quot;</span>,
+            <span class="string">&quot;Request was not performed with expected conventions&quot;</span>,
+        );
+
+        <span class="kw">let </span>r401 = gen_response(
+            gen,
+            <span class="string">&quot;Unauthorized&quot;</span>,
+            <span class="string">&quot;The request was missing authentication on headers&quot;</span>,
+        );
+
+        <span class="kw">let </span>r404 = gen_response(gen, <span class="string">&quot;Not Found&quot;</span>, <span class="string">&quot;The desired resource was not found&quot;</span>);
+
+        <span class="kw">let </span>r408 = gen_response(
+            gen,
+            <span class="string">&quot;Request Timeout&quot;</span>,
+            <span class="string">&quot;The connection timed out while requesting data from the service&quot;</span>,
+        );
+
+        <span class="kw">let </span>r409 = gen_response(
+            gen,
+            <span class="string">&quot;Conflict&quot;</span>,
+            <span class="string">&quot;There was a conflict while managing the entity, possibly related to duplication&quot;</span>,
+        );
+
+        <span class="kw">let </span>r412 = gen_response(gen, <span class="string">&quot;Precondition Failed&quot;</span>, <span class="string">&quot;There were inconsistencies while processing the entity, probably related to some business rule&quot;</span>);
+
+        <span class="kw">let </span>r422 = gen_response(gen, <span class="string">&quot;Unprocessable Entity&quot;</span>, <span class="string">&quot;The payload could not be processed, or possibly did not contain data on the expected format&quot;</span>);
+
+        <span class="kw">let </span>r444 = gen_response(
+            gen,
+            <span class="string">&quot;No Response&quot;</span>,
+            <span class="string">&quot;The connection was aborted by the service&quot;</span>,
+        );
+
+        <span class="kw">let </span>r499 = gen_response(gen, <span class="string">&quot;Client Closed Request&quot;</span>, <span class="string">&quot;The request was cancelled&quot;</span>);
+
+        <span class="kw">let </span>r500 = gen_response(
+            gen,
+            <span class="string">&quot;Internal Server Error&quot;</span>,
+            <span class="string">&quot;An unknown error has occurred on the system&quot;</span>,
+        );
+
+        <span class="kw">let </span>r501 = gen_response(
+            gen,
+            <span class="string">&quot;Not Implemented&quot;</span>,
+            <span class="string">&quot;This feature is still not implemented&quot;</span>,
+        );
+
+        <span class="kw">let </span>r503 = gen_response(
+            gen,
+            <span class="string">&quot;Service Unavailable&quot;</span>,
+            <span class="string">&quot;The requested service is unavailable for connection&quot;</span>,
+        );
+
+        <span class="kw">let </span>r511 = gen_response(
+            gen,
+            <span class="string">&quot;Network Authentication Required&quot;</span>,
+            <span class="string">&quot;The requested service needs internal authentication, which was not provided&quot;</span>,
+        );
+
+        <span class="attribute">#[rustfmt::skip]
+        </span><span class="kw">let </span>responses = Responses {
+            responses: <span class="macro">map! </span>{
+                <span class="string">&quot;400&quot;</span>.to_owned() =&gt; RefOr::Object(r400),
+                <span class="string">&quot;401&quot;</span>.to_owned() =&gt; RefOr::Object(r401),
+		<span class="string">&quot;404&quot;</span>.to_owned() =&gt; RefOr::Object(r404),
+		<span class="string">&quot;408&quot;</span>.to_owned() =&gt; RefOr::Object(r408),
+		<span class="string">&quot;409&quot;</span>.to_owned() =&gt; RefOr::Object(r409),
+		<span class="string">&quot;412&quot;</span>.to_owned() =&gt; RefOr::Object(r412),
+		<span class="string">&quot;422&quot;</span>.to_owned() =&gt; RefOr::Object(r422),
+                <span class="string">&quot;444&quot;</span>.to_owned() =&gt; RefOr::Object(r444),
+                <span class="string">&quot;499&quot;</span>.to_owned() =&gt; RefOr::Object(r499),
+                <span class="string">&quot;500&quot;</span>.to_owned() =&gt; RefOr::Object(r500),
+                <span class="string">&quot;501&quot;</span>.to_owned() =&gt; RefOr::Object(r501),
+                <span class="string">&quot;503&quot;</span>.to_owned() =&gt; RefOr::Object(r503),
+                <span class="string">&quot;511&quot;</span>.to_owned() =&gt; RefOr::Object(r511),
+            },
+            ..Default::default()
+        };
+
+        <span class="prelude-val">Ok</span>(responses)
     }
 }
 </code></pre></div>

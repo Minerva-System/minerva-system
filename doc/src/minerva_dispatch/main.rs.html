@@ -94,6 +94,18 @@
 <span id="94">94</span>
 <span id="95">95</span>
 <span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
 </pre><pre class="rust"><code><span class="doccomment">//! # Minerva System: DISPATCH Service
 //!
 //! ## About this service
@@ -122,6 +134,7 @@
 <span class="kw">use </span>broker::LapinPool;
 <span class="kw">use </span>data::db::DBPool;
 <span class="kw">use </span>dotenv::dotenv;
+<span class="kw">use </span>log::info;
 <span class="kw">use </span>std::collections::HashMap;
 <span class="kw">use </span>std::env;
 
@@ -137,6 +150,17 @@
 
     dotenv().ok();
 
+    <span class="kw">let </span>logconfig = env::var(<span class="string">&quot;LOG_CONFIG_FILE&quot;</span>).unwrap_or_else(|<span class="kw">_</span>| <span class="string">&quot;./logging.yml&quot;</span>.to_owned());
+
+    <span class="kw">match </span>log4rs::init_file(logconfig, Default::default()) {
+        <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">info!</span>(<span class="string">&quot;Log system initialized.&quot;</span>),
+        <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">eprintln!</span>(
+            <span class="string">&quot;Failure while initializing logs: {:?}\n\
+			     You might be flying solo now.&quot;</span>,
+            e
+        ),
+    }
+
     <span class="kw">let </span>dbserver = env::var(<span class="string">&quot;DATABASE_SERVICE_SERVER&quot;</span>)<span class="question-mark">?</span>;
 
     <span class="kw">let </span>mongoserver = env::var(<span class="string">&quot;MONGO_SERVICE_SERVER&quot;</span>)<span class="question-mark">?</span>;
@@ -145,10 +169,10 @@
 
     <span class="kw">let </span>rmqserver = env::var(<span class="string">&quot;RABBITMQ_SERVICE_SERVER&quot;</span>)<span class="question-mark">?</span>;
 
-    <span class="macro">println!</span>(<span class="string">&quot;Loading tenant configuration...&quot;</span>);
+    <span class="macro">info!</span>(<span class="string">&quot;Loading tenant configuration...&quot;</span>);
     <span class="kw">let </span>tenant_config = data::tenancy::get_tenants(<span class="string">&quot;tenancy.toml&quot;</span>);
 
-    <span class="macro">println!</span>(<span class="string">&quot;Creating service connections...&quot;</span>);
+    <span class="macro">info!</span>(<span class="string">&quot;Creating service connections...&quot;</span>);
     <span class="kw">let </span>mongo_client = data::mongo::make_client(<span class="kw-2">&amp;</span>mongoserver).<span class="kw">await</span>;
     <span class="kw">let </span>redis_client = cache::build_client(<span class="kw-2">&amp;</span>redisserver)<span class="question-mark">?</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>tenant_clients: HashMap&lt;String, (DBPool, LapinPool)&gt; = HashMap::new();
@@ -167,7 +191,7 @@
         .map(|cfg| cfg.database.clone())
         .collect::&lt;Vec&lt;String&gt;&gt;();
 
-    <span class="macro">println!</span>(<span class="string">&quot;Starting listeners for each tenant...&quot;</span>);
+    <span class="macro">info!</span>(<span class="string">&quot;Starting listeners for each tenant...&quot;</span>);
     <span class="kw">let </span><span class="kw-2">mut </span>handlers = <span class="macro">vec!</span>[];
     <span class="kw">for </span>t <span class="kw">in </span>tenants {
         <span class="kw">let </span>tenant = t.clone();
@@ -177,7 +201,7 @@
         <span class="kw">let </span>mongo = mongo_client.clone();
 
         handlers.push(tokio::spawn(<span class="kw">async move </span>{
-            <span class="macro">println!</span>(<span class="string">&quot;Running queue listener for {}.&quot;</span>, tenant);
+            <span class="macro">info!</span>(<span class="string">&quot;Running queue listener for {}.&quot;</span>, tenant);
             controller::queue_consume(tenant, rabbitmq, postgres, mongo, redis)
                 .<span class="kw">await
                 </span>.unwrap();

@@ -100,6 +100,7 @@
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
+<span id="103">103</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This module wraps all functions related to operations that should be run
 //! once on the database, when the entire system starts.
 
@@ -127,6 +128,7 @@
 <span class="doccomment">/// Create a database for a specific tenant, if it doesn&#39;t exist.
 /// Panics if unable to create database.
 </span><span class="kw">pub fn </span>create_database(tenant: <span class="kw-2">&amp;</span>str, server: <span class="kw-2">&amp;</span>str) {
+    <span class="macro">println!</span>(<span class="string">&quot;{}: Creating database...&quot;</span>, tenant);
     db::create_database(tenant, server)
         .map_err(|e| <span class="macro">panic!</span>(<span class="string">&quot;{}: Error while creating database: {}&quot;</span>, tenant, e))
         .unwrap();

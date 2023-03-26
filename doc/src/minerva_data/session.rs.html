@@ -266,12 +266,14 @@
 <span id="266">266</span>
 <span id="267">267</span>
 <span id="268">268</span>
+<span id="269">269</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This module contains Data Transfer Objects for the user sessions on the
 //! system, representing a user&#39;s login session for a given tenant. These DTO&#39;s
 //! mostly relate to the `session` collecton on MongoDB database.
 
 </span><span class="kw">use </span>minerva_rpc::messages;
 <span class="kw">use </span>mongodb::bson::DateTime;
+<span class="kw">use </span>rocket_okapi::okapi::schemars::{<span class="self">self</span>, JsonSchema};
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 
 <span class="doccomment">/// DTO representing the data for a user session.
@@ -289,7 +291,7 @@
 
 <span class="doccomment">/// DTO representing the data for a new session, to be received by the
 /// gRPC session service.
-</span><span class="attribute">#[derive(Debug, Clone, Deserialize, Eq, PartialEq)]
+</span><span class="attribute">#[derive(Debug, Clone, Deserialize, Eq, PartialEq, JsonSchema)]
 </span><span class="kw">pub struct </span>NewSession {
     <span class="doccomment">/// Tenant of the required session.
     </span><span class="kw">pub </span>tenant: String,
@@ -301,7 +303,7 @@
 
 <span class="doccomment">/// DTO representing the data for a new session, to be received by the
 /// REST gateway endpoint.
-</span><span class="attribute">#[derive(Debug, Deserialize)]
+</span><span class="attribute">#[derive(Debug, Deserialize, JsonSchema)]
 </span><span class="kw">pub struct </span>RecvSession {
     <span class="doccomment">/// User attempting to log in.
     </span><span class="kw">pub </span>login: String,
@@ -311,7 +313,7 @@
 
 <span class="doccomment">/// DTO representing the data returned from the login route on the REST
 /// endpoint, which should have a token and the tenant name.
-</span><span class="attribute">#[derive(Debug, Serialize, Deserialize)]
+</span><span class="attribute">#[derive(Debug, Serialize, Deserialize, JsonSchema)]
 </span><span class="kw">pub struct </span>SessionResponse {
     <span class="doccomment">/// Access token for the user.
     </span><span class="kw">pub </span>token: String,

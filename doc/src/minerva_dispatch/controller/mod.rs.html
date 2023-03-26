@@ -114,12 +114,43 @@
 <span id="114">114</span>
 <span id="115">115</span>
 <span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
 </pre><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::error::DispatchError;
 <span class="kw">use </span>futures::stream::StreamExt;
 <span class="kw">use </span>lapin::{
     options::{BasicAckOptions, BasicConsumeOptions},
     types::FieldTable,
 };
+<span class="kw">use </span>log::{debug, error, info, trace};
 <span class="kw">use </span>minerva_broker <span class="kw">as </span>broker;
 <span class="kw">use </span>minerva_broker::LapinPool;
 <span class="kw">use </span>minerva_data::db::DBPool;
@@ -146,33 +177,46 @@
     mongodb: MongoClient,
     _redis: RedisClient,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
+    <span class="macro">trace!</span>(<span class="string">&quot;Start queue consumer for {}&quot;</span>, tenant);
     <span class="kw">let </span><span class="kw-2">mut </span>handlers = <span class="macro">vec!</span>[];
     <span class="kw">for </span>queue <span class="kw">in </span>broker::QUEUES {
         <span class="kw">let </span>tenant = tenant.clone();
         <span class="kw">let </span>rabbitmq = rabbitmq.clone();
         <span class="kw">let </span>mongodb = mongodb.clone();
-        handlers.push(tokio::spawn(<span class="kw">async move </span>{
-            <span class="kw">loop </span>{
-                <span class="kw">let </span>consumer_name = <span class="macro">format!</span>(<span class="string">&quot;{}.{}.consumer&quot;</span>, tenant, queue);
 
+        handlers.push(tokio::spawn(<span class="kw">async move </span>{
+            <span class="kw">let </span>consumer_name = <span class="macro">format!</span>(<span class="string">&quot;{}.{}.consumer&quot;</span>, tenant, queue);
+            <span class="macro">debug!</span>(<span class="string">&quot;Starting consumer {}&quot;</span>, consumer_name);
+            <span class="kw">loop </span>{
+                <span class="macro">trace!</span>(<span class="string">&quot;Begin broker connection loop&quot;</span>);
                 <span class="kw">let </span>conn = rabbitmq
                     .get()
                     .<span class="kw">await
-                    </span>.map_err(|<span class="kw">_</span>| DispatchError::Connection {
-                        consumer_name: consumer_name.clone(),
-                        service_name: <span class="string">&quot;RabbitMQ&quot;</span>.to_string(),
+                    </span>.map_err(|<span class="kw">_</span>| {
+                        <span class="kw">let </span>error = DispatchError::Connection {
+                            consumer_name: consumer_name.clone(),
+                            service_name: <span class="string">&quot;RabbitMQ&quot;</span>.to_string(),
+                        };
+                        <span class="macro">error!</span>(<span class="string">&quot;{}&quot;</span>, error);
+                        error
                     })
                     .unwrap();
 
+                <span class="macro">debug!</span>(<span class="string">&quot;Create channel&quot;</span>);
                 <span class="kw">let </span>channel = conn
                     .create_channel()
                     .<span class="kw">await
-                    </span>.map_err(|<span class="kw">_</span>| DispatchError::Connection {
-                        consumer_name: consumer_name.clone(),
-                        service_name: <span class="string">&quot;RabbitMQ channel&quot;</span>.to_string(),
+                    </span>.map_err(|<span class="kw">_</span>| {
+                        <span class="kw">let </span>error = DispatchError::Connection {
+                            consumer_name: consumer_name.clone(),
+                            service_name: <span class="string">&quot;RabbitMQ channel&quot;</span>.to_string(),
+                        };
+                        <span class="macro">error!</span>(<span class="string">&quot;{}&quot;</span>, error);
+                        error
                     })
                     .unwrap();
 
+                <span class="macro">debug!</span>(<span class="string">&quot;Create basic consumer&quot;</span>);
                 <span class="kw">let </span><span class="kw-2">mut </span>consumer = channel
                     .basic_consume(
                         queue,
@@ -181,19 +225,29 @@
                         FieldTable::default(),
                     )
                     .<span class="kw">await
-                    </span>.map_err(|<span class="kw">_</span>| DispatchError::Connection {
-                        consumer_name: consumer_name.clone(),
-                        service_name: <span class="string">&quot;queue using a new consumer&quot;</span>.to_string(),
+                    </span>.map_err(|<span class="kw">_</span>| {
+                        <span class="kw">let </span>error = DispatchError::Connection {
+                            consumer_name: consumer_name.clone(),
+                            service_name: <span class="string">&quot;queue using a new consumer&quot;</span>.to_string(),
+                        };
+                        <span class="macro">error!</span>(<span class="string">&quot;{}&quot;</span>, error);
+                        error
                     })
                     .unwrap();
 
+                <span class="macro">debug!</span>(<span class="string">&quot;Await next delivery&quot;</span>);
                 <span class="kw">while let </span><span class="prelude-val">Some</span>(delivery) = consumer.next().<span class="kw">await </span>{
                     <span class="kw">let </span>delivery = delivery
-                        .map_err(|<span class="kw">_</span>| DispatchError::Delivery {
-                            consumer_name: consumer_name.clone(),
+                        .map_err(|<span class="kw">_</span>| {
+                            <span class="kw">let </span>error = DispatchError::Delivery {
+                                consumer_name: consumer_name.clone(),
+                            };
+                            <span class="macro">error!</span>(<span class="string">&quot;{}&quot;</span>, error);
+                            error
                         })
                         .unwrap();
 
+                    <span class="macro">debug!</span>(<span class="string">&quot;Process delivered message&quot;</span>);
                     <span class="kw">if </span>(queue == <span class="kw-2">&amp;</span><span class="string">&quot;session_management&quot;</span>)
                         &amp;&amp; session_management::dispatch(
                             <span class="kw-2">&amp;</span>tenant,
@@ -204,21 +258,26 @@
                         .<span class="kw">await
                         </span>.unwrap()
                     {
+                        <span class="macro">trace!</span>(<span class="string">&quot;Ack session_management delivery&quot;</span>);
                         <span class="comment">// If message is known, then we send back an
                         // ack signal. If not, well... leave it to
                         // another consumer
                         </span>delivery
                             .ack(BasicAckOptions::default())
                             .<span class="kw">await
-                            </span>.map_err(|<span class="kw">_</span>| DispatchError::Ack {
-                                consumer_name: consumer_name.clone(),
+                            </span>.map_err(|<span class="kw">_</span>| {
+                                <span class="kw">let </span>error = DispatchError::Ack {
+                                    consumer_name: consumer_name.clone(),
+                                };
+                                <span class="macro">error!</span>(<span class="string">&quot;{}&quot;</span>, error);
+                                error
                             })
                             .unwrap();
                     }
                 }
 
                 <span class="comment">// End of queue processing. Let&#39;s wait for a while.
-                </span><span class="macro">println!</span>(<span class="string">&quot;{}: Processed.&quot;</span>, consumer_name);
+                </span><span class="macro">info!</span>(<span class="string">&quot;{}: Processed.&quot;</span>, consumer_name);
                 tokio::time::sleep(Duration::from_secs(QUEUE_PROCESSING_WAIT_SECS)).<span class="kw">await</span>;
             }
         }))
@@ -228,6 +287,7 @@
         handle.<span class="kw">await</span><span class="question-mark">?</span>;
     }
 
+    <span class="macro">info!</span>(<span class="string">&quot;All handlers terminated.&quot;</span>);
     <span class="prelude-val">Ok</span>(())
 }
 </code></pre></div>
