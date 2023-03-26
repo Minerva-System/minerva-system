@@ -96,3 +96,8 @@
 	  <!-- - [PgAdmin4]() -->
 	  <!-- - [Mongo Express]() -->
 	  <!-- - [Redis Commander]() -->
+- [Testes](./testes.md)
+  - [Testes unitários](./testes-unitarios.md)
+  - [Testes de integração](./testes-integracao.md)
+  - [Testes de Carga](./testes-carga.md)
+  

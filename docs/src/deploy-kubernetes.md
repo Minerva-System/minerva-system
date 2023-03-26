@@ -458,6 +458,7 @@ Há alguns testes de stress para o Minerva System. Estes testes servem principal
 testar os limites e o comportamento do sistema quando o mesmo estiver sob uma grande carga
 de operações.
 
+
 #### Testes de spike com K6
 
 Os testes padrão são realizados através da ferramenta [K6](https://k6.io/), porém essa
