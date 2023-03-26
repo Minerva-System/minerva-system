@@ -15,7 +15,8 @@ use rocket_okapi::{okapi::openapi3::OpenApi, openapi, openapi_get_routes_spec};
 use std::env;
 use tonic::Request;
 
-/// Returns the list of routes for this module.
+/// Returns a tuple containing a vec of routes for this module, plus a structure
+/// containing the OpenAPI specification for these routes.
 pub fn routes() -> (Vec<Route>, OpenApi) {
     openapi_get_routes_spec![login, logout]
 }
@@ -78,9 +79,8 @@ async fn login(
 
 /// Route for user logoff.
 ///
-/// This route requires that session cookies exist on the client requesting
-/// logoff. These cookies will be then accessed by the server and, upon
-/// successful logoff, will be deleted from the client's cookie jar.
+/// This route requires a session token passed as Bearer Token. Upon successful
+/// logoff, the session will be invalidated on both database and cache.
 #[allow(unused_variables)]
 #[openapi(tag = "Authentication")]
 #[post("/<tenant>/logout")]

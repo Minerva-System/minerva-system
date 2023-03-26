@@ -1,7 +1,7 @@
 //! This submodule contains structures and helper functions for creating
 //! responses for a request.
 
-use crate::generic::Message;
+use crate::generic::{JsonString, Message};
 use rocket::{response::Responder, serde::json::Json};
 use rocket_okapi::{
     gen::OpenApiGenerator,
@@ -17,55 +17,55 @@ use tonic::{Code, Status};
 pub enum ErrorResponse {
     /// 400 Bad Request
     #[response(status = 400, content_type = "json")]
-    BadRequest(String),
+    BadRequest(JsonString),
 
     /// 401 Unauthorized
     #[response(status = 401, content_type = "json")]
-    Unauthorized(String),
+    Unauthorized(JsonString),
 
     /// 404 Not Found
     #[response(status = 404, content_type = "json")]
-    NotFound(String),
+    NotFound(JsonString),
 
     /// 408 Request Timeout
     #[response(status = 408, content_type = "json")]
-    RequestTimeout(String),
+    RequestTimeout(JsonString),
 
     /// 409 Conflict
     #[response(status = 409, content_type = "json")]
-    Conflict(String),
+    Conflict(JsonString),
 
     /// 412 Precondition Failed
     #[response(status = 412, content_type = "json")]
-    PreconditionFailed(String),
+    PreconditionFailed(JsonString),
 
     /// 422 Unprocessable Entity
     #[response(status = 422, content_type = "json")]
-    UnprocessableEntity(String),
+    UnprocessableEntity(JsonString),
 
     /// 444 No Response
     #[response(status = 444, content_type = "json")]
-    NoResponse(String),
+    NoResponse(JsonString),
 
     /// 499 Client Closed Request
     #[response(status = 499, content_type = "json")]
-    ClientClosedRequest(String),
+    ClientClosedRequest(JsonString),
 
     /// 500 Internal Server Error
     #[response(status = 500, content_type = "json")]
-    InternalServerError(String),
+    InternalServerError(JsonString),
 
     /// 501 Not Implemented
     #[response(status = 501, content_type = "json")]
-    NotImplemented(String),
+    NotImplemented(JsonString),
 
     /// 503 Service Unavailable
     #[response(status = 503, content_type = "json")]
-    ServiceUnavailable(String),
+    ServiceUnavailable(JsonString),
 
     /// 511 Network Authentication Required
     #[response(status = 511, content_type = "json")]
-    NetworkAuthenticationRequired(String),
+    NetworkAuthenticationRequired(JsonString),
 }
 
 /// Generic Result type for responses on REST routes.

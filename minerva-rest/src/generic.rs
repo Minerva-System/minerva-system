@@ -6,16 +6,20 @@ use rocket::response::Responder;
 use rocket_okapi::okapi::schemars::{self, JsonSchema};
 use serde::{Deserialize, Serialize};
 
+/// A wrapper type to act as a reminder that the current string should be a
+/// JSON object in string format.
+pub type JsonString = String;
+
 /// DTO representing a generic message to represent anything.
 #[derive(Serialize, Deserialize, Clone, Debug, JsonSchema, Responder)]
 pub struct Message {
     /// The message content.
-    pub message: String,
+    pub message: JsonString,
 }
 
 impl Message {
-    /// Serialize message to JSON.
-    pub fn json(&self) -> String {
+    /// Serialize message to JSON string.
+    pub fn json(&self) -> JsonString {
         serde_json::to_string(self).unwrap()
     }
 }

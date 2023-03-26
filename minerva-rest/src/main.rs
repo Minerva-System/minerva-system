@@ -8,6 +8,10 @@
 //! This service also should never manage entities in the database directly.
 //! The REST service should always communicate to whatever gRPC service manages
 //! the entity required by the remote user instead.
+//!
+//! This service also exposes endpoints for Swagger, Rapidoc and OpenAPI 3
+//! specification. These should be located under `/swagger`, `/rapidoc` and
+//! `/openapi.json`.
 
 #![warn(clippy::all)]
 #![warn(missing_docs)]

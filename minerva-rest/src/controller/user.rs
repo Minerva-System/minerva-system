@@ -14,7 +14,8 @@ use rocket_okapi::{okapi::openapi3::OpenApi, openapi, openapi_get_routes_spec};
 use std::env;
 use tonic::Request;
 
-/// Returns the list of routes for this module.
+/// Returns a tuple containing a vec of routes for this module, plus a structure
+/// containing the OpenAPI specification for these routes.
 pub fn routes() -> (Vec<Route>, OpenApi) {
     openapi_get_routes_spec![index, show, store, update, delete]
 }
@@ -204,7 +205,7 @@ async fn update(
 /// To use this route, use a DELETE request. The ID of the user to be updated
 /// should also be passed through the URL.
 ///
-/// Upon success, returns an empty object.
+/// Upon success, returns a success message.
 #[allow(unused_variables)]
 #[openapi(tag = "User")]
 #[delete("/<tenant>/user/<index>")]
