@@ -5,10 +5,11 @@
 use crate::encryption;
 use crate::schema::user;
 use minerva_rpc::messages;
+use rocket_okapi::okapi::schemars::{self, JsonSchema};
 use std::str;
 
 /// DTO representing a single entry on the `user` table.
-#[derive(Queryable, Serialize, Deserialize, Clone, Debug)]
+#[derive(Queryable, Serialize, Deserialize, Clone, Debug, JsonSchema)]
 pub struct User {
     /// ID of the entry on the table.
     pub id: i32,
@@ -25,7 +26,7 @@ pub struct User {
 }
 
 /// DTO representing user data received through a REST request.
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, JsonSchema)]
 pub struct RecvUser {
     /// Username of the user being emplaced.
     pub login: String,
@@ -40,7 +41,7 @@ pub struct RecvUser {
 }
 
 /// DTO representing a new entry on the `user` table.
-#[derive(Insertable, Default, Debug)]
+#[derive(Insertable, Default, Debug, JsonSchema)]
 #[table_name = "user"]
 pub struct NewUser {
     /// Username of the user being created.

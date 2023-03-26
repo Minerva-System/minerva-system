@@ -9,16 +9,18 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.
 
 Relação de versões de microsserviços:
 
-- `USER` - v0.3.0
-- `SESSION` - v0.1.2
+- `REST` - v0.3.2
 - `RUNONCE` - v0.3.0
-- `REST` - v0.3.0
-- `DISPATCH`- v0.1.0
+- `USER` - v0.3.1
+- `SESSION` - v0.1.3
+- `DISPATCH`- v0.1.1
 - Front-End - v0.1.1 (pré-alfa)
 
 ### Adicionado
 
 - *Geração de imagens:* Reabilitado target de compilação para ARM64.
+- *Geração de imagens:* Adicionado script que gera uma working tree limpa ao
+  gerar recipe do Cargo Chef.
 - *`RUNONCE`:* Estruturas para preparação de message broker (virtual hosts e filas
   fixas).
 - *`DISPATCH`:* Criação do microsserviço.
@@ -31,6 +33,14 @@ Relação de versões de microsserviços:
 - *Minerva9:* Adicionada documentação para o MVC e repositório do projeto.
 - *Kubernetes:* Adição de configurações para deploy em ambientes IoT.
 - *`DATA`*: Adicionado DTO fixo para retorno de dados de sessão durante login.
+- *REST:* API agora possui documentação e ferramentas para teste através de Swagger
+  e RapiDoc (respectivamente através das rotas `/swagger` e `/rapidoc`).
+- *Sonar:* Adicionados arquivos de configuração do SonarQube para deploy em Kubernetes.
+- *Testes:* Adicionada configuração (projeto e pipeline de testes) para deploy dos
+  dados de testes e coberturas para o Sonar, via Tailscale.
+- *Testes:* Adicionada documentação individual sobre testes, principalmente testes
+  de carga.
+- *Sonar:* Adicionada documentação sobre Quality Gates do projeto.
 
 ### Modificado
 
@@ -53,18 +63,35 @@ Relação de versões de microsserviços:
   pgAdmin4, já que essas configurações são pensadas primariamente como debug.
   Para monitorar e inspecionar o MongoDB, o Redis e o PostgreSQL, veja ferramentas
   ad-hoc como MongoDB Compass, RESP.app ou DBeaver, respectivamente.
-- *PostgreSQL*: Atualizado para versão 15.
-- *Documentação*: Adicionados diagramas separados para cada _deployment_ no Kubernetes,
+- *PostgreSQL:* Atualizado para versão 15.
+- *Documentação:* Adicionados diagramas separados para cada _deployment_ no Kubernetes,
   bem como um diagrama geral da arquitetura do mesmo.
-- *`REST`*: Requisições agora exigem token através de Bearer Token.
-- *`REST`*: Requisições agora demandam _tenant_ no início das rotas.
+- *`REST`:* Requisições agora exigem token através de Bearer Token.
+- *`REST`:* Requisições agora demandam _tenant_ no início das rotas.
+- *`REST`:* Todas as rotas agora possuem tipos de resposta bem-definidos, possibilitando
+  extração de schema para OpenAPI.
+- *`REST`:* Alteradas as variáveis de ambiente designando profile e nível de log do
+  Rocket nos vários tipos de deploy (local, Compose, Swarm, K8s)
 
 ### Consertado
 
 - *`USER`:* Ao remover um usuário, envia mensagem requisitando remoção das sessões
   do mesmo (cache e coleção de sessões).
+- *`USER`:* Caso um usuário falhe em ser criado (ao final da inserção), será considerado
+  como se já existisse.
+- *`REST` (K8s):* ConfigMap próprio estava sendo ignorado e agora é utilizado.
+- *`REST`:* A API agora é capaz de lidar com a exposição de suas próprias rotas
+  sob um endpoint específico (como `/api`, por exemplo; isso também funciona para a
+  especificação OpenAPI e para Swagger e Rapidoc).
 
 ### Removido
+
+- Removidos projetos Rust de módulos ainda não-iniciados, que causavam lentidão
+  desnecessária na compilação.
+- *`REST`:* Removidos exemplos de requisições na documentação das rotas (prefira a
+  documentação via Postman ou use Swagger ou RapiDoc).
+- *`REST`:* Removidas cores no texto do console durante deploy em k8s.
+
 ### Segurança
 
 - Chaves dos dados de sessão armazenados no Redis agora são codificados usando
@@ -86,7 +113,7 @@ Relação de versões de microsserviços:
   como `true`.
 
 
-## [v2] - 2022-06-05
+## [v2] - 2022-07-05
 
 
 Relação de versões de microsserviços:

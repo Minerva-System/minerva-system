@@ -12,3 +12,7 @@ docker-compose.yml
 docker-stack.yml
 *.sh
 .devcontainer
+logging.yml
+helpers/
+.env
+

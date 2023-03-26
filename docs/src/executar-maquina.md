@@ -94,6 +94,22 @@ instanciados antes de sua execução.
 seguros para persistência de dados. Por isso, use-os apenas com a
 finalidade de testes.
 
+
+#### Usando recursos por meio externo (Kubernetes)
+
+Caso você não queira executar os serviços essenciais
+mais pesados em termos de recursos (PostgreSQL, MongoDB, Redis e
+RabbitMQ), poderá reaproveitá-los caso tenha realizado deploy dos
+mesmos em Kubernetes. Para tanto, você poderá usar um script
+preparado que realiza esse processo. Veja que esse script assume
+que você possua a ferramenta `kubectl` com acesso padrão configurado
+para o cluster que seja seu _target_.
+
+O script encontra-se excepcionalmente em `helpers/port-forwards.sh`,
+na raiz do projeto.
+
+
+
 #### Banco de dados relacional
 
 Como primeira dependência, recomenda-se criar o banco de dados relacional

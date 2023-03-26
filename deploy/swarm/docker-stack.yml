@@ -1,30 +1,18 @@
 version: "3"
 
 services:
-  # Front-End service
-  frontend:
-    image: luksamuk/minerva_frontend:0.1.1
-    environment:
-      - NGINX_PORT=80
-    ports:
-      - 80:80
-    depends_on:
-      - "rest"
-    networks:
-      - minerva_system
-    deploy:
-      replicas: 2
-      restart_policy:
-        condition: on-failure
-      placement:
-        constraints: [node.role == worker]
-  
   # REST service
   rest:
-    image: luksamuk/minerva_rest:0.3.0
+    image: luksamuk/minerva_rest:0.3.2
     environment:
       - USER_SERVICE_SERVER=user
       - SESSION_SERVICE_SERVER=session
+      - LOG_CONFIG_FILE=/cfg/logging.yml
+      - ROCKET_PROFILE=production
+      - ROCKET_LOG_LEVEL=normal
+      - API_ROOT=/api
+      - ROCKET_CLI_COLORS=false
+      - ROCKET_ADDRESS=0.0.0.0
     ports:
       - 9000:9000
     depends_on:
@@ -39,6 +27,8 @@ services:
         condition: on-failure
       placement:
         constraints: [node.role == worker]
+    volumes:
+      - /cfg:/cfg/
   
   # RUNONCE service
   runonce:
@@ -64,10 +54,11 @@ services:
   
   # USER service
   user:
-    image: luksamuk/minerva_user:0.3.0
+    image: luksamuk/minerva_user:0.3.1
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - RABBITMQ_SERVICE_SERVER=rabbitmq
+      - LOG_CONFIG_FILE=/cfg/logging.yml
     networks:
       - minerva_system
     deploy:
@@ -78,15 +69,18 @@ services:
         condition: on-failure
       placement:
         constraints: [node.role == worker]
+    volumes:
+      - /cfg:/cfg
 
   # SESSION service
   session:
-    image: luksamuk/minerva_session:0.1.2
+    image: luksamuk/minerva_session:0.1.3
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
       - REDIS_SERVICE_SERVER=redis
       - RABBITMQ_SERVICE_SERVER=rabbitmq
+      - LOG_CONFIG_FILE=/cfg/logging.yml
     networks:
       - minerva_system
     deploy:
@@ -95,10 +89,12 @@ services:
       labels: [APP = SESSION_SERVICE]
       restart_policy:
         condition: on-failure
+    volumes:
+      - /cfg:/cfg
 
   # DISPATCH service
   dispatch:
-    image: luksamuk/minerva_dispatch:0.1.0
+    image: luksamuk/minerva_dispatch:0.1.1
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
@@ -106,6 +102,7 @@ services:
       - RABBITMQ_SERVICE_SERVER=rabbitmq
       - SESSION_SERVICE_SERVER=session
       - SESSION_SERVICE_PORT=9011
+      - LOG_CONFIG_FILE=/cfg/logging.yml
     depends_on:
       - "rabbitmq"
     networks:
@@ -116,8 +113,10 @@ services:
       labels: [APP = DISPATCH_SERVICE]
       restart_policy:
         condition: on-failure
+    volumes:
+      - /cfg:/cfg
 
-  # PostgreSQL 15
+  # PostgreSQL
   postgresql:
     environment:
       - POSTGRES_USER=postgres
@@ -133,7 +132,7 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  # MongoDB 4
+  # MongoDB
   mongodb:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
@@ -161,7 +160,7 @@ services:
       placement:
         constraints: [node.role == manager]
 
-  # Redis 7
+  # Redis
   redis:
     image: redis:7-alpine
     volumes:

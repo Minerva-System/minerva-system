@@ -2,4 +2,7 @@
 **/*~
 target/
 postgres-data/
-
+log/
+*.info
+*.report
+coverage/

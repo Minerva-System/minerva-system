@@ -25,6 +25,7 @@ pub async fn database_spinlock(server: &str) {
 /// Create a database for a specific tenant, if it doesn't exist.
 /// Panics if unable to create database.
 pub fn create_database(tenant: &str, server: &str) {
+    println!("{}: Creating database...", tenant);
     db::create_database(tenant, server)
         .map_err(|e| panic!("{}: Error while creating database: {}", tenant, e))
         .unwrap();

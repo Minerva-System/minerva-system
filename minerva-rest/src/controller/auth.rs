@@ -4,18 +4,21 @@
 use super::response;
 use crate::fairings::auth::SessionInfo;
 use crate::utils;
+use data::session::SessionResponse;
+use log::info;
 use minerva_data as data;
 use minerva_rpc as rpc;
-use response::Response;
+use response::{ErrorResponse, RestResult};
 use rocket::serde::json::Json;
 use rocket::Route;
-use serde_json::json;
+use rocket_okapi::{okapi::openapi3::OpenApi, openapi, openapi_get_routes_spec};
 use std::env;
 use tonic::Request;
 
-/// Returns the list of routes for this module.
-pub fn routes() -> Vec<Route> {
-    routes![login, logout]
+/// Returns a tuple containing a vec of routes for this module, plus a structure
+/// containing the OpenAPI specification for these routes.
+pub fn routes() -> (Vec<Route>, OpenApi) {
+    openapi_get_routes_spec![login, logout]
 }
 
 /// Retrieves the endpoint for the gRPC session service. Requires that the proper
@@ -33,80 +36,78 @@ pub fn get_endpoint() -> String {
 ///
 /// Upon a successful login attempt, the route will return the tenant and the
 /// session token data for the current user.
-///
-/// # Request example
-/// ```bash
-/// curl -X POST 'http://localhost:9000/minerva/login' \
-///      -H 'Content-Type: application/json' \
-///      -d '{"login": "admin", "password": "admin"}'
-/// ```
+#[openapi(tag = "Authentication")]
 #[post("/<tenant>/login", data = "<body>")]
-async fn login(tenant: &str, body: Json<data::session::RecvSession>) -> Response {
-    use data::session::SessionResponse;
+async fn login(
+    tenant: &str,
+    body: Json<data::session::RecvSession>,
+) -> RestResult<SessionResponse> {
     let endpoint = get_endpoint();
     let requestor = "unknown".to_string();
     let body = body.as_new(tenant);
     let tenant = tenant.to_string();
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        &format!("REST::LOGIN > SESSION::GENERATE @ {}", endpoint),
+    info!(
+        "{}",
+        data::log::format(
+            utils::get_ip(),
+            &requestor,
+            &tenant,
+            &format!("POST /login: request SESSION.generate ({})", endpoint),
+        )
     );
 
-    let client = rpc::session::make_client(endpoint, tenant.clone(), requestor).await;
-    if client.is_err() {
-        return Response::generate_error(client);
-    }
-    let mut client = client.unwrap();
+    let mut client = rpc::session::make_client(endpoint, tenant.clone(), requestor)
+        .await
+        .map_err(|status| {
+            error!("Error while connecting to SESSION: {:?}", status);
+            ErrorResponse::from(status)
+        })?;
 
-    let response = client
+    client
         .generate(Request::new(body.clone().into()))
         .await
         .map(|msg| {
             let token = msg.into_inner().token;
-
-            SessionResponse { token, tenant }
-        });
-
-    Response::respond(response)
+            Json(SessionResponse { token, tenant })
+        })
+        .map_err(|status| {
+            error!("Error while creating session: {:?}", status);
+            ErrorResponse::from(status)
+        })
 }
 
 /// Route for user logoff.
 ///
-/// This route requires that session cookies exist on the client requesting
-/// logoff. These cookies will be then accessed by the server and, upon
-/// successful logoff, will be deleted from the client's cookie jar.
-///
-/// # Request example
-/// ```bash
-/// curl -X POST http://localhost:9000/minerva/logout \
-///      -H 'Authorization: Bearer {token}'
-/// ```
-#[post("/<_>/logout")]
-async fn logout(session: SessionInfo) -> Response {
+/// This route requires a session token passed as Bearer Token. Upon successful
+/// logoff, the session will be invalidated on both database and cache.
+#[allow(unused_variables)]
+#[openapi(tag = "Authentication")]
+#[post("/<tenant>/logout")]
+async fn logout(tenant: String, session: SessionInfo) -> RestResult<crate::generic::Message> {
     let endpoint = get_endpoint();
     let requestor = "unknown".to_string();
     let tenant = session.info.tenant;
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        &format!("REST::LOGOUT > SESSION::REMOVE @ {}", endpoint),
+    info!(
+        "{}",
+        data::log::format(
+            utils::get_ip(),
+            &requestor,
+            &tenant,
+            &format!("POST /logout: request SESSION.remove ({})", endpoint),
+        )
     );
 
-    match rpc::session::make_client(endpoint, tenant.clone(), requestor).await {
-        Ok(mut client) => {
-            let token = session.token.clone();
-            let response = client
-                .remove(Request::new(rpc::messages::SessionToken { token }))
-                .await
-                .map(|_| json!({ "message": "User logout successful" }));
+    let mut client = rpc::session::make_client(endpoint, tenant.clone(), requestor)
+        .await
+        .map_err(ErrorResponse::from)?;
 
-            Response::respond(response)
-        }
-        err => Response::generate_error(err),
-    }
+    let token = session.token.clone();
+
+    client
+        .remove(Request::new(rpc::messages::SessionToken { token }))
+        .await
+        .map(|_| Json(crate::generic::Message::from("User logout successful")))
+        .map_err(ErrorResponse::from)
 }

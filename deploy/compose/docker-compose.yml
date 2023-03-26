@@ -1,0 +1,72 @@
+version: "3"
+
+services:
+  # REST service
+  rest:
+    image: luksamuk/minerva_rest:latest
+    environment:
+      - USER_SERVICE_SERVER=localhost
+      - SESSION_SERVICE_SERVER=localhost
+      - LOG_CONFIG_FILE=/cfg/logging.yml
+      - ROCKET_PROFILE=debug
+      - ROCKET_LOG_LEVEL=debug
+      - API_ROOT=/api
+      - ROCKET_CLI_COLORS=false
+    volumes:
+      - ./logconfig/rest.yml:/cfg/logging.yml
+      - ./log:/usr/src/app/log
+    ports:
+      - 9000:9000
+    network_mode: "host"
+  
+  # RUNONCE service
+  runonce:
+    image: luksamuk/minerva_runonce:latest
+    environment:
+      - DATABASE_SERVICE_SERVER=localhost
+      - MONGO_SERVICE_SERVER=localhost
+      - RABBITMQ_SERVICE_SERVER=localhost
+    network_mode: "host"
+  
+  # USER service
+  user:
+    image: luksamuk/minerva_user:latest
+    environment:
+      - DATABASE_SERVICE_SERVER=localhost
+      - RABBITMQ_SERVICE_SERVER=localhost
+      - LOG_CONFIG_FILE=/cfg/logging.yml
+    volumes:
+      - ./logconfig/user.yml:/cfg/logging.yml
+      - ./log:/usr/src/app/log
+    network_mode: "host"
+
+  # SESSION service
+  session:
+    image: luksamuk/minerva_session:latest
+    environment:
+      - DATABASE_SERVICE_SERVER=localhost
+      - MONGO_SERVICE_SERVER=localhost
+      - REDIS_SERVICE_SERVER=localhost
+      - RABBITMQ_SERVICE_SERVER=localhost
+      - LOG_CONFIG_FILE=/cfg/logging.yml
+    volumes:
+      - ./logconfig/session.yml:/cfg/logging.yml
+      - ./log:/usr/src/app/log
+    network_mode: "host"
+
+  # DISPATCH service
+  dispatch:
+    image: luksamuk/minerva_dispatch:latest
+    environment:
+      - DATABASE_SERVICE_SERVER=localhost
+      - MONGO_SERVICE_SERVER=localhost
+      - REDIS_SERVICE_SERVER=localhost
+      - RABBITMQ_SERVICE_SERVER=localhost
+      - SESSION_SERVICE_SERVER=localhost
+      - SESSION_SERVICE_PORT=9011
+      - LOG_CONFIG_FILE=/cfg/logging.yml
+    volumes:
+      - ./logconfig/dispatch.yml:/cfg/logging.yml
+      - ./log:/usr/src/app/log
+    network_mode: "host"
+

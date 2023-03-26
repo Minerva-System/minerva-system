@@ -1,0 +1,21 @@
+# -*- restclient -*-
+
+:api     = http://rpi4.local/api
+:tenant  = teste
+:baseurl = :api/:tenant
+
+# Log in
+POST :baseurl/login
+User-Agent: Emacs Restclient
+Content-Type: application/json
+-> jq-set-var :token .token
+
+{
+	"login": "admin",
+	"password": "admin"
+}
+
+# Get user list
+GET :baseurl/user
+User-Agent: Emacs Restclient
+Authorization: Bearer :token

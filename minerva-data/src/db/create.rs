@@ -42,7 +42,6 @@ impl QueryId for CreateDatabaseStmt {
 pub fn create_database(tenant: &str, server: &str) -> Result<(), String> {
     use crate::db;
     if db::try_make_single_connection(tenant, server).is_err() {
-        println!("{}: Creating database...", tenant);
         let url = db::build_database_string("postgres", server);
         let conn = diesel::PgConnection::establish(&url).map_err(|e| format!("{}", e))?;
         CreateDatabaseStmt::new(tenant)

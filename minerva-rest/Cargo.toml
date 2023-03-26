@@ -1,6 +1,6 @@
 [package]
 name = "minerva-rest"
-version = "0.3.0"
+version = "0.3.2"
 edition = "2021"
 description = "REST gateway for the Minerva System"
 authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
@@ -10,9 +10,12 @@ minerva-rpc = {path = "../minerva-rpc"}
 minerva-data = {path = "../minerva-data"}
 dotenv = "0.15.0"
 rocket = { version = "0.5.0-rc.2", features = ["json", "secrets"] }
+rocket_okapi = { version = "0.8.0-rc.2", features = ["swagger", "rapidoc"] }
 tonic = "0.8.2"
 serde = "1.0"
 serde_json = "1.0"
+log4rs = "1.2.0"
+log = "0.4"
 
 [dev-dependencies]
-serial_test = "0.7.0"
+serial_test = "0.10.0"

@@ -42,7 +42,77 @@ Você precisará ter:
   serão baixadas).
 
 Além disso, **todos os comandos a seguir devem ser executados no
-diretório `deploy` deste projeto**.
+diretório `deploy/coompose` deste projeto**.
+
+
+
+
+
+## Preparando-se para a execução dos serviços
+
+Primeiramente, você deverá se preparar para a geração de arquivos de
+log em cada serviço. Para tanto, no Linux, execute o script `make_log_dir.sh`.
+Esse script criará uma pasta `log` que será montada para o usuário
+com UID 1000, correspondente ao usuário `appuser` na maioria das imagens
+dos serviços do Minerva System.
+ 
+
+
+## Executando dependências
+
+O Minerva System depende essencialmente de quatro serviços de terceiros:
+
+- PostgreSQL;
+- MongoDB;
+- Redis;
+- RabbitMQ.
+
+É possível realizar a execução desses serviços através de algum provedor
+que os facilite, mas, para eventuais testes locais, você poderá usar uma
+configuração de Docker Compose específica ou utilizar diretamente esses
+serviços caso estejam hospedados em um cluster Kubernetes, através de
+port-forward.
+
+### Executando via Docker Compose
+
+Para executar os serviços na máquina atual, você deverá navegar até
+a pasta `services` e iniciar o Docker Compose:
+
+```bash
+cd services
+docker compose up
+```
+
+Os serviços estarão expostos nas seguintes portas:
+
+| Porta | Serviço                |
+|-------|------------------------|
+| 8484  | PgAdmin 4              |
+| 8686  | Mongo Express          |
+| 8787  | Redis Commander        |
+| 5672  | RabbitMQ (Serviço)     |
+| 15672 | RabbitMQ (Gerenciador) |
+
+O gerencialmento funcionará de forma similar aos serviços em si,
+portanto, para maiores informações sobre o uso do Compose, veja
+a seção _Executando os serviços_.
+
+
+
+
+### Usando Port Forward do Kubernetes
+
+Caso você não queira executar os serviços essenciais
+mais pesados em termos de recursos (PostgreSQL, MongoDB, Redis e
+RabbitMQ), poderá reaproveitá-los caso tenha realizado deploy dos
+mesmos em Kubernetes. Para tanto, você poderá usar um script
+preparado que realiza esse processo. Veja que esse script assume
+que você possua a ferramenta `kubectl` com acesso padrão configurado
+para o cluster que seja seu _target_.
+
+O script encontra-se excepcionalmente em `helpers/port-forwards.sh`,
+na raiz do projeto.
+
 
 
 
@@ -63,17 +133,13 @@ docker compose up -d
 ```
 
 Neste caso em específico, para `localhost`, estarão abertas as
-seguintes portas para acesso:
+seguintes portas para acesso aos serviços:
 
-| Porta | Serviço                |
-|-------|------------------------|
-| 80    | Front-End              |
-| 9000  | API REST               |
-| 8484  | PgAdmin 4              |
-| 8686  | Mongo Express          |
-| 8787  | Redis Commander        |
-| 5672  | RabbitMQ (Serviço)     |
-| 15672 | RabbitMQ (Gerenciador) |
+| Porta | Serviço                    |
+|-------|----------------------------|
+| 9000  | API REST (endpoint `/api`) |
+| 9010  | USER                       |
+| 9011  | SESSION                    |
 
 
 ## Acompanhando logs

@@ -8,6 +8,7 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+    environment: gh-actions
 
     services:
       postgres:
@@ -59,6 +60,8 @@ jobs:
           
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1.0.6
@@ -69,18 +72,40 @@ jobs:
       - name: Rust build cache
         uses: Swatinem/rust-cache@v2
 
+      - name: Setup sonarqube
+        uses: warchant/setup-sonar-scanner@v3
+
       - name: Linter
         run: cargo fmt -- --check
 
       - name: Clippy & Warnings
-        run: cargo clippy -- -D clippy::all
+        run: cargo clippy -- -D clippy::all &> ./clippy.report
         env:
           RUSTFLAGS: -D warnings
 
+      - name: Build apps for debug
+        run: cargo build
+
       - name: Run database migrations
         run: cargo run --bin minerva-runonce
-      
-      - name: Run tests
-        run: cargo test
 
-  
+      - name: Run tests
+        uses: actions-rs/tarpaulin@v0.1
+        with:
+          version: '0.22.0'
+          args: '--skip-clean -t 1200 --out Lcov -- --test-threads 1'
+
+      - name: Connect to Tailscale network
+        uses: tailscale/github-action@main
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: Remove unused COBERTURA coverage info
+        run: rm -f ./cobertura.xml
+
+      - name: SonarQube Scan
+        run: |
+          sonar-scanner \
+          -Dsonar.sources=$GITHUB_WORKSPACE \
+          -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}

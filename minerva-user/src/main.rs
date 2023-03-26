@@ -14,6 +14,7 @@ extern crate bb8_diesel;
 extern crate diesel;
 
 use dotenv::dotenv;
+use log::{debug, info};
 use minerva_broker as broker;
 use minerva_data::db;
 use minerva_rpc::user::user_server::UserServer;
@@ -34,7 +35,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!();
     dotenv().ok();
 
-    println!("Creating database connection pools...");
+    let logconfig = env::var("LOG_CONFIG_FILE").unwrap_or_else(|_| "./logging.yml".to_owned());
+
+    match log4rs::init_file(logconfig, Default::default()) {
+        Ok(_) => info!("Log system initialized."),
+        Err(e) => eprintln!(
+            "Failure while initializing logs: {:?}\n\
+			     You might be flying solo now.",
+            e
+        ),
+    }
+
+    info!("Creating database connection pools...");
 
     let dbserver =
         env::var("DATABASE_SERVICE_SERVER").expect("Unable to read DATABASE_SERVICE_SERVER");
@@ -55,7 +67,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 .await,
             ),
         );
-        println!(
+        debug!(
             "Added pool for tenant {} ({} connections).",
             tenant.name, tenant.connections
         );
@@ -64,14 +76,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let port = env::var("USER_SERVICE_PORT").expect("Unable to read USER_SERVICE_PORT");
     let addr = format!("0.0.0.0:{}", port).parse()?;
 
-    println!("Starting USER on {}...", addr);
+    info!("Starting USER on {}...", addr);
 
     let server = Server::builder()
         .add_service(UserServer::new(service::UserService { pools }))
         .serve(addr);
 
-    println!("USER is ready to accept connections.");
+    info!("USER is ready to accept connections.");
     server.await?;
-    println!("USER shut down.");
+    info!("USER shut down.");
     Ok(())
 }

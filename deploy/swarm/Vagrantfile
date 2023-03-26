@@ -54,6 +54,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define "manager0#{i}" do |manager|
       manager.vm.network :private_network, ip: "#{MANAGER_IP}#{i}"
       manager.vm.hostname = "manager0#{i}"
+      # Copy log config
+      manager.vm.provision "shell", inline: "mkdir -p /cfg && cp /vagrant/logging.yml /cfg/logging.yml"
       if i == 1
         # Only configure port to host for Manager01
         manager.vm.network :forwarded_port, guest: 8080, host: 8080
@@ -76,11 +78,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   (1..WORKERS).each do |i|
     config.vm.define "worker0#{i}" do |worker|
       worker.vm.network :private_network, ip: "#{WORKER_IP}#{i}"
-      worker.vm.hostname = "worker0#{i}"
-
+      worker.vm.hostname = "worker0#{i}" 
+      # Copy log config
+      worker.vm.provision "shell", inline: "mkdir -p /cfg && cp /vagrant/logging.yml /cfg/logging.yml"
       # Join cluster as worker
       worker.vm.provision "shell", inline: "docker swarm join --token `cat /vagrant/workertoken` `cat /vagrant/managerip`"
-
       # After adding last worker, run Docker Stack
       worker.trigger.after :up do |trigger|
         if(i == WORKERS) then

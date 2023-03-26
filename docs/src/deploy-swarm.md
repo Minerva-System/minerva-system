@@ -1,7 +1,7 @@
-# Deploy via Docker Swarm + HashiCorp Vagrant
+# Deploy via Docker Swarm + Vagrant
 
 <center>
-<img src="./swarm-vagrant.png" alt="Docker Swarm + HashiCorp Vagrant" width="400"/>
+<img src="./swarm-vagrant.png" alt="Docker Swarm + Vagrant" width="400"/>
 </center>
 
 Além do deploy via Docker Compose, também é possível disponibilizar a stack do

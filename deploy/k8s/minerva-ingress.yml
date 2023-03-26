@@ -1,15 +1,4 @@
 ---
-# API prefix middleware
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: api-ingress-middleware
-  namespace: minerva
-spec:
-  replacePathRegex:
-    regex: ^/api/(.*)
-    replacement: /$1
----
 # Grafana prefix middleware
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
@@ -29,7 +18,6 @@ metadata:
   namespace: minerva
   annotations:
     kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/router.middlewares: minerva-api-ingress-middleware@kubernetescrd
 spec:
   rules:
     - http:
@@ -102,3 +90,23 @@ spec:
                 name: mongoexpress-svc
                 port:
                   number: 8081
+---
+# Kibana Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kibana-ingress
+  namespace: minerva
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /kibana
+            pathType: Prefix
+            backend:
+              service:
+                name: kibana-svc
+                port:
+                  number: 5601

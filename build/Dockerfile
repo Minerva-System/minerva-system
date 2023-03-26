@@ -12,7 +12,25 @@ ENV RUSTFLAGS="-C target-feature=-crt-static"
 FROM rust_base AS chef
 RUN mkdir /minerva
 WORKDIR /minerva
-COPY . .
+RUN cargo new --lib minerva-broker \
+    && cargo new --lib minerva-cache \
+    && cargo new --lib minerva-data \
+    && cargo new --bin minerva-dispatch \
+    && cargo new --bin minerva-rest \
+    && cargo new --lib minerva-rpc \
+    && cargo new --bin minerva-runonce \
+    && cargo new --bin minerva-session \
+    && cargo new --bin minerva-user
+COPY ./Cargo.toml ./Cargo.toml
+COPY ./minerva-broker/Cargo.toml ./minerva-broker/Cargo.toml
+COPY ./minerva-cache/Cargo.toml ./minerva-cache/Cargo.toml
+COPY ./minerva-data/Cargo.toml ./minerva-data/Cargo.toml
+COPY ./minerva-dispatch/Cargo.toml ./minerva-dispatch/Cargo.toml
+COPY ./minerva-rest/Cargo.toml ./minerva-rest/Cargo.toml
+COPY ./minerva-rpc/Cargo.toml ./minerva-rpc/Cargo.toml
+COPY ./minerva-runonce/Cargo.toml ./minerva-runonce/Cargo.toml
+COPY ./minerva-session/Cargo.toml ./minerva-session/Cargo.toml
+COPY ./minerva-user/Cargo.toml ./minerva-user/Cargo.toml
 RUN cargo chef prepare --recipe-path recipe.json
 
 # Cook cache
@@ -41,8 +59,9 @@ ENV TZ=Etc/UTC \
     APP_USER=appuser
 RUN addgroup -g 1000 $APP_USER \
     && mkdir -p $APP \
+    && mkdir -p $APP/log \
     && adduser -u 1000 -G $APP_USER -h $APP -D $APP_USER
-RUN chown -R $APP_USER:$APP_USER ${APP}
+RUN chown -R $APP_USER ${APP}
 USER $APP_USER
 ENV USER_SERVICE_PORT=9010
 ENV SESSION_SERVICE_PORT=9011
@@ -54,8 +73,6 @@ ENV SESSION_SERVICE_SERVER=session
 ENV DATABASE_SERVICE_SERVER=postgresql
 ENV MONGO_SERVICE_SERVER=mongodb
 ENV REDIS_SERVICE_SERVER=redis
-ENV ROCKET_KEEP_ALIVE=0
-ENV ROCKET_ENV=production
 WORKDIR ${APP}
 
 ## Service containers

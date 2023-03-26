@@ -3,6 +3,7 @@
 
 use crate::error::DispatchError;
 use futures::stream::TryStreamExt;
+use log::{debug, error, info, trace};
 use minerva_broker::model::SessionMessage;
 use minerva_rpc as rpc;
 use mongodb::bson::{doc, Document};
@@ -16,6 +17,7 @@ pub async fn dispatch(
     mongodb: &MongoClient,
     data: &[u8],
 ) -> Result<bool, Box<dyn std::error::Error>> {
+    trace!("Session management dispatch");
     match SessionMessage::from(std::str::from_utf8(data).unwrap().to_string()) {
         SessionMessage::Remove { user } => {
             // `SESSION` already implements session removal, including
@@ -25,12 +27,13 @@ pub async fn dispatch(
             // access to connections to other services, since those
             // clients are asynchronous in nature and will only open
             // connections on demand.
-            println!("{}: Remove session from user \"{}\"", consumer_name, user);
+            info!("{}: Remove session from user \"{}\"", consumer_name, user);
             remove_user_sessions(consumer_name, &mongodb.database(tenant), tenant, &user).await?;
             Ok(true)
         }
         _ => {
             // Unknown message
+            debug!("Received message is unknown!");
             Ok(false)
         }
     }
@@ -44,9 +47,10 @@ async fn remove_user_sessions(
     tenant: &str,
     username: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
+    trace!("Remove sessions for user {}@{}", username, tenant);
     use tonic::Request;
 
-    // 1. Fetch all sessions from the given user;
+    // 1. Fetch all sessions from the given user
     let collection = mongodb.collection::<Document>("session");
     let filter = doc! { "login": username };
     let mut cursor = collection.find(filter, None).await?;
@@ -65,23 +69,30 @@ async fn remove_user_sessions(
         });
     }
 
-    println!("Removing {} sessions.", sessions.len());
+    info!("Removing {} sessions.", sessions.len());
 
     // 2. Ask `SESSION` to kill them all.
     let server = std::env::var("SESSION_SERVICE_SERVER")?;
     let port = std::env::var("SESSION_SERVICE_PORT")?;
     let endpoint = format!("http://{}:{}", server, port);
 
+    debug!("Create client for service SESSION");
     let mut client = rpc::session::make_client(endpoint, tenant.into(), "DISPATCH".into())
         .await
-        .map_err(|_| DispatchError::Connection {
-            consumer_name: consumer_name.to_owned(),
-            service_name: "SESSION service".to_string(),
+        .map_err(|_| {
+            let error = DispatchError::Connection {
+                consumer_name: consumer_name.to_owned(),
+                service_name: "SESSION service".to_string(),
+            };
+            error!("{}", error);
+            error
         })?;
 
+    debug!("Removing sessions");
     for session in sessions {
         client.remove(Request::new(session)).await?;
     }
 
+    debug!("Sessions removed successfully");
     Ok(())
 }

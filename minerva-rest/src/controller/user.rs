@@ -4,18 +4,20 @@
 use super::response;
 use crate::fairings::auth::SessionInfo;
 use crate::utils;
+use log::info;
 use minerva_data as data;
 use minerva_rpc as rpc;
-use response::Response;
+use response::{ErrorResponse, RestResult};
 use rocket::serde::json::Json;
 use rocket::Route;
-use serde_json::json;
+use rocket_okapi::{okapi::openapi3::OpenApi, openapi, openapi_get_routes_spec};
 use std::env;
 use tonic::Request;
 
-/// Returns the list of routes for this module.
-pub fn routes() -> Vec<Route> {
-    routes![index, show, store, update, delete]
+/// Returns a tuple containing a vec of routes for this module, plus a structure
+/// containing the OpenAPI specification for these routes.
+pub fn routes() -> (Vec<Route>, OpenApi) {
+    openapi_get_routes_spec![index, show, store, update, delete]
 }
 
 /// Retrieves the endpoint for the gRPC users service. Requires that the proper
@@ -34,40 +36,37 @@ pub fn get_endpoint() -> String {
 ///
 /// Upon success, returns a list of users in JSON format, containing up to the
 /// number of users per page as defined in the `USER` microservice.
-///
-/// # Request examples
-///
-/// ```bash
-/// curl -X GET 'http://localhost:9000/minerva/user' \
-///      -H 'Authorization: Bearer {token}'
-///
-/// curl -X GET 'http://localhost:9000/minerva/user?page=0' \
-///      -H 'Authorization: Bearer {token}'
-/// ```
-#[get("/<_>/user?<page>")]
-async fn index(session: SessionInfo, page: Option<i64>) -> Response {
+#[allow(unused_variables)]
+#[openapi(tag = "User")]
+#[get("/<tenant>/user?<page>")]
+async fn index(
+    tenant: String,
+    session: SessionInfo,
+    page: Option<i64>,
+) -> RestResult<Vec<data::user::User>> {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        &format!("REST::INDEX > USER::INDEX @ {}", endpoint),
+    info!(
+        "{}",
+        data::log::format(
+            utils::get_ip(),
+            &requestor,
+            &tenant,
+            &format!("GET /user: request USER.index ({})", endpoint),
+        )
     );
 
-    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
-    if client.is_err() {
-        return Response::generate_error(client);
-    }
-    let mut client = client.unwrap();
+    let mut client = rpc::user::make_client(endpoint, tenant, requestor)
+        .await
+        .map_err(ErrorResponse::from)?;
 
-    let response = client
+    client
         .index(Request::new(rpc::messages::PageIndex { index: page }))
         .await
-        .map(|msg| data::user::message_to_vec(msg.into_inner()));
-    Response::respond(response)
+        .map(|msg| Json(data::user::message_to_vec(msg.into_inner())))
+        .map_err(ErrorResponse::from)
 }
 
 /// Route for fetching data of a single user.
@@ -76,38 +75,34 @@ async fn index(session: SessionInfo, page: Option<i64>) -> Response {
 ///
 /// Upon success, retrieves data for a single user of the given ID in JSON
 /// format.
-///
-/// # Request example
-///
-/// ```bash
-/// curl -X GET 'http://localhost:9000/user/1' \
-///      -H 'Authorization: Bearer {token}'
-/// ```
-#[get("/<_>/user/<id>")]
-async fn show(session: SessionInfo, id: i32) -> Response {
+#[allow(unused_variables)]
+#[openapi(tag = "User")]
+#[get("/<tenant>/user/<id>")]
+async fn show(tenant: String, session: SessionInfo, id: i32) -> RestResult<data::user::User> {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        &format!("REST::SHOW > USER::SHOW @ {}", endpoint),
+    info!(
+        "{}",
+        data::log::format(
+            utils::get_ip(),
+            &requestor,
+            &tenant,
+            &format!("GET /user/<id>: request USER.show ({})", endpoint),
+        )
     );
 
-    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
-    if client.is_err() {
-        return Response::generate_error(client);
-    }
-    let mut client = client.unwrap();
+    let mut client = rpc::user::make_client(endpoint, tenant, requestor)
+        .await
+        .map_err(ErrorResponse::from)?;
 
     let index = id;
-    let response: Result<data::user::User, tonic::Status> = client
+    client
         .show(Request::new(rpc::messages::EntityIndex { index }))
         .await
-        .map(|msg| msg.into_inner().into());
-    Response::respond(response)
+        .map(|msg| Json(msg.into_inner().into()))
+        .map_err(ErrorResponse::from)
 }
 
 /// Route for creating a new user.
@@ -117,17 +112,14 @@ async fn show(session: SessionInfo, id: i32) -> Response {
 ///
 /// Upon success, returns the data for the created user as if it were requested
 /// through the `show` method.
-///
-/// # Request example
-///
-/// ```bash
-/// curl -X POST 'http://localhost:9000/user' \
-///      -H 'Content-Type: application/json' \
-///      -H 'Authorization: Bearer {token}'
-///      -d '{"login": "fulano", "name": "Fulano da Silva", "email": null, "password": "senha123"}'
-/// ```
-#[post("/<_>/user", data = "<body>")]
-async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Response {
+#[allow(unused_variables)]
+#[openapi(tag = "User")]
+#[post("/<tenant>/user", data = "<body>")]
+async fn store(
+    tenant: String,
+    session: SessionInfo,
+    body: Json<data::user::RecvUser>,
+) -> RestResult<data::user::User> {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
@@ -135,29 +127,30 @@ async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Respon
     let message: rpc::messages::User = body.0.into();
 
     if message.login == *"unknown" {
-        return Response::BadRequest(
-            json!({ "message": "Username \"unknown\" is reserved" }).to_string(),
-        );
+        return Err(ErrorResponse::BadRequest(
+            crate::generic::Message::from("Username \"unknown\" is reserved").json(),
+        ));
     }
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        &format!("REST::STORE > USER::STORE @ {}", endpoint),
+    info!(
+        "{}",
+        data::log::format(
+            utils::get_ip(),
+            &requestor,
+            &tenant,
+            &format!("POST /user: request USER.store ({})", endpoint),
+        )
     );
 
-    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
-    if client.is_err() {
-        return Response::generate_error(client);
-    }
-    let mut client = client.unwrap();
+    let mut client = rpc::user::make_client(endpoint, tenant, requestor)
+        .await
+        .map_err(ErrorResponse::from)?;
 
-    let response: Result<data::user::User, tonic::Status> = client
+    client
         .store(Request::new(message))
         .await
-        .map(|msg| msg.into_inner().into());
-    Response::respond(response)
+        .map(|msg| Json(msg.into_inner().into()))
+        .map_err(ErrorResponse::from)
 }
 
 /// Route for updating data for a user.
@@ -170,41 +163,41 @@ async fn store(session: SessionInfo, body: Json<data::user::RecvUser>) -> Respon
 ///
 /// Upon success, returns the data for the created user as if it were requested
 /// through the `show` method.
-///
-/// # Request example
-///
-/// ```bash
-/// curl -X PUT 'http://localhost:9000/user/2' \
-///      -H 'Content-Type: application/json'  \
-///      -H 'Authorization: Bearer {token}'
-///      -d '{"login": "fulano", "name": "Fulano da Silva", "email": null, "password": null}'
-/// ```
-#[put("/<_>/user/<id>", data = "<body>")]
-async fn update(session: SessionInfo, id: i32, body: Json<data::user::RecvUser>) -> Response {
+#[allow(unused_variables)]
+#[openapi(tag = "User")]
+#[put("/<tenant>/user/<id>", data = "<body>")]
+async fn update(
+    tenant: String,
+    session: SessionInfo,
+    id: i32,
+    body: Json<data::user::RecvUser>,
+) -> RestResult<data::user::User> {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        &format!("REST::UPDATE > USER::UPDATE @ {}", endpoint),
+    info!(
+        "{}",
+        data::log::format(
+            utils::get_ip(),
+            &requestor,
+            &tenant,
+            &format!("PUT /user/<id>: request USER.update ({})", endpoint),
+        )
     );
 
-    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
-    if client.is_err() {
-        return Response::generate_error(client);
-    }
-    let mut client = client.unwrap();
+    let mut client = rpc::user::make_client(endpoint, tenant, requestor)
+        .await
+        .map_err(ErrorResponse::from)?;
 
     let mut message: rpc::messages::User = body.0.into();
     message.id = Some(id);
-    let response: Result<data::user::User, tonic::Status> = client
+
+    client
         .update(Request::new(message))
         .await
-        .map(|msg| msg.into_inner().into());
-    Response::respond(response)
+        .map(|msg| Json(msg.into_inner().into()))
+        .map_err(ErrorResponse::from)
 }
 
 /// Route for removing a user altogether.
@@ -212,35 +205,36 @@ async fn update(session: SessionInfo, id: i32, body: Json<data::user::RecvUser>)
 /// To use this route, use a DELETE request. The ID of the user to be updated
 /// should also be passed through the URL.
 ///
-/// Upon success, returns an empty object.
-///
-/// # Request example
-///
-/// ```bash
-/// curl -X DELETE 'http://localhost:9000/user/2' \
-///      -H 'Authorization: Bearer {token}'
-/// ```
-#[delete("/<_>/user/<index>")]
-async fn delete(session: SessionInfo, index: i32) -> Response {
+/// Upon success, returns a success message.
+#[allow(unused_variables)]
+#[openapi(tag = "User")]
+#[delete("/<tenant>/user/<index>")]
+async fn delete(
+    tenant: String,
+    session: SessionInfo,
+    index: i32,
+) -> RestResult<crate::generic::Message> {
     let endpoint = get_endpoint();
     let tenant = session.info.tenant.clone();
     let requestor = session.info.login.clone();
 
-    data::log::print(
-        utils::get_ip(),
-        requestor.clone(),
-        tenant.clone(),
-        &format!("REST::DELETE > USER::DELETE @ {}", endpoint),
+    info!(
+        "{}",
+        data::log::format(
+            utils::get_ip(),
+            &requestor,
+            &tenant,
+            &format!("DELETE /user/<id>: request USER.delete ({})", endpoint),
+        )
     );
 
-    let client = rpc::user::make_client(endpoint, tenant, requestor).await;
-    if client.is_err() {
-        return Response::generate_error(client);
-    }
-    let mut client = client.unwrap();
+    let mut client = rpc::user::make_client(endpoint, tenant, requestor)
+        .await
+        .map_err(ErrorResponse::from)?;
 
-    let response = client
+    client
         .delete(Request::new(rpc::messages::EntityIndex { index }))
-        .await;
-    Response::respond_empty(response)
+        .await
+        .map(|_| Json(crate::generic::Message::from("User removed successfully")))
+        .map_err(ErrorResponse::from)
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 declare -a TARGETS=(
-    "minerva_frontend"
+#    "minerva_frontend"
     "minerva_rest"
     "minerva_runonce"
     "minerva_session"

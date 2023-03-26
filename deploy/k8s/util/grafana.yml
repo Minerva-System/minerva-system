@@ -48,7 +48,7 @@ spec:
           - 0
       containers:
         - name: grafana-container
-          image: grafana/grafana:9.1.5
+          image: grafana/grafana:9.2.4
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
