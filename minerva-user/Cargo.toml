@@ -1,6 +1,6 @@
 [package]
 name = "minerva-user"
-version = "0.3.0"
+version = "0.3.1"
 edition = "2021"
 description = "User management microservice for the Minerva System"
 authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]

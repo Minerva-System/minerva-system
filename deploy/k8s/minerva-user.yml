@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: user-container
-          image: luksamuk/minerva_user:0.3.0
+          image: luksamuk/minerva_user:0.3.1
           imagePullPolicy: Always
           ports:
             - containerPort: 9010

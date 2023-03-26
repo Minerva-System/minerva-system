@@ -54,7 +54,7 @@ services:
   
   # USER service
   user:
-    image: luksamuk/minerva_user:0.3.0
+    image: luksamuk/minerva_user:0.3.1
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - RABBITMQ_SERVICE_SERVER=rabbitmq
@@ -74,7 +74,7 @@ services:
 
   # SESSION service
   session:
-    image: luksamuk/minerva_session:0.1.2
+    image: luksamuk/minerva_session:0.1.3
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb
@@ -94,7 +94,7 @@ services:
 
   # DISPATCH service
   dispatch:
-    image: luksamuk/minerva_dispatch:0.1.0
+    image: luksamuk/minerva_dispatch:0.1.1
     environment:
       - DATABASE_SERVICE_SERVER=postgresql
       - MONGO_SERVICE_SERVER=mongodb

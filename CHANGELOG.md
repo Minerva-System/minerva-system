@@ -9,11 +9,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.
 
 Relação de versões de microsserviços:
 
-- `USER` - v0.3.0
-- `SESSION` - v0.1.2
-- `RUNONCE` - v0.3.0
 - `REST` - v0.3.2
-- `DISPATCH`- v0.1.0
+- `RUNONCE` - v0.3.0
+- `USER` - v0.3.1
+- `SESSION` - v0.1.3
+- `DISPATCH`- v0.1.1
 - Front-End - v0.1.1 (pré-alfa)
 
 ### Adicionado
@@ -38,6 +38,9 @@ Relação de versões de microsserviços:
 - *Sonar:* Adicionados arquivos de configuração do SonarQube para deploy em Kubernetes.
 - *Testes:* Adicionada configuração (projeto e pipeline de testes) para deploy dos
   dados de testes e coberturas para o Sonar, via Tailscale.
+- *Testes:* Adicionada documentação individual sobre testes, principalmente testes
+  de carga.
+- *Sonar:* Adicionada documentação sobre Quality Gates do projeto.
 
 ### Modificado
 
