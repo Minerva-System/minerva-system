@@ -1,6 +1,6 @@
 [package]
 name = "minerva-rest"
-version = "0.3.1"
+version = "0.3.2"
 edition = "2021"
 description = "REST gateway for the Minerva System"
 authors = ["Lucas S. Vieira <lucasvieira@protonmail.com>"]
