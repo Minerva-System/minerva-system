@@ -7,9 +7,6 @@ podTemplate(containers: [
     )
 ]) {
     node(POD_LABEL) {
-	packaging = load 'packaging.groovy'
-	compilation = load 'compilation.groovy'
-
 	stage('Instalação de dependências') {
 	    container('rust') {
 		stage('Instalar Protobuf Compiler v21.7') {
@@ -34,6 +31,11 @@ podTemplate(containers: [
                 stage('Clonar repositório') {
                     git 'https://github.com/Minerva-System/minerva-system'
                 }
+
+		// Carregar pacotes após clonar repositório
+		packaging = load 'packaging.groovy'
+		compilation = load 'compilation.groovy'
+
 		
                 compiling.compile_services()
 		packaging.package_services()
