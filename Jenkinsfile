@@ -1,3 +1,7 @@
+
+packaging = load 'packaging.groovy'
+compilation = load 'compilation.groovy'
+
 podTemplate(containers: [
     containerTemplate(
         name: 'rust',
@@ -32,17 +36,9 @@ podTemplate(containers: [
                     git 'https://github.com/Minerva-System/minerva-system'
                 }
 		
-                stage('Compilação') {
-                    sh 'protoc --version'
-                    sh 'cargo build --release'
-                }
-
-		load 'compilation.groovy'
-		
-		archiveArtifacts artifacts: '*.tar.gz',
-		    allowEmptyArchive: false,
-		    fingerprint: true,
-		    onlyIfSuccessful: true
+                compiling.compile_services()
+		packaging.package_services()
+		packaging.package_config()
             }
         }
     }
