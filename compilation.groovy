@@ -3,3 +3,5 @@ def compile_services() {
         sh 'cargo build --release'
     }
 }
+
+return this;

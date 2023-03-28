@@ -38,3 +38,5 @@ def package_config() {
 	    onlyIfSuccessful: true
     }
 }
+
+return this;
