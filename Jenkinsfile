@@ -1,7 +1,3 @@
-
-packaging = load 'packaging.groovy'
-compilation = load 'compilation.groovy'
-
 podTemplate(containers: [
     containerTemplate(
         name: 'rust',
@@ -11,6 +7,9 @@ podTemplate(containers: [
     )
 ]) {
     node(POD_LABEL) {
+	packaging = load 'packaging.groovy'
+	compilation = load 'compilation.groovy'
+
 	stage('Instalação de dependências') {
 	    container('rust') {
 		stage('Instalar Protobuf Compiler v21.7') {
