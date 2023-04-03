@@ -15,4 +15,5 @@ docker-stack.yml
 logging.yml
 helpers/
 .env
+vars/
 

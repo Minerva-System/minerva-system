@@ -1,3 +1,7 @@
+@Library('minervaCompile') minervaCompile
+@Library('minervaPackageServices') minervaPackageServices
+@Library('minervaPackageConfig') minervaPackageConfig
+
 podTemplate(containers: [
     containerTemplate(
         name: 'rust',
@@ -32,14 +36,9 @@ podTemplate(containers: [
                     git 'https://github.com/Minerva-System/minerva-system'
                 }
 
-		// Carregar pacotes após clonar repositório
-		packaging = load 'packaging.groovy'
-		compilation = load 'compilation.groovy'
-
-		
-                compiling.compile_services()
-		packaging.package_services()
-		packaging.package_config()
+		minervaCompile
+		minervaPackageServices
+		minervaPackageConfig
             }
         }
     }
