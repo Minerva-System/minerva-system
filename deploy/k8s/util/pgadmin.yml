@@ -65,7 +65,7 @@ spec:
           image: dpage/pgadmin4:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
+            - containerPort: 5050
               name: pgadmin
           envFrom:
             - secretRef:
@@ -73,6 +73,10 @@ spec:
           env:
             - name: SCRIPT_NAME
               value: "/pgadmin"
+            - name: PGADMIN_LISTEN_ADDRESS
+              value: "0.0.0.0"
+            - name: PGADMIN_LISTEN_PORT
+              value: "5050"
           volumeMounts:
             - name: pgadmin-config
               mountPath: /pgadmin4/servers.json
@@ -103,5 +107,5 @@ spec:
   selector:
     app: pgadmin
   ports:
-    - port: 80
+    - port: 5050
       nodePort: 31084
