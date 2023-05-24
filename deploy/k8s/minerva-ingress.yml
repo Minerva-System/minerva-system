@@ -69,7 +69,7 @@ spec:
               service:
                 name: pgadmin-svc
                 port:
-                  number: 80
+                  number: 5050
 ---
 # Mongo Express Ingress
 apiVersion: networking.k8s.io/v1
