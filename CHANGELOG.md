@@ -83,6 +83,7 @@ Relação de versões de microsserviços:
 - *`REST`:* A API agora é capaz de lidar com a exposição de suas próprias rotas
   sob um endpoint específico (como `/api`, por exemplo; isso também funciona para a
   especificação OpenAPI e para Swagger e Rapidoc).
+- *PgAdmin4*: Deploy para Kubernetes agora é feito apenas com IPv4 e na porta interna 5050.
 
 ### Removido
 
