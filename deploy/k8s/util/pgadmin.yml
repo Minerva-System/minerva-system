@@ -62,7 +62,7 @@ spec:
     spec:
       containers:
         - name: pgadmin-container
-          image: dpage/pgadmin4:latest
+          image: dpage/pgadmin4:7.1
           imagePullPolicy: Always
           ports:
             - containerPort: 5050
